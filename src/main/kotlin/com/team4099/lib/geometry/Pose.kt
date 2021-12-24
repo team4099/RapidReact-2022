@@ -8,10 +8,10 @@ import com.team4099.lib.units.derived.Angle
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.inRadians
 import com.team4099.lib.units.derived.radians
-import edu.wpi.first.wpilibj.geometry.Pose2d
-import edu.wpi.first.wpilibj.geometry.Rotation2d
-import edu.wpi.first.wpilibj.geometry.Transform2d
-import edu.wpi.first.wpilibj.geometry.Translation2d
+import edu.wpi.first.math.geometry.Pose2d
+import edu.wpi.first.math.geometry.Rotation2d
+import edu.wpi.first.math.geometry.Transform2d
+import edu.wpi.first.math.geometry.Translation2d
 
 data class Pose(val x: Length, val y: Length, val theta: Angle) {
   constructor(translation: Translation, theta: Angle) : this(translation.x, translation.y, theta)

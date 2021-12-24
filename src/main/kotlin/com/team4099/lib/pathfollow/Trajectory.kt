@@ -12,7 +12,7 @@ import com.team4099.lib.units.derived.angle
 import com.team4099.lib.units.inMetersPerSecond
 import com.team4099.lib.units.inMetersPerSecondPerSecond
 import com.team4099.lib.units.perSecond
-import edu.wpi.first.wpilibj.trajectory.TrajectoryParameterizer
+import edu.wpi.first.math.trajectory.TrajectoryParameterizer
 
 /**
  * A wrapper around the WPILib trajectory class that handles smooth heading changes for holonomic

@@ -1,7 +1,7 @@
-package com.team4099.robot2021
+package com.team4099.robot2022
 
 import com.team4099.lib.logging.Logger
-import com.team4099.robot2021.config.Constants
+import com.team4099.robot2022.config.Constants
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot

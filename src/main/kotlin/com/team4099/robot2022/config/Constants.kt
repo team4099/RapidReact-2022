@@ -1,6 +1,4 @@
-package com.team4099.robot2021.config
-
-import com.team4099.lib.units.derived.div
+package com.team4099.robot2022.config
 
 object Constants {
   object Universal {

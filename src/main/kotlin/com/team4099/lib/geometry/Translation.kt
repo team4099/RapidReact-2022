@@ -3,7 +3,7 @@ package com.team4099.lib.geometry
 import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.base.inMeters
 import com.team4099.lib.units.base.meters
-import edu.wpi.first.wpilibj.geometry.Translation2d
+import edu.wpi.first.math.geometry.Translation2d
 import kotlin.math.hypot
 
 /**

@@ -61,20 +61,20 @@ object Logger {
       createLogDirectory()
 
       file =
-          if (DriverStation.getInstance().isFMSAttached) {
+          if (DriverStation.isFMSAttached()) {
             Paths.get(
-                "$loggingLocation${DriverStation.getInstance().eventName}_" +
-                    "${DriverStation.getInstance().matchType}" +
-                    "${DriverStation.getInstance().matchNumber}.csv")
+                "$loggingLocation${DriverStation.getEventName()}_" +
+                    "${DriverStation.getMatchType()}" +
+                    "${DriverStation.getMatchNumber()}.csv")
           } else {
             Paths.get("${loggingLocation}test.csv")
           }
       eventsFile =
-          if (DriverStation.getInstance().isFMSAttached) {
+          if (DriverStation.isFMSAttached()) {
             Paths.get(
-                "$loggingLocation${DriverStation.getInstance().eventName}_" +
-                    "${DriverStation.getInstance().matchType}" +
-                    "${DriverStation.getInstance().matchNumber}Events.csv")
+                "$loggingLocation${DriverStation.getEventName()}_" +
+                    "${DriverStation.getMatchType()}" +
+                    "${DriverStation.getMatchNumber()}Events.csv")
           } else {
             Paths.get("${loggingLocation}testEvents.csv")
           }
@@ -158,7 +158,7 @@ object Logger {
   /** Write logs to the CSV file. */
   fun saveLogs() {
     try {
-      val data = "${Instant.now()},${DriverStation.getInstance().matchTime},$values"
+      val data = "${Instant.now()},${DriverStation.getMatchTime()},$values"
       Files.write(file, listOf(data), StandardOpenOption.APPEND)
     } catch (e: Exception) {
       e.printStackTrace()
@@ -195,12 +195,10 @@ object Logger {
    * logged to stderr instead of stdout.
    */
   fun addEvent(source: String, event: String, severity: Severity = Severity.INFO) {
-    val log =
-        "$severity,${Instant.now()},${DriverStation.getInstance().matchTime}," + "($source),$event"
+    val log = "$severity,${Instant.now()},${DriverStation.getMatchTime()}," + "($source),$event"
     events.add(log)
     val consoleString =
-        "[$severity][${Instant.now()}][${DriverStation.getInstance().matchTime}] " +
-            "($source): $event"
+        "[$severity][${Instant.now()}][${DriverStation.getMatchTime()}] " + "($source): $event"
     when (severity) {
       Severity.INFO -> println(consoleString)
       Severity.DEBUG -> println(consoleString)

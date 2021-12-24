@@ -7,7 +7,7 @@ import com.team4099.lib.units.Value
 import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.inRadiansPerSecond
 import com.team4099.lib.units.perSecond
-import edu.wpi.first.wpilibj.geometry.Rotation2d
+import edu.wpi.first.math.geometry.Rotation2d
 import kotlin.math.PI
 
 object Radian : UnitKey

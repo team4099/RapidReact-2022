@@ -9,7 +9,7 @@ import com.team4099.lib.units.derived.radians
 import com.team4099.lib.units.inMetersPerSecond
 import com.team4099.lib.units.inRadiansPerSecond
 import com.team4099.lib.units.perSecond
-import edu.wpi.first.wpilibj.geometry.Twist2d
+import edu.wpi.first.math.geometry.Twist2d
 
 data class Twist(val dx: LinearVelocity, val dy: LinearVelocity, val dtheta: AngularVelocity) {
   constructor(

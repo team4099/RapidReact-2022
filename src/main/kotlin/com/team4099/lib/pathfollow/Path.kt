@@ -7,9 +7,9 @@ import com.team4099.lib.logging.Logger.Severity.ERROR
 import com.team4099.lib.units.base.inMeters
 import com.team4099.lib.units.derived.Angle
 import com.team4099.lib.units.derived.radians
-import edu.wpi.first.wpilibj.spline.PoseWithCurvature
-import edu.wpi.first.wpilibj.spline.SplineHelper
-import edu.wpi.first.wpilibj.spline.SplineParameterizer
+import edu.wpi.first.math.spline.PoseWithCurvature
+import edu.wpi.first.math.spline.SplineHelper
+import edu.wpi.first.math.spline.SplineParameterizer
 import kotlin.math.PI
 import kotlin.math.atan2
 
