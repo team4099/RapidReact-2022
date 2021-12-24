@@ -1,0 +1,16 @@
+<<<<<<< HEAD
+INFO,2021-03-03T17:46:40.679120900Z,0.0,(Robot),Robot Construction (running on COMPETITION)
+WARN,2021-03-03T17:46:41.076781700Z,0.0,(Logger),Could not add Drivetrain/Gyro Connected to Shuffleboard due to invalid type
+=======
+INFO,2021-03-25T20:55:07.362573700Z,0.0,(Robot),Robot Construction (running on COMPETITION)
+WARN,2021-03-25T20:55:07.769747300Z,0.0,(Logger),Could not add Vision/Distance (inches) to Shuffleboard due to invalid type
+WARN,2021-03-25T20:55:07.809418700Z,0.0,(Logger),Could not add Front Left Wheel Drivetrain/Drive Bus Voltage to Shuffleboard due to invalid type
+WARN,2021-03-25T20:55:07.810414500Z,0.0,(Logger),Could not add Front Left Wheel Drivetrain/Direction Bus Voltage to Shuffleboard due to invalid type
+WARN,2021-03-25T20:55:07.814401800Z,0.0,(Logger),Could not add Front Right Wheel Drivetrain/Drive Bus Voltage to Shuffleboard due to invalid type
+WARN,2021-03-25T20:55:07.821391200Z,0.0,(Logger),Could not add Front Right Wheel Drivetrain/Direction Bus Voltage to Shuffleboard due to invalid type
+WARN,2021-03-25T20:55:07.824375Z,0.0,(Logger),Could not add Back Left Wheel Drivetrain/Drive Bus Voltage to Shuffleboard due to invalid type
+WARN,2021-03-25T20:55:07.825372500Z,0.0,(Logger),Could not add Back Left Wheel Drivetrain/Direction Bus Voltage to Shuffleboard due to invalid type
+WARN,2021-03-25T20:55:07.829362600Z,0.0,(Logger),Could not add Back Right Wheel Drivetrain/Drive Bus Voltage to Shuffleboard due to invalid type
+WARN,2021-03-25T20:55:07.830360200Z,0.0,(Logger),Could not add Back Right Wheel Drivetrain/Direction Bus Voltage to Shuffleboard due to invalid type
+WARN,2021-03-25T20:55:08.133632200Z,0.0,(Logger),Could not add Drivetrain/Gyro Connected to Shuffleboard due to invalid type
+>>>>>>> tuning
