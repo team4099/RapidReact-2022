@@ -26,6 +26,16 @@ import edu.wpi.first.wpilibj2.command.CommandBase
 import kotlin.math.PI
 
 class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
+
+  //private var isPP = false;
+  //  private lateinit var pathPlannerTrajectory: PathPlannerTrajectory;
+//
+////  constructor(pathPlannerTrajectory: PathPlannerTrajectory): this(PathPlannerTrajectory) {
+////    }
+////    isPP = true;
+////    this.pathPlannerTrajectory = pathPlannerTrajectory
+////  }
+
   private val xPID =
       PIDController(
           Constants.Drivetrain.PID.AUTO_POS_KP,

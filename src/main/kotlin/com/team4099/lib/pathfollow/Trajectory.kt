@@ -1,5 +1,6 @@
 package com.team4099.lib.pathfollow
 
+import com.pathplanner.lib.PathPlannerTrajectory
 import com.team4099.lib.geometry.Pose
 import com.team4099.lib.geometry.Translation
 import com.team4099.lib.geometry.interpolate
@@ -109,4 +110,16 @@ class Trajectory(
         interpolate(lowState.linearVelocity, highState.linearVelocity, lerpScalar),
         interpolate(lowState.linearAcceleration, highState.linearAcceleration, lerpScalar))
   }
+
+  //  private val path: Path,
+//  private val startVelocity: LinearVelocity,
+//  private val endVelocity: LinearVelocity,
+//  private val trajectoryConfig: TrajectoryConfig
+
+//  public fun convertToTrajectory(pathPlannerTrajectory: PathPlannerTrajectory): edu.wpi.first.wpilibj.trajectory.Trajectory{
+//    var traj: Trajectory = edu.wpi.first.wpilibj.trajectory.Trajectory(
+//      e),
+//    pathPlannerTrajectory.
+//    )
+//  }
 }
