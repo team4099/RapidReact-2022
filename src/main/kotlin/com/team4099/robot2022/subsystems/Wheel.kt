@@ -1,9 +1,9 @@
 package com.team4099.robot2022.subsystems
 
+import com.ctre.phoenix.motorcontrol.ControlMode
+import com.ctre.phoenix.motorcontrol.DemandType
+import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.ctre.phoenix.sensors.CANCoder
-import com.revrobotics.CANPIDController
-import com.revrobotics.CANSparkMax
-import com.revrobotics.ControlType
 import com.team4099.lib.around
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.AngularMechanismSensor
@@ -15,6 +15,8 @@ import com.team4099.lib.units.base.feet
 import com.team4099.lib.units.base.inFeet
 import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.meters
+import com.team4099.lib.units.ctreAngularMechanismSensor
+import com.team4099.lib.units.ctreLinearMechanismSensor
 import com.team4099.lib.units.derived.Angle
 import com.team4099.lib.units.derived.ElectricalPotential
 import com.team4099.lib.units.derived.degrees
@@ -25,8 +27,6 @@ import com.team4099.lib.units.derived.radians
 import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.inFeetPerSecond
 import com.team4099.lib.units.perSecond
-import com.team4099.lib.units.sparkMaxAngularMechanismSensor
-import com.team4099.lib.units.sparkMaxLinearMechanismSensor
 import com.team4099.robot2022.config.Constants
 import edu.wpi.first.math.filter.MedianFilter
 import kotlin.math.IEEErem
@@ -34,22 +34,24 @@ import kotlin.math.sign
 import kotlin.math.withSign
 
 class Wheel(
-  private val directionSpark: CANSparkMax,
-  private val driveSpark: CANSparkMax,
+  private val directionFalcon: TalonFX,
+  private val driveFalcon: TalonFX,
   private val encoder: CANCoder,
   private val zeroOffset: Angle,
   val label: String
 ) {
 
-  private val directionPID = directionSpark.pidController
-  private val drivePID = driveSpark.pidController
-
   private val directionSensor =
-      sparkMaxAngularMechanismSensor(
-          directionSpark, Constants.Drivetrain.DIRECTION_SENSOR_GEAR_RATIO)
+      ctreAngularMechanismSensor(
+          directionFalcon,
+          Constants.Drivetrain.DIRECTION_SENSOR_CPR,
+          Constants.Drivetrain.DIRECTION_SENSOR_GEAR_RATIO)
   private val driveSensor =
-      sparkMaxLinearMechanismSensor(
-          driveSpark, Constants.Drivetrain.DRIVE_SENSOR_GEAR_RATIO, 3.inches)
+      ctreLinearMechanismSensor(
+          driveFalcon,
+          Constants.Drivetrain.DRIVE_SENSOR_CPR,
+          Constants.Drivetrain.DRIVE_SENSOR_GEAR_RATIO,
+          3.inches)
 
   private val directionAbsolute =
       AngularMechanismSensor(
@@ -62,28 +64,28 @@ class Wheel(
 
   // motor params
   private val driveTemp: Double
-    get() = driveSpark.motorTemperature
+    get() = driveFalcon.temperature
 
   private val directionTemp: Double
-    get() = directionSpark.motorTemperature
+    get() = directionFalcon.temperature
 
   private val driveOutputCurrent: Double
-    get() = directionSpark.outputCurrent
+    get() = directionFalcon.statorCurrent
 
   private val directionOutputCurrent: Double
-    get() = directionSpark.outputCurrent
+    get() = directionFalcon.statorCurrent
 
   private val drivePercentOutput: Double
-    get() = driveSpark.get()
+    get() = driveFalcon.motorOutputPercent
 
   private val directionPercentOutput: Double
-    get() = directionSpark.get()
+    get() = directionFalcon.motorOutputPercent
 
   private val driveBusVoltage: ElectricalPotential
-    get() = driveSpark.busVoltage.volts
+    get() = driveFalcon.busVoltage.volts
 
   private val directionBusVoltage: ElectricalPotential
-    get() = directionSpark.busVoltage.volts
+    get() = directionFalcon.busVoltage.volts
 
   val driveOutputVoltage: ElectricalPotential
     get() = driveBusVoltage * drivePercentOutput
@@ -107,24 +109,23 @@ class Wheel(
       // ${directionSensor.getRawPosition()}")
       if (filter.calculate((directionSensor.position).inRadians)
           .around(value.inRadians, (Constants.Drivetrain.ALLOWED_ANGLE_ERROR).inRadians)) {
-        directionSpark.set(0.0)
+        directionFalcon.set(ControlMode.PercentOutput, 0.0)
       } else {
-        directionPID.setReference(
-            directionSensor.positionToRawUnits(value), ControlType.kSmartMotion)
+        directionFalcon.set(ControlMode.Position, directionSensor.positionToRawUnits(value))
       }
 
       field = value
     }
 
   init {
-    driveSpark.restoreFactoryDefaults()
-    directionSpark.restoreFactoryDefaults()
+    driveFalcon.configFactoryDefault()
+    directionFalcon.configFactoryDefault()
 
-    driveSpark.clearFaults()
-    directionSpark.clearFaults()
+    driveFalcon.clearStickyFaults()
+    directionFalcon.clearStickyFaults()
 
-    Logger.addSource("$label Drivetrain", "Drive Faults") { driveSpark.faults }
-    Logger.addSource("$label Drivetrain", "Direction Faults") { directionSpark.faults }
+    // Logger.addSource("$label Drivetrain", "Drive Faults") { driveFalcon.getFaults() }
+    // Logger.addSource("$label Drivetrain", "Direction Faults") { directionFalcon.getFaults() }
 
     Logger.addSource("$label Drivetrain", "Drive Output Current") { driveOutputCurrent }
     Logger.addSource("$label Drivetrain", "Direction Output Current") { directionOutputCurrent }
@@ -148,32 +149,29 @@ class Wheel(
         "Drivetrain Tuning",
         "$label Azimuth kP",
         { Constants.Drivetrain.PID.DIRECTION_KP },
-        { newP -> directionPID.p = newP },
+        { newP -> directionFalcon.config_kP(0, newP) },
         false)
 
-    directionPID.p = Constants.Drivetrain.PID.DIRECTION_KP
-    directionPID.i = Constants.Drivetrain.PID.DIRECTION_KI
-    directionPID.iZone = 0.0
-    directionPID.d = Constants.Drivetrain.PID.DIRECTION_KD
-    directionPID.ff = Constants.Drivetrain.PID.DIRECTION_KFF
-    directionPID.setSmartMotionMaxVelocity(
-        directionSensor.velocityToRawUnits(Constants.Drivetrain.DIRECTION_VEL_MAX), 0)
-    directionPID.setSmartMotionMaxAccel(
-        directionSensor.accelerationToRawUnits(Constants.Drivetrain.DIRECTION_ACCEL_MAX), 0)
-    directionPID.setOutputRange(-1.0, 1.0)
-    directionPID.setSmartMotionMinOutputVelocity(0.0, 0)
-    directionPID.setSmartMotionAllowedClosedLoopError(
-        directionSensor.positionToRawUnits(Constants.Drivetrain.ALLOWED_ANGLE_ERROR), 0)
-    directionSpark.setSmartCurrentLimit(Constants.Drivetrain.DIRECTION_SMART_CURRENT_LIMIT)
+    directionFalcon.config_kP(0, Constants.Drivetrain.PID.DIRECTION_KP)
+    directionFalcon.config_kI(0, Constants.Drivetrain.PID.DIRECTION_KI)
+    // directionPID.iZone = 0.0
+    directionFalcon.config_kD(0, Constants.Drivetrain.PID.DIRECTION_KD)
+    directionFalcon.config_kF(0, Constants.Drivetrain.PID.DIRECTION_KFF)
+    directionFalcon.configMotionCruiseVelocity(
+        directionSensor.velocityToRawUnits(Constants.Drivetrain.DIRECTION_VEL_MAX))
+    directionFalcon.configMotionAcceleration(
+        directionSensor.accelerationToRawUnits(Constants.Drivetrain.DIRECTION_ACCEL_MAX))
+    directionFalcon.configPeakOutputForward(1.0)
+    directionFalcon.configPeakOutputReverse(-1.0)
+    directionFalcon.configAllowableClosedloopError(
+        0, directionSensor.positionToRawUnits(Constants.Drivetrain.ALLOWED_ANGLE_ERROR))
+    // directionFalcon.outputCurrent(Constants.Drivetrain.DIRECTION_SMART_CURRENT_LIMIT)
 
-    directionSpark.burnFlash()
-
-    drivePID.p = Constants.Drivetrain.PID.DRIVE_KP
-    drivePID.i = Constants.Drivetrain.PID.DRIVE_KI
-    drivePID.d = Constants.Drivetrain.PID.DRIVE_KD
-    drivePID.ff = Constants.Drivetrain.PID.DRIVE_KFF
-    driveSpark.setSmartCurrentLimit(Constants.Drivetrain.DRIVE_SMART_CURRENT_LIMIT)
-    driveSpark.burnFlash()
+    driveFalcon.config_kP(0, Constants.Drivetrain.PID.DRIVE_KP)
+    driveFalcon.config_kI(0, Constants.Drivetrain.PID.DRIVE_KI)
+    driveFalcon.config_kD(0, Constants.Drivetrain.PID.DRIVE_KD)
+    driveFalcon.config_kF(0, Constants.Drivetrain.PID.DRIVE_KFF)
+    // driveFalcon.setSmartCurrentLimit(Constants.Drivetrain.DRIVE_SMART_CURRENT_LIMIT)
   }
 
   fun set(
@@ -182,7 +180,7 @@ class Wheel(
     acceleration: LinearAcceleration = 0.0.meters.perSecond.perSecond
   ) {
     if (speed == 0.feet.perSecond) {
-      driveSpark.set(0.0)
+      driveFalcon.set(ControlMode.PercentOutput, 0.0)
     }
     var directionDifference =
         (direction - directionSensor.position).inRadians.IEEErem(2 * Math.PI).radians
@@ -205,16 +203,15 @@ class Wheel(
           acceleration
         }
     directionSetPoint = directionSensor.position + directionDifference
-    //    driveSpark.set(speedSetPoint / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
+    //    driveFalcon.set(speedSetPoint / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
 
-    drivePID.setReference(
+    driveFalcon.set(
+        ControlMode.Velocity,
         driveSensor.velocityToRawUnits(speedSetPoint),
-        ControlType.kVelocity,
-        0,
+        DemandType.ArbitraryFeedForward,
         (Constants.Drivetrain.PID.DRIVE_KS * sign(speedSetPoint.value) +
                 speedSetPoint * Constants.Drivetrain.PID.DRIVE_KV +
-                acceleration * Constants.Drivetrain.PID.DRIVE_KA).inVolts,
-        CANPIDController.ArbFFUnits.kVoltage)
+                acceleration * Constants.Drivetrain.PID.DRIVE_KA).inVolts)
   }
 
   fun setOpenLoop(direction: Angle, speed: Double) {
@@ -233,7 +230,7 @@ class Wheel(
           speed
         }
     directionSetPoint = directionSensor.position + directionDifference
-    driveSpark.set(outputPower)
+    driveFalcon.set(ControlMode.PercentOutput, outputPower)
   }
 
   fun resetModuleZero() {
@@ -248,12 +245,12 @@ class Wheel(
   }
 
   fun zeroDirection() {
-    directionSpark.encoder.position =
+    directionFalcon.selectedSensorPosition =
         directionSensor.positionToRawUnits(encoder.absolutePosition.degrees + zeroOffset)
     Logger.addEvent("Drivetrain", "Loading Zero for Module $label (${encoder.absolutePosition})")
   }
 
   fun zeroDrive() {
-    driveSpark.encoder.position = 0.0
+    driveFalcon.selectedSensorPosition = 0.0
   }
 }

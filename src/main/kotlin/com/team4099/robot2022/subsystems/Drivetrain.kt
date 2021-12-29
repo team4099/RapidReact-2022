@@ -1,8 +1,7 @@
 package com.team4099.robot2022.subsystems
 
+import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.ctre.phoenix.sensors.CANCoder
-import com.revrobotics.CANSparkMax
-import com.revrobotics.CANSparkMaxLowLevel
 import com.team4099.lib.geometry.Pose
 import com.team4099.lib.geometry.Translation
 import com.team4099.lib.logging.Logger
@@ -35,42 +34,26 @@ object Drivetrain : SubsystemBase() {
   val wheels =
       listOf(
           Wheel(
-              CANSparkMax(
-                  Constants.Drivetrain.FRONT_LEFT_DIRECTION_ID,
-                  CANSparkMaxLowLevel.MotorType.kBrushless),
-              CANSparkMax(
-                  Constants.Drivetrain.FRONT_LEFT_SPEED_ID,
-                  CANSparkMaxLowLevel.MotorType.kBrushless),
+              TalonFX(Constants.Drivetrain.FRONT_LEFT_DIRECTION_ID),
+              TalonFX(Constants.Drivetrain.FRONT_LEFT_SPEED_ID),
               CANCoder(Constants.Drivetrain.FRONT_LEFT_CANCODER_ID),
               0.degrees,
               "Front Left Wheel"),
           Wheel(
-              CANSparkMax(
-                  Constants.Drivetrain.FRONT_RIGHT_DIRECTION_ID,
-                  CANSparkMaxLowLevel.MotorType.kBrushless),
-              CANSparkMax(
-                  Constants.Drivetrain.FRONT_RIGHT_SPEED_ID,
-                  CANSparkMaxLowLevel.MotorType.kBrushless),
+              TalonFX(Constants.Drivetrain.FRONT_RIGHT_DIRECTION_ID),
+              TalonFX(Constants.Drivetrain.FRONT_RIGHT_SPEED_ID),
               CANCoder(Constants.Drivetrain.FRONT_RIGHT_CANCODER_ID),
               0.degrees,
               "Front Right Wheel"),
           Wheel(
-              CANSparkMax(
-                  Constants.Drivetrain.BACK_LEFT_DIRECTION_ID,
-                  CANSparkMaxLowLevel.MotorType.kBrushless),
-              CANSparkMax(
-                  Constants.Drivetrain.BACK_LEFT_SPEED_ID,
-                  CANSparkMaxLowLevel.MotorType.kBrushless),
+              TalonFX(Constants.Drivetrain.BACK_LEFT_DIRECTION_ID),
+              TalonFX(Constants.Drivetrain.BACK_LEFT_SPEED_ID),
               CANCoder(Constants.Drivetrain.BACK_LEFT_CANCODER_ID),
               0.degrees,
               "Back Left Wheel"),
           Wheel(
-              CANSparkMax(
-                  Constants.Drivetrain.BACK_RIGHT_DIRECTION_ID,
-                  CANSparkMaxLowLevel.MotorType.kBrushless),
-              CANSparkMax(
-                  Constants.Drivetrain.BACK_RIGHT_SPEED_ID,
-                  CANSparkMaxLowLevel.MotorType.kBrushless),
+              TalonFX(Constants.Drivetrain.BACK_RIGHT_DIRECTION_ID),
+              TalonFX(Constants.Drivetrain.BACK_RIGHT_SPEED_ID),
               CANCoder(Constants.Drivetrain.BACK_RIGHT_CANCODER_ID),
               0.degrees,
               "Back Right Wheel"))

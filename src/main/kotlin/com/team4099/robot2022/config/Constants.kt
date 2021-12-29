@@ -68,11 +68,13 @@ object Constants {
     val MAX_AUTO_ANGULAR_ACCEL = 90.0.degrees.perSecond.perSecond
 
     const val ABSOLUTE_GEAR_RATIO = 1.0
+    const val DRIVE_SENSOR_CPR = 2048 // TODO
+    const val DIRECTION_SENSOR_CPR = 2048 // TODO
     const val DRIVE_SENSOR_GEAR_RATIO = (12.0 / 21.0) * (15.0 / 45.0)
     const val DIRECTION_SENSOR_GEAR_RATIO = (12.0 / 64.0) * (1.0 / 10.0)
 
     val ALLOWED_ANGLE_ERROR = 1.degrees
-    const val DIRECTION_SMART_CURRENT_LIMIT = 20
+    const val DIRECTION_SMART_CURRENT_LIMIT = 20.0
     const val DRIVE_SMART_CURRENT_LIMIT = 80
 
     object Gains {
