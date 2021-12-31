@@ -1,0 +1,81 @@
+package com.team4099.lib.pathfollow
+
+import com.pathplanner.lib.PathPlannerTrajectory
+import com.team4099.lib.geometry.Pose
+import com.team4099.lib.geometry.Translation
+import com.team4099.lib.units.LinearVelocity
+import com.team4099.lib.units.base.meters
+import com.team4099.lib.units.base.seconds
+import com.team4099.lib.units.derived.angle
+import com.team4099.lib.units.derived.radians
+import com.team4099.lib.units.inMetersPerSecond
+import com.team4099.lib.units.inMetersPerSecondPerSecond
+import com.team4099.lib.units.perSecond
+import edu.wpi.first.math.trajectory.TrajectoryParameterizer
+
+fun trajectoryFromPathfinder(pathPlannerTrajectory: PathPlannerTrajectory): Trajectory{
+  return Trajectory(
+    pathPlannerTrajectory.states.map { state ->
+      state as PathPlannerTrajectory.PathPlannerState
+      TrajectoryState(
+        state.timeSeconds.seconds,
+        Pose(Translation(state.poseMeters.translation), state.holonomicRotation.radians.radians),
+        state.poseMeters.rotation.angle,
+        state.velocityMetersPerSecond.meters.perSecond,
+        state.accelerationMetersPerSecondSq.meters.perSecond.perSecond,
+        //state.angularVelocity.angle.perSecond,
+        //state.angularAcceleration.angle.perSecond.perSecond
+      )
+    }
+  )
+}
+
+fun trajectoryFromPath(startVelocity: LinearVelocity, path: Path, endVelocity: LinearVelocity, trajectoryConfig: TrajectoryConfig): Trajectory{
+  if (!path.built) path.build()
+
+  val wpilibStates =
+    TrajectoryParameterizer.timeParameterizeTrajectory(
+      path.splinePoints,
+      trajectoryConfig.constraints,
+      startVelocity.inMetersPerSecond,
+      endVelocity.inMetersPerSecond,
+      trajectoryConfig.maxLinearVelocity.inMetersPerSecond,
+      trajectoryConfig.maxLinearAcceleration.inMetersPerSecondPerSecond,
+      false)
+      .states
+
+  val states =
+    wpilibStates.mapIndexed { index, state ->
+      var headingTarget =
+        if (index == 0) {
+          path.startingPose.theta
+        } else if (index == wpilibStates.size - 1) {
+          path.endingPose.theta
+        } else {
+          val tailMap = path.headingPointMap.tailMap(index)
+          if (tailMap.size == 0) {
+            path.endingPose.theta
+          } else {
+            path.headingPointMap[tailMap.firstKey()]
+          }
+        }
+
+
+      if (headingTarget == null) {
+        headingTarget = path.endingPose.theta
+      }
+
+      TrajectoryState(
+        state.timeSeconds.seconds,
+        Pose(Translation(state.poseMeters.translation), headingTarget),
+        state.poseMeters.rotation.angle,
+        state.velocityMetersPerSecond.meters.perSecond,
+        state.accelerationMetersPerSecondSq.meters.perSecond.perSecond
+      )
+    }
+
+    return Trajectory(states)
+}
+
+
+//map(list<states>

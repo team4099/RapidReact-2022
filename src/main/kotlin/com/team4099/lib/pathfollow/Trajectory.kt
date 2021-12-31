@@ -14,68 +14,27 @@ import com.team4099.lib.units.inMetersPerSecond
 import com.team4099.lib.units.inMetersPerSecondPerSecond
 import com.team4099.lib.units.perSecond
 import edu.wpi.first.math.trajectory.TrajectoryParameterizer
+import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState
+import edu.wpi.first.math.trajectory.Trajectory.State
+import com.team4099.lib.units.derived.radians
 
 /**
  * A wrapper around the WPILib trajectory class that handles smooth heading changes for holonomic
  * drivetrains.
  */
 class Trajectory(
-  private val startVelocity: LinearVelocity,
-  private val path: Path,
-  private val endVelocity: LinearVelocity,
-  private val trajectoryConfig: TrajectoryConfig
+  private val states: List<TrajectoryState>
 ) {
-  val states: List<TrajectoryState>
+
   val startTime: Time
     get() = states[0].timestamp
   val endTime: Time
     get() = states[states.size - 1].timestamp
 
-  val startingPose = path.startingPose
-  val endingPose = path.endingPose
+  val startingPose = states[0].pose
+  val endingPose = states[-1].pose
 
-  init {
-    if (!path.built) path.build()
 
-    val wpilibStates =
-        TrajectoryParameterizer.timeParameterizeTrajectory(
-                path.splinePoints,
-                trajectoryConfig.constraints,
-                startVelocity.inMetersPerSecond,
-                endVelocity.inMetersPerSecond,
-                trajectoryConfig.maxLinearVelocity.inMetersPerSecond,
-                trajectoryConfig.maxLinearAcceleration.inMetersPerSecondPerSecond,
-                false)
-            .states
-
-    states =
-        wpilibStates.mapIndexed { index, state ->
-          var headingTarget =
-              if (index == 0) {
-                path.startingPose.theta
-              } else if (index == wpilibStates.size - 1) {
-                path.endingPose.theta
-              } else {
-                val tailMap = path.headingPointMap.tailMap(index)
-                if (tailMap.size == 0) {
-                  path.endingPose.theta
-                } else {
-                  path.headingPointMap[tailMap.firstKey()]
-                }
-              }
-
-          if (headingTarget == null) {
-            headingTarget = path.endingPose.theta
-          }
-
-          TrajectoryState(
-              state.timeSeconds.seconds,
-              Pose(Translation(state.poseMeters.translation), headingTarget),
-              state.poseMeters.rotation.angle,
-              state.velocityMetersPerSecond.meters.perSecond,
-              state.accelerationMetersPerSecondSq.meters.perSecond.perSecond)
-        }
-  }
 
   fun sample(time: Time): TrajectoryState {
     if (time <= startTime) {
