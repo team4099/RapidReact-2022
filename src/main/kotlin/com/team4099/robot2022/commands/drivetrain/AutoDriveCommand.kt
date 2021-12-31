@@ -1,6 +1,5 @@
 package com.team4099.robot2022.commands.drivetrain
 
-import com.pathplanner.lib.PathPlannerTrajectory
 import com.team4099.lib.hal.Clock
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.pathfollow.Trajectory
@@ -28,26 +27,26 @@ import kotlin.math.PI
 
 class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
 
-  //private var isPP = false;
+  // private var isPP = false;
   //  private lateinit var pathPlannerTrajectory: PathPlannerTrajectory;
-//
-////  constructor(pathPlannerTrajectory: PathPlannerTrajectory): this(PathPlannerTrajectory) {
-////    }
-////    isPP = true;
-////    this.pathPlannerTrajectory = pathPlannerTrajectory
-////  }
+  //
+  // //  constructor(pathPlannerTrajectory: PathPlannerTrajectory): this(PathPlannerTrajectory) {
+  // //    }
+  // //    isPP = true;
+  // //    this.pathPlannerTrajectory = pathPlannerTrajectory
+  // //  }
 
-//  constructor(trajectory: PathPlannerTrajectory) {
-//    this.states = trajectory.states.map { state ->
-//      val state = (PathPlannerState) state;
-//      TrajectoryState(
-//        state.timeSeconds.seconds,
-//        Pose(Translation(state.poseMeters.translation), state.holonomicRotation),
-//        state.poseMeters.rotation.angle,
-//        state.velocityMetersPerSecond.meters.perSecond,
-//        state.accelerationMetersPerSecondSq.meters.perSecond.perSecond)
-//    }
-//  }
+  //  constructor(trajectory: PathPlannerTrajectory) {
+  //    this.states = trajectory.states.map { state ->
+  //      val state = (PathPlannerState) state;
+  //      TrajectoryState(
+  //        state.timeSeconds.seconds,
+  //        Pose(Translation(state.poseMeters.translation), state.holonomicRotation),
+  //        state.poseMeters.rotation.angle,
+  //        state.velocityMetersPerSecond.meters.perSecond,
+  //        state.accelerationMetersPerSecondSq.meters.perSecond.perSecond)
+  //    }
+  //  }
 
   private val xPID =
       PIDController(

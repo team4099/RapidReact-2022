@@ -13,69 +13,70 @@ import com.team4099.lib.units.inMetersPerSecondPerSecond
 import com.team4099.lib.units.perSecond
 import edu.wpi.first.math.trajectory.TrajectoryParameterizer
 
-fun trajectoryFromPathfinder(pathPlannerTrajectory: PathPlannerTrajectory): Trajectory{
+fun trajectoryFromPathfinder(pathPlannerTrajectory: PathPlannerTrajectory): Trajectory {
   return Trajectory(
-    pathPlannerTrajectory.states.map { state ->
-      state as PathPlannerTrajectory.PathPlannerState
-      TrajectoryState(
-        state.timeSeconds.seconds,
-        Pose(Translation(state.poseMeters.translation), state.holonomicRotation.radians.radians),
-        state.poseMeters.rotation.angle,
-        state.velocityMetersPerSecond.meters.perSecond,
-        state.accelerationMetersPerSecondSq.meters.perSecond.perSecond,
-        //state.angularVelocity.angle.perSecond,
-        //state.angularAcceleration.angle.perSecond.perSecond
-      )
-    }
-  )
+      pathPlannerTrajectory.states.map { state ->
+        state as PathPlannerTrajectory.PathPlannerState
+        TrajectoryState(
+            state.timeSeconds.seconds,
+            Pose(
+                Translation(state.poseMeters.translation), state.holonomicRotation.radians.radians),
+            state.poseMeters.rotation.angle,
+            state.velocityMetersPerSecond.meters.perSecond,
+            state.accelerationMetersPerSecondSq.meters.perSecond.perSecond)
+      // state.angularVelocity.angle.perSecond,
+      // state.angularAcceleration.angle.perSecond.perSecond
+      })
 }
 
-fun trajectoryFromPath(startVelocity: LinearVelocity, path: Path, endVelocity: LinearVelocity, trajectoryConfig: TrajectoryConfig): Trajectory{
+fun trajectoryFromPath(
+  startVelocity: LinearVelocity,
+  path: Path,
+  endVelocity: LinearVelocity,
+  trajectoryConfig: TrajectoryConfig
+): Trajectory {
   if (!path.built) path.build()
 
   val wpilibStates =
-    TrajectoryParameterizer.timeParameterizeTrajectory(
-      path.splinePoints,
-      trajectoryConfig.constraints,
-      startVelocity.inMetersPerSecond,
-      endVelocity.inMetersPerSecond,
-      trajectoryConfig.maxLinearVelocity.inMetersPerSecond,
-      trajectoryConfig.maxLinearAcceleration.inMetersPerSecondPerSecond,
-      false)
-      .states
+      TrajectoryParameterizer.timeParameterizeTrajectory(
+              path.splinePoints,
+              trajectoryConfig.constraints,
+              startVelocity.inMetersPerSecond,
+              endVelocity.inMetersPerSecond,
+              trajectoryConfig.maxLinearVelocity.inMetersPerSecond,
+              trajectoryConfig.maxLinearAcceleration.inMetersPerSecondPerSecond,
+              false)
+          .states
 
   val states =
-    wpilibStates.mapIndexed { index, state ->
-      var headingTarget =
-        if (index == 0) {
-          path.startingPose.theta
-        } else if (index == wpilibStates.size - 1) {
-          path.endingPose.theta
-        } else {
-          val tailMap = path.headingPointMap.tailMap(index)
-          if (tailMap.size == 0) {
-            path.endingPose.theta
-          } else {
-            path.headingPointMap[tailMap.firstKey()]
-          }
+      wpilibStates.mapIndexed { index, state ->
+        var headingTarget =
+            if (index == 0) {
+              path.startingPose.theta
+            } else if (index == wpilibStates.size - 1) {
+              path.endingPose.theta
+            } else {
+              val tailMap = path.headingPointMap.tailMap(index)
+              if (tailMap.size == 0) {
+                path.endingPose.theta
+              } else {
+                path.headingPointMap[tailMap.firstKey()]
+              }
+            }
+
+        if (headingTarget == null) {
+          headingTarget = path.endingPose.theta
         }
 
-
-      if (headingTarget == null) {
-        headingTarget = path.endingPose.theta
+        TrajectoryState(
+            state.timeSeconds.seconds,
+            Pose(Translation(state.poseMeters.translation), headingTarget),
+            state.poseMeters.rotation.angle,
+            state.velocityMetersPerSecond.meters.perSecond,
+            state.accelerationMetersPerSecondSq.meters.perSecond.perSecond)
       }
 
-      TrajectoryState(
-        state.timeSeconds.seconds,
-        Pose(Translation(state.poseMeters.translation), headingTarget),
-        state.poseMeters.rotation.angle,
-        state.velocityMetersPerSecond.meters.perSecond,
-        state.accelerationMetersPerSecondSq.meters.perSecond.perSecond
-      )
-    }
-
-    return Trajectory(states)
+  return Trajectory(states)
 }
 
-
-//map(list<states>
+// map(list<states>
