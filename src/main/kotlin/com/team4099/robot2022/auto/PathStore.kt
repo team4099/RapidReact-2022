@@ -2,10 +2,8 @@ package com.team4099.robot2022.auto
 
 import com.pathplanner.lib.PathPlanner
 import com.team4099.lib.pathfollow.TrajectoryConfig
-import com.team4099.lib.pathfollow.trajectoryFromPathfinder
 import com.team4099.lib.units.inMetersPerSecond
 import com.team4099.lib.units.inMetersPerSecondPerSecond
-import com.team4099.robot2022.commands.drivetrain.AutoDriveCommand
 import com.team4099.robot2022.config.Constants
 
 object PathStore {
@@ -28,6 +26,4 @@ object PathStore {
           "testPath1.path",
           Constants.Drivetrain.MAX_AUTO_VEL.inMetersPerSecond,
           Constants.Drivetrain.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond)
-
-  val squarepath = AutoDriveCommand(trajectoryFromPathfinder(examplePats))
 }
