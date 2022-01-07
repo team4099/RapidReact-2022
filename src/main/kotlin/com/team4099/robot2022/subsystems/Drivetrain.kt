@@ -34,26 +34,26 @@ object Drivetrain : SubsystemBase() {
   val wheels =
       listOf(
           Wheel(
-              TalonFX(Constants.Drivetrain.FRONT_LEFT_DIRECTION_ID),
-              TalonFX(Constants.Drivetrain.FRONT_LEFT_SPEED_ID),
+              TalonFX(Constants.Drivetrain.FRONT_LEFT_STEERING_ID),
+              TalonFX(Constants.Drivetrain.FRONT_LEFT_DRIVE_ID),
               CANCoder(Constants.Drivetrain.FRONT_LEFT_CANCODER_ID),
               0.degrees,
               "Front Left Wheel"),
           Wheel(
-              TalonFX(Constants.Drivetrain.FRONT_RIGHT_DIRECTION_ID),
-              TalonFX(Constants.Drivetrain.FRONT_RIGHT_SPEED_ID),
+              TalonFX(Constants.Drivetrain.FRONT_RIGHT_STEERING_ID),
+              TalonFX(Constants.Drivetrain.FRONT_RIGHT_DRIVE_ID),
               CANCoder(Constants.Drivetrain.FRONT_RIGHT_CANCODER_ID),
               0.degrees,
               "Front Right Wheel"),
           Wheel(
-              TalonFX(Constants.Drivetrain.BACK_LEFT_DIRECTION_ID),
-              TalonFX(Constants.Drivetrain.BACK_LEFT_SPEED_ID),
+              TalonFX(Constants.Drivetrain.BACK_LEFT_STEERING_ID),
+              TalonFX(Constants.Drivetrain.BACK_LEFT_DRIVE_ID),
               CANCoder(Constants.Drivetrain.BACK_LEFT_CANCODER_ID),
               0.degrees,
               "Back Left Wheel"),
           Wheel(
-              TalonFX(Constants.Drivetrain.BACK_RIGHT_DIRECTION_ID),
-              TalonFX(Constants.Drivetrain.BACK_RIGHT_SPEED_ID),
+              TalonFX(Constants.Drivetrain.BACK_RIGHT_STEERING_ID),
+              TalonFX(Constants.Drivetrain.BACK_RIGHT_DRIVE_ID),
               CANCoder(Constants.Drivetrain.BACK_RIGHT_CANCODER_ID),
               0.degrees,
               "Back Right Wheel"))
@@ -295,13 +295,13 @@ object Drivetrain : SubsystemBase() {
     swerveDriveOdometry.update(
         gyroAngle.inRotation2ds,
         SwerveModuleState(
-            wheels[0].driveVelocity.inMetersPerSecond, wheels[0].directionPosition.inRotation2ds),
+            wheels[0].driveVelocity.inMetersPerSecond, wheels[0].steeringPosition.inRotation2ds),
         SwerveModuleState(
-            wheels[1].driveVelocity.inMetersPerSecond, wheels[1].directionPosition.inRotation2ds),
+            wheels[1].driveVelocity.inMetersPerSecond, wheels[1].steeringPosition.inRotation2ds),
         SwerveModuleState(
-            wheels[2].driveVelocity.inMetersPerSecond, wheels[2].directionPosition.inRotation2ds),
+            wheels[2].driveVelocity.inMetersPerSecond, wheels[2].steeringPosition.inRotation2ds),
         SwerveModuleState(
-            wheels[3].driveVelocity.inMetersPerSecond, wheels[3].directionPosition.inRotation2ds))
+            wheels[3].driveVelocity.inMetersPerSecond, wheels[3].steeringPosition.inRotation2ds))
   }
 
   private fun hypot(a: LinearVelocity, b: LinearVelocity): LinearVelocity {

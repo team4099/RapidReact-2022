@@ -32,20 +32,20 @@ object Constants {
   object Drivetrain {
     const val TICKS = 4096
 
-    const val FRONT_LEFT_SPEED_ID = 11
-    const val FRONT_LEFT_DIRECTION_ID = 21
+    const val FRONT_LEFT_DRIVE_ID = 11
+    const val FRONT_LEFT_STEERING_ID = 21
     const val FRONT_LEFT_CANCODER_ID = 2
 
-    const val FRONT_RIGHT_SPEED_ID = 12
-    const val FRONT_RIGHT_DIRECTION_ID = 22
+    const val FRONT_RIGHT_DRIVE_ID = 12
+    const val FRONT_RIGHT_STEERING_ID = 22
     const val FRONT_RIGHT_CANCODER_ID = 1
 
-    const val BACK_RIGHT_SPEED_ID = 13
-    const val BACK_RIGHT_DIRECTION_ID = 23
+    const val BACK_RIGHT_DRIVE_ID = 13
+    const val BACK_RIGHT_STEERING_ID = 23
     const val BACK_RIGHT_CANCODER_ID = 4
 
-    const val BACK_LEFT_SPEED_ID = 14
-    const val BACK_LEFT_DIRECTION_ID = 24
+    const val BACK_LEFT_DRIVE_ID = 14
+    const val BACK_LEFT_STEERING_ID = 24
     const val BACK_LEFT_CANCODER_ID = 3
 
     const val WHEEL_COUNT = 4
@@ -55,8 +55,8 @@ object Constants {
     val DRIVE_SETPOINT_MAX = 15.feet.perSecond
     val TURN_SETPOINT_MAX = 360.degrees.perSecond // TODO: Make sure this value is something good
 
-    val DIRECTION_VEL_MAX = 900.degrees.perSecond
-    val DIRECTION_ACCEL_MAX = 4500.degrees.perSecond.perSecond
+    val STEERING_VEL_MAX = 900.degrees.perSecond
+    val STEERING_ACCEL_MAX = 4500.degrees.perSecond.perSecond
 
     const val GYRO_RATE_COEFFICIENT = 0.0 // TODO: Change this value
 
@@ -69,12 +69,12 @@ object Constants {
 
     const val ABSOLUTE_GEAR_RATIO = 1.0
     const val DRIVE_SENSOR_CPR = 2048 // TODO
-    const val DIRECTION_SENSOR_CPR = 2048 // TODO
+    const val STEERING_SENSOR_CPR = 2048 // TODO
     const val DRIVE_SENSOR_GEAR_RATIO = (12.0 / 21.0) * (15.0 / 45.0)
-    const val DIRECTION_SENSOR_GEAR_RATIO = (12.0 / 64.0) * (1.0 / 10.0)
+    const val STEERING_SENSOR_GEAR_RATIO = (12.0 / 64.0) * (1.0 / 10.0)
 
     val ALLOWED_ANGLE_ERROR = 1.degrees
-    const val DIRECTION_SMART_CURRENT_LIMIT = 20.0
+    const val STEERING_SMART_CURRENT_LIMIT = 20.0
     const val DRIVE_SMART_CURRENT_LIMIT = 80
 
     object Gains {
@@ -83,10 +83,10 @@ object Constants {
     }
 
     object PID {
-      const val DIRECTION_KP = 0.00001
-      const val DIRECTION_KI = 0.0
-      const val DIRECTION_KD = 12.0
-      const val DIRECTION_KFF = 0.000078
+      const val STEERING_KP = 0.00001
+      const val STEERING_KI = 0.0
+      const val STEERING_KD = 12.0
+      const val STEERING_KFF = 0.000078
 
       const val DRIVE_KP = 0.000129
       const val DRIVE_KI = 0.0

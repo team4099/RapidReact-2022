@@ -34,18 +34,18 @@ import kotlin.math.sign
 import kotlin.math.withSign
 
 class Wheel(
-  private val directionFalcon: TalonFX,
+  private val steeringFalcon: TalonFX,
   private val driveFalcon: TalonFX,
   private val encoder: CANCoder,
   private val zeroOffset: Angle,
   val label: String
 ) {
 
-  private val directionSensor =
+  private val steeringSensor =
       ctreAngularMechanismSensor(
-          directionFalcon,
-          Constants.Drivetrain.DIRECTION_SENSOR_CPR,
-          Constants.Drivetrain.DIRECTION_SENSOR_GEAR_RATIO)
+          steeringFalcon,
+          Constants.Drivetrain.STEERING_SENSOR_CPR,
+          Constants.Drivetrain.STEERING_SENSOR_GEAR_RATIO)
   private val driveSensor =
       ctreLinearMechanismSensor(
           driveFalcon,
@@ -53,7 +53,7 @@ class Wheel(
           Constants.Drivetrain.DRIVE_SENSOR_GEAR_RATIO,
           3.inches)
 
-  private val directionAbsolute =
+  private val steeringAbsolute =
       AngularMechanismSensor(
           Constants.Drivetrain.ABSOLUTE_GEAR_RATIO,
           Timescale.CTRE,
@@ -66,26 +66,26 @@ class Wheel(
   private val driveTemp: Double
     get() = driveFalcon.temperature
 
-  private val directionTemp: Double
-    get() = directionFalcon.temperature
+  private val steeringTemp: Double
+    get() = steeringFalcon.temperature
 
   private val driveOutputCurrent: Double
-    get() = directionFalcon.statorCurrent
+    get() = steeringFalcon.statorCurrent
 
-  private val directionOutputCurrent: Double
-    get() = directionFalcon.statorCurrent
+  private val steeringOutputCurrent: Double
+    get() = steeringFalcon.statorCurrent
 
   private val drivePercentOutput: Double
     get() = driveFalcon.motorOutputPercent
 
-  private val directionPercentOutput: Double
-    get() = directionFalcon.motorOutputPercent
+  private val steeringPercentOutput: Double
+    get() = steeringFalcon.motorOutputPercent
 
   private val driveBusVoltage: ElectricalPotential
     get() = driveFalcon.busVoltage.volts
 
-  private val directionBusVoltage: ElectricalPotential
-    get() = directionFalcon.busVoltage.volts
+  private val steeringBusVoltage: ElectricalPotential
+    get() = steeringFalcon.busVoltage.volts
 
   val driveOutputVoltage: ElectricalPotential
     get() = driveBusVoltage * drivePercentOutput
@@ -96,22 +96,22 @@ class Wheel(
   val driveVelocity: LinearVelocity
     get() = driveSensor.velocity
 
-  val directionPosition: Angle
-    get() = directionSensor.position
+  val steeringPosition: Angle
+    get() = steeringSensor.position
 
   private var speedSetPoint: LinearVelocity = 0.feet.perSecond
   private var accelerationSetPoint: LinearAcceleration = 0.feet.perSecond.perSecond
 
-  private var directionSetPoint: Angle = 0.degrees
+  private var steeringSetPoint: Angle = 0.degrees
     set(value) {
       // Logger.addEvent("Drivetrain", "label: $label, value: ${value.inDegrees}, reference raw
-      // position: ${directionSensor.positionToRawUnits(value)}, current raw position:
-      // ${directionSensor.getRawPosition()}")
-      if (filter.calculate((directionSensor.position).inRadians)
+      // position: ${steeringSensor.positionToRawUnits(value)}, current raw position:
+      // ${steeringSensor.getRawPosition()}")
+      if (filter.calculate((steeringSensor.position).inRadians)
           .around(value.inRadians, (Constants.Drivetrain.ALLOWED_ANGLE_ERROR).inRadians)) {
-        directionFalcon.set(ControlMode.PercentOutput, 0.0)
+        steeringFalcon.set(ControlMode.PercentOutput, 0.0)
       } else {
-        directionFalcon.set(ControlMode.Position, directionSensor.positionToRawUnits(value))
+        steeringFalcon.set(ControlMode.Position, steeringSensor.positionToRawUnits(value))
       }
 
       field = value
@@ -119,53 +119,53 @@ class Wheel(
 
   init {
     driveFalcon.configFactoryDefault()
-    directionFalcon.configFactoryDefault()
+    steeringFalcon.configFactoryDefault()
 
     driveFalcon.clearStickyFaults()
-    directionFalcon.clearStickyFaults()
+    steeringFalcon.clearStickyFaults()
 
     // Logger.addSource("$label Drivetrain", "Drive Faults") { driveFalcon.getFaults() }
-    // Logger.addSource("$label Drivetrain", "Direction Faults") { directionFalcon.getFaults() }
+    // Logger.addSource("$label Drivetrain", "Direction Faults") { steeringFalcon.getFaults() }
 
     Logger.addSource("$label Drivetrain", "Drive Output Current") { driveOutputCurrent }
-    Logger.addSource("$label Drivetrain", "Direction Output Current") { directionOutputCurrent }
+    Logger.addSource("$label Drivetrain", "Direction Output Current") { steeringOutputCurrent }
 
     Logger.addSource("$label Drivetrain", "Drive Temperature") { driveTemp }
-    Logger.addSource("$label Drivetrain", "Direction Temperature") { directionTemp }
+    Logger.addSource("$label Drivetrain", "Direction Temperature") { steeringTemp }
 
     Logger.addSource("$label Drivetrain", "Drive Percent Output") { drivePercentOutput }
-    Logger.addSource("$label Drivetrain", "Direction Percent Output") { directionPercentOutput }
+    Logger.addSource("$label Drivetrain", "Direction Percent Output") { steeringPercentOutput }
 
     Logger.addSource("$label Drivetrain", "Drive Bus Voltage") { driveBusVoltage }
-    Logger.addSource("$label Drivetrain", "Direction Bus Voltage") { directionBusVoltage }
+    Logger.addSource("$label Drivetrain", "Direction Bus Voltage") { steeringBusVoltage }
 
     Logger.addSource("$label Drivetrain", "Drive SetPoint") { speedSetPoint.inFeetPerSecond }
-    Logger.addSource("$label Drivetrain", "Direction SetPoint") { directionSetPoint.inDegrees }
+    Logger.addSource("$label Drivetrain", "Direction SetPoint") { steeringSetPoint.inDegrees }
 
     Logger.addSource("$label Drivetrain", "Drive Position") { driveSensor.position.inFeet }
-    Logger.addSource("$label Drivetrain", "Direction Position") { directionPosition.inDegrees }
+    Logger.addSource("$label Drivetrain", "Direction Position") { steeringPosition.inDegrees }
 
     Logger.addSource(
         "Drivetrain Tuning",
         "$label Azimuth kP",
-        { Constants.Drivetrain.PID.DIRECTION_KP },
-        { newP -> directionFalcon.config_kP(0, newP) },
+        { Constants.Drivetrain.PID.STEERING_KP },
+        { newP -> steeringFalcon.config_kP(0, newP) },
         false)
 
-    directionFalcon.config_kP(0, Constants.Drivetrain.PID.DIRECTION_KP)
-    directionFalcon.config_kI(0, Constants.Drivetrain.PID.DIRECTION_KI)
-    // directionPID.iZone = 0.0
-    directionFalcon.config_kD(0, Constants.Drivetrain.PID.DIRECTION_KD)
-    directionFalcon.config_kF(0, Constants.Drivetrain.PID.DIRECTION_KFF)
-    directionFalcon.configMotionCruiseVelocity(
-        directionSensor.velocityToRawUnits(Constants.Drivetrain.DIRECTION_VEL_MAX))
-    directionFalcon.configMotionAcceleration(
-        directionSensor.accelerationToRawUnits(Constants.Drivetrain.DIRECTION_ACCEL_MAX))
-    directionFalcon.configPeakOutputForward(1.0)
-    directionFalcon.configPeakOutputReverse(-1.0)
-    directionFalcon.configAllowableClosedloopError(
-        0, directionSensor.positionToRawUnits(Constants.Drivetrain.ALLOWED_ANGLE_ERROR))
-    // directionFalcon.outputCurrent(Constants.Drivetrain.DIRECTION_SMART_CURRENT_LIMIT)
+    steeringFalcon.config_kP(0, Constants.Drivetrain.PID.STEERING_KP)
+    steeringFalcon.config_kI(0, Constants.Drivetrain.PID.STEERING_KI)
+    // steeringPID.iZone = 0.0
+    steeringFalcon.config_kD(0, Constants.Drivetrain.PID.STEERING_KD)
+    steeringFalcon.config_kF(0, Constants.Drivetrain.PID.STEERING_KFF)
+    steeringFalcon.configMotionCruiseVelocity(
+        steeringSensor.velocityToRawUnits(Constants.Drivetrain.STEERING_VEL_MAX))
+    steeringFalcon.configMotionAcceleration(
+        steeringSensor.accelerationToRawUnits(Constants.Drivetrain.STEERING_ACCEL_MAX))
+    steeringFalcon.configPeakOutputForward(1.0)
+    steeringFalcon.configPeakOutputReverse(-1.0)
+    steeringFalcon.configAllowableClosedloopError(
+        0, steeringSensor.positionToRawUnits(Constants.Drivetrain.ALLOWED_ANGLE_ERROR))
+    // steeringFalcon.outputCurrent(Constants.Drivetrain.STEERING_SMART_CURRENT_LIMIT)
 
     driveFalcon.config_kP(0, Constants.Drivetrain.PID.DRIVE_KP)
     driveFalcon.config_kI(0, Constants.Drivetrain.PID.DRIVE_KI)
@@ -175,19 +175,19 @@ class Wheel(
   }
 
   fun set(
-    direction: Angle,
+    steering: Angle,
     speed: LinearVelocity,
     acceleration: LinearAcceleration = 0.0.meters.perSecond.perSecond
   ) {
     if (speed == 0.feet.perSecond) {
       driveFalcon.set(ControlMode.PercentOutput, 0.0)
     }
-    var directionDifference =
-        (direction - directionSensor.position).inRadians.IEEErem(2 * Math.PI).radians
+    var steeringDifference =
+        (steering - steeringSensor.position).inRadians.IEEErem(2 * Math.PI).radians
 
-    val isInverted = directionDifference.absoluteValue > (Math.PI / 2).radians
+    val isInverted = steeringDifference.absoluteValue > (Math.PI / 2).radians
     if (isInverted) {
-      directionDifference -= Math.PI.withSign(directionDifference.inRadians).radians
+      steeringDifference -= Math.PI.withSign(steeringDifference.inRadians).radians
     }
 
     speedSetPoint =
@@ -202,7 +202,7 @@ class Wheel(
         } else {
           acceleration
         }
-    directionSetPoint = directionSensor.position + directionDifference
+    steeringSetPoint = steeringSensor.position + steeringDifference
     //    driveFalcon.set(speedSetPoint / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
 
     driveFalcon.set(
@@ -214,13 +214,13 @@ class Wheel(
                 acceleration * Constants.Drivetrain.PID.DRIVE_KA).inVolts)
   }
 
-  fun setOpenLoop(direction: Angle, speed: Double) {
-    var directionDifference =
-        (direction - directionSensor.position).inRadians.IEEErem(2 * Math.PI).radians
+  fun setOpenLoop(steering: Angle, speed: Double) {
+    var steeringDifference =
+        (steering - steeringSensor.position).inRadians.IEEErem(2 * Math.PI).radians
 
-    val isInverted = directionDifference.absoluteValue > (Math.PI / 2).radians
+    val isInverted = steeringDifference.absoluteValue > (Math.PI / 2).radians
     if (isInverted) {
-      directionDifference -= Math.PI.withSign(directionDifference.inRadians).radians
+      steeringDifference -= Math.PI.withSign(steeringDifference.inRadians).radians
     }
 
     val outputPower =
@@ -229,7 +229,7 @@ class Wheel(
         } else {
           speed
         }
-    directionSetPoint = directionSensor.position + directionDifference
+    steeringSetPoint = steeringSensor.position + steeringDifference
     driveFalcon.set(ControlMode.PercentOutput, outputPower)
   }
 
@@ -245,8 +245,8 @@ class Wheel(
   }
 
   fun zeroDirection() {
-    directionFalcon.selectedSensorPosition =
-        directionSensor.positionToRawUnits(encoder.absolutePosition.degrees + zeroOffset)
+    steeringFalcon.selectedSensorPosition =
+        steeringSensor.positionToRawUnits(encoder.absolutePosition.degrees + zeroOffset)
     Logger.addEvent("Drivetrain", "Loading Zero for Module $label (${encoder.absolutePosition})")
   }
 
