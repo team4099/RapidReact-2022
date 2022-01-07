@@ -32,30 +32,34 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
 import kotlin.math.PI
 
 object Drivetrain : SubsystemBase() {
-  val wheels =
+  val swerveModules =
       listOf(
-          Wheel(
+          SwerveModule(
               TalonFX(Constants.Drivetrain.FRONT_LEFT_STEERING_ID),
               TalonFX(Constants.Drivetrain.FRONT_LEFT_DRIVE_ID),
               AnalogPotentiometer(
                   Constants.Drivetrain.FRONT_LEFT_ANALOG_POTENTIOMETER, 2 * PI, 0.0),
+              0.degrees,
               "Front Left Wheel"),
-          Wheel(
+          SwerveModule(
               TalonFX(Constants.Drivetrain.FRONT_RIGHT_STEERING_ID),
               TalonFX(Constants.Drivetrain.FRONT_RIGHT_DRIVE_ID),
               AnalogPotentiometer(
                   Constants.Drivetrain.FRONT_RIGHT_ANALOG_POTENTIOMETER, 2 * PI, 0.0),
+              0.degrees,
               "Front Right Wheel"),
-          Wheel(
+          SwerveModule(
               TalonFX(Constants.Drivetrain.BACK_LEFT_STEERING_ID),
               TalonFX(Constants.Drivetrain.BACK_LEFT_DRIVE_ID),
               AnalogPotentiometer(Constants.Drivetrain.BACK_LEFT_ANALOG_POTENTIOMETER, 2 * PI, 0.0),
+              0.degrees,
               "Back Left Wheel"),
-          Wheel(
+          SwerveModule(
               TalonFX(Constants.Drivetrain.BACK_RIGHT_STEERING_ID),
               TalonFX(Constants.Drivetrain.BACK_RIGHT_DRIVE_ID),
               AnalogPotentiometer(
                   Constants.Drivetrain.BACK_RIGHT_ANALOG_POTENTIOMETER, 2 * PI, 0.0),
+              0.degrees,
               "Back Right Wheel"))
 
   private val wheelSpeeds =
@@ -236,10 +240,10 @@ object Drivetrain : SubsystemBase() {
     wheelAngles[3] = atan2(a, c)
     //    Logger.addEvent("Drivetrain", "wheel angle: $wheelAngles")
 
-    wheels[0].set(wheelAngles[0], wheelSpeeds[0], wheelAccelerations[0])
-    wheels[1].set(wheelAngles[1], wheelSpeeds[1], wheelAccelerations[1])
-    wheels[2].set(wheelAngles[2], wheelSpeeds[2], wheelAccelerations[2])
-    wheels[3].set(wheelAngles[3], wheelSpeeds[3], wheelAccelerations[3])
+    swerveModules[0].set(wheelAngles[0], wheelSpeeds[0], wheelAccelerations[0])
+    swerveModules[1].set(wheelAngles[1], wheelSpeeds[1], wheelAccelerations[1])
+    swerveModules[2].set(wheelAngles[2], wheelSpeeds[2], wheelAccelerations[2])
+    swerveModules[3].set(wheelAngles[3], wheelSpeeds[3], wheelAccelerations[3])
   }
 
   fun setOpenLoop(
@@ -285,23 +289,31 @@ object Drivetrain : SubsystemBase() {
     wheelAngles[2] = atan2(a, d)
     wheelAngles[3] = atan2(a, c)
 
-    wheels[0].setOpenLoop(wheelAngles[0], wheelSpeeds[0] / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
-    wheels[1].setOpenLoop(wheelAngles[1], wheelSpeeds[1] / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
-    wheels[2].setOpenLoop(wheelAngles[2], wheelSpeeds[2] / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
-    wheels[3].setOpenLoop(wheelAngles[3], wheelSpeeds[3] / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
+    swerveModules[0].setOpenLoop(
+        wheelAngles[0], wheelSpeeds[0] / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
+    swerveModules[1].setOpenLoop(
+        wheelAngles[1], wheelSpeeds[1] / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
+    swerveModules[2].setOpenLoop(
+        wheelAngles[2], wheelSpeeds[2] / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
+    swerveModules[3].setOpenLoop(
+        wheelAngles[3], wheelSpeeds[3] / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
   }
 
   private fun updateOdometry() {
     swerveDriveOdometry.update(
         gyroAngle.inRotation2ds,
         SwerveModuleState(
-            wheels[0].driveVelocity.inMetersPerSecond, wheels[0].steeringPosition.inRotation2ds),
+            swerveModules[0].driveVelocity.inMetersPerSecond,
+            swerveModules[0].steeringPosition.inRotation2ds),
         SwerveModuleState(
-            wheels[1].driveVelocity.inMetersPerSecond, wheels[1].steeringPosition.inRotation2ds),
+            swerveModules[1].driveVelocity.inMetersPerSecond,
+            swerveModules[1].steeringPosition.inRotation2ds),
         SwerveModuleState(
-            wheels[2].driveVelocity.inMetersPerSecond, wheels[2].steeringPosition.inRotation2ds),
+            swerveModules[2].driveVelocity.inMetersPerSecond,
+            swerveModules[2].steeringPosition.inRotation2ds),
         SwerveModuleState(
-            wheels[3].driveVelocity.inMetersPerSecond, wheels[3].steeringPosition.inRotation2ds))
+            swerveModules[3].driveVelocity.inMetersPerSecond,
+            swerveModules[3].steeringPosition.inRotation2ds))
   }
 
   private fun hypot(a: LinearVelocity, b: LinearVelocity): LinearVelocity {
@@ -313,7 +325,7 @@ object Drivetrain : SubsystemBase() {
   }
 
   fun resetModuleZero() {
-    wheels.forEach { it.resetModuleZero() }
+    swerveModules.forEach { it.resetModuleZero() }
   }
 
   fun zeroSensors() {
@@ -331,10 +343,10 @@ object Drivetrain : SubsystemBase() {
   }
 
   fun zeroSteering() {
-    wheels.forEach { it.zeroSteering() }
+    swerveModules.forEach { it.zeroSteering() }
   }
 
   private fun zeroDrive() {
-    wheels.forEach { it.zeroDrive() }
+    swerveModules.forEach { it.zeroDrive() }
   }
 }

@@ -33,10 +33,11 @@ import kotlin.math.IEEErem
 import kotlin.math.sign
 import kotlin.math.withSign
 
-class Wheel(
+class SwerveModule(
   private val steeringFalcon: TalonFX,
   private val driveFalcon: TalonFX,
   private val potentiometer: AnalogPotentiometer,
+  private val zeroOffset: Angle,
   val label: String
 ) {
 
@@ -233,20 +234,16 @@ class Wheel(
   }
 
   fun resetModuleZero() {
-    //    encoder.configFactoryDefault()
-    //    encoder.configMagnetOffset(0.0)
-    //    Logger.addEvent("Drivetrain", "Configuring Zero for Module $label")
-    //    encoder.configMagnetOffset(
-    //        -encoder.absolutePosition - zeroOffset.inDegrees - encoder.configGetMagnetOffset())
-    //    encoder.setPositionToAbsolute()
-    //
-    // encoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition)
+    Logger.addEvent("Drivetrain", "Absolute Potentiometer Value $label (${potentiometer.get()}")
   }
 
   fun zeroSteering() {
     steeringFalcon.selectedSensorPosition =
-        steeringSensor.positionToRawUnits(potentiometer.get().radians)
-    Logger.addEvent("Drivetrain", "Loading Zero for Module $label (${potentiometer.get()})")
+        steeringSensor.positionToRawUnits(
+            potentiometer.get().radians + zeroOffset.inRadians.radians)
+    Logger.addEvent(
+        "Drivetrain",
+        "Loading Zero for Module $label (${potentiometer.get() + zeroOffset.inRadians})")
   }
 
   fun zeroDrive() {
