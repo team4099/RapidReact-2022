@@ -1,7 +1,6 @@
 package com.team4099.robot2022.subsystems
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX
-import com.ctre.phoenix.sensors.CANCoder
 import com.team4099.lib.geometry.Pose
 import com.team4099.lib.geometry.Translation
 import com.team4099.lib.logging.Logger
@@ -28,7 +27,9 @@ import com.team4099.robot2022.config.Constants
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry
 import edu.wpi.first.math.kinematics.SwerveModuleState
+import edu.wpi.first.wpilibj.AnalogPotentiometer
 import edu.wpi.first.wpilibj2.command.SubsystemBase
+import kotlin.math.PI
 
 object Drivetrain : SubsystemBase() {
   val wheels =
@@ -36,26 +37,25 @@ object Drivetrain : SubsystemBase() {
           Wheel(
               TalonFX(Constants.Drivetrain.FRONT_LEFT_STEERING_ID),
               TalonFX(Constants.Drivetrain.FRONT_LEFT_DRIVE_ID),
-              CANCoder(Constants.Drivetrain.FRONT_LEFT_CANCODER_ID),
-              0.degrees,
+              AnalogPotentiometer(
+                  Constants.Drivetrain.FRONT_LEFT_ANALOG_POTENTIOMETER, 2 * PI, 0.0),
               "Front Left Wheel"),
           Wheel(
               TalonFX(Constants.Drivetrain.FRONT_RIGHT_STEERING_ID),
               TalonFX(Constants.Drivetrain.FRONT_RIGHT_DRIVE_ID),
-              CANCoder(Constants.Drivetrain.FRONT_RIGHT_CANCODER_ID),
-              0.degrees,
+              AnalogPotentiometer(
+                  Constants.Drivetrain.FRONT_RIGHT_ANALOG_POTENTIOMETER, 2 * PI, 0.0),
               "Front Right Wheel"),
           Wheel(
               TalonFX(Constants.Drivetrain.BACK_LEFT_STEERING_ID),
               TalonFX(Constants.Drivetrain.BACK_LEFT_DRIVE_ID),
-              CANCoder(Constants.Drivetrain.BACK_LEFT_CANCODER_ID),
-              0.degrees,
+              AnalogPotentiometer(Constants.Drivetrain.BACK_LEFT_ANALOG_POTENTIOMETER, 2 * PI, 0.0),
               "Back Left Wheel"),
           Wheel(
               TalonFX(Constants.Drivetrain.BACK_RIGHT_STEERING_ID),
               TalonFX(Constants.Drivetrain.BACK_RIGHT_DRIVE_ID),
-              CANCoder(Constants.Drivetrain.BACK_RIGHT_CANCODER_ID),
-              0.degrees,
+              AnalogPotentiometer(
+                  Constants.Drivetrain.BACK_RIGHT_ANALOG_POTENTIOMETER, 2 * PI, 0.0),
               "Back Right Wheel"))
 
   private val wheelSpeeds =
@@ -135,7 +135,7 @@ object Drivetrain : SubsystemBase() {
     Logger.addSource("Drivetrain", "pos x") { pose.x.inFeet }
     Logger.addSource("Drivetrain", "pos y") { pose.y.inFeet }
 
-    zeroDirection()
+    zeroSteering()
   }
 
   override fun periodic() {
@@ -318,7 +318,7 @@ object Drivetrain : SubsystemBase() {
 
   fun zeroSensors() {
     zeroGyro()
-    zeroDirection()
+    zeroSteering()
     zeroDrive()
   }
 
@@ -330,8 +330,8 @@ object Drivetrain : SubsystemBase() {
     gyroOffset = offset
   }
 
-  fun zeroDirection() {
-    wheels.forEach { it.zeroDirection() }
+  fun zeroSteering() {
+    wheels.forEach { it.zeroSteering() }
   }
 
   private fun zeroDrive() {

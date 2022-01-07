@@ -3,7 +3,6 @@ package com.team4099.robot2022.subsystems
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.DemandType
 import com.ctre.phoenix.motorcontrol.can.TalonFX
-import com.ctre.phoenix.sensors.CANCoder
 import com.team4099.lib.around
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.AngularMechanismSensor
@@ -29,6 +28,7 @@ import com.team4099.lib.units.inFeetPerSecond
 import com.team4099.lib.units.perSecond
 import com.team4099.robot2022.config.Constants
 import edu.wpi.first.math.filter.MedianFilter
+import edu.wpi.first.wpilibj.AnalogPotentiometer
 import kotlin.math.IEEErem
 import kotlin.math.sign
 import kotlin.math.withSign
@@ -36,8 +36,7 @@ import kotlin.math.withSign
 class Wheel(
   private val steeringFalcon: TalonFX,
   private val driveFalcon: TalonFX,
-  private val encoder: CANCoder,
-  private val zeroOffset: Angle,
+  private val potentiometer: AnalogPotentiometer,
   val label: String
 ) {
 
@@ -57,8 +56,8 @@ class Wheel(
       AngularMechanismSensor(
           Constants.Drivetrain.ABSOLUTE_GEAR_RATIO,
           Timescale.CTRE,
-          { encoder.velocity },
-          { Math.toRadians(encoder.absolutePosition) })
+          { 0.0 },
+          { potentiometer.get() })
 
   private val filter = MedianFilter(10)
 
@@ -125,25 +124,25 @@ class Wheel(
     steeringFalcon.clearStickyFaults()
 
     // Logger.addSource("$label Drivetrain", "Drive Faults") { driveFalcon.getFaults() }
-    // Logger.addSource("$label Drivetrain", "Direction Faults") { steeringFalcon.getFaults() }
+    // Logger.addSource("$label Drivetrain", "Steering Faults") { steeringFalcon.getFaults() }
 
     Logger.addSource("$label Drivetrain", "Drive Output Current") { driveOutputCurrent }
-    Logger.addSource("$label Drivetrain", "Direction Output Current") { steeringOutputCurrent }
+    Logger.addSource("$label Drivetrain", "Steering Output Current") { steeringOutputCurrent }
 
     Logger.addSource("$label Drivetrain", "Drive Temperature") { driveTemp }
-    Logger.addSource("$label Drivetrain", "Direction Temperature") { steeringTemp }
+    Logger.addSource("$label Drivetrain", "Steering Temperature") { steeringTemp }
 
     Logger.addSource("$label Drivetrain", "Drive Percent Output") { drivePercentOutput }
-    Logger.addSource("$label Drivetrain", "Direction Percent Output") { steeringPercentOutput }
+    Logger.addSource("$label Drivetrain", "Steering Percent Output") { steeringPercentOutput }
 
     Logger.addSource("$label Drivetrain", "Drive Bus Voltage") { driveBusVoltage }
-    Logger.addSource("$label Drivetrain", "Direction Bus Voltage") { steeringBusVoltage }
+    Logger.addSource("$label Drivetrain", "Steering Bus Voltage") { steeringBusVoltage }
 
     Logger.addSource("$label Drivetrain", "Drive SetPoint") { speedSetPoint.inFeetPerSecond }
-    Logger.addSource("$label Drivetrain", "Direction SetPoint") { steeringSetPoint.inDegrees }
+    Logger.addSource("$label Drivetrain", "Steering SetPoint") { steeringSetPoint.inDegrees }
 
     Logger.addSource("$label Drivetrain", "Drive Position") { driveSensor.position.inFeet }
-    Logger.addSource("$label Drivetrain", "Direction Position") { steeringPosition.inDegrees }
+    Logger.addSource("$label Drivetrain", "Steering Position") { steeringPosition.inDegrees }
 
     Logger.addSource(
         "Drivetrain Tuning",
@@ -244,10 +243,10 @@ class Wheel(
     // encoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition)
   }
 
-  fun zeroDirection() {
+  fun zeroSteering() {
     steeringFalcon.selectedSensorPosition =
-        steeringSensor.positionToRawUnits(encoder.absolutePosition.degrees + zeroOffset)
-    Logger.addEvent("Drivetrain", "Loading Zero for Module $label (${encoder.absolutePosition})")
+        steeringSensor.positionToRawUnits(potentiometer.get().radians)
+    Logger.addEvent("Drivetrain", "Loading Zero for Module $label (${potentiometer.get()})")
   }
 
   fun zeroDrive() {
