@@ -75,8 +75,8 @@ object Constants {
     const val STEERING_SENSOR_GEAR_RATIO = 12.8 / 1.0
 
     val ALLOWED_ANGLE_ERROR = 1.degrees
-    const val STEERING_SMART_CURRENT_LIMIT = 20.0
-    const val DRIVE_SMART_CURRENT_LIMIT = 80
+    const val STEERING_SUPPLY_CURRENT_LIMIT = 20.0
+    const val DRIVE_SUPPLY_CURRENT_LIMIT = 80.0
 
     object Gains {
       const val RAMSETE_B = 2.0

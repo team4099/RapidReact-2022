@@ -3,6 +3,7 @@ package com.team4099.robot2022.subsystems
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.DemandType
 import com.ctre.phoenix.motorcontrol.can.TalonFX
+import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration
 import com.team4099.lib.around
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.AngularMechanismSensor
@@ -62,6 +63,9 @@ class SwerveModule(
   private val filter = MedianFilter(10)
 
   // motor params
+  private val steeringConfiguration: TalonFXConfiguration = TalonFXConfiguration()
+  private val driveConfiguration: TalonFXConfiguration = TalonFXConfiguration()
+
   private val driveTemp: Double
     get() = driveFalcon.temperature
 
@@ -125,7 +129,6 @@ class SwerveModule(
 
     // Logger.addSource("$label Drivetrain", "Drive Faults") { driveFalcon.getFaults() }
     // Logger.addSource("$label Drivetrain", "Steering Faults") { steeringFalcon.getFaults() }
-
     Logger.addSource("$label Drivetrain", "Drive Output Current") { driveOutputCurrent }
     Logger.addSource("$label Drivetrain", "Steering Output Current") { steeringOutputCurrent }
 
@@ -151,26 +154,30 @@ class SwerveModule(
         { newP -> steeringFalcon.config_kP(0, newP) },
         false)
 
-    steeringFalcon.config_kP(0, Constants.Drivetrain.PID.STEERING_KP)
-    steeringFalcon.config_kI(0, Constants.Drivetrain.PID.STEERING_KI)
-    // steeringPID.iZone = 0.0
-    steeringFalcon.config_kD(0, Constants.Drivetrain.PID.STEERING_KD)
-    steeringFalcon.config_kF(0, Constants.Drivetrain.PID.STEERING_KFF)
-    steeringFalcon.configMotionCruiseVelocity(
-        steeringSensor.velocityToRawUnits(Constants.Drivetrain.STEERING_VEL_MAX))
-    steeringFalcon.configMotionAcceleration(
-        steeringSensor.accelerationToRawUnits(Constants.Drivetrain.STEERING_ACCEL_MAX))
-    steeringFalcon.configPeakOutputForward(1.0)
-    steeringFalcon.configPeakOutputReverse(-1.0)
+    steeringConfiguration.slot0.kP = Constants.Drivetrain.PID.STEERING_KP
+    steeringConfiguration.slot0.kI = Constants.Drivetrain.PID.STEERING_KI
+    steeringConfiguration.slot0.kD = Constants.Drivetrain.PID.STEERING_KD
+    steeringConfiguration.slot0.kF = Constants.Drivetrain.PID.STEERING_KFF
+    steeringConfiguration.motionCruiseVelocity =
+        steeringSensor.velocityToRawUnits(Constants.Drivetrain.STEERING_VEL_MAX)
+    steeringConfiguration.motionAcceleration =
+        steeringSensor.accelerationToRawUnits(Constants.Drivetrain.STEERING_ACCEL_MAX)
+    steeringConfiguration.peakOutputForward = 1.0
+    steeringConfiguration.peakOutputReverse = -1.0
+    steeringConfiguration.supplyCurrLimit.currentLimit =
+        Constants.Drivetrain.STEERING_SUPPLY_CURRENT_LIMIT
+    steeringConfiguration.supplyCurrLimit.enable = true
+    steeringFalcon.configAllSettings(steeringConfiguration)
     steeringFalcon.configAllowableClosedloopError(
         0, steeringSensor.positionToRawUnits(Constants.Drivetrain.ALLOWED_ANGLE_ERROR))
-    // steeringFalcon.outputCurrent(Constants.Drivetrain.STEERING_SMART_CURRENT_LIMIT)
 
-    driveFalcon.config_kP(0, Constants.Drivetrain.PID.DRIVE_KP)
-    driveFalcon.config_kI(0, Constants.Drivetrain.PID.DRIVE_KI)
-    driveFalcon.config_kD(0, Constants.Drivetrain.PID.DRIVE_KD)
-    driveFalcon.config_kF(0, Constants.Drivetrain.PID.DRIVE_KFF)
-    // driveFalcon.setSmartCurrentLimit(Constants.Drivetrain.DRIVE_SMART_CURRENT_LIMIT)
+    driveConfiguration.slot0.kP = Constants.Drivetrain.PID.DRIVE_KP
+    driveConfiguration.slot0.kI = Constants.Drivetrain.PID.DRIVE_KI
+    driveConfiguration.slot0.kD = Constants.Drivetrain.PID.DRIVE_KD
+    driveConfiguration.slot0.kF = Constants.Drivetrain.PID.DRIVE_KFF
+    driveConfiguration.supplyCurrLimit.currentLimit =
+        Constants.Drivetrain.DRIVE_SUPPLY_CURRENT_LIMIT
+    driveFalcon.configAllSettings(driveConfiguration)
   }
 
   fun set(
