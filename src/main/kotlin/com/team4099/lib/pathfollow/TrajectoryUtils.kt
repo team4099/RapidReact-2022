@@ -67,7 +67,14 @@ fun trajectoryFromPath(
         if (headingTarget == null) {
           headingTarget = path.endingPose.theta
         }
+        /*
+          #TO DO
 
+          Look at wpilib to see if we can generate a trapezoidal profile
+           using max angular vel and acceleration
+
+           Look back to this if rotation is jittery
+         */
         TrajectoryState(
             state.timeSeconds.seconds,
             Pose(Translation(state.poseMeters.translation), headingTarget),
