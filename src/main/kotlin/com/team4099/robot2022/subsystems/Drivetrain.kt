@@ -79,12 +79,10 @@ object Drivetrain : SubsystemBase() {
   private val gyro = AHRS()
 
   var gyroOffset: Angle = 0.0.degrees
-  var gyroChange: Angle = 0.0.degrees
   val gyroAngle: Angle
     get() {
       var rawAngle = gyro.angle + gyroOffset.inDegrees
       rawAngle += Constants.Drivetrain.GYRO_RATE_COEFFICIENT * gyro.rate
-      gyroChange = -(rawAngle.IEEErem(360.0).degrees)
       return rawAngle.IEEErem(360.0).degrees
     }
 
@@ -337,12 +335,9 @@ object Drivetrain : SubsystemBase() {
     zeroDrive()
   }
 
-  fun zeroGyro() {
-    gyro.angleAdjustment = gyroChange.inDegrees
-  }
-  fun zeroGyro(offset: Angle) {
-    zeroGyro()
-    gyroOffset = offset
+  fun zeroGyro(toAngle: Angle = 0.degrees) {
+    gyro.angleAdjustment = -(gyroAngle).inDegrees
+    gyroOffset = toAngle
   }
 
   fun zeroSteering() {
