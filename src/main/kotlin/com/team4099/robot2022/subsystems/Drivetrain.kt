@@ -88,7 +88,6 @@ object Drivetrain : SubsystemBase() {
       return rawAngle.IEEErem(360.0).degrees
     }
 
-
   private val frontLeftWheelLocation =
       Translation(
           -Constants.Drivetrain.DRIVETRAIN_WIDTH / 2, Constants.Drivetrain.DRIVETRAIN_LENGTH / 2)

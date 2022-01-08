@@ -71,7 +71,7 @@ object Constants {
     const val ABSOLUTE_GEAR_RATIO = 1.0
     const val DRIVE_SENSOR_CPR = 2048 // TODO
     const val STEERING_SENSOR_CPR = 2048 // TODO
-    const val DRIVE_SENSOR_GEAR_RATIO = (14.0/50.0) * (27.0/17.0) * (15.0/45.0)
+    const val DRIVE_SENSOR_GEAR_RATIO = (14.0 / 50.0) * (27.0 / 17.0) * (15.0 / 45.0)
     const val STEERING_SENSOR_GEAR_RATIO = 1.0 / 12.8
 
     val ALLOWED_ANGLE_ERROR = 1.degrees
