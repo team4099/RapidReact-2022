@@ -12,7 +12,6 @@ import com.team4099.lib.units.Timescale
 import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.base.feet
 import com.team4099.lib.units.base.inFeet
-import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.ctreAngularMechanismSensor
 import com.team4099.lib.units.ctreLinearMechanismSensor
@@ -51,7 +50,7 @@ class SwerveModule(
           driveFalcon,
           Constants.Drivetrain.DRIVE_SENSOR_CPR,
           Constants.Drivetrain.DRIVE_SENSOR_GEAR_RATIO,
-          3.inches)
+          Constants.Drivetrain.WHEEL_DIAMETER)
 
   private val steeringAbsolute =
       AngularMechanismSensor(

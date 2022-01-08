@@ -49,8 +49,9 @@ object Constants {
     const val BACK_LEFT_ANALOG_POTENTIOMETER = 3
 
     const val WHEEL_COUNT = 4
-    val DRIVETRAIN_LENGTH = 22.173.inches
-    val DRIVETRAIN_WIDTH = 22.173.inches
+    val WHEEL_DIAMETER = 4.inches
+    val DRIVETRAIN_LENGTH = 22.173.inches // TODO
+    val DRIVETRAIN_WIDTH = 22.173.inches // TODO
 
     val DRIVE_SETPOINT_MAX = 15.feet.perSecond
     val TURN_SETPOINT_MAX = 360.degrees.perSecond // TODO: Make sure this value is something good
@@ -70,8 +71,8 @@ object Constants {
     const val ABSOLUTE_GEAR_RATIO = 1.0
     const val DRIVE_SENSOR_CPR = 2048 // TODO
     const val STEERING_SENSOR_CPR = 2048 // TODO
-    const val DRIVE_SENSOR_GEAR_RATIO = (12.0 / 21.0) * (15.0 / 45.0)
-    const val STEERING_SENSOR_GEAR_RATIO = (12.0 / 64.0) * (1.0 / 10.0)
+    const val DRIVE_SENSOR_GEAR_RATIO = 6.75 / 1.0
+    const val STEERING_SENSOR_GEAR_RATIO = 12.8 / 1.0
 
     val ALLOWED_ANGLE_ERROR = 1.degrees
     const val STEERING_SMART_CURRENT_LIMIT = 20.0
