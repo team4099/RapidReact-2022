@@ -1,6 +1,7 @@
 package com.team4099.robot2022.subsystems
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX
+import com.kauailabs.navx.frc.AHRS
 import com.team4099.lib.geometry.Pose
 import com.team4099.lib.geometry.Translation
 import com.team4099.lib.logging.Logger
@@ -29,6 +30,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry
 import edu.wpi.first.math.kinematics.SwerveModuleState
 import edu.wpi.first.wpilibj.AnalogPotentiometer
 import edu.wpi.first.wpilibj2.command.SubsystemBase
+import kotlin.math.IEEErem
 import kotlin.math.PI
 
 object Drivetrain : SubsystemBase() {
@@ -74,16 +76,18 @@ object Drivetrain : SubsystemBase() {
           0.feet.perSecond.perSecond,
           0.feet.perSecond.perSecond)
 
-  // TODO: private val gyro = ADIS16470_IMU()
+  private val gyro = AHRS()
 
-  val gyroAngle: Angle = TODO()
-
-  // get() {
-  //  var rawAngle = gyro.angle + gyroOffset.inDegrees
-  //  rawAngle += Constants.Drivetrain.GYRO_RATE_COEFFICIENT * gyro.rate
-  //  return rawAngle.IEEErem(360.0).degrees
-  // }
   var gyroOffset: Angle = 0.0.degrees
+  var gyroChange: Angle = 0.0.degrees
+  val gyroAngle: Angle
+    get() {
+      var rawAngle = gyro.angle + gyroOffset.inDegrees
+      rawAngle += Constants.Drivetrain.GYRO_RATE_COEFFICIENT * gyro.rate
+      gyroChange = -(rawAngle.IEEErem(360.0).degrees)
+      return rawAngle.IEEErem(360.0).degrees
+    }
+
 
   private val frontLeftWheelLocation =
       Translation(
@@ -335,7 +339,7 @@ object Drivetrain : SubsystemBase() {
   }
 
   fun zeroGyro() {
-    // gyro.reset() TODO
+    gyro.angleAdjustment = gyroChange.inDegrees
   }
   fun zeroGyro(offset: Angle) {
     zeroGyro()
