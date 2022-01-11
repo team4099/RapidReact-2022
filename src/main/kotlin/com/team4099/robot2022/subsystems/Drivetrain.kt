@@ -116,6 +116,9 @@ object Drivetrain : SubsystemBase() {
     get() = Pose(swerveDriveOdometry.poseMeters)
     set(value) {
       swerveDriveOdometry.resetPosition(value.pose2d, gyroAngle.inRotation2ds)
+      // zeroGyro(pose.theta)
+      // zeroSteering()
+      // zeroDrive()
     }
 
   init {
@@ -336,8 +339,7 @@ object Drivetrain : SubsystemBase() {
   }
 
   fun zeroGyro(toAngle: Angle = 0.degrees) {
-    gyro.angleAdjustment = -(gyroAngle).inDegrees
-    gyroOffset = toAngle
+    gyroOffset = (toAngle.inDegrees - gyro.angle).degrees
   }
 
   fun zeroSteering() {
