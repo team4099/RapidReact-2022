@@ -23,7 +23,7 @@ object PathStore {
 
   val examplePats =
       PathPlanner.loadPath(
-          "testPath1.path",
+          "testPath2.path",
           Constants.Drivetrain.MAX_AUTO_VEL.inMetersPerSecond,
           Constants.Drivetrain.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond)
 }
