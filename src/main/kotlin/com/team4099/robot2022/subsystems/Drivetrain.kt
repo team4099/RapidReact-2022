@@ -116,9 +116,7 @@ object Drivetrain : SubsystemBase() {
     get() = Pose(swerveDriveOdometry.poseMeters)
     set(value) {
       swerveDriveOdometry.resetPosition(value.pose2d, gyroAngle.inRotation2ds)
-      // zeroGyro(pose.theta)
-      // zeroSteering()
-      // zeroDrive()
+      zeroGyro(pose.theta)
     }
 
   init {
