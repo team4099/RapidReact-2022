@@ -135,8 +135,8 @@ class Wheel(
     Logger.addSource("$label Drivetrain", "Drive Percent Output") { drivePercentOutput }
     Logger.addSource("$label Drivetrain", "Direction Percent Output") { directionPercentOutput }
 
-    Logger.addSource("$label Drivetrain", "Drive Bus Voltage") { driveBusVoltage }
-    Logger.addSource("$label Drivetrain", "Direction Bus Voltage") { directionBusVoltage }
+    Logger.addSource("$label Drivetrain", "Drive Bus Voltage") { driveBusVoltage.inVolts }
+    Logger.addSource("$label Drivetrain", "Direction Bus Voltage") { directionBusVoltage.inVolts }
 
     Logger.addSource("$label Drivetrain", "Drive SetPoint") { speedSetPoint.inFeetPerSecond }
     Logger.addSource("$label Drivetrain", "Direction SetPoint") { directionSetPoint.inDegrees }
