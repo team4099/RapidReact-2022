@@ -28,7 +28,9 @@ import com.team4099.robot2022.config.Constants
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry
 import edu.wpi.first.math.kinematics.SwerveModuleState
+import edu.wpi.first.wpilibj.ADIS16470_IMU
 import edu.wpi.first.wpilibj2.command.SubsystemBase
+import kotlin.math.IEEErem
 
 object Drivetrain : SubsystemBase() {
   val wheels =
@@ -86,15 +88,14 @@ object Drivetrain : SubsystemBase() {
           0.feet.perSecond.perSecond,
           0.feet.perSecond.perSecond)
 
-  // TODO: private val gyro = ADIS16470_IMU()
+  private val gyro = ADIS16470_IMU()
 
-  val gyroAngle: Angle = TODO()
-
-  // get() {
-  //  var rawAngle = gyro.angle + gyroOffset.inDegrees
-  //  rawAngle += Constants.Drivetrain.GYRO_RATE_COEFFICIENT * gyro.rate
-  //  return rawAngle.IEEErem(360.0).degrees
-  // }
+  val gyroAngle: Angle
+    get() {
+      var rawAngle = gyro.angle + gyroOffset.inDegrees
+      rawAngle += Constants.Drivetrain.GYRO_RATE_COEFFICIENT * gyro.rate
+      return rawAngle.IEEErem(360.0).degrees
+    }
   var gyroOffset: Angle = 0.0.degrees
 
   private val frontLeftWheelLocation =
@@ -339,7 +340,7 @@ object Drivetrain : SubsystemBase() {
   }
 
   fun zeroGyro() {
-    // gyro.reset() TODO
+    gyro.reset()
   }
   fun zeroGyro(offset: Angle) {
     zeroGyro()
