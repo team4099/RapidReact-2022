@@ -114,4 +114,18 @@ object Constants {
     const val THROTTLE_DEADBAND = 0.05
     const val TURN_DEADBAND = 0.05
   }
+
+  object Feeder {
+    const val FEEDER_POWER = 1.0 // temp val
+
+    // not final
+    enum class FeederState(val floorMotorPower: Double, var verticalMotorPower: Double) {
+      FORWARD_ALL(FEEDER_POWER, FEEDER_POWER),
+      FORWARD_FLOOR(FEEDER_POWER, 0.0),
+      BACKWARD_ALL(-FEEDER_POWER, -FEEDER_POWER),
+      BACKWARD_VERTICAL(0.0, -FEEDER_POWER),
+      NEUTRAL(0.0, 0.0),
+      SHOOT(FEEDER_POWER, FEEDER_POWER)
+    }
+  }
 }
