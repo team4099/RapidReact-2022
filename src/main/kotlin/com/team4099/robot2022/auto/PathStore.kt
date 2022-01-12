@@ -23,8 +23,8 @@ object PathStore {
 
   val bottomLeftCargoPath =
       PathPlanner.loadPath(
-          "bottomLeftCargo",
-          Constants.Drivetrain.MAX_AUTO_VEL.inMetersPerSecond,
+          "topRightTaxi",
+          Constants.Drivetrain.SLOW_AUTO_VEL.inMetersPerSecond,
           Constants.Drivetrain.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond)
 
 //  val bottomLeftReturnShootPath =
