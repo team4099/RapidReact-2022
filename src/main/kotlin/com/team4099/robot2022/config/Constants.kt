@@ -126,6 +126,13 @@ object Constants {
       BACKWARD_VERTICAL(0.0, -FEEDER_POWER),
       NEUTRAL(0.0, 0.0),
       SHOOT(FEEDER_POWER, FEEDER_POWER)
+
     }
+    //temp values
+    const val FLOOR_MOTOR_ID = 1
+    const val VERTICAL_MOTOR_ID = 1
+    const val TOP_DIO_PIN = 1
+    const val BOTTOM_DIO_PIN = 1
+
   }
 }
