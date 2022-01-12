@@ -9,6 +9,7 @@ import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.perSecond
 
 object Constants {
+
   object Universal {
     const val CTRE_CONFIG_TIMEOUT = 0
     const val EPSILON = 1E-9
@@ -27,6 +28,15 @@ object Constants {
     val ROBOT_ID_MAP =
         mapOf<Int, RobotName>(
             0 to RobotName.COMPETITION, 1 to RobotName.PRACTICE, 2 to RobotName.MULE)
+  }
+
+  object Climber{
+
+    const val CLIMBER_RID:Int = 0
+    const val CLIMBER_LID:Int = 0
+
+    const val SOLENOID_ID:Int = 0
+
   }
 
   object Drivetrain {
