@@ -42,18 +42,18 @@ object Robot : TimedRobot() {
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
   }
 
-  val autonomousCommand = AutoDriveCommand(trajectoryFromPathfinder(PathStore.bottomLeftCargoPath))
+  //val autonomousCommand = AutoDriveCommand(trajectoryFromPathfinder(PathStore.bottomLeftCargoPath))
 
   override fun autonomousInit() {
-    autonomousCommand.schedule()
+    //autonomousCommand.schedule()
   }
 
   override fun disabledInit() {
-    autonomousCommand.cancel()
+    //autonomousCommand.cancel()
   }
 
   override fun teleopInit() {
-    autonomousCommand.cancel()
+    //autonomousCommand.cancel()
   }
 
   override fun robotPeriodic() {
