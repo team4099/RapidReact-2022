@@ -1,15 +1,12 @@
 package com.team4099.robot2022.subsystems
 
-import com.ctre.phoenix.sensors.CANCoder
 import com.revrobotics.CANPIDController
 import com.revrobotics.CANSparkMax
 import com.revrobotics.ControlType
 import com.team4099.lib.around
 import com.team4099.lib.logging.Logger
-import com.team4099.lib.units.AngularMechanismSensor
 import com.team4099.lib.units.LinearAcceleration
 import com.team4099.lib.units.LinearVelocity
-import com.team4099.lib.units.Timescale
 import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.base.feet
 import com.team4099.lib.units.base.inFeet
@@ -36,7 +33,7 @@ import kotlin.math.withSign
 class Wheel(
   private val directionSpark: CANSparkMax,
   private val driveSpark: CANSparkMax,
-  private val encoder: CANCoder,
+    // private val encoder: CANCoder,
   private val zeroOffset: Angle,
   val label: String
 ) {
@@ -51,12 +48,12 @@ class Wheel(
       sparkMaxLinearMechanismSensor(
           driveSpark, Constants.Drivetrain.DRIVE_SENSOR_GEAR_RATIO, 3.inches)
 
-  private val directionAbsolute =
-      AngularMechanismSensor(
-          Constants.Drivetrain.ABSOLUTE_GEAR_RATIO,
-          Timescale.CTRE,
-          { encoder.velocity },
-          { Math.toRadians(encoder.absolutePosition) })
+  // private val directionAbsolute =
+  //    AngularMechanismSensor(
+  //        Constants.Drivetrain.ABSOLUTE_GEAR_RATIO,
+  //        Timescale.CTRE,
+  //        { encoder.velocity },
+  //        { Math.toRadians(encoder.absolutePosition) })
 
   private val filter = MedianFilter(10)
 
@@ -248,9 +245,10 @@ class Wheel(
   }
 
   fun zeroDirection() {
-    directionSpark.encoder.position =
-        directionSensor.positionToRawUnits(encoder.absolutePosition.degrees + zeroOffset)
-    Logger.addEvent("Drivetrain", "Loading Zero for Module $label (${encoder.absolutePosition})")
+    // directionSpark.encoder.position =
+    // directionSensor.positionToRawUnits(encoder.absolutePosition.degrees + zeroOffset)
+    directionSpark.encoder.position = directionSensor.positionToRawUnits(zeroOffset)
+    Logger.addEvent("Drivetrain", "Loading Zero for Module $label ($zeroOffset)")
   }
 
   fun zeroDrive() {

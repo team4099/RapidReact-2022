@@ -1,6 +1,5 @@
 package com.team4099.robot2022.subsystems
 
-import com.ctre.phoenix.sensors.CANCoder
 import com.revrobotics.CANSparkMax
 import com.revrobotics.CANSparkMaxLowLevel
 import com.team4099.lib.geometry.Pose
@@ -41,7 +40,7 @@ object Drivetrain : SubsystemBase() {
               CANSparkMax(
                   Constants.Drivetrain.FRONT_LEFT_SPEED_ID,
                   CANSparkMaxLowLevel.MotorType.kBrushless),
-              CANCoder(Constants.Drivetrain.FRONT_LEFT_CANCODER_ID),
+              // CANCoder(Constants.Drivetrain.FRONT_LEFT_CANCODER_ID),
               0.degrees,
               "Front Left Wheel"),
           Wheel(
@@ -51,7 +50,7 @@ object Drivetrain : SubsystemBase() {
               CANSparkMax(
                   Constants.Drivetrain.FRONT_RIGHT_SPEED_ID,
                   CANSparkMaxLowLevel.MotorType.kBrushless),
-              CANCoder(Constants.Drivetrain.FRONT_RIGHT_CANCODER_ID),
+              // CANCoder(Constants.Drivetrain.FRONT_RIGHT_CANCODER_ID),
               0.degrees,
               "Front Right Wheel"),
           Wheel(
@@ -61,7 +60,7 @@ object Drivetrain : SubsystemBase() {
               CANSparkMax(
                   Constants.Drivetrain.BACK_LEFT_SPEED_ID,
                   CANSparkMaxLowLevel.MotorType.kBrushless),
-              CANCoder(Constants.Drivetrain.BACK_LEFT_CANCODER_ID),
+              // CANCoder(Constants.Drivetrain.BACK_LEFT_CANCODER_ID),
               0.degrees,
               "Back Left Wheel"),
           Wheel(
@@ -71,7 +70,7 @@ object Drivetrain : SubsystemBase() {
               CANSparkMax(
                   Constants.Drivetrain.BACK_RIGHT_SPEED_ID,
                   CANSparkMaxLowLevel.MotorType.kBrushless),
-              CANCoder(Constants.Drivetrain.BACK_RIGHT_CANCODER_ID),
+              // CANCoder(Constants.Drivetrain.BACK_RIGHT_CANCODER_ID),
               0.degrees,
               "Back Right Wheel"))
 
