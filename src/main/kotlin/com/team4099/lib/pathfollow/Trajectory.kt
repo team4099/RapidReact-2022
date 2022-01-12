@@ -16,7 +16,7 @@ class Trajectory(private val states: List<TrajectoryState>) {
     get() = states[states.size - 1].timestamp
 
   val startingPose = states[0].pose
-  val endingPose = states[-1].pose
+  val endingPose = states[states.size - 1].pose
 
   fun sample(time: Time): TrajectoryState {
     if (time <= startTime) {
