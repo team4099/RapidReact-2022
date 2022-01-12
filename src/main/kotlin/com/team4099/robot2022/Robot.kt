@@ -42,7 +42,7 @@ object Robot : TimedRobot() {
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
   }
 
-  val autonomousCommand = AutoDriveCommand(trajectoryFromPathfinder(PathStore.examplePats))
+  val autonomousCommand = AutoDriveCommand(trajectoryFromPathfinder(PathStore.test1Path))
 
   override fun autonomousInit() {
     autonomousCommand.schedule()
