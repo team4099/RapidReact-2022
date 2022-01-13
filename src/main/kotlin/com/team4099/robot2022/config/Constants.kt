@@ -116,23 +116,22 @@ object Constants {
   }
 
   object Feeder {
-    const val FEEDER_POWER = 1.0 // temp val
+    //temp values
+    const val FEEDER_POWER = 1.0
+    const val FLOOR_MOTOR_ID = 1
+    const val VERTICAL_MOTOR_ID = 1
+    const val TOP_DIO_PIN = 1
+    const val BOTTOM_DIO_PIN = 1
 
     // not final
-    enum class FeederState(val floorMotorPower: Double, var verticalMotorPower: Double) {
+    enum class FeederState(val floorMotorPower: Double, val verticalMotorPower: Double) {
       FORWARD_ALL(FEEDER_POWER, FEEDER_POWER),
       FORWARD_FLOOR(FEEDER_POWER, 0.0),
       BACKWARD_ALL(-FEEDER_POWER, -FEEDER_POWER),
       BACKWARD_VERTICAL(0.0, -FEEDER_POWER),
       NEUTRAL(0.0, 0.0),
       SHOOT(FEEDER_POWER, FEEDER_POWER)
-
     }
-    //temp values
-    const val FLOOR_MOTOR_ID = 1
-    const val VERTICAL_MOTOR_ID = 1
-    const val TOP_DIO_PIN = 1
-    const val BOTTOM_DIO_PIN = 1
 
   }
 }

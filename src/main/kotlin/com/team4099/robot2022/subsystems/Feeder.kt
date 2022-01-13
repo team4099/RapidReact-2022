@@ -1,7 +1,6 @@
 package com.team4099.robot2022.subsystems
 
 import com.ctre.phoenix.motorcontrol.ControlMode
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.team4099.robot2022.config.Constants
 import edu.wpi.first.wpilibj.DigitalInput
