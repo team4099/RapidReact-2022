@@ -29,7 +29,6 @@ import com.team4099.robot2022.config.Constants
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry
 import edu.wpi.first.math.kinematics.SwerveModuleState
-import edu.wpi.first.wpilibj.ADIS16470_IMU
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import kotlin.math.IEEErem
 
