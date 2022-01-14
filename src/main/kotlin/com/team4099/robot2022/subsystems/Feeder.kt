@@ -39,38 +39,19 @@ object Feeder : SubsystemBase() {
   init {
     Logger.addSource(Constants.Feeder.TAB, "Feeder State") { feederState.toString() }
     // floor motor values
-    Logger.addSource(
-      Constants.Feeder.TAB,
-      "Feeder Floor Motor Power"
-    ) { floorMotor. } // cant find field
-    Logger.addSource(
-      Constants.Feeder.TAB,
-      "Feeder Floor Motor Supply Current"
-    ) { floorMotor.outputCurrent } // deprecated
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Floor Motor Power") { floorMotor.motorOutputPercent }
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Floor Motor Supply Current") { floorMotor.supplyCurrent }
     Logger.addSource(Constants.Feeder.TAB, "Feeder Floor Motor Voltage") { floorMotor.busVoltage }
     // vertical motor values
-    Logger.addSource(
-      Constants.Feeder.TAB,
-      "Feeder Vertical Motor Power"
-    ) { verticalMotor. } //can't find field
-    Logger.addSource(
-      Constants.Feeder.TAB,
-      "Feeder Vertical Motor Supply Current"
-    ) { verticalMotor.outputCurrent } // deprecated
-    Logger.addSource(
-      Constants.Feeder.TAB,
-      "Feeder Vertical Motor Voltage"
-    ) { verticalMotor.busVoltage }
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Vertical Motor Power") { verticalMotor.motorOutputPercent }
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Vertical Motor Supply Current") { verticalMotor.supplyCurrent }
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Vertical Motor Voltage") { verticalMotor.busVoltage }
     // beam broken values
     Logger.addSource(Constants.Feeder.TAB, "Feeder Top Beam DIO Broken") { topBeamBroken }
     Logger.addSource(Constants.Feeder.TAB, "Feeder Bottom Beam DIO Broken") { bottomBeamBroken }
     // beam time values
-    Logger.addSource(Constants.Feeder.TAB, "Feeder Beam Broken forwards time") {
-      Constants.Feeder.BEAM_BREAK_BROKEN_TIME
-    }
-    Logger.addSource(Constants.Feeder.TAB, "Feeder Beam Broken backwards time") {
-      Constants.Feeder.BEAM_BREAK_BACKWARDS_TIME
-    }
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Beam Broken forwards time") { Constants.Feeder.BEAM_BREAK_BROKEN_TIME }
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Beam Broken backwards time") { Constants.Feeder.BEAM_BREAK_BACKWARDS_TIME }
     Logger.addSource(Constants.Feeder.TAB, "Feeder Ball Count") { ballCount }
   }
 }
