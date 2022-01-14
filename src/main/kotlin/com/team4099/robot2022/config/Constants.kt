@@ -116,13 +116,18 @@ object Constants {
   }
 
   object Feeder {
+
     //temp values
     const val FEEDER_POWER = 1.0
     const val FLOOR_MOTOR_ID = 1
     const val VERTICAL_MOTOR_ID = 1
+    const val TAB = "Feeder"
+
+    //temp values
     const val TOP_DIO_PIN = 1
     const val BOTTOM_DIO_PIN = 1
-    const val TAB = "Feeder"
+    const val BEAM_BREAK_BROKEN_TIME = 0.05
+    const val BEAM_BREAK_BACKWARDS_TIME = 0.05
 
     // not final
     enum class FeederState(val floorMotorPower: Double, val verticalMotorPower: Double) {
