@@ -1,5 +1,6 @@
 package com.team4099.robot2022.subsystems
 
+import com.kauailabs.navx.frc.AHRS
 import com.revrobotics.CANSparkMax
 import com.revrobotics.CANSparkMaxLowLevel
 import com.team4099.lib.geometry.Pose
@@ -88,15 +89,16 @@ object Drivetrain : SubsystemBase() {
           0.feet.perSecond.perSecond,
           0.feet.perSecond.perSecond)
 
-  private val gyro = ADIS16470_IMU()
+  private val gyro = AHRS()
 
+  var gyroOffset: Angle = 0.0.degrees
+  /** The current angle of the drivetrain. */
   val gyroAngle: Angle
     get() {
       var rawAngle = gyro.angle + gyroOffset.inDegrees
       rawAngle += Constants.Drivetrain.GYRO_RATE_COEFFICIENT * gyro.rate
       return rawAngle.IEEErem(360.0).degrees
     }
-  var gyroOffset: Angle = 0.0.degrees
 
   private val frontLeftWheelLocation =
       Translation(
@@ -119,15 +121,16 @@ object Drivetrain : SubsystemBase() {
           backRightWheelLocation.translation2d)
 
   private val swerveDriveOdometry =
-      SwerveDriveOdometry(
-          swerveDriveKinematics,
-          gyroAngle.inRotation2ds,
-          Pose(0.meters, 0.meters, 0.degrees).pose2d)
+    SwerveDriveOdometry(
+      swerveDriveKinematics,
+      gyroAngle.inRotation2ds,
+      Pose(0.meters, 0.meters, 0.degrees).pose2d)
 
   var pose: Pose
     get() = Pose(swerveDriveOdometry.poseMeters)
     set(value) {
       swerveDriveOdometry.resetPosition(value.pose2d, gyroAngle.inRotation2ds)
+      zeroGyro(pose.theta)
     }
 
   init {
@@ -179,30 +182,30 @@ object Drivetrain : SubsystemBase() {
     // Logger.addEvent("Drivetrain", "setting with $driveVector and $angularVelocity")
     //    Logger.addEvent("Drivetrain", "gyro angle: ${(-gyroAngle).inDegrees}")
     val vX =
-        if (fieldOriented) {
-          driveVector.first * (-gyroAngle).cos - driveVector.second * (-gyroAngle).sin
-        } else {
-          driveVector.first
-        }
+      if (fieldOriented) {
+        driveVector.first * (-gyroAngle).cos - driveVector.second * (-gyroAngle).sin
+      } else {
+        driveVector.first
+      }
     val vY =
-        if (fieldOriented) {
-          driveVector.second * (-gyroAngle).cos + driveVector.first * (-gyroAngle).sin
-        } else {
-          driveVector.second
-        }
+      if (fieldOriented) {
+        driveVector.second * (-gyroAngle).cos + driveVector.first * (-gyroAngle).sin
+      } else {
+        driveVector.second
+      }
 
     val aY =
-        if (fieldOriented) {
-          driveAcceleration.second * (-gyroAngle).cos + driveAcceleration.first * (-gyroAngle).sin
-        } else {
-          driveAcceleration.second
-        }
+      if (fieldOriented) {
+        driveAcceleration.second * (-gyroAngle).cos + driveAcceleration.first * (-gyroAngle).sin
+      } else {
+        driveAcceleration.second
+      }
     val aX =
-        if (fieldOriented) {
-          driveAcceleration.first * (-gyroAngle).cos - driveAcceleration.second * (-gyroAngle).sin
-        } else {
-          driveAcceleration.first
-        }
+      if (fieldOriented) {
+        driveAcceleration.first * (-gyroAngle).cos - driveAcceleration.second * (-gyroAngle).sin
+      } else {
+        driveAcceleration.first
+      }
 
     val a = vX - angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
     val b = vX + angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
@@ -339,12 +342,8 @@ object Drivetrain : SubsystemBase() {
     zeroDrive()
   }
 
-  fun zeroGyro() {
-    gyro.reset()
-  }
-  fun zeroGyro(offset: Angle) {
-    zeroGyro()
-    gyroOffset = offset
+  fun zeroGyro(toAngle: Angle = 0.degrees) {
+    gyroOffset = (toAngle.inDegrees - gyro.angle).degrees
   }
 
   fun zeroDirection() {
