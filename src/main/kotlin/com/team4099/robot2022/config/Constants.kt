@@ -122,6 +122,7 @@ object Constants {
     const val VERTICAL_MOTOR_ID = 1
     const val TOP_DIO_PIN = 1
     const val BOTTOM_DIO_PIN = 1
+    const val TAB = "Feeder"
 
     // not final
     enum class FeederState(val floorMotorPower: Double, val verticalMotorPower: Double) {

@@ -2,6 +2,7 @@ package com.team4099.robot2022.subsystems
 
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.can.TalonFX
+import com.team4099.lib.logging.Logger
 import com.team4099.robot2022.config.Constants
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj2.command.SubsystemBase
@@ -34,6 +35,11 @@ object Feeder : SubsystemBase() {
     }
 
   init {
-
+    Logger.addSource(Constants.Feeder.TAB, "Feeder State") { feederState.toString() }
+    // floor motor values
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Floor Motor Power") { floorMotor. } // cant find field
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Floor Motor Supply Current") { floorMotor.outputCurrent } // deprecated
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Floor Motor Voltage") { floorMotor.busVoltage }
+    // vertical motor values
   }
 }
