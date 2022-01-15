@@ -50,8 +50,8 @@ object Constants {
 
     const val WHEEL_COUNT = 4
     val WHEEL_DIAMETER = 4.inches
-    val DRIVETRAIN_LENGTH = 22.173.inches // TODO
-    val DRIVETRAIN_WIDTH = 22.173.inches // TODO
+    val DRIVETRAIN_LENGTH = 22.750.inches
+    val DRIVETRAIN_WIDTH = 22.750.inches
 
     val DRIVE_SETPOINT_MAX = 15.feet.perSecond
     val TURN_SETPOINT_MAX = 360.degrees.perSecond // TODO: Make sure this value is something good
