@@ -54,5 +54,23 @@ object Feeder : SubsystemBase() {
     Logger.addSource(Constants.Feeder.TAB, "Feeder Beam Broken backwards time") { Constants.Feeder.BEAM_BREAK_BACKWARDS_TIME }
     // ball count value
     Logger.addSource(Constants.Feeder.TAB, "Feeder Ball Count") { ballCount }
+
+    floorMotor.configFactoryDefault()
+    verticalMotor.configFactoryDefault()
+
+    //temp values
+    floorMotor.enableVoltageCompensation(true)
+    verticalMotor.enableVoltageCompensation(true)
+
+    //substitute for.setIdleMode()?
+    floorMotor.setNeutralMode()
+    verticalMotor.setNeutralMode()
+
+    //not final
+    floorMotor.setSmartCurrentLimit()
+
+    //not final
+    floorMotor.burnFlash()
+
   }
 }
