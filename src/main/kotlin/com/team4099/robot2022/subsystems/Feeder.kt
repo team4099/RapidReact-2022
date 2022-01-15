@@ -52,6 +52,7 @@ object Feeder : SubsystemBase() {
     // beam time values
     Logger.addSource(Constants.Feeder.TAB, "Feeder Beam Broken forwards time") { Constants.Feeder.BEAM_BREAK_BROKEN_TIME }
     Logger.addSource(Constants.Feeder.TAB, "Feeder Beam Broken backwards time") { Constants.Feeder.BEAM_BREAK_BACKWARDS_TIME }
+    // ball count value
     Logger.addSource(Constants.Feeder.TAB, "Feeder Ball Count") { ballCount }
   }
 }
