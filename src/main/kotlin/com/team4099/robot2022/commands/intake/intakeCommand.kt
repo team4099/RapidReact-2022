@@ -5,7 +5,10 @@ import com.team4099.robot2021.subsystems.com.team4099.robot2022.subsystems.Intak
 import com.team4099.robot2022.config.Constants
 import edu.wpi.first.wpilibj2.command.CommandBase
 
-class intakeCommand(var intakeState: Constants.Intake.IntakeState, var armState: Constants.Intake.ArmPos) : CommandBase(){
+class intakeCommand(
+  var intakeState: Constants.Intake.IntakeState,
+  var armState: Constants.Intake.ArmPos
+) : CommandBase() {
 
   init {
     addRequirements(Intake)

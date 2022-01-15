@@ -20,5 +20,4 @@ class IntakeBallsCommand : CommandBase() {
   override fun isFinished(): Boolean {
     return false
   }
-
 }
