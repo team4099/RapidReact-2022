@@ -37,8 +37,7 @@ object Constants {
     const val DOUBLE_SOLENOID = 1 // Change this too
     const val ARM_SOLENOID_FORWARD = 1 // Change
     const val ARM_SOLENOID_REVERSE = 1 //Change
-    const val TAB = "Intake"
-    val RAMP_TIME = 1 // Change
+    val RAMP_TIME = 1.0 // Change
 
     enum class IntakeState(val speed: Double) {
       IDLE(0.0),
