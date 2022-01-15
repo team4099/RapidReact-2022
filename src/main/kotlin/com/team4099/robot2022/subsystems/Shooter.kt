@@ -8,7 +8,7 @@ import com.team4099.robot2022.config.Constants
 import com.team4099.robot2022.config.Constants.ShooterConstants
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 
-object Shooter : SubsystemBase(){
+object Shooter : SubsystemBase() {
   private val leaderMotor = TalonFX(ShooterConstants.LEADER_MOTOR_ID)
   private val followerMotor = TalonFX(ShooterConstants.FOLLOWER_MOTOR_ID)
 
@@ -27,7 +27,7 @@ object Shooter : SubsystemBase(){
       field = value
     }
 
-  public val shooterVelocity
+  val shooterVelocity
     get() = shooterSensor.velocity
 
   init {
@@ -71,6 +71,5 @@ object Shooter : SubsystemBase(){
     Logger.addSource("Shooter", "Shooter Follower Stator Current") {
       followerMotor.statorCurrent
     }
-
   }
 }
