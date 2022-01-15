@@ -35,6 +35,22 @@ object Feeder : SubsystemBase() {
     }
 
   var ballCount: Int = 0
+  private var bottomPrevStage: Boolean = bottomBeamBroken
+  private var topPrevStage: Boolean = bottomBeamBroken
+  override fun periodic() {
+    if ((bottomPrevStage != bottomBeamBroken) && !bottomBeamBroken) {
+      if (floorMotor.motorOutputPercent > 0) {
+        ballCount++
+      } else if (floorMotor.motorOutputPercent < 0) {
+        ballCount--
+      }
+    }
+    if ((topPrevStage != topBeamBroken) && !topBeamBroken && verticalMotor.motorOutputPercent > 0) {
+      ballCount--
+    }
+    bottomPrevStage = bottomBeamBroken
+    topPrevStage = topBeamBroken
+  }
 
   init {
     Logger.addSource(Constants.Feeder.TAB, "Feeder State") { feederState.toString() }
