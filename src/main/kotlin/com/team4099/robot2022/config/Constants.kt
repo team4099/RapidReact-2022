@@ -114,4 +114,14 @@ object Constants {
     const val THROTTLE_DEADBAND = 0.05
     const val TURN_DEADBAND = 0.05
   }
+
+  object ShooterConstants {
+    const val LEADER_MOTOR_ID = 0
+    const val FOLLOWER_MOTOR_ID = 1
+
+    enum class ShooterState(private val value: Double) {
+      IDLE(0.0),
+      SPIN_UP(1.0)
+    }
+  }
 }
