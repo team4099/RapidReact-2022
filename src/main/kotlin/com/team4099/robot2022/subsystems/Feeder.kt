@@ -1,6 +1,7 @@
 package com.team4099.robot2022.subsystems
 
 import com.ctre.phoenix.motorcontrol.ControlMode
+import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.team4099.lib.logging.Logger
 import com.team4099.robot2022.config.Constants
@@ -78,15 +79,9 @@ object Feeder : SubsystemBase() {
     floorMotor.enableVoltageCompensation(true)
     verticalMotor.enableVoltageCompensation(true)
 
-    //substitute for.setIdleMode()?
-    floorMotor.setNeutralMode()
-    verticalMotor.setNeutralMode()
-
     //not final
-    floorMotor.setSmartCurrentLimit()
-
-    //not final
-    floorMotor.burnFlash()
+    floorMotor.setNeutralMode(NeutralMode.Brake)
+    verticalMotor.setNeutralMode(NeutralMode.Brake)
 
   }
 }
