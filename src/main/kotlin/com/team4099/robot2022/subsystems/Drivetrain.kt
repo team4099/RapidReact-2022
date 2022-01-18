@@ -1,5 +1,6 @@
 package com.team4099.robot2022.subsystems
 
+import com.ctre.phoenix.sensors.CANCoder
 import com.kauailabs.navx.frc.AHRS
 import com.revrobotics.CANSparkMax
 import com.revrobotics.CANSparkMaxLowLevel
@@ -42,7 +43,7 @@ object Drivetrain : SubsystemBase() {
               CANSparkMax(
                   Constants.Drivetrain.FRONT_LEFT_SPEED_ID,
                   CANSparkMaxLowLevel.MotorType.kBrushless),
-              // CANCoder(Constants.Drivetrain.FRONT_LEFT_CANCODER_ID),
+              CANCoder(Constants.Drivetrain.FRONT_LEFT_CANCODER_ID),
               0.degrees,
               "Front Left Wheel"),
           Wheel(
@@ -52,9 +53,9 @@ object Drivetrain : SubsystemBase() {
               CANSparkMax(
                   Constants.Drivetrain.FRONT_RIGHT_SPEED_ID,
                   CANSparkMaxLowLevel.MotorType.kBrushless),
-              // CANCoder(Constants.Drivetrain.FRONT_RIGHT_CANCODER_ID),
+              CANCoder(Constants.Drivetrain.FRONT_LEFT_CANCODER_ID),
               0.degrees,
-              "Front Right Wheel"),
+              "Front Left Wheel"),
           Wheel(
               CANSparkMax(
                   Constants.Drivetrain.BACK_LEFT_DIRECTION_ID,
@@ -62,7 +63,7 @@ object Drivetrain : SubsystemBase() {
               CANSparkMax(
                   Constants.Drivetrain.BACK_LEFT_SPEED_ID,
                   CANSparkMaxLowLevel.MotorType.kBrushless),
-              // CANCoder(Constants.Drivetrain.BACK_LEFT_CANCODER_ID),
+              CANCoder(Constants.Drivetrain.BACK_LEFT_CANCODER_ID),
               0.degrees,
               "Back Left Wheel"),
           Wheel(
@@ -72,7 +73,7 @@ object Drivetrain : SubsystemBase() {
               CANSparkMax(
                   Constants.Drivetrain.BACK_RIGHT_SPEED_ID,
                   CANSparkMaxLowLevel.MotorType.kBrushless),
-              // CANCoder(Constants.Drivetrain.BACK_RIGHT_CANCODER_ID),
+              CANCoder(Constants.Drivetrain.BACK_RIGHT_CANCODER_ID),
               0.degrees,
               "Back Right Wheel"))
 
@@ -120,10 +121,10 @@ object Drivetrain : SubsystemBase() {
           backRightWheelLocation.translation2d)
 
   private val swerveDriveOdometry =
-    SwerveDriveOdometry(
-      swerveDriveKinematics,
-      gyroAngle.inRotation2ds,
-      Pose(0.meters, 0.meters, 0.degrees).pose2d)
+      SwerveDriveOdometry(
+          swerveDriveKinematics,
+          gyroAngle.inRotation2ds,
+          Pose(0.meters, 0.meters, 0.degrees).pose2d)
 
   var pose: Pose
     get() = Pose(swerveDriveOdometry.poseMeters)
@@ -181,30 +182,30 @@ object Drivetrain : SubsystemBase() {
     // Logger.addEvent("Drivetrain", "setting with $driveVector and $angularVelocity")
     //    Logger.addEvent("Drivetrain", "gyro angle: ${(-gyroAngle).inDegrees}")
     val vX =
-      if (fieldOriented) {
-        driveVector.first * (-gyroAngle).cos - driveVector.second * (-gyroAngle).sin
-      } else {
-        driveVector.first
-      }
+        if (fieldOriented) {
+          driveVector.first * (-gyroAngle).cos - driveVector.second * (-gyroAngle).sin
+        } else {
+          driveVector.first
+        }
     val vY =
-      if (fieldOriented) {
-        driveVector.second * (-gyroAngle).cos + driveVector.first * (-gyroAngle).sin
-      } else {
-        driveVector.second
-      }
+        if (fieldOriented) {
+          driveVector.second * (-gyroAngle).cos + driveVector.first * (-gyroAngle).sin
+        } else {
+          driveVector.second
+        }
 
     val aY =
-      if (fieldOriented) {
-        driveAcceleration.second * (-gyroAngle).cos + driveAcceleration.first * (-gyroAngle).sin
-      } else {
-        driveAcceleration.second
-      }
+        if (fieldOriented) {
+          driveAcceleration.second * (-gyroAngle).cos + driveAcceleration.first * (-gyroAngle).sin
+        } else {
+          driveAcceleration.second
+        }
     val aX =
-      if (fieldOriented) {
-        driveAcceleration.first * (-gyroAngle).cos - driveAcceleration.second * (-gyroAngle).sin
-      } else {
-        driveAcceleration.first
-      }
+        if (fieldOriented) {
+          driveAcceleration.first * (-gyroAngle).cos - driveAcceleration.second * (-gyroAngle).sin
+        } else {
+          driveAcceleration.first
+        }
 
     val a = vX - angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
     val b = vX + angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
