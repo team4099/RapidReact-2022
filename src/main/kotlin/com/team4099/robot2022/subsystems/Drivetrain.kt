@@ -53,7 +53,7 @@ object Drivetrain : SubsystemBase() {
               CANSparkMax(
                   Constants.Drivetrain.FRONT_RIGHT_SPEED_ID,
                   CANSparkMaxLowLevel.MotorType.kBrushless),
-              CANCoder(Constants.Drivetrain.FRONT_LEFT_CANCODER_ID),
+              CANCoder(Constants.Drivetrain.FRONT_RIGHT_CANCODER_ID),
               0.degrees,
               "Front Left Wheel"),
           Wheel(
