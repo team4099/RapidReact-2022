@@ -29,8 +29,8 @@ object Feeder : SubsystemBase() {
     get() = !bottomBeamDIO.get()
 
   var feederState = Constants.Feeder.FeederState.NEUTRAL
-    set(value) {
-      field = value
+    set(state) {
+      field = state
       floorMotor.set(ControlMode.PercentOutput, feederState.floorMotorPower)
       verticalMotor.set(ControlMode.PercentOutput, feederState.verticalMotorPower)
     }
@@ -79,7 +79,6 @@ object Feeder : SubsystemBase() {
     floorMotor.enableVoltageCompensation(true)
     verticalMotor.enableVoltageCompensation(true)
 
-    //not final
     floorMotor.setNeutralMode(NeutralMode.Brake)
     verticalMotor.setNeutralMode(NeutralMode.Brake)
 

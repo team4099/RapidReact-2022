@@ -5,13 +5,13 @@ import com.team4099.robot2022.config.Constants
 import com.team4099.robot2022.subsystems.Feeder
 import edu.wpi.first.wpilibj2.command.CommandBase
 
-class FeederCommand(var dir: Constants.Feeder.FeederState) : CommandBase() {
+class FeederCommand(var state: Constants.Feeder.FeederState) : CommandBase() {
   init {
     addRequirements(Feeder)
   }
 
   override fun initialize () {
-    Feeder.feederState = dir
+    Feeder.feederState = state
     Logger.addEvent("Feeder", "Feeder state: ${Feeder.feederState}")
   }
 }
