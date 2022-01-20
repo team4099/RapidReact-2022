@@ -1,5 +1,6 @@
 package com.team4099.robot2022.config
 
+import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.base.feet
 import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.meters
@@ -123,5 +124,16 @@ object Constants {
 
     const val THROTTLE_DEADBAND = 0.05
     const val TURN_DEADBAND = 0.05
+  }
+
+  enum class TelescopingArmPosition(val length: Length) {
+    LOW(0.meters),
+    HIGH(1.000.meters) // extended, value estimated for now
+  }
+
+  enum class PivotArmPosition {
+    //idle state to mark on feeder
+    //extended to rung
+    //pivoting
   }
 }
