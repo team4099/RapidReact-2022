@@ -21,4 +21,8 @@ object ControlBoard {
     get() = driver.rightXAxis
 
   val resetGyro = Trigger { driver.startButton && driver.selectButton }
+
+  //buttons not final
+  val runFeederIn = Trigger { operator.dPadUp }
+  val runFeederOut = Trigger { operator.dPadDown }
 }
