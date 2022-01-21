@@ -31,12 +31,12 @@ object Constants {
   }
 
   object Intake {
-    const val MOTORID = 1 // Need to change this later
     const val INTAKE_MOTOR = 1 // Change
     const val DOUBLE_SOLENOID = 1 // Change this too
     const val ARM_SOLENOID_FORWARD = 1 // Change
     const val ARM_SOLENOID_REVERSE = 1 // Change
     val RAMP_TIME = 1.0 // Change
+    const val TAB = "intake"
 
     enum class IntakeState(val speed: Double) {
       IDLE(0.0),

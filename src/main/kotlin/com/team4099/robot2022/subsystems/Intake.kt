@@ -31,12 +31,12 @@ object Intake : SubsystemBase() {
 
   init {
     intakeTalon.configFactoryDefault()
-    Logger.addSource("INTAKE", "Intake State") { intakeState.toString() }
-    Logger.addSource("INTAKE", "Intake Motor Power") { intakeTalon.motorOutputPercent }
-    Logger.addSource("INTAKE", "Intake Motor Stator Current") { intakeTalon.statorCurrent }
-    Logger.addSource("INTAKE", "Intake Motor Supply Current") { intakeTalon.supplyCurrent }
-    Logger.addSource("INTAKE", "Intake Motor Voltage") { intakeTalon.motorOutputVoltage }
-    Logger.addSource("INTAKE", "Arm State") { armState.toString() }
+    Logger.addSource(Constants.Intake.TAB, "Intake State") { intakeState.toString() }
+    Logger.addSource(Constants.Intake.TAB, "Intake Motor Power") { intakeTalon.motorOutputPercent }
+    Logger.addSource(Constants.Intake.TAB, "Intake Motor Stator Current") { intakeTalon.statorCurrent }
+    Logger.addSource(Constants.Intake.TAB, "Intake Motor Supply Current") { intakeTalon.supplyCurrent }
+    Logger.addSource(Constants.Intake.TAB, "Intake Motor Voltage") { intakeTalon.motorOutputVoltage }
+    Logger.addSource(Constants.Intake.TAB, "Arm State") { armState.toString() }
 
     intakeTalon.configOpenloopRamp(Constants.Intake.RAMP_TIME)
   }

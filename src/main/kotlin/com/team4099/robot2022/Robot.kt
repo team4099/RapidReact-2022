@@ -1,5 +1,4 @@
 package com.team4099.robot2022
-
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
 import com.team4099.robot2021.subsystems.com.team4099.robot2022.subsystems.Intake
