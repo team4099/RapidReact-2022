@@ -8,9 +8,18 @@ import edu.wpi.first.wpilibj2.command.CommandBase
 class IntakeBallsCommand : CommandBase() {
   init {
     addRequirements(Intake)
+    //addRequirements(Feeder)
   }
 
   override fun initialize() {
+    /*
+    if (Feeder.ballCount <= 2) {
+      Intake.intakeState = Constants.Intake.IntakeState.IN
+      Intake.armState = Constants.Intake.ArmPos.OUT
+      Logger.addEvent("Intake", "Intake Balls")
+    }
+     */
+
     Intake.intakeState = Constants.Intake.IntakeState.IN
     Intake.armState = Constants.Intake.ArmPos.OUT
     Logger.addEvent("Intake", "Intake Balls")
