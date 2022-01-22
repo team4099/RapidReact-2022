@@ -2,13 +2,17 @@ package com.team4099.robot2021.subsystems.com.team4099.robot2022.subsystems
 
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.can.TalonFX
+import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration
 import com.team4099.lib.logging.Logger
 import com.team4099.robot2022.config.Constants
 import edu.wpi.first.wpilibj.DoubleSolenoid
 import edu.wpi.first.wpilibj.PneumaticsModuleType
 import edu.wpi.first.wpilibj2.command.SubsystemBase
-
 object Intake : SubsystemBase() {
+
+  // motor params
+  private val steeringConfiguration: TalonFXConfiguration = TalonFXConfiguration()
+  private val driveConfiguration: TalonFXConfiguration = TalonFXConfiguration()
 
   private val intakeTalon = TalonFX(Constants.Intake.INTAKE_MOTOR)
   private val intakeDoubleSolenoid =
@@ -38,6 +42,8 @@ object Intake : SubsystemBase() {
     Logger.addSource(Constants.Intake.TAB, "Intake Motor Voltage") { intakeTalon.motorOutputVoltage }
     Logger.addSource(Constants.Intake.TAB, "Arm State") { armState.toString() }
 
+    steeringConfiguration.supplyCurrLimit.currentLimit =
+      Constants.Intake.STEERING_SUPPLY_CURRENT_LIMIT
     intakeTalon.configOpenloopRamp(Constants.Intake.RAMP_TIME)
   }
 }

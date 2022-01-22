@@ -37,6 +37,8 @@ object Constants {
     const val ARM_SOLENOID_REVERSE = 1 // Change
     val RAMP_TIME = 1.0 // Change
     const val TAB = "intake"
+    const val STEERING_SUPPLY_CURRENT_LIMIT = 20.0
+
 
     enum class IntakeState(val speed: Double) {
       IDLE(0.0),
