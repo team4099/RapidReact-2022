@@ -27,6 +27,54 @@ object PathStore {
           Constants.Drivetrain.SLOW_AUTO_VEL.inMetersPerSecond,
           Constants.Drivetrain.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond)
 
+  val backwardPath =
+      PathPlanner.loadPath(
+          "backward",
+          Constants.Drivetrain.SLOW_AUTO_VEL.inMetersPerSecond,
+          Constants.Drivetrain.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond)
+
+  val backwardSpinPath =
+      PathPlanner.loadPath(
+          "backwardSpin",
+          Constants.Drivetrain.SLOW_AUTO_VEL.inMetersPerSecond,
+          Constants.Drivetrain.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond)
+
+  val forwardPath =
+      PathPlanner.loadPath(
+          "forward",
+          Constants.Drivetrain.SLOW_AUTO_VEL.inMetersPerSecond,
+          Constants.Drivetrain.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond)
+
+  val fowardSpinPath =
+      PathPlanner.loadPath(
+          "fowardSpin",
+          Constants.Drivetrain.SLOW_AUTO_VEL.inMetersPerSecond,
+          Constants.Drivetrain.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond)
+
+  val turnLeftPath =
+      PathPlanner.loadPath(
+          "turnLeft",
+          Constants.Drivetrain.SLOW_AUTO_VEL.inMetersPerSecond,
+          Constants.Drivetrain.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond)
+
+  val turnLeftSpinPath =
+      PathPlanner.loadPath(
+          "turnLeftSpin",
+          Constants.Drivetrain.SLOW_AUTO_VEL.inMetersPerSecond,
+          Constants.Drivetrain.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond)
+
+  val turnRightPath =
+      PathPlanner.loadPath(
+          "turnRight",
+          Constants.Drivetrain.SLOW_AUTO_VEL.inMetersPerSecond,
+          Constants.Drivetrain.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond)
+
+  val turnRightSpinPath =
+      PathPlanner.loadPath(
+          "turnRightSpin",
+          Constants.Drivetrain.SLOW_AUTO_VEL.inMetersPerSecond,
+          Constants.Drivetrain.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond)
+
   //  val bottomLeftReturnShootPath =
   //      PathPlanner.loadPath(
   //          "bottomLeftReturnShoot.path",
