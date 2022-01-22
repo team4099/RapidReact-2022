@@ -1,6 +1,8 @@
 package com.team4099.robot2022.config
 
+import com.team4099.lib.units.Value
 import com.team4099.lib.units.base.Length
+import com.team4099.lib.units.base.Second
 import com.team4099.lib.units.base.feet
 import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.meters
@@ -33,8 +35,9 @@ object Constants {
 
   object Climber{
 
-    const val CLIMBER_RID:Int = 0
-    const val CLIMBER_LID:Int = 0
+    val BRAKE_RELEASE_TIMEOUT: Value<Second>
+    const val CLIMBER_TID:Int = 0
+    const val CLIMBER_PID:Int = 0
 
     const val SOLENOID_ID:Int = 0
 

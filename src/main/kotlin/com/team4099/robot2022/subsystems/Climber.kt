@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
 
 class Climber: SubsystemBase(){
 
-  private val tmotor: TalonFX = TalonFX(Constants.Climber.CLIMBER_RID)
-  private val pmotor: TalonFX = TalonFX(Constants.Climber.CLIMBER_LID)
+  private val tmotor: TalonFX = TalonFX(Constants.Climber.CLIMBER_TID)
+  private val pmotor: TalonFX = TalonFX(Constants.Climber.CLIMBER_PID)
   //PneumaticsModuleType new?
   private val pneumaticBreak = Solenoid(
     PneumaticsModuleType.CTREPCM,
@@ -19,6 +19,11 @@ class Climber: SubsystemBase(){
     set(value){
       pneumaticBreak.set(!value)
       field = value
+    }
+  var brakeApplied = true
+    set(value) {
+      field = value
+      pneumaticBrake.set(!value)
     }
   init {
 
@@ -38,7 +43,11 @@ class Climber: SubsystemBase(){
   fun setPivotArmPosition(position : Constants.PivotArmPosition) {
 
   }
-  fun setOpenLoopPower() {
+  fun setTOpenLoopPower(telePower: Double) {
 
   }
+  fun setPOpenLoopPower(pivotPower: Double) {
+
+  }
+
 }
