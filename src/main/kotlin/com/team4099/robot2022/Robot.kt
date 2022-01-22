@@ -48,7 +48,7 @@ object Robot : TimedRobot() {
     Intake.defaultCommand = IntakeIdleCommand()
 
     ControlBoard.runIntakeIn
-      //.whileActiveContinuous(FeederSerialize())
+      //.whileActiveContinuous(FeederCommand(Constants.Feeder.FeederState.FORWARD_ALL))
       .whileActiveContinuous(IntakeBallsCommand())
     ControlBoard.putIntakeUp
       .whileActiveContinuous(LiftIntakeCommand())
