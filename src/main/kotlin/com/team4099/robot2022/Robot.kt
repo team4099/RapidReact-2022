@@ -4,9 +4,13 @@ import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
 import com.team4099.robot2022.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2022.commands.drivetrain.ResetGyroCommand
+import com.team4099.robot2022.commands.feeder.FeederIdleCommand
+import com.team4099.robot2022.commands.feeder.FeederCommand
+import com.team4099.robot2022.commands.feeder.FeederSerialize
 import com.team4099.robot2022.config.Constants
 import com.team4099.robot2022.config.ControlBoard
 import com.team4099.robot2022.subsystems.Drivetrain
+import com.team4099.robot2022.subsystems.Feeder
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
@@ -29,6 +33,12 @@ object Robot : TimedRobot() {
     Logger.addSource("Robot", "Battery Voltage", RobotController::getBatteryVoltage)
 
     Logger.startLogging()
+
+    Feeder.defaultCommand = FeederIdleCommand()
+
+    //fix FORWARD_ALL and BACKWARD_ALL
+    ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Feeder.feederState.FORWARD_ALL))
+    ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.feederState.BACKWARD_ALL))
 
     Drivetrain.defaultCommand =
         OpenLoopDriveCommand(
