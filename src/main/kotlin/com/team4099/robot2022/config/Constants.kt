@@ -124,7 +124,7 @@ object Constants {
     const val TAB = "Feeder"
 
     //temp values
-    const val TOP_DIO_PIN = 1
+    const val TOP_DIO_PIN = 0
     const val BOTTOM_DIO_PIN = 1
     const val BEAM_BREAK_BROKEN_TIME = 0.05
     const val BEAM_BREAK_BACKWARDS_TIME = 0.05
