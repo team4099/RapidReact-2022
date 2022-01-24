@@ -1,11 +1,15 @@
 package com.team4099.robot2022.config
 
+import com.team4099.lib.units.Value
+import com.team4099.lib.units.Velocity
 import com.team4099.lib.units.base.feet
 import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.div
+import com.team4099.lib.units.derived.rotations
 import com.team4099.lib.units.derived.volts
+import com.team4099.lib.units.perMinute
 import com.team4099.lib.units.perSecond
 
 object Constants {
@@ -116,12 +120,28 @@ object Constants {
   }
 
   object ShooterConstants {
-    const val LEADER_MOTOR_ID = 0
-    const val FOLLOWER_MOTOR_ID = 1
+    const val LEADER_MOTOR_ID = 0 // TODO: update if incorrect
+    const val FOLLOWER_MOTOR_ID = 1 // TODO: update if incorrect
 
-    enum class ShooterState(private val value: Double) {
+    const val SHOOTER_KP = 0.5
+    const val SHOOTER_KI = 0.0
+    const val SHOOTER_KD = 0.0
+
+    val ANGLE = 80.0.degrees
+    val TARGET_VELOCITY_THRESHOLD = 150.rotations.perMinute
+    val FLYWHEEL_RADIUS = 0.240.meters
+
+    enum class ShooterState(public val rotationsPerMinute: Double) {
       IDLE(0.0),
-      SPIN_UP(1.0)
+      SPIN_UP(1200.0)
     }
+  }
+
+  object VisionConstants {
+    const val CAMERA_NAME = "photoncamera"
+    
+    val CAMERA_HEIGHT = (3.feet + 6.inches) // TODO: Update with correct value
+    val UPPER_HUB_TARGET_HEIGHT = (8.feet + 8.inches) // TODO: Make sure this is correct
+    val UPPER_HUB_TARGET_DIST = 2.feet // TODO: Is this how far we're gonna be? do the math
   }
 }
