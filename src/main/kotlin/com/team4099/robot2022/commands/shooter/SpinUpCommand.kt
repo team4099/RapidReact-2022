@@ -1,17 +1,21 @@
 package com.team4099.robot2022.commands.shooter
 
+import com.team4099.lib.units.inRotationsPerMinute
+import com.team4099.robot2022.config.Constants.ShooterConstants
+import com.team4099.robot2022.subsystems.Shooter
 import edu.wpi.first.wpilibj2.command.CommandBase
 
 class SpinUpCommand : CommandBase() {
-  override fun initialize() {
-    super.initialize()
+
+  init {
+    addRequirements(Shooter)
   }
 
-  override fun execute() {
-    super.execute()
+  override fun initialize() {
+    Shooter.shooterState = ShooterConstants.ShooterState.SPIN_UP
   }
 
   override fun isFinished(): Boolean {
-    return super.isFinished()
+    return ShooterConstants.TARGET_VELOCITY - Shooter.shooterVelocity <= ShooterConstants.TARGET_VELOCITY_THRESHOLD
   }
 }
