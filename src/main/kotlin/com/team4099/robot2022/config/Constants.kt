@@ -117,10 +117,10 @@ object Constants {
 
   object Feeder {
 
-    //temp values
+    //feeder_power temp
     const val FEEDER_POWER = 1.0
-    const val FLOOR_MOTOR_ID = 1
-    const val VERTICAL_MOTOR_ID = 1
+    const val FLOOR_MOTOR_ID = 61
+    const val VERTICAL_MOTOR_ID = 62
     const val TAB = "Feeder"
 
     //temp values
