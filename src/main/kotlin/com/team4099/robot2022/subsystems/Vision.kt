@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
 import org.photonvision.PhotonCamera
 import org.photonvision.PhotonUtils
 import org.photonvision.targeting.PhotonPipelineResult
-import org.photonvision.targeting.PhotonTrackedTarget
 
 object Vision : SubsystemBase() {
   private val camera = PhotonCamera(VisionConstants.CAMERA_NAME)
@@ -24,7 +23,6 @@ object Vision : SubsystemBase() {
 
   val bestTarget
     get() = latestResult?.bestTarget
-
 
   fun getRangeToBestTarget(): Value<Meter> {
     return PhotonUtils.calculateDistanceToTargetMeters(
