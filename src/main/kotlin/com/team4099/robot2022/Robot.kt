@@ -36,9 +36,8 @@ object Robot : TimedRobot() {
 
     Feeder.defaultCommand = FeederIdleCommand()
 
-    //fix FORWARD_ALL and BACKWARD_ALL
-    ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Feeder.feederState.FORWARD_ALL))
-    ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.feederState.BACKWARD_ALL))
+    ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Constants.Feeder.FeederState.FORWARD_ALL))
+    ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Constants.Feeder.FeederState.BACKWARD_ALL))
 
     Drivetrain.defaultCommand =
         OpenLoopDriveCommand(
