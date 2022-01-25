@@ -10,7 +10,7 @@ class FeederCommand(var state: Constants.Feeder.FeederState) : CommandBase() {
     addRequirements(Feeder)
   }
 
-  override fun initialize () {
+  override fun initialize() {
     Feeder.feederState = state
     Logger.addEvent("Feeder", "Feeder state: ${Feeder.feederState}")
   }

@@ -56,13 +56,23 @@ object Feeder : SubsystemBase() {
   init {
     Logger.addSource(Constants.Feeder.TAB, "Feeder State") { feederState.toString() }
     // floor motor values
-    Logger.addSource(Constants.Feeder.TAB, "Feeder Floor Motor Power") { floorMotor.motorOutputPercent }
-    Logger.addSource(Constants.Feeder.TAB, "Feeder Floor Motor Supply Current") { floorMotor.supplyCurrent }
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Floor Motor Power") {
+      floorMotor.motorOutputPercent
+    }
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Floor Motor Supply Current") {
+      floorMotor.supplyCurrent
+    }
     Logger.addSource(Constants.Feeder.TAB, "Feeder Floor Motor Voltage") { floorMotor.busVoltage }
     // vertical motor values
-    Logger.addSource(Constants.Feeder.TAB, "Feeder Vertical Motor Power") { verticalMotor.motorOutputPercent }
-    Logger.addSource(Constants.Feeder.TAB, "Feeder Vertical Motor Supply Current") { verticalMotor.supplyCurrent }
-    Logger.addSource(Constants.Feeder.TAB, "Feeder Vertical Motor Voltage") { verticalMotor.busVoltage }
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Vertical Motor Power") {
+      verticalMotor.motorOutputPercent
+    }
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Vertical Motor Supply Current") {
+      verticalMotor.supplyCurrent
+    }
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Vertical Motor Voltage") {
+      verticalMotor.busVoltage
+    }
     // beam broken values
     Logger.addSource(Constants.Feeder.TAB, "Feeder Top Beam DIO Broken") { topBeamBroken }
     Logger.addSource(Constants.Feeder.TAB, "Feeder Bottom Beam DIO Broken") { bottomBeamBroken }
@@ -72,12 +82,11 @@ object Feeder : SubsystemBase() {
     floorMotor.configFactoryDefault()
     verticalMotor.configFactoryDefault()
 
-    //temp values
+    // temp values
     floorMotor.enableVoltageCompensation(true)
     verticalMotor.enableVoltageCompensation(true)
 
     floorMotor.setNeutralMode(NeutralMode.Brake)
     verticalMotor.setNeutralMode(NeutralMode.Brake)
-
   }
 }

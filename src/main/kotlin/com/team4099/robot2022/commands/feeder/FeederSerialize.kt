@@ -27,15 +27,14 @@ class FeederSerialize : CommandBase() {
     } else {
       lastUnbrokenTime = currentTime
     }
-    Feeder.feederState = when {
-      Feeder.topBeamBroken ->
-        Constants.Feeder.FeederState.NEUTRAL
-      (currentTime - lastBrokenTime < Constants.Feeder.BEAM_BREAK_BROKEN_TIME) ->
-        Constants.Feeder.FeederState.FORWARD_ALL
-      (lastUnbrokenTime - lastBrokenTime < Constants.Feeder.BEAM_BREAK_BACKWARDS_TIME) ->
-        Constants.Feeder.FeederState.BACKWARD_VERTICAL
-      else ->
-        Constants.Feeder.FeederState.FORWARD_FLOOR
-    }
+    Feeder.feederState =
+        when {
+          Feeder.topBeamBroken -> Constants.Feeder.FeederState.NEUTRAL
+          (currentTime - lastBrokenTime < Constants.Feeder.BEAM_BREAK_BROKEN_TIME) ->
+              Constants.Feeder.FeederState.FORWARD_ALL
+          (lastUnbrokenTime - lastBrokenTime < Constants.Feeder.BEAM_BREAK_BACKWARDS_TIME) ->
+              Constants.Feeder.FeederState.BACKWARD_VERTICAL
+          else -> Constants.Feeder.FeederState.FORWARD_FLOOR
+        }
   }
 }

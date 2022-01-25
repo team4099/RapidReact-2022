@@ -117,13 +117,13 @@ object Constants {
 
   object Feeder {
 
-    //feeder_power temp
+    // feeder_power temp
     const val FEEDER_POWER = 1.0
     const val FLOOR_MOTOR_ID = 61
     const val VERTICAL_MOTOR_ID = 62
     const val TAB = "Feeder"
 
-    //temp values
+    // temp values
     const val TOP_DIO_PIN = 0
     const val BOTTOM_DIO_PIN = 1
     const val BEAM_BREAK_BROKEN_TIME = 0.05
@@ -138,6 +138,5 @@ object Constants {
       NEUTRAL(0.0, 0.0),
       SHOOT(FEEDER_POWER, FEEDER_POWER)
     }
-
   }
 }

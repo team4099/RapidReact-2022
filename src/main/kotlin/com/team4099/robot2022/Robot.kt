@@ -4,9 +4,8 @@ import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
 import com.team4099.robot2022.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2022.commands.drivetrain.ResetGyroCommand
-import com.team4099.robot2022.commands.feeder.FeederIdleCommand
 import com.team4099.robot2022.commands.feeder.FeederCommand
-import com.team4099.robot2022.commands.feeder.FeederSerialize
+import com.team4099.robot2022.commands.feeder.FeederIdleCommand
 import com.team4099.robot2022.config.Constants
 import com.team4099.robot2022.config.ControlBoard
 import com.team4099.robot2022.subsystems.Drivetrain
@@ -36,8 +35,10 @@ object Robot : TimedRobot() {
 
     Feeder.defaultCommand = FeederIdleCommand()
 
-    ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Constants.Feeder.FeederState.FORWARD_ALL))
-    ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Constants.Feeder.FeederState.BACKWARD_ALL))
+    ControlBoard.runFeederIn
+        .whileActiveOnce(FeederCommand(Constants.Feeder.FeederState.FORWARD_ALL))
+    ControlBoard.runFeederOut
+        .whileActiveOnce(FeederCommand(Constants.Feeder.FeederState.BACKWARD_ALL))
 
     Drivetrain.defaultCommand =
         OpenLoopDriveCommand(
