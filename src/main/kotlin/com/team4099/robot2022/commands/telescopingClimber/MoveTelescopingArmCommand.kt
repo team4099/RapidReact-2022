@@ -1,9 +1,7 @@
-package com.team4099.robot2022.commands.climber
+package com.team4099.robot2022.commands.telescopingClimber
 
 import com.team4099.robot2022.config.Constants
-import com.team4099.robot2022.subsystems.Climber
 import edu.wpi.first.wpilibj2.command.CommandBase
-import java.util.logging.Logger
 
 class MoveTelescopingArmCommand (val pos : Constants.TelescopingArmPosition) : CommandBase() {
   init {

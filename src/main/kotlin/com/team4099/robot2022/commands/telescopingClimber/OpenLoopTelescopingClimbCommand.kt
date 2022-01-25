@@ -1,10 +1,7 @@
 import com.team4099.lib.logging.Logger
-import com.team4099.lib.units.base.inInches
-import com.team4099.robot2022.config.Constants
-import com.team4099.robot2022.subsystems.Climber
 import edu.wpi.first.wpilibj2.command.CommandBase
 
-class OpenLoopClimbCommand(private val power: () -> Double) : CommandBase() {
+class OpenLoopTelescopingClimbCommand(private val power: () -> Double) : CommandBase() {
 
   init {
     //addRequirements(Climber)

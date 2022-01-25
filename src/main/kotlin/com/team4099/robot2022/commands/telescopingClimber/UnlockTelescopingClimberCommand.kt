@@ -1,11 +1,12 @@
-package com.team4099.robot2022.commands.climber
+package com.team4099.robot2022.commands.telescopingClimber
 
 import com.team4099.lib.hal.Clock
 import com.team4099.lib.logging.Logger
 import com.team4099.robot2022.config.Constants
-import com.team4099.robot2022.subsystems.Climber
+import com.team4099.robot2022.subsystems.TelescopingClimber
+import edu.wpi.first.wpilibj2.command.CommandBase
 
-class UnlockClimberCommand {
+class UnlockTelescopingClimberCommand : CommandBase() {
   init {
     //addRequirements(Climber)
   }
@@ -13,8 +14,8 @@ class UnlockClimberCommand {
 
   override fun initialize() {
     initTime = Clock.fpgaTime
-    Climber.setTOpenLoopPower(0.0)
-    Climber.t_BrakeApplied = false
+    TelescopingClimber.setTOpenLoopPower(0.0)
+    TelescopingClimber.t_BrakeApplied = false
   } //add info for pivot arm
 
   override fun end(interrupted: Boolean) {
