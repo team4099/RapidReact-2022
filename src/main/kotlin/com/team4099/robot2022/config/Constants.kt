@@ -29,8 +29,9 @@ object Constants {
     }
 
     val ROBOT_ID_MAP =
-        mapOf<Int, RobotName>(
-            0 to RobotName.COMPETITION, 1 to RobotName.PRACTICE, 2 to RobotName.MULE)
+      mapOf<Int, RobotName>(
+        0 to RobotName.COMPETITION, 1 to RobotName.PRACTICE, 2 to RobotName.MULE
+      )
   }
 
   object Drivetrain {
@@ -128,18 +129,20 @@ object Constants {
     const val SHOOTER_KD = 0.0
 
     val ANGLE = 80.0.degrees
+    val TARGET_VELOCITY = 1200.rotations.perMinute // TODO: Update with correct value
     val TARGET_VELOCITY_THRESHOLD = 150.rotations.perMinute
     val FLYWHEEL_RADIUS = 0.240.meters
 
     enum class ShooterState(public val rotationsPerMinute: Double) {
-      IDLE(0.0),
+      OFF(0.0),
+      IDLE(500.0), // TODO: Fix with a better idle value
       SPIN_UP(1200.0)
     }
   }
 
   object VisionConstants {
     const val CAMERA_NAME = "photoncamera"
-    
+
     val CAMERA_HEIGHT = (3.feet + 6.inches) // TODO: Update with correct value
     val UPPER_HUB_TARGET_HEIGHT = (8.feet + 8.inches) // TODO: Make sure this is correct
     val UPPER_HUB_TARGET_DIST = 2.feet // TODO: Is this how far we're gonna be? do the math
