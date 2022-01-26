@@ -1,10 +1,8 @@
 package com.team4099.robot2022
 
 import com.team4099.lib.logging.Logger
-import com.team4099.lib.pathfollow.trajectoryFromPathfinder
 import com.team4099.lib.smoothDeadband
-import com.team4099.robot2022.auto.PathStore
-import com.team4099.robot2022.commands.drivetrain.AutoDriveCommand
+import com.team4099.robot2022.commands.drivetrain.DriveCharacterizeCommand
 import com.team4099.robot2022.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2022.commands.drivetrain.ResetGyroCommand
 import com.team4099.robot2022.config.Constants
@@ -42,7 +40,8 @@ object Robot : TimedRobot() {
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
   }
 
-  val autonomousCommand = AutoDriveCommand(trajectoryFromPathfinder(PathStore.bottomLeftCargoPath))
+  // val autonomousCommand = AutoDriveCommand(trajectoryFromPathfinder(PathStore.turnRightPath))
+  val autonomousCommand = DriveCharacterizeCommand()
 
   override fun autonomousInit() {
     Drivetrain.zeroSensors()

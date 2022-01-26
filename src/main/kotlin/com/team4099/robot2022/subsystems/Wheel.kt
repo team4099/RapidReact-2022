@@ -144,6 +144,8 @@ class Wheel(
     Logger.addSource("$label Drivetrain", "Drive Position") { driveSensor.position.inFeet }
     Logger.addSource("$label Drivetrain", "Direction Position") { directionPosition.inDegrees }
 
+    Logger.addSource("$label Drivetrain", "Encoder Angle") { encoder.absolutePosition }
+
     Logger.addSource(
         "Drivetrain Tuning",
         "$label Azimuth kP",
@@ -237,13 +239,14 @@ class Wheel(
   }
 
   fun resetModuleZero() {
-    //        encoder.configFactoryDefault()
-    //        encoder.configMagnetOffset(0.0)
-    //        Logger.addEvent("Drivetrain", "Configuring Zero for Module $label")
-    //        encoder.configMagnetOffset(
-    //            -encoder.absolutePosition - zeroOffset.inDegrees -
-    // encoder.configGetMagnetOffset())
-    //        encoder.setPositionToAbsolute()
+    //          encoder.configFactoryDefault()
+    //          encoder.configMagnetOffset(0.0)
+    //          Logger.addEvent("Drivetrain", "Configuring Zero for Module $label")
+    //          encoder.configMagnetOffset(
+    //              -encoder.absolutePosition - zeroOffset.inDegrees -
+    //   encoder.configGetMagnetOffset())
+    //          encoder.setPositionToAbsolute()
+    //
     //
     //
     // encoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition)
@@ -252,7 +255,6 @@ class Wheel(
   fun zeroDirection() {
     directionSpark.encoder.position =
         directionSensor.positionToRawUnits(encoder.absolutePosition.degrees + zeroOffset)
-    directionSpark.encoder.position = directionSensor.positionToRawUnits(zeroOffset)
     Logger.addEvent("Drivetrain", "Loading Zero for Module $label ($zeroOffset)")
   }
 

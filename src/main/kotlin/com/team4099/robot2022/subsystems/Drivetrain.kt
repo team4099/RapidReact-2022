@@ -55,7 +55,7 @@ object Drivetrain : SubsystemBase() {
                   CANSparkMaxLowLevel.MotorType.kBrushless),
               CANCoder(Constants.Drivetrain.FRONT_RIGHT_CANCODER_ID),
               0.degrees,
-              "Front Left Wheel"),
+              "Front Right Wheel"),
           Wheel(
               CANSparkMax(
                   Constants.Drivetrain.BACK_LEFT_DIRECTION_ID,
@@ -90,14 +90,26 @@ object Drivetrain : SubsystemBase() {
           0.feet.perSecond.perSecond)
 
   private val gyro = AHRS()
+  val gyroRate: AngularVelocity
+    get() {
+      if (gyro.isConnected) {
+        return gyro.rate.radians.perSecond
+      } else {
+        return -1.337.radians.perSecond
+      }
+    }
 
   var gyroOffset: Angle = 0.0.degrees
   /** The current angle of the drivetrain. */
   val gyroAngle: Angle
     get() {
-      var rawAngle = gyro.angle + gyroOffset.inDegrees
-      rawAngle += Constants.Drivetrain.GYRO_RATE_COEFFICIENT * gyro.rate
-      return rawAngle.IEEErem(360.0).degrees
+      if (gyro.isConnected) {
+        var rawAngle = gyro.angle + gyroOffset.inDegrees
+        rawAngle += Constants.Drivetrain.GYRO_RATE_COEFFICIENT * gyro.rate
+        return rawAngle.IEEErem(360.0).degrees
+      } else {
+        return -1.337.radians
+      }
     }
 
   private val frontLeftWheelLocation =
