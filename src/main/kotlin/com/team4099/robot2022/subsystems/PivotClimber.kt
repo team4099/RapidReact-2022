@@ -1,5 +1,6 @@
 package com.team4099.robot2022.subsystems
 
+import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.team4099.lib.logging.Logger
 import com.team4099.robot2022.config.Constants
@@ -32,11 +33,12 @@ object PivotClimber: SubsystemBase(){
     }
   init {
     //currently based on 2021's
+    /* RIGHT ARM */
     Logger.addSource(Constants.Climber.TAB, "Traversal Right Arm Motor Power") {
-      pivotRightArm.appliedOutput
+      pivotRightArm.motorOutputPercent
     }
     Logger.addSource(Constants.Climber.TAB, "Climber Right Arm Output Current") {
-      pivotRightArm.outputCurrent
+      pivotRightArm.supplyCurrent
     }
     Logger.addSource(Constants.Climber.TAB, "Climber Right Arm Motor Applied Voltage") {
       pivotRightArm.busVoltage
@@ -48,11 +50,12 @@ object PivotClimber: SubsystemBase(){
       pivotRightArmSensor.position.inInches
     }
 
+    /* LEFT ARM */
     Logger.addSource(Constants.Climber.TAB, "Climber Left Arm Motor Power") {
-      pivotLeftArm.appliedOutput
+      pivotLeftArm.motorOutputPercent
     }
     Logger.addSource(Constants.Climber.TAB, "Climber Left Arm Output Current") {
-      pivotLeftArm.outputCurrent
+      pivotLeftArm.supplyCurrent
     }
     Logger.addSource(Constants.Climber.TAB, "Climber Left Arm Motor Applied Voltage") {
       pivotLeftArm.busVoltage
@@ -67,14 +70,14 @@ object PivotClimber: SubsystemBase(){
     Logger.addSource(Constants.Climber.TAB, "Right Pneumatics State") { brakeApplied.toString() }
     Logger.addSource(Constants.Climber.TAB, "Left Pneumatics State") { brakeApplied.toString() }
 
-    pivotRightArm.restoreFactoryDefaults()
+    pivotRightArm.configFactoryDefault()
     pivotRightArm.inverted = true
-    pivotRightArm.idleMode = TalonFX.IdleMode.kBrake //change for talonfx
+    pivotRightArm.setNeutralMode(NeutralMode.Brake) //change for talonfx
     pivotRightArm.burnFlash()
 
-    pivotLeftArm.restoreFactoryDefaults()
+    pivotLeftArm.configFactoryDefault()
     pivotLeftArm.inverted = true
-    pivotLeftArm.idleMode = TalonFX.IdleMode.kBrake //change for talon fx
+    pivotLeftArm.setNeutralMode(NeutralMode.Brake) //change for talon fx
     pivotLeftArm.burnFlash()
   }
 
