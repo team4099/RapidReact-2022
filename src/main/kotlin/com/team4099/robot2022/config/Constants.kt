@@ -43,6 +43,18 @@ object Constants {
 
   }
 
+  //placeholder values
+  object TelescopingClimber {
+    val TELESCOPING_R_ARM_ID = 0
+    val TELESCOPING_L_ARM_ID = 0
+    val TELESCOPING_SOLENOID_ID = 0
+    val TELESCOPING_BOTTOM_SAFETY_THRESHOLD = 0
+    val TELESCOPING_TOP_SAFETY_THRESHOLD = 0
+
+    const val TELESCOPING_POSITION = 0
+    const val TAB = "Climber"
+  }
+
   object Drivetrain {
     const val TICKS = 4096
 

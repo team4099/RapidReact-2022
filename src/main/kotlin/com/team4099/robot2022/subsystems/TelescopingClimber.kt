@@ -9,8 +9,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
 
 object TelescopingClimber: SubsystemBase(){
 
-  private val traversalRightArm: TalonFX = TalonFX(Constants.Climber.CLIMBER_TID)
-  private val traversalLeftArm: TalonFX = TalonFX(Constants.Climber.CLIMBER_PID)
+  private val telescopingRightArm: TalonFX = TalonFX(Constants.Climber.CLIMBER_TID)
+  private val telescopingLeftArm: TalonFX = TalonFX(Constants.Climber.CLIMBER_PID)
+
 
   //val traversalRightArmSensor =
   //val traversalLeftArmSensor =
@@ -18,7 +19,7 @@ object TelescopingClimber: SubsystemBase(){
   //PneumaticsModuleType new?
   private val pneumaticBrake = Solenoid(
     PneumaticsModuleType.CTREPCM,
-    Constants.Climber.SOLENOID_ID
+    Constants.TelescopingClimber.TELESCOPING_SOLENOID_ID
   )
   var isLocked: Boolean = true
     set(value){
@@ -32,43 +33,43 @@ object TelescopingClimber: SubsystemBase(){
     }
   init {
     //currently based on 2021's
-    Logger.addSource(Constants.Climber.TAB, "Traversal Right Arm Motor Power") {
-      traversalRightArm.appliedOutput
+    Logger.addSource(Constants.TelescopingClimber.TAB, "Traversal Right Arm Motor Power") {
+      telescopingRightArm.appliedOutput
     }
-    Logger.addSource(Constants.Climber.TAB, "Climber Right Arm Output Current") {
-      traversalRightArm.outputCurrent
+    Logger.addSource(Constants.TelescopingClimber.TAB, "Climber Right Arm Output Current") {
+      telescopingRightArm.outputCurrent
     }
-    Logger.addSource(Constants.Climber.TAB, "Climber Right Arm Motor Applied Voltage") {
-      traversalRightArm.busVoltage
+    Logger.addSource(Constants.TelescopingClimber.TAB, "Climber Right Arm Motor Applied Voltage") {
+      telescopingRightArm.busVoltage
     }
-    Logger.addSource(Constants.Climber.TAB, "Climber Right Arm Motor Velocity") {
+    Logger.addSource(Constants.TelescopingClimber.TAB, "Climber Right Arm Motor Velocity") {
       traversalRightArmSensor.velocity.inInchesPerSecond
     }
-    Logger.addSource(Constants.Climber.TAB, "Climber Right Arm Current Position") {
+    Logger.addSource(Constants.TelescopingClimber.TAB, "Climber Right Arm Current Position") {
       traversalRightArmSensor.position.inInches
     }
 
-    Logger.addSource(Constants.Climber.TAB, "Climber Left Arm Motor Power") {
-      traversalLeftArm.appliedOutput
+    Logger.addSource(Constants.TelescopingClimber.TAB, "Climber Left Arm Motor Power") {
+      telescopingLeftArm.appliedOutput
     }
-    Logger.addSource(Constants.Climber.TAB, "Climber Left Arm Output Current") {
-      traversalLeftArm.outputCurrent
+    Logger.addSource(Constants.TelescopingClimber.TAB, "Climber Left Arm Output Current") {
+      telescopingLeftArm.outputCurrent
     }
-    Logger.addSource(Constants.Climber.TAB, "Climber Left Arm Motor Applied Voltage") {
-      traversalLeftArm.busVoltage
+    Logger.addSource(Constants.TelescopingClimber.TAB, "Climber Left Arm Motor Applied Voltage") {
+      telescopingLeftArm.busVoltage
     } // idk if this correct
-    Logger.addSource(Constants.Climber.TAB, "Climber Left Arm Motor Velocity") {
+    Logger.addSource(Constants.TelescopingClimber.TAB, "Climber Left Arm Motor Velocity") {
       traversalLeftArmSensor.velocity.inInchesPerSecond
     }
-    Logger.addSource(Constants.Climber.TAB, "Climber Left Arm Current Position") {
+    Logger.addSource(Constants.TelescopingClimber.TAB, "Climber Left Arm Current Position") {
       traversalLeftArmSensor.position.inInches
     }
 
-    Logger.addSource(Constants.Climber.TAB, "Right Pneumatics State") { brakeApplied.toString() }
-    Logger.addSource(Constants.Climber.TAB, "Left Pneumatics State") { brakeApplied.toString() }
+    Logger.addSource(Constants.TelescopingClimber.TAB, "Right Pneumatics State") { brakeApplied.toString() }
+    Logger.addSource(Constants.TelescopingClimber.TAB, "Left Pneumatics State") { brakeApplied.toString() }
 
-    traversalRightArm.restoreFactoryDefaults()
-    traversalRightArm.inverted = true
+    telescopingRightArm.restoreFactoryDefaults()
+    telescopingRightArm.inverted = true
     // climberRArmPIDController.p = Constants.Climber.CLIMBER_P
     // climberRArmPIDController.i = Constants.Climber.CLIMBER_I
     // climberRArmPIDController.d = Constants.Climber.CLIMBER_D
@@ -76,15 +77,15 @@ object TelescopingClimber: SubsystemBase(){
     //    climberRArmSensor.velocityToRawUnits(Constants.Climber.CLIMBER_SPARKMAX_VEL), 0)
     // climberRArmPIDController.setSmartMotionMaxAccel(
     //    climberRArmSensor.accelerationToRawUnits(Constants.Climber.CLIMBER_SPARKMAX_ACC), 0)
-    traversalRightArm.idleMode = TalonFX.IdleMode.kBrake //change for talonfx
-    traversalRightArm.burnFlash()
+    telescopingRightArm.idleMode = TalonFX.IdleMode.kBrake //change for talonfx
+    telescopingRightArm.burnFlash()
 
-    traversalLeftArm.restoreFactoryDefaults()
-    traversalLeftArm.inverted = true
-    traversalLeftArm.idleMode = TalonFX.IdleMode.kBrake //change for talon fx
-    traversalLeftArm.burnFlash()
+    telescopingLeftArm.restoreFactoryDefaults()
+    telescopingLeftArm.inverted = true
+    telescopingLeftArm.idleMode = TalonFX.IdleMode.kBrake //change for talon fx
+    telescopingLeftArm.burnFlash()
   }
-  fun setPosition(position: Constants.ClimberPosition) {
+  fun setPosition(position: Constants.TelescopingClimber.TELESCOPING_POSITION) {
     //  climberRArmPIDController.setReference(
     //      climberRArmSensor.positionToRawUnits(position.length), ControlType.kSmartMotion)
     //  climberLArmPIDController.setReference(
@@ -94,31 +95,31 @@ object TelescopingClimber: SubsystemBase(){
   fun setOpenLoopPower(leftPower: Double, rightPower: Double, safetyEnabled: Boolean = true) {
     Logger.addEvent("Climber", "Left power: $leftPower Right power: $rightPower")
     if (safetyEnabled &&
-      ((climberLArmSensor.position < Constants.Climber.BOTTOM_SAFETY_THRESHOLD &&
+      ((climberLArmSensor.position < Constants.TelescopingClimber.TELESCOPING_BOTTOM_SAFETY_THRESHOLD &&
         leftPower < 0.0) ||
-        (climberLArmSensor.position > Constants.Climber.TOP_SAFETY_THRESHOLD &&
+        (climberLArmSensor.position > Constants.TelescopingClimber.TELESCOPING_TOP_SAFETY_THRESHOLD &&
           leftPower > 0.0))) {
-      climberLArm.set(0.0)
+      telescopingLeftArm.set(0.0)
     } else {
-      climberLArm.set(leftPower)
+      telescopingLeftArm.set(leftPower)
     }
     if (safetyEnabled &&
-      ((climberRArmSensor.position < Constants.Climber.BOTTOM_SAFETY_THRESHOLD &&
+      ((climberRArmSensor.position < Constants.TelescopingClimber.TELESCOPING_BOTTOM_SAFETY_THRESHOLD &&
         rightPower < 0.0) ||
-        (climberRArmSensor.position > Constants.Climber.TOP_SAFETY_THRESHOLD &&
+        (climberRArmSensor.position > Constants.TelescopingClimber.TELESCOPING_TOP_SAFETY_THRESHOLD &&
           rightPower > 0.0))) {
-      climberRArm.set(0.0)
+      telescopingRightArm.set(0.0)
     } else {
-      climberRArm.set(rightPower)
+      telescopingRightArm.set(rightPower)
     }
   }
 
   fun zeroLeftEncoder() {
-    climberLArm.encoder.position = 0.0
+    telescopingLeftArm.encoder.position = 0.0
   }
 
   fun zeroRightEncoder() {
-    climberRArm.encoder.position = 0.0
+    telescopingRightArm.encoder.position = 0.0
   }
 
 
