@@ -117,4 +117,11 @@ object Constants {
     const val THROTTLE_DEADBAND = 0.05
     const val TURN_DEADBAND = 0.05
   }
+
+  object Led {
+    const val LED_CONTROLLER_ID = 1
+     enum class LedState(val speed:
+
+     )
+  }
 }
