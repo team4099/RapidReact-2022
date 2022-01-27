@@ -85,7 +85,7 @@ object TelescopingClimber: SubsystemBase(){
     telescopingLeftArm.setNeutralMode(NeutralMode.Brake)
     telescopingLeftArm.burnFlash()
   }
-  fun setPosition(position: Constants.TelescopingClimber.TELESCOPING_POSITION) {
+  fun setPosition(position: Constants.TelescopingArmPosition) {
     //  climberRArmPIDController.setReference(
     //      climberRArmSensor.positionToRawUnits(position.length), ControlType.kSmartMotion)
     //  climberLArmPIDController.setReference(

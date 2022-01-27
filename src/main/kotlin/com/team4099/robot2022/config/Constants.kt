@@ -36,7 +36,6 @@ object Constants {
 
   //temp values
   object Climber {
-    val BRAKE_RELEASE_TIMEOUT: Value<Second> = 0.0.seconds
   }
 
   //placeholder values
@@ -44,15 +43,21 @@ object Constants {
     const val TELESCOPING_R_ARM_ID = 0
     const val TELESCOPING_L_ARM_ID = 0
     const val TELESCOPING_SOLENOID_ID = 0
+
     const val TELESCOPING_BOTTOM_SAFETY_THRESHOLD = 0
     const val TELESCOPING_TOP_SAFETY_THRESHOLD = 0
 
     const val TELESCOPING_POSITION = 0
+
+    val TELESCOPING_BRAKE_RELEASE_TIMEOUT: Value<Second> = 0.0.seconds
+
     const val TAB = "Climber"
   }
 
   //temp values
   object PivotClimber {
+    val PIVOT_BRAKE_RELEASE_TIMEOUT: Value<Second> = 0.0.seconds
+
     const val TAB = "Climber"
   }
 
