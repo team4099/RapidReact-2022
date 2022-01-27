@@ -72,12 +72,12 @@ object PivotClimber: SubsystemBase(){
 
     pivotRightArm.configFactoryDefault()
     pivotRightArm.inverted = true
-    pivotRightArm.setNeutralMode(NeutralMode.Brake) //change for talonfx
+    pivotRightArm.setNeutralMode(NeutralMode.Brake)
     pivotRightArm.burnFlash()
 
     pivotLeftArm.configFactoryDefault()
     pivotLeftArm.inverted = true
-    pivotLeftArm.setNeutralMode(NeutralMode.Brake) //change for talon fx
+    pivotLeftArm.setNeutralMode(NeutralMode.Brake)
     pivotLeftArm.burnFlash()
   }
 

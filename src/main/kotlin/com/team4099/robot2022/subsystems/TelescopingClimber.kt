@@ -1,5 +1,6 @@
 package com.team4099.robot2022.subsystems
 
+import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.team4099.lib.logging.Logger
 import com.team4099.robot2022.config.Constants
@@ -11,7 +12,6 @@ object TelescopingClimber: SubsystemBase(){
 
   private val telescopingRightArm: TalonFX = TalonFX(Constants.Climber.CLIMBER_TID)
   private val telescopingLeftArm: TalonFX = TalonFX(Constants.Climber.CLIMBER_PID)
-
 
   //val traversalRightArmSensor =
   //val traversalLeftArmSensor =
@@ -34,10 +34,10 @@ object TelescopingClimber: SubsystemBase(){
   init {
     //currently based on 2021's
     Logger.addSource(Constants.TelescopingClimber.TAB, "Traversal Right Arm Motor Power") {
-      telescopingRightArm.appliedOutput
+      telescopingRightArm.motorOutputPercent
     }
     Logger.addSource(Constants.TelescopingClimber.TAB, "Climber Right Arm Output Current") {
-      telescopingRightArm.outputCurrent
+      telescopingRightArm.supplyCurrent
     }
     Logger.addSource(Constants.TelescopingClimber.TAB, "Climber Right Arm Motor Applied Voltage") {
       telescopingRightArm.busVoltage
@@ -50,10 +50,10 @@ object TelescopingClimber: SubsystemBase(){
     }
 
     Logger.addSource(Constants.TelescopingClimber.TAB, "Climber Left Arm Motor Power") {
-      telescopingLeftArm.appliedOutput
+      telescopingLeftArm.motorOutputPercent
     }
     Logger.addSource(Constants.TelescopingClimber.TAB, "Climber Left Arm Output Current") {
-      telescopingLeftArm.outputCurrent
+      telescopingLeftArm.supplyCurrent
     }
     Logger.addSource(Constants.TelescopingClimber.TAB, "Climber Left Arm Motor Applied Voltage") {
       telescopingLeftArm.busVoltage
@@ -68,7 +68,7 @@ object TelescopingClimber: SubsystemBase(){
     Logger.addSource(Constants.TelescopingClimber.TAB, "Right Pneumatics State") { brakeApplied.toString() }
     Logger.addSource(Constants.TelescopingClimber.TAB, "Left Pneumatics State") { brakeApplied.toString() }
 
-    telescopingRightArm.restoreFactoryDefaults()
+    telescopingRightArm.configFactoryDefault()
     telescopingRightArm.inverted = true
     // climberRArmPIDController.p = Constants.Climber.CLIMBER_P
     // climberRArmPIDController.i = Constants.Climber.CLIMBER_I
@@ -77,12 +77,12 @@ object TelescopingClimber: SubsystemBase(){
     //    climberRArmSensor.velocityToRawUnits(Constants.Climber.CLIMBER_SPARKMAX_VEL), 0)
     // climberRArmPIDController.setSmartMotionMaxAccel(
     //    climberRArmSensor.accelerationToRawUnits(Constants.Climber.CLIMBER_SPARKMAX_ACC), 0)
-    telescopingRightArm.idleMode = TalonFX.IdleMode.kBrake //change for talonfx
+    telescopingRightArm.setNeutralMode(NeutralMode.Brake)
     telescopingRightArm.burnFlash()
 
-    telescopingLeftArm.restoreFactoryDefaults()
+    telescopingLeftArm.configFactoryDefault()
     telescopingLeftArm.inverted = true
-    telescopingLeftArm.idleMode = TalonFX.IdleMode.kBrake //change for talon fx
+    telescopingLeftArm.setNeutralMode(NeutralMode.Brake)
     telescopingLeftArm.burnFlash()
   }
   fun setPosition(position: Constants.TelescopingClimber.TELESCOPING_POSITION) {

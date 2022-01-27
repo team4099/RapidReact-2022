@@ -33,23 +33,25 @@ object Constants {
             0 to RobotName.COMPETITION, 1 to RobotName.PRACTICE, 2 to RobotName.MULE)
   }
 
-  object Climber{
-
+  object Climber {
     val BRAKE_RELEASE_TIMEOUT: Value<Second>
-    const val CLIMBER_TID:Int = 0
-    const val CLIMBER_PID:Int = 0
 
-    const val SOLENOID_ID:Int = 0
+    const val CLIMBER_TID: Int = 0
+    const val CLIMBER_PID: Int = 0
+
+    const val SOLENOID_ID: Int = 0
+
+    const val TAG = "Climber"
 
   }
 
   //placeholder values
   object TelescopingClimber {
-    val TELESCOPING_R_ARM_ID = 0
-    val TELESCOPING_L_ARM_ID = 0
-    val TELESCOPING_SOLENOID_ID = 0
-    val TELESCOPING_BOTTOM_SAFETY_THRESHOLD = 0
-    val TELESCOPING_TOP_SAFETY_THRESHOLD = 0
+    const val TELESCOPING_R_ARM_ID = 0
+    const val TELESCOPING_L_ARM_ID = 0
+    const val TELESCOPING_SOLENOID_ID = 0
+    const val TELESCOPING_BOTTOM_SAFETY_THRESHOLD = 0
+    const val TELESCOPING_TOP_SAFETY_THRESHOLD = 0
 
     const val TELESCOPING_POSITION = 0
     const val TAB = "Climber"
