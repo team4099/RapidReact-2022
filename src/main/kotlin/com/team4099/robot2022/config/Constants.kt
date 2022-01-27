@@ -6,6 +6,7 @@ import com.team4099.lib.units.base.Second
 import com.team4099.lib.units.base.feet
 import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.meters
+import com.team4099.lib.units.base.seconds
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.div
 import com.team4099.lib.units.derived.volts
@@ -33,16 +34,9 @@ object Constants {
             0 to RobotName.COMPETITION, 1 to RobotName.PRACTICE, 2 to RobotName.MULE)
   }
 
+  //temp values
   object Climber {
-    val BRAKE_RELEASE_TIMEOUT: Value<Second>
-
-    const val CLIMBER_TID: Int = 0
-    const val CLIMBER_PID: Int = 0
-
-    const val SOLENOID_ID: Int = 0
-
-    const val TAG = "Climber"
-
+    val BRAKE_RELEASE_TIMEOUT: Value<Second> = 0.0.seconds
   }
 
   //placeholder values
@@ -54,6 +48,11 @@ object Constants {
     const val TELESCOPING_TOP_SAFETY_THRESHOLD = 0
 
     const val TELESCOPING_POSITION = 0
+    const val TAB = "Climber"
+  }
+
+  //temp values
+  object PivotClimber {
     const val TAB = "Climber"
   }
 

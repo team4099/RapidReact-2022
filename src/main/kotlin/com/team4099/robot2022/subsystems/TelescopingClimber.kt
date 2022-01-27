@@ -10,8 +10,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
 
 object TelescopingClimber: SubsystemBase(){
 
-  private val telescopingRightArm: TalonFX = TalonFX(Constants.Climber.CLIMBER_TID)
-  private val telescopingLeftArm: TalonFX = TalonFX(Constants.Climber.CLIMBER_PID)
+  private val telescopingRightArm: TalonFX = TalonFX(Constants.TelescopingClimber.TELESCOPING_R_ARM_ID)
+  private val telescopingLeftArm: TalonFX = TalonFX(Constants.TelescopingClimber.TELESCOPING_L_ARM_ID)
 
   //val traversalRightArmSensor =
   //val traversalLeftArmSensor =

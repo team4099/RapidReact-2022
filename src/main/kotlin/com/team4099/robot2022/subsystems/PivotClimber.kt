@@ -34,41 +34,41 @@ object PivotClimber: SubsystemBase(){
   init {
     //currently based on 2021's
     /* RIGHT ARM */
-    Logger.addSource(Constants.Climber.TAB, "Traversal Right Arm Motor Power") {
+    Logger.addSource(Constants.PivotClimber.TAB, "Traversal Right Arm Motor Power") {
       pivotRightArm.motorOutputPercent
     }
-    Logger.addSource(Constants.Climber.TAB, "Climber Right Arm Output Current") {
+    Logger.addSource(Constants.PivotClimber.TAB, "Climber Right Arm Output Current") {
       pivotRightArm.supplyCurrent
     }
-    Logger.addSource(Constants.Climber.TAB, "Climber Right Arm Motor Applied Voltage") {
+    Logger.addSource(Constants.PivotClimber.TAB, "Climber Right Arm Motor Applied Voltage") {
       pivotRightArm.busVoltage
     }
-    Logger.addSource(Constants.Climber.TAB, "Climber Right Arm Motor Velocity") {
+    Logger.addSource(Constants.PivotClimber.TAB, "Climber Right Arm Motor Velocity") {
       pivotRightArmSensor.velocity.inInchesPerSecond
     }
-    Logger.addSource(Constants.Climber.TAB, "Climber Right Arm Current Position") {
+    Logger.addSource(Constants.PivotClimber.TAB, "Climber Right Arm Current Position") {
       pivotRightArmSensor.position.inInches
     }
 
     /* LEFT ARM */
-    Logger.addSource(Constants.Climber.TAB, "Climber Left Arm Motor Power") {
+    Logger.addSource(Constants.PivotClimber.TAB, "Climber Left Arm Motor Power") {
       pivotLeftArm.motorOutputPercent
     }
-    Logger.addSource(Constants.Climber.TAB, "Climber Left Arm Output Current") {
+    Logger.addSource(Constants.PivotClimber.TAB, "Climber Left Arm Output Current") {
       pivotLeftArm.supplyCurrent
     }
-    Logger.addSource(Constants.Climber.TAB, "Climber Left Arm Motor Applied Voltage") {
+    Logger.addSource(Constants.PivotClimber.TAB, "Climber Left Arm Motor Applied Voltage") {
       pivotLeftArm.busVoltage
     } // idk if this correct
-    Logger.addSource(Constants.Climber.TAB, "Climber Left Arm Motor Velocity") {
+    Logger.addSource(Constants.PivotClimber.TAB, "Climber Left Arm Motor Velocity") {
       pivotLeftArmSensor.velocity.inInchesPerSecond
     }
-    Logger.addSource(Constants.Climber.TAB, "Climber Left Arm Current Position") {
+    Logger.addSource(Constants.PivotClimber.TAB, "Climber Left Arm Current Position") {
       pivotLeftArmSensor.position.inInches
     }
 
-    Logger.addSource(Constants.Climber.TAB, "Right Pneumatics State") { brakeApplied.toString() }
-    Logger.addSource(Constants.Climber.TAB, "Left Pneumatics State") { brakeApplied.toString() }
+    Logger.addSource(Constants.PivotClimber.TAB, "Right Pneumatics State") { brakeApplied.toString() }
+    Logger.addSource(Constants.PivotClimber.TAB, "Left Pneumatics State") { brakeApplied.toString() }
 
     pivotRightArm.configFactoryDefault()
     pivotRightArm.inverted = true
