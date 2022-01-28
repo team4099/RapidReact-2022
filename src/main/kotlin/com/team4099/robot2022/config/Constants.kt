@@ -120,8 +120,16 @@ object Constants {
 
   object Led {
     const val LED_CONTROLLER_ID = 1
-     enum class LedState(val speed:
+    const val TAB = "led"
 
-     )
+    enum class LedState(val pwmValue: Double) {
+      IDLE(0.65),
+      STANDING_ZERO(0.61),
+      STANDING_ONE(0.69),
+      STANDING_TWO(0.77),
+      CHANGING_ZERO(-0.25),
+      CHANGING_ONE(0.05),
+      CHANGING_TWO(0.25)
+    }
   }
 }
