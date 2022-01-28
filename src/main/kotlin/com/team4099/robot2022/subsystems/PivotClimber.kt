@@ -10,8 +10,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
 
 object PivotClimber: SubsystemBase(){
 
-  private val pivotRightArm: TalonFX = TalonFX(Constants.Climber.CLIMBER_TID)
-  private val pivotLeftArm: TalonFX = TalonFX(Constants.Climber.CLIMBER_PID)
+  // temp once motors are figured out
+  private val pivotRightArm: TalonFX = TalonFX(Constants.PivotClimber.PIVOT_L_ARM_ID)
+  private val pivotLeftArm: TalonFX = TalonFX(Constants.PivotClimber.PIVOT_R_ARM_ID)
 
   //val pivotRightArmSensor =
   //val pivotLeftArmSensor =

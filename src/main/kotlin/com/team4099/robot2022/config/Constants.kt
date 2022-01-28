@@ -34,10 +34,6 @@ object Constants {
             0 to RobotName.COMPETITION, 1 to RobotName.PRACTICE, 2 to RobotName.MULE)
   }
 
-  //temp values
-  object Climber {
-  }
-
   //placeholder values
   object TelescopingClimber {
     const val TELESCOPING_R_ARM_ID = 0
@@ -56,6 +52,9 @@ object Constants {
 
   //temp values
   object PivotClimber {
+    const val PIVOT_R_ARM_ID = 0
+    const val PIVOT_L_ARM_ID = 0
+
     val PIVOT_BRAKE_RELEASE_TIMEOUT: Value<Second> = 0.0.seconds
 
     const val TAB = "Climber"
