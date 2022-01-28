@@ -2,6 +2,7 @@ package com.team4099.robot2022.commands.led
 
 import com.team4099.robot2022.config.Constants
 import com.team4099.robot2022.subsystems.Led
+import edu.wpi.first.wpilibj2.command.CommandBase
 
 class LedCommand : CommandBase() {
   init {
@@ -16,7 +17,9 @@ class LedCommand : CommandBase() {
       val isChanging = true
     }
     when (Feeder.ballCount) {
+
       0 -> {
+        val isChanging = false
         if (isChanging){
           Led.ledState = Constants.Led.LedState.CHANGING_ZERO
         }
@@ -25,6 +28,7 @@ class LedCommand : CommandBase() {
         }
       }
       1 -> {
+        val isChanging = false
         if (isChanging){
           Led.ledState = Constants.Led.LedState.CHANGING_ONE
         }
@@ -33,7 +37,10 @@ class LedCommand : CommandBase() {
         }
       }
       2 -> {
+        val isChanging = false
+
         if (isChanging){
+
           Led.ledState = Constants.Led.LedState.CHANGING_TWO
         }
         else {
