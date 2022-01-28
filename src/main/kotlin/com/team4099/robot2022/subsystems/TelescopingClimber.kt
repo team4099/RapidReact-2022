@@ -78,11 +78,13 @@ object TelescopingClimber: SubsystemBase(){
     // climberRArmPIDController.setSmartMotionMaxAccel(
     //    climberRArmSensor.accelerationToRawUnits(Constants.Climber.CLIMBER_SPARKMAX_ACC), 0)
     telescopingRightArm.setNeutralMode(NeutralMode.Brake)
+    telescopingRightArm.enableVoltageCompensation(true)
     telescopingRightArm.burnFlash()
 
     telescopingLeftArm.configFactoryDefault()
     telescopingLeftArm.inverted = true
     telescopingLeftArm.setNeutralMode(NeutralMode.Brake)
+    telescopingLeftArm.enableVoltageCompensation(true)
     telescopingLeftArm.burnFlash()
   }
   fun setPosition(position: Constants.TelescopingArmPosition) {

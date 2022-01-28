@@ -74,11 +74,13 @@ object PivotClimber: SubsystemBase(){
     pivotRightArm.configFactoryDefault()
     pivotRightArm.inverted = true
     pivotRightArm.setNeutralMode(NeutralMode.Brake)
+    pivotRightArm.enableVoltageCompensation(true)
     pivotRightArm.burnFlash()
 
     pivotLeftArm.configFactoryDefault()
     pivotLeftArm.inverted = true
     pivotLeftArm.setNeutralMode(NeutralMode.Brake)
+    pivotRightArm.enableVoltageCompensation(true)
     pivotLeftArm.burnFlash()
   }
 
