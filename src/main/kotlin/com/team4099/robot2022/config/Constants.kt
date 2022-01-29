@@ -121,6 +121,7 @@ object Constants {
   }
 
   object ShooterConstants {
+    // Motor configuration
     const val LEADER_MOTOR_ID = 0 // TODO: update if incorrect
     const val FOLLOWER_MOTOR_ID = 1 // TODO: update if incorrect
 
@@ -128,10 +129,14 @@ object Constants {
     const val SHOOTER_KI = 0.0
     const val SHOOTER_KD = 0.0
 
-    val ANGLE = 80.0.degrees
+    // Target values
     val TARGET_VELOCITY = 1200.rotations.perMinute // TODO: Update with correct value
     val TARGET_VELOCITY_THRESHOLD = 150.rotations.perMinute
-    val FLYWHEEL_RADIUS = 0.240.meters
+
+    // Physical measurements
+    val ANGLE = 80.0.degrees
+    val SHOOTER_HEIGHT = 33.0.inches
+    val FLYWHEEL_RADIUS = 2.0.inches
 
     enum class ShooterState(public val rotationsPerMinute: Double) {
       OFF(0.0),
@@ -145,6 +150,5 @@ object Constants {
 
     val CAMERA_HEIGHT = (3.feet + 6.inches) // TODO: Update with correct value
     val UPPER_HUB_TARGET_HEIGHT = (8.feet + 8.inches) // TODO: Make sure this is correct
-    val UPPER_HUB_TARGET_DIST = 2.feet // TODO: Is this how far we're gonna be? do the math
   }
 }
