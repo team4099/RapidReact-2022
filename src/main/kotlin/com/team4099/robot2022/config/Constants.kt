@@ -122,8 +122,8 @@ object Constants {
 
   object ShooterConstants {
     // Motor configuration
-    const val LEADER_MOTOR_ID = 0 // TODO: update if incorrect
-    const val FOLLOWER_MOTOR_ID = 1 // TODO: update if incorrect
+    const val LEADER_MOTOR_ID = 71 // TODO: update if incorrect
+    const val FOLLOWER_MOTOR_ID = 72 // TODO: update if incorrect
 
     const val SHOOTER_KP = 0.5
     const val SHOOTER_KI = 0.0
