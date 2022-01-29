@@ -4,7 +4,7 @@ import com.team4099.robot2022.config.Constants
 import com.team4099.robot2022.subsystems.Led
 import edu.wpi.first.wpilibj2.command.CommandBase
 
-class LedCommand : CommandBase() {
+class ChangeLedState : CommandBase() {
   init {
     addRequirement(Feeder)
     addRequirement(Intake)
@@ -13,13 +13,14 @@ class LedCommand : CommandBase() {
   }
 
   override fun initialize(){
+    val isChanging = false
+
     if (Intake.intakeState == 1.0 || Shooter.shooterState == 1200.0) {
       val isChanging = true
     }
     when (Feeder.ballCount) {
 
       0 -> {
-        val isChanging = false
         if (isChanging){
           Led.ledState = Constants.Led.LedState.CHANGING_ZERO
         }
