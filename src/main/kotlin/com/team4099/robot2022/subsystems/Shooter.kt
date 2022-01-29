@@ -19,7 +19,7 @@ object Shooter : SubsystemBase() {
 
   var shooterState = ShooterState.IDLE
     set(value) {
-      leaderMotor.set(ControlMode.Velocity, value.rotationsPerMinute)
+      setVelocity(value.rotationsPerMinute)
       field = value
     }
 
@@ -72,4 +72,6 @@ object Shooter : SubsystemBase() {
       followerMotor.statorCurrent
     }
   }
+
+  fun setVelocity(velocity: Double) = leaderMotor.set(ControlMode.PercentOutput, velocity);
 }

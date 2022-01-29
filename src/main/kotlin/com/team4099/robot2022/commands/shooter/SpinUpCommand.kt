@@ -1,18 +1,20 @@
 package com.team4099.robot2022.commands.shooter
 
+import com.team4099.lib.units.derived.rotations
 import com.team4099.lib.units.inRotationsPerMinute
+import com.team4099.lib.units.perMinute
 import com.team4099.robot2022.config.Constants.ShooterConstants
 import com.team4099.robot2022.subsystems.Shooter
 import edu.wpi.first.wpilibj2.command.CommandBase
 
-class SpinUpCommand : CommandBase() {
-
+class SpinUpCommand(val target: Double = ShooterConstants.ShooterState.SPIN_UP.rotationsPerMinute) :
+  CommandBase() {
   init {
     addRequirements(Shooter)
   }
 
   override fun initialize() {
-    Shooter.shooterState = ShooterConstants.ShooterState.SPIN_UP
+    Shooter.setVelocity(target)
   }
 
   override fun isFinished(): Boolean {
