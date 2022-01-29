@@ -167,6 +167,7 @@ class Wheel(
     directionPID.setSmartMotionAllowedClosedLoopError(
         directionSensor.positionToRawUnits(Constants.Drivetrain.ALLOWED_ANGLE_ERROR), 0)
     directionSpark.setSmartCurrentLimit(Constants.Drivetrain.DIRECTION_SMART_CURRENT_LIMIT)
+    directionSpark.enableVoltageCompensation(12.0)
 
     directionSpark.burnFlash()
 
@@ -175,6 +176,7 @@ class Wheel(
     drivePID.d = Constants.Drivetrain.PID.DRIVE_KD
     drivePID.ff = Constants.Drivetrain.PID.DRIVE_KFF
     driveSpark.setSmartCurrentLimit(Constants.Drivetrain.DRIVE_SMART_CURRENT_LIMIT)
+    driveSpark.enableVoltageCompensation(12.0)
     driveSpark.burnFlash()
   }
 

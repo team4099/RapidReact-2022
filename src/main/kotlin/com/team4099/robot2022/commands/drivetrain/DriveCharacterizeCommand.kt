@@ -1,5 +1,6 @@
 package com.team4099.robot2022.commands.drivetrain
 
+import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.base.inMeters
 import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.derived.degrees
@@ -13,7 +14,7 @@ class DriveCharacterizeCommand : SequentialCommandGroup() {
   init {
     val drivetrainSetter =
         { leftPower: Double, rightPower: Double ->
-          Drivetrain.wheels.forEach { it.setOpenLoop(0.degrees, leftPower) }
+          Drivetrain.wheels.forEach { it.setOpenLoop(0.degrees, leftPower / 12) }
         }
     val drivetrainGetter =
         {
@@ -26,7 +27,7 @@ class DriveCharacterizeCommand : SequentialCommandGroup() {
               Drivetrain.gyroOffset.inRadians,
               Drivetrain.gyroRate.inRadiansPerSecond)
         }
-
+    Logger.addEvent("Drivetrain", "Started DriveCharacterizeCommand")
     addCommands(SysIdCommand(Drivetrain, drivetrainSetter, drivetrainGetter))
   }
 }

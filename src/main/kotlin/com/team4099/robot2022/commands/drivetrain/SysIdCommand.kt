@@ -13,18 +13,18 @@ import java.util.function.Supplier
 // the WPILib BSD license file in the root directory of this project.
 class SysIdCommand : CommandBase {
   private val isDriveTrain: Boolean
-  private var driveTrainSetter: BiConsumer<Double, Double>? = null
-  private var mechanismSetter: Consumer<Double>? = null
-  private var driveTrainGetter: Supplier<DriveTrainSysIdData>? = null
-  private var mechanismGetter: Supplier<MechanismSysIdData>? = null
+  private lateinit var driveTrainSetter: BiConsumer<Double, Double>
+  private lateinit var mechanismSetter: Consumer<Double>
+  private lateinit var driveTrainGetter: Supplier<DriveTrainSysIdData>
+  private lateinit var mechanismGetter: Supplier<MechanismSysIdData>
   private var startTime = 0.0
-  private var data: String? = null
+  private lateinit var data: String
 
   /** Creates a new SysIdCommand for a drive train. */
   constructor(
-    subsystem: Subsystem?,
-    driveTrainSetter: BiConsumer<Double, Double>?,
-    driveTrainGetter: Supplier<DriveTrainSysIdData>?
+    subsystem: Subsystem,
+    driveTrainSetter: BiConsumer<Double, Double>,
+    driveTrainGetter: Supplier<DriveTrainSysIdData>
   ) {
     addRequirements(subsystem)
     isDriveTrain = true
@@ -34,9 +34,9 @@ class SysIdCommand : CommandBase {
 
   /** Creates a new SysIdCommand for a generic mechanism. */
   constructor(
-    subsystem: Subsystem?,
-    mechanismSetter: Consumer<Double>?,
-    mechanismGetter: Supplier<MechanismSysIdData>?
+    subsystem: Subsystem,
+    mechanismSetter: Consumer<Double>,
+    mechanismGetter: Supplier<MechanismSysIdData>
   ) {
     addRequirements(subsystem)
     isDriveTrain = false
@@ -57,9 +57,8 @@ class SysIdCommand : CommandBase {
     val timestamp = Timer.getFPGATimestamp()
 
     // Check if running the correct test
-    val test = SmartDashboard.getString("SysIdTest", "")
-    val correctTest: Boolean
-    correctTest =
+    val test = SmartDashboard.getString("SysIdTest", "Drivetrain")
+    val correctTest: Boolean =
         if (isDriveTrain) {
           test == "Drivetrain" || test == "Drivetrain (Angular)"
         } else {
@@ -70,9 +69,9 @@ class SysIdCommand : CommandBase {
     // Wrong test, prevent movement
     if (!correctTest) {
       if (isDriveTrain) {
-        driveTrainSetter!!.accept(0.0, 0.0)
+        driveTrainSetter.accept(0.0, 0.0)
       } else {
-        mechanismSetter!!.accept(0.0)
+        mechanismSetter.accept(0.0)
       }
       return
     }
@@ -81,8 +80,7 @@ class SysIdCommand : CommandBase {
     val testType = SmartDashboard.getString("SysIdTestType", "")
     val voltageCommand = SmartDashboard.getNumber("SysIdVoltageCommand", 0.0)
     val rotate = SmartDashboard.getBoolean("SysIdRotate", false)
-    val baseVoltage: Double
-    baseVoltage =
+    val baseVoltage: Double =
         when (testType) {
           "Quasistatic" -> voltageCommand * (timestamp - startTime)
           "Dynamic" -> voltageCommand
@@ -92,40 +90,39 @@ class SysIdCommand : CommandBase {
 
     // Set output and get new data
     if (isDriveTrain) {
-      driveTrainSetter!!.accept(primaryVoltage, baseVoltage)
-      val subsystemData = driveTrainGetter!!.get()
-      data += java.lang.Double.toString(timestamp) + ","
-      data += java.lang.Double.toString(primaryVoltage) + ","
-      data += java.lang.Double.toString(baseVoltage) + ","
-      data += java.lang.Double.toString(subsystemData.leftPosRad / (2 * Math.PI)) + ","
-      data += java.lang.Double.toString(subsystemData.rightPosRad / (2 * Math.PI)) + ","
-      data += java.lang.Double.toString(subsystemData.leftVelRadPerSec / (2 * Math.PI)) + ","
-      data += (java.lang.Double.toString(subsystemData.rightVelRadPerSec / (2 * Math.PI)) + ",")
-      data += java.lang.Double.toString(subsystemData.gyroPosRad) + ","
-      data += java.lang.Double.toString(subsystemData.gyroVelRadPerSec) + ","
+      driveTrainSetter.accept(primaryVoltage, baseVoltage)
+      val subsystemData = driveTrainGetter.get()
+      data += "$timestamp,"
+      data += "$primaryVoltage,"
+      data += "$baseVoltage,"
+      data += (subsystemData.leftPosRad / (2 * Math.PI)).toString() + ","
+      data += (subsystemData.rightPosRad / (2 * Math.PI)).toString() + ","
+      data += (subsystemData.leftVelRadPerSec / (2 * Math.PI)).toString() + ","
+      data += ((subsystemData.rightVelRadPerSec / (2 * Math.PI)).toString() + ",")
+      data += "${subsystemData.gyroPosRad},"
+      data += "${subsystemData.gyroVelRadPerSec},"
     } else {
-      mechanismSetter!!.accept(primaryVoltage)
-      val subsystemData = mechanismGetter!!.get()
-      data += java.lang.Double.toString(timestamp) + ","
-      data += java.lang.Double.toString(primaryVoltage) + ","
-      data += java.lang.Double.toString(subsystemData.posRad / (2 * Math.PI)) + ","
-      data += java.lang.Double.toString(subsystemData.velRadPerSec / (2 * Math.PI)) + ","
+      mechanismSetter.accept(primaryVoltage)
+      val subsystemData = mechanismGetter.get()
+      data += "$timestamp,"
+      data += "$primaryVoltage,"
+      data += (subsystemData.posRad / (2 * Math.PI)).toString() + ","
+      data += (subsystemData.velRadPerSec / (2 * Math.PI)).toString() + ","
     }
   }
 
   // Called once the command ends or is interrupted.
   override fun end(interrupted: Boolean) {
-    if (data!!.length > 0) {
-      SmartDashboard.putString("SysIdTelemetry", data!!.substring(0, data!!.length - 1))
-      println(
-          "Saved " + java.lang.Long.toString(Math.round(data!!.length / 1024.0)) + " KB of data.")
+    if (data.length > 0) {
+      SmartDashboard.putString("SysIdTelemetry", data.substring(0, data.length - 1))
+      println("Saved " + java.lang.Long.toString(Math.round(data.length / 1024.0)) + " KB of data.")
     } else {
       println("No data to save. Something's gone wrong here...")
     }
     if (isDriveTrain) {
-      driveTrainSetter!!.accept(0.0, 0.0)
+      driveTrainSetter.accept(0.0, 0.0)
     } else {
-      mechanismSetter!!.accept(0.0)
+      mechanismSetter.accept(0.0)
     }
   }
 
