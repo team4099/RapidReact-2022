@@ -21,4 +21,7 @@ object ControlBoard {
     get() = driver.rightXAxis
 
   val resetGyro = Trigger { driver.startButton && driver.selectButton }
+
+  val changingRobot = Trigger { operator.aButton }
+  val standingRobot = Trigger { operator.bButton }
 }

@@ -1,12 +1,10 @@
 package com.team4099.robot2022
 
 import com.team4099.lib.logging.Logger
-import com.team4099.lib.smoothDeadband
-import com.team4099.robot2022.commands.drivetrain.OpenLoopDriveCommand
-import com.team4099.robot2022.commands.drivetrain.ResetGyroCommand
+import com.team4099.robot2022.commands.led.ChangeLedState
 import com.team4099.robot2022.config.Constants
 import com.team4099.robot2022.config.ControlBoard
-import com.team4099.robot2022.subsystems.Drivetrain
+import com.team4099.robot2022.subsystems.LED
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
@@ -30,25 +28,33 @@ object Robot : TimedRobot() {
 
     Logger.startLogging()
 
-    Drivetrain.defaultCommand =
+    LED
+
+    /* Drivetrain.defaultCommand =
         OpenLoopDriveCommand(
             { ControlBoard.strafe.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
             { ControlBoard.forward.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
             { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) })
 
-    ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
+    ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand()) */
+
+    ControlBoard.changingRobot.whileActiveOnce(ChangeLedState(Constants.LED.LEDState.CHANGING_ONE))
+    ControlBoard.standingRobot.whileActiveOnce(ChangeLedState(Constants.LED.LEDState.STANDING_TWO))
   }
 
   override fun autonomousInit() {
+    LED.ledState = Constants.LED.LEDState.STANDING_ONE
     // autonomousCommand.schedule()
   }
 
   override fun disabledInit() {
     // autonomousCommand.cancel()
+    LED.ledState = Constants.LED.LEDState.STANDING_ZERO
   }
 
   override fun teleopInit() {
     // autonomousCommand.cancel()
+    LED.ledState = Constants.LED.LEDState.STANDING_ONE
   }
 
   override fun robotPeriodic() {
