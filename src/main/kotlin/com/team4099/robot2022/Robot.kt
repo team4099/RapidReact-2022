@@ -4,8 +4,8 @@ import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
 import com.team4099.robot2022.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2022.commands.drivetrain.ResetGyroCommand
-import com.team4099.robot2022.commands.shooter.IdleCommand
-import com.team4099.robot2022.commands.shooter.ShooterIdleCommand
+//import com.team4099.robot2022.commands.shooter.IdleCommand
+//import com.team4099.robot2022.commands.shooter.ShooterIdleCommand
 import com.team4099.robot2022.commands.shooter.ShootCommand
 import com.team4099.robot2022.commands.shooter.SpinUpCommand
 import com.team4099.robot2022.config.Constants
@@ -45,7 +45,7 @@ object Robot : TimedRobot() {
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
 
     // Shooter controls
-    Shooter.defaultCommand = IdleCommand()
+//    Shooter.defaultCommand = IdleCommand()
     ControlBoard.startShooter.whileActiveOnce(
       SequentialCommandGroup(
         SpinUpCommand(),
@@ -53,7 +53,7 @@ object Robot : TimedRobot() {
         ShootCommand()
       )
     )
-    ControlBoard.idleShooter.whileActiveOnce(IdleCommand())
+//    ControlBoard.idleShooter.whileActiveOnce(IdleCommand())
   }
 
   override fun autonomousInit() {
