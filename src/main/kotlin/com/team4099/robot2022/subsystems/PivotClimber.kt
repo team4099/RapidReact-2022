@@ -2,6 +2,8 @@ package com.team4099.robot2022.subsystems
 
 import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.can.TalonFX
+import com.revrobotics.CANSparkMax
+import com.revrobotics.CANSparkMaxLowLevel
 import com.team4099.lib.logging.Logger
 import com.team4099.robot2022.config.Constants
 import edu.wpi.first.wpilibj.PneumaticsModuleType
@@ -11,8 +13,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
 object PivotClimber: SubsystemBase(){
 
   // temp once motors are figured out
-  private val pivotRightArm: TalonFX = TalonFX(Constants.PivotClimber.PIVOT_L_ARM_ID)
-  private val pivotLeftArm: TalonFX = TalonFX(Constants.PivotClimber.PIVOT_R_ARM_ID)
+  private val pivotRightArm: CANSparkMax = CANSparkMax(Constants.PivotClimber.PIVOT_L_ARM_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
+  private val pivotLeftArm: CANSparkMax = CANSparkMax(Constants.PivotClimber.PIVOT_R_ARM_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
 
   //val pivotRightArmSensor =
   //val pivotLeftArmSensor =

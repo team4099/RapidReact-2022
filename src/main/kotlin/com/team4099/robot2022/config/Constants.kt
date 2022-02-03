@@ -37,7 +37,21 @@ object Constants {
   //placeholder values
   object TelescopingClimber {
     const val TELESCOPING_R_ARM_ID = 0
+    const val TELESCOPING_R_SENSOR_CPR = 0 //TODO
+    const val TELESCOPING_R_GEAR_RATIO = 0.0 //TODO
+    const val TELESCOPING_P = 0.0
+    const val TELESCOPING_I = 0.0
+    const val TELESCOPING_D = 0.0
+    const val TELESCOPING_FF = 0.0
+
+    val PULLEY_MECHANISM = 0.0.meters //TODO
+    val MAX_VELOCITY = 0.0.meters.perSecond
+    val MAX_ACCELERATION = 0.0.meters.perSecond.perSecond
+
     const val TELESCOPING_L_ARM_ID = 0
+    const val TELESCOPING_L_SENSOR_CPR = 0 //TODO
+    const val TELESCOPING_L_GEAR_RATIO = 0.0 //TODO
+
     const val TELESCOPING_SOLENOID_ID = 0
 
     const val TELESCOPING_BOTTOM_SAFETY_THRESHOLD = 0
