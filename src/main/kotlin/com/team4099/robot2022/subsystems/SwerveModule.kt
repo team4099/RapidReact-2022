@@ -187,6 +187,13 @@ class SwerveModule(
     driveFalcon.setNeutralMode(NeutralMode.Coast)
   }
 
+  /**
+   * Sets the swerve module to the specified angular and X & Y velocities using feed forward.
+   *
+   * @param steering The angular position desired for the swerve module to be set to
+   * @param speed The speed desired for the swerve module to reach
+   * @param acceleration The linear acceleration used to calculate how to reach the desired speed
+   */
   fun set(
     steering: Angle,
     speed: LinearVelocity,
@@ -246,10 +253,12 @@ class SwerveModule(
     driveFalcon.set(ControlMode.PercentOutput, outputPower)
   }
 
+  /** Creates event of the current potentiometer value as needs to be manually readjusted. */
   fun resetModuleZero() {
     Logger.addEvent("Drivetrain", "Absolute Potentiometer Value $label (${potentiometer.get()}")
   }
 
+  /** Zeros the steering motor */
   fun zeroSteering() {
     steeringFalcon.selectedSensorPosition =
         steeringSensor.positionToRawUnits(
@@ -260,6 +269,7 @@ class SwerveModule(
           potentiometer.get().radians - zeroOffset.inRadians.radians)})")
   }
 
+  /** Zeros the drive motor */
   fun zeroDrive() {
     driveFalcon.selectedSensorPosition = 0.0
   }

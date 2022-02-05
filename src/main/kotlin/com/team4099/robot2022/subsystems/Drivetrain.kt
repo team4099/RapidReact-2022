@@ -79,6 +79,7 @@ object Drivetrain : SubsystemBase() {
   private val gyro = AHRS()
 
   var gyroOffset: Angle = 0.0.degrees
+  /** The current angle of the drivetrain. */
   val gyroAngle: Angle
     get() {
       var rawAngle = gyro.angle + gyroOffset.inDegrees
@@ -116,6 +117,7 @@ object Drivetrain : SubsystemBase() {
     get() = Pose(swerveDriveOdometry.poseMeters)
     set(value) {
       swerveDriveOdometry.resetPosition(value.pose2d, gyroAngle.inRotation2ds)
+      zeroGyro(pose.theta)
     }
 
   init {
@@ -148,12 +150,16 @@ object Drivetrain : SubsystemBase() {
   }
 
   /**
-   * Sets the drivetrain to the specified angular and X & Y velocities. Calculates angular and
-   * linear velocities and calls set for each Wheel object.
+   * Sets the drivetrain to the specified angular and X & Y velocities based on the current angular
+   * and linear acceleration. Calculates both angular and linear velocities and acceleration and
+   * calls set for each SwerveModule object.
    *
    * @param angularVelocity The angular velocity of a specified drive
    * @param driveVector.first The linear velocity on the X axis
    * @param driveVector.second The linear velocity on the Y axis
+   * @param angularAcceleration The angular acceleration of a specified drive
+   * @param driveAcceleration.first The linear acceleration on the X axis
+   * @param driveAcceleration.second The linear acceleration on the Y axis
    */
   fun set(
     angularVelocity: AngularVelocity,
@@ -329,21 +335,28 @@ object Drivetrain : SubsystemBase() {
     swerveModules.forEach { it.resetModuleZero() }
   }
 
+  /** Zeros all the sensors on the drivetrain. */
   fun zeroSensors() {
     zeroGyro()
     zeroSteering()
     zeroDrive()
   }
 
+  /**
+   * Sets the gyroOffset in such a way that when added to the gyro angle it gives back toAngle.
+   *
+   * @param toAngle Zeros the gyro to the value
+   */
   fun zeroGyro(toAngle: Angle = 0.degrees) {
-    gyro.angleAdjustment = -(gyroAngle).inDegrees
-    gyroOffset = toAngle
+    gyroOffset = (toAngle.inDegrees - gyro.angle).degrees
   }
 
+  /** Zeros the steering motors for each swerve module. */
   fun zeroSteering() {
     swerveModules.forEach { it.zeroSteering() }
   }
 
+  /** Zeros the drive motors for each swerve module. */
   private fun zeroDrive() {
     swerveModules.forEach { it.zeroDrive() }
   }
