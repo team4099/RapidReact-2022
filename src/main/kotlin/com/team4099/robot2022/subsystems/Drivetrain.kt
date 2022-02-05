@@ -198,10 +198,10 @@ object Drivetrain : SubsystemBase() {
           driveAcceleration.first
         }
 
-    val a = vX - angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
-    val b = vX + angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
-    val c = vY - angularVelocity * Constants.Drivetrain.DRIVETRAIN_WIDTH / 2
-    val d = vY + angularVelocity * Constants.Drivetrain.DRIVETRAIN_WIDTH / 2
+    val a = vX + angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
+    val b = vX - angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
+    val c = vY + angularVelocity * Constants.Drivetrain.DRIVETRAIN_WIDTH / 2
+    val d = vY - angularVelocity * Constants.Drivetrain.DRIVETRAIN_WIDTH / 2
     // Logger.addEvent("Drivetrain", "vX: $vX, angular velocity: $angularVelocity")
 
     wheelSpeeds[0] = hypot(b, d)
@@ -210,17 +210,17 @@ object Drivetrain : SubsystemBase() {
     wheelSpeeds[3] = hypot(a, c)
 
     val aA =
-        aX -
-            (angularAcceleration.value * Constants.Drivetrain.DRIVETRAIN_LENGTH.value / 2).inches
-                .perSecond
-                .perSecond
-    val aB =
         aX +
             (angularAcceleration.value * Constants.Drivetrain.DRIVETRAIN_LENGTH.value / 2).inches
                 .perSecond
                 .perSecond
+    val aB =
+        aX -
+            (angularAcceleration.value * Constants.Drivetrain.DRIVETRAIN_LENGTH.value / 2).inches
+                .perSecond
+                .perSecond
     val aC =
-        aY -
+        aY +
             (angularAcceleration.value * Constants.Drivetrain.DRIVETRAIN_WIDTH.value / 2).inches
                 .perSecond
                 .perSecond
@@ -273,10 +273,10 @@ object Drivetrain : SubsystemBase() {
           driveVector.second
         }
 
-    val a = vX - angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
-    val b = vX + angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
-    val c = vY - angularVelocity * Constants.Drivetrain.DRIVETRAIN_WIDTH / 2
-    val d = vY + angularVelocity * Constants.Drivetrain.DRIVETRAIN_WIDTH / 2
+    val a = vX + angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
+    val b = vX - angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
+    val c = vY + angularVelocity * Constants.Drivetrain.DRIVETRAIN_WIDTH / 2
+    val d = vY - angularVelocity * Constants.Drivetrain.DRIVETRAIN_WIDTH / 2
 
     wheelSpeeds[0] = hypot(b, d)
     wheelSpeeds[1] = hypot(b, c)

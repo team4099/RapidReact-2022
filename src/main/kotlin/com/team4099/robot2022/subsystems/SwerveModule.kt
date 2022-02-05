@@ -111,12 +111,12 @@ class SwerveModule(
       // Logger.addEvent("Drivetrain", "label: $label, value: ${value.inDegrees}, reference raw
       // position: ${steeringSensor.positionToRawUnits(value)}, current raw position:
       // ${steeringSensor.getRawPosition()}")
-      if (filter.calculate((steeringSensor.position).inRadians)
-          .around(value.inRadians, (Constants.Drivetrain.ALLOWED_ANGLE_ERROR).inRadians)) {
-        steeringFalcon.set(ControlMode.PercentOutput, 0.0)
-      } else {
-        steeringFalcon.set(ControlMode.Position, steeringSensor.positionToRawUnits(value))
-      }
+//      if (filter.calculate((steeringSensor.position).inRadians)
+//          .around(value.inRadians, (Constants.Drivetrain.ALLOWED_ANGLE_ERROR).inRadians)) {
+//        steeringFalcon.set(ControlMode.PercentOutput, 0.0)
+//      } else {
+        steeringFalcon.set(ControlMode.MotionMagic, steeringSensor.positionToRawUnits(value))
+//      }
 
       field = value
     }
@@ -161,10 +161,12 @@ class SwerveModule(
     steeringConfiguration.slot0.kI = Constants.Drivetrain.PID.STEERING_KI
     steeringConfiguration.slot0.kD = Constants.Drivetrain.PID.STEERING_KD
     steeringConfiguration.slot0.kF = Constants.Drivetrain.PID.STEERING_KFF
-    steeringConfiguration.motionCruiseVelocity =
-        steeringSensor.velocityToRawUnits(Constants.Drivetrain.STEERING_VEL_MAX)
-    steeringConfiguration.motionAcceleration =
-        steeringSensor.accelerationToRawUnits(Constants.Drivetrain.STEERING_ACCEL_MAX)
+//    steeringConfiguration.motionCruiseVelocity =
+//        steeringSensor.velocityToRawUnits(Constants.Drivetrain.STEERING_VEL_MAX)
+//    steeringConfiguration.motionAcceleration =
+//        steeringSensor.accelerationToRawUnits(Constants.Drivetrain.STEERING_ACCEL_MAX)
+    steeringConfiguration.motionCruiseVelocity = Constants.Drivetrain.STEERING_VEL_NATIVE_MAX
+    steeringConfiguration.motionAcceleration = Constants.Drivetrain.STEERING_ACCEL_NATIVE_MAX
     steeringConfiguration.peakOutputForward = 1.0
     steeringConfiguration.peakOutputReverse = -1.0
     steeringConfiguration.supplyCurrLimit.currentLimit =
@@ -172,7 +174,7 @@ class SwerveModule(
     steeringConfiguration.supplyCurrLimit.enable = true
 
     steeringFalcon.setNeutralMode(NeutralMode.Coast)
-    steeringFalcon.inverted = true
+    steeringFalcon.inverted = false
     steeringFalcon.configAllSettings(steeringConfiguration)
     steeringFalcon.configAllowableClosedloopError(
         0, steeringSensor.positionToRawUnits(Constants.Drivetrain.ALLOWED_ANGLE_ERROR))
@@ -263,11 +265,11 @@ class SwerveModule(
   fun zeroSteering() {
     steeringFalcon.selectedSensorPosition =
         steeringSensor.positionToRawUnits(
-            potentiometer.get().radians - zeroOffset.inRadians.radians)
+            -(potentiometer.get().radians) + zeroOffset.inRadians.radians)
     Logger.addEvent(
         "Drivetrain",
         "Loading Zero for Module $label (${steeringSensor.positionToRawUnits(
-          potentiometer.get().radians - zeroOffset.inRadians.radians)})")
+          -(potentiometer.get().radians) + zeroOffset.inRadians.radians)})")
   }
 
   /** Zeros the drive motor */

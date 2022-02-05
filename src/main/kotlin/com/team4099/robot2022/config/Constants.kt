@@ -57,8 +57,8 @@ object Constants {
     val DRIVE_SETPOINT_MAX = 15.feet.perSecond
     val TURN_SETPOINT_MAX = 360.degrees.perSecond // TODO: Make sure this value is something good
 
-    val STEERING_VEL_MAX = 900.degrees.perSecond
-    val STEERING_ACCEL_MAX = 4500.degrees.perSecond.perSecond
+    val STEERING_VEL_NATIVE_MAX = 17_000.0
+    val STEERING_ACCEL_NATIVE_MAX = 170_000.0
 
     const val GYRO_RATE_COEFFICIENT = 0.0 // TODO: Change this value
 
@@ -85,10 +85,11 @@ object Constants {
     val BACK_LEFT_MODULE_ZERO = 5.204072.radians
 
     object PID {
-      const val STEERING_KP = 0.75
+      const val STEERING_KP = 0.25
       const val STEERING_KI = 0.0
-      const val STEERING_KD = 0.08
-      const val STEERING_KFF = 0.04695622238
+      const val STEERING_KD = 0.0
+
+      const val STEERING_KFF = 0.0375
 
       const val DRIVE_KP = 0.0
       const val DRIVE_KI = 0.0

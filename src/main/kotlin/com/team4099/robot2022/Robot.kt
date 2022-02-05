@@ -4,6 +4,7 @@ import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
 import com.team4099.robot2022.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2022.commands.drivetrain.ResetGyroCommand
+import com.team4099.robot2022.commands.drivetrain.TestDriveCommand
 import com.team4099.robot2022.config.Constants
 import com.team4099.robot2022.config.ControlBoard
 import com.team4099.robot2022.subsystems.Drivetrain
@@ -15,6 +16,7 @@ import kotlin.math.pow
 
 object Robot : TimedRobot() {
   val robotName: Constants.Tuning.RobotName
+  //val autonomousCommand = TestDriveCommand()
 
   init {
     val robotId =
@@ -37,22 +39,24 @@ object Robot : TimedRobot() {
             { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) })
 
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
+
   }
 
   override fun robotInit() {
     Drivetrain.zeroSteering()
+    Drivetrain.zeroGyro()
   }
 
   override fun autonomousInit() {
-    // autonomousCommand.schedule()
+    //autonomousCommand.schedule()
   }
 
   override fun disabledInit() {
-    // autonomousCommand.cancel()
+    //autonomousCommand.cancel()
   }
 
   override fun teleopInit() {
-    // autonomousCommand.cancel()
+    //autonomousCommand.cancel()
   }
 
   override fun robotPeriodic() {
