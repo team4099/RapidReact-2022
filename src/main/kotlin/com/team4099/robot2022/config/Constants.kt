@@ -122,6 +122,8 @@ object Constants {
     const val LED_CONTROLLER_ID = 0
     const val TAB = "LED"
 
+    const val CURRENT_THRESHOLD = 12
+
     enum class LEDState(val pwmValue: Double) {
       // Solid Orange
       IDLE(0.65),

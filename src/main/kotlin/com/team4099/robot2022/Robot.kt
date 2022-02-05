@@ -28,8 +28,6 @@ object Robot : TimedRobot() {
 
     Logger.startLogging()
 
-    LED
-
     /* Drivetrain.defaultCommand =
         OpenLoopDriveCommand(
             { ControlBoard.strafe.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
@@ -37,24 +35,18 @@ object Robot : TimedRobot() {
             { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) })
 
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand()) */
-
-    ControlBoard.changingRobot.whileActiveOnce(ChangeLedState(Constants.LED.LEDState.CHANGING_ONE))
-    ControlBoard.standingRobot.whileActiveOnce(ChangeLedState(Constants.LED.LEDState.STANDING_TWO))
   }
 
   override fun autonomousInit() {
-    LED.ledState = Constants.LED.LEDState.STANDING_ONE
     // autonomousCommand.schedule()
   }
 
   override fun disabledInit() {
     // autonomousCommand.cancel()
-    LED.ledState = Constants.LED.LEDState.STANDING_ZERO
   }
 
   override fun teleopInit() {
     // autonomousCommand.cancel()
-    LED.ledState = Constants.LED.LEDState.STANDING_ONE
   }
 
   override fun robotPeriodic() {

@@ -8,6 +8,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
 object LED : SubsystemBase() {
   private val ledController = Spark(Constants.LED.LED_CONTROLLER_ID)
 
+  var ballCount = 0
+    set(newCount) {
+      if (intakeReady == true && 0 <= newCount && newCount <= 2){
+        field = newCount
+        if (newCount > ballCount) {
+          intakeReady = false
+        }
+      }
+    }
+  var intakeReady = true
+
   var ledState = Constants.LED.LEDState.IDLE
     set(newState) {
       ledController.set(newState.pwmValue)
