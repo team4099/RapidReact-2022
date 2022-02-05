@@ -84,18 +84,13 @@ object Constants {
     val BACK_RIGHT_MODULE_ZERO = 4.608515.radians
     val BACK_LEFT_MODULE_ZERO = 5.204072.radians
 
-    object Gains {
-      const val RAMSETE_B = 2.0
-      const val RAMSETE_ZETA = 0.7
-    }
-
     object PID {
-      const val STEERING_KP = 0.00001
+      const val STEERING_KP = 0.75
       const val STEERING_KI = 0.0
-      const val STEERING_KD = 12.0
-      const val STEERING_KFF = 0.000078
+      const val STEERING_KD = 0.08
+      const val STEERING_KFF = 0.04695622238
 
-      const val DRIVE_KP = 0.000129
+      const val DRIVE_KP = 0.0
       const val DRIVE_KI = 0.0
       const val DRIVE_KD = 0.0
       const val DRIVE_KFF = 0.0

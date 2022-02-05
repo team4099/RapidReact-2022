@@ -170,6 +170,7 @@ class SwerveModule(
     steeringConfiguration.supplyCurrLimit.currentLimit =
         Constants.Drivetrain.STEERING_SUPPLY_CURRENT_LIMIT
     steeringConfiguration.supplyCurrLimit.enable = true
+
     steeringFalcon.setNeutralMode(NeutralMode.Coast)
     steeringFalcon.inverted = true
     steeringFalcon.configAllSettings(steeringConfiguration)
