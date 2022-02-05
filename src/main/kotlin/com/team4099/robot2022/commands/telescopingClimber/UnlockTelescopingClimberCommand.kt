@@ -8,23 +8,22 @@ import edu.wpi.first.wpilibj2.command.CommandBase
 
 class UnlockTelescopingClimberCommand : CommandBase() {
   init {
-    //addRequirements(Climber)
+    addRequirements(TelescopingClimber)
   }
   private var initTime = Clock.fpgaTime
 
   override fun initialize() {
     initTime = Clock.fpgaTime
-    TelescopingClimber.setTOpenLoopPower(0.0)
-    TelescopingClimber.t_BrakeApplied = false
-  } //add info for pivot arm
+    TelescopingClimber.brakeApplied = false
+  }
 
   override fun end(interrupted: Boolean) {
     if (!interrupted) {
-      Logger.addEvent("Climber", "Climber Unlocked")
+      Logger.addEvent("Telescoping Climber", "Climber Unlocked")
     }
   }
 
   override fun isFinished(): Boolean {
-    return Clock.fpgaTime - initTime > Constants.Climber.BRAKE_RELEASE_TIMEOUT
+    return Clock.fpgaTime - initTime > Constants.TelescopingClimber.BRAKE_RELEASE_TIMEOUT
   }
 }

@@ -7,8 +7,10 @@ import com.team4099.lib.units.base.feet
 import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.base.seconds
+import com.team4099.lib.units.derived.Angle
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.div
+import com.team4099.lib.units.derived.radians
 import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.perSecond
 
@@ -34,44 +36,82 @@ object Constants {
             0 to RobotName.COMPETITION, 1 to RobotName.PRACTICE, 2 to RobotName.MULE)
   }
 
-  //placeholder values
+  // placeholder values
   object TelescopingClimber {
-    const val TELESCOPING_R_ARM_ID = 0
-    const val TELESCOPING_R_SENSOR_CPR = 0 //TODO
-    const val TELESCOPING_R_GEAR_RATIO = 0.0 //TODO
-    const val TELESCOPING_P = 0.0
-    const val TELESCOPING_I = 0.0
-    const val TELESCOPING_D = 0.0
-    const val TELESCOPING_FF = 0.0
+    const val L_ARM_ID = 41
+    const val L_SENSOR_CPR = 0 // TODO
+    const val L_GEAR_RATIO = 0.0 // TODO
 
-    val PULLEY_MECHANISM = 0.0.meters //TODO
+    const val R_ARM_ID = 42
+    const val R_SENSOR_CPR = 0 // TODO
+    const val R_GEAR_RATIO = 0.0 // TODO
+
+    const val KP = 0.0
+    const val KI = 0.0
+    const val KD = 0.0
+    const val KFF = 0.0
+
+    val NO_LOAD_KS = 0.0
+    val NO_LOAD_KV = 0.0
+    val NO_LOAD_KA = 0.0
+
+    val LOAD_KS = 0.0
+    val LOAD_KV = 0.0
+    val LOAD_KA = 0.0
+
+    val PULLEY_MECHANISM = 0.0.meters // TODO
     val MAX_VELOCITY = 0.0.meters.perSecond
     val MAX_ACCELERATION = 0.0.meters.perSecond.perSecond
 
-    const val TELESCOPING_L_ARM_ID = 0
-    const val TELESCOPING_L_SENSOR_CPR = 0 //TODO
-    const val TELESCOPING_L_GEAR_RATIO = 0.0 //TODO
+    const val SOLENOID_ID = 0
 
-    const val TELESCOPING_SOLENOID_ID = 0
+    const val BOTTOM_SAFETY_THRESHOLD = 0
+    const val TOP_SAFETY_THRESHOLD = 0
 
-    const val TELESCOPING_BOTTOM_SAFETY_THRESHOLD = 0
-    const val TELESCOPING_TOP_SAFETY_THRESHOLD = 0
+    enum class TelescopingArmPosition(val length: Length) {
+      LOW(0.meters),
+      HIGH(1.000.meters) // extended, value estimated for now
+    }
 
-    const val TELESCOPING_POSITION = 0
+    val BRAKE_RELEASE_TIMEOUT: Value<Second> = 0.0.seconds
 
-    val TELESCOPING_BRAKE_RELEASE_TIMEOUT: Value<Second> = 0.0.seconds
-
-    const val TAB = "Climber"
+    const val TAB = "Telescoping Climber"
   }
 
-  //temp values
   object PivotClimber {
-    const val PIVOT_R_ARM_ID = 0
-    const val PIVOT_L_ARM_ID = 0
+    const val L_ARM_ID = 51
+    const val R_ARM_ID = 52
 
-    val PIVOT_BRAKE_RELEASE_TIMEOUT: Value<Second> = 0.0.seconds
+    const val KP = 0.0
+    const val KI = 0.0
+    const val KD = 0.0
+    const val KFF = 0.0
 
-    const val TAB = "Climber"
+    val NO_LOAD_KS = 0.0
+    val NO_LOAD_KV = 0.0
+    val NO_LOAD_KA = 0.0
+
+    val LOAD_KS = 0.0
+    val LOAD_KV = 0.0
+    val LOAD_KA = 0.0
+
+    val MAX_VELOCITY = 0.0.radians.perSecond
+    val MAX_ACCELERATION = 0.0.radians.perSecond.perSecond
+
+    enum class PivotArmPosition(val angle: Angle) {
+      OUT(0.degrees),
+      IN(0.degrees)
+    }
+
+    const val GEAR_RATIO = 0.0
+
+    const val SMART_CURRENT_LIMIT = 0 // TODO
+
+    const val SOLENOID_ID = 0
+
+    val BRAKE_RELEASE_TIMEOUT: Value<Second> = 0.0.seconds
+
+    const val TAB = "Pivot Climber"
   }
 
   object Drivetrain {
@@ -160,14 +200,9 @@ object Constants {
     const val TURN_DEADBAND = 0.05
   }
 
-  enum class TelescopingArmPosition(val length: Length) {
-    LOW(0.meters),
-    HIGH(1.000.meters) // extended, value estimated for now
-  }
-
   enum class PivotArmPosition {
-    //idle state to mark on feeder
-    //extended to rung
-    //pivoting
+    // idle state to mark on feeder
+    // extended to rung
+    // pivoting
   }
 }

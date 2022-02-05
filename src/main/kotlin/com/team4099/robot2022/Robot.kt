@@ -38,19 +38,12 @@ object Robot : TimedRobot() {
 
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
   }
-  Climber.defaultCommand = LockClimberCommand()
 
-  override fun autonomousInit() {
-    autonomousCommand.schedule()
-  }
+  override fun autonomousInit() {}
 
-  override fun disabledInit() {
-    autonomousCommand.cancel()
-  }
+  override fun disabledInit() {}
 
-  override fun teleopInit() {
-    autonomousCommand.cancel()
-  }
+  override fun teleopInit() {}
 
   override fun robotPeriodic() {
     CommandScheduler.getInstance().run()
