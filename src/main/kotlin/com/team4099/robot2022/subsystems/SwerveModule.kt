@@ -2,6 +2,7 @@ package com.team4099.robot2022.subsystems
 
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.DemandType
+import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration
 import com.team4099.lib.around
@@ -147,6 +148,8 @@ class SwerveModule(
     Logger.addSource("$label Drivetrain", "Drive Position") { driveSensor.position.inFeet }
     Logger.addSource("$label Drivetrain", "Steering Position") { steeringPosition.inDegrees }
 
+    Logger.addSource("$label Drivetrain", "Steering Position Raw") { potentiometer.get() }
+
     Logger.addSource(
         "Drivetrain Tuning",
         "$label Azimuth kP",
@@ -167,6 +170,8 @@ class SwerveModule(
     steeringConfiguration.supplyCurrLimit.currentLimit =
         Constants.Drivetrain.STEERING_SUPPLY_CURRENT_LIMIT
     steeringConfiguration.supplyCurrLimit.enable = true
+    steeringFalcon.setNeutralMode(NeutralMode.Coast)
+    steeringFalcon.inverted = true
     steeringFalcon.configAllSettings(steeringConfiguration)
     steeringFalcon.configAllowableClosedloopError(
         0, steeringSensor.positionToRawUnits(Constants.Drivetrain.ALLOWED_ANGLE_ERROR))
@@ -177,7 +182,9 @@ class SwerveModule(
     driveConfiguration.slot0.kF = Constants.Drivetrain.PID.DRIVE_KFF
     driveConfiguration.supplyCurrLimit.currentLimit =
         Constants.Drivetrain.DRIVE_SUPPLY_CURRENT_LIMIT
+
     driveFalcon.configAllSettings(driveConfiguration)
+    driveFalcon.setNeutralMode(NeutralMode.Coast)
   }
 
   fun set(
@@ -246,10 +253,11 @@ class SwerveModule(
   fun zeroSteering() {
     steeringFalcon.selectedSensorPosition =
         steeringSensor.positionToRawUnits(
-            potentiometer.get().radians + zeroOffset.inRadians.radians)
+            potentiometer.get().radians - zeroOffset.inRadians.radians)
     Logger.addEvent(
         "Drivetrain",
-        "Loading Zero for Module $label (${potentiometer.get() + zeroOffset.inRadians})")
+        "Loading Zero for Module $label (${steeringSensor.positionToRawUnits(
+          potentiometer.get().radians - zeroOffset.inRadians.radians)})")
   }
 
   fun zeroDrive() {

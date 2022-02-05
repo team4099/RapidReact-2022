@@ -41,27 +41,27 @@ object Drivetrain : SubsystemBase() {
               TalonFX(Constants.Drivetrain.FRONT_LEFT_DRIVE_ID),
               AnalogPotentiometer(
                   Constants.Drivetrain.FRONT_LEFT_ANALOG_POTENTIOMETER, 2 * PI, 0.0),
-              0.degrees,
+              Constants.Drivetrain.FRONT_LEFT_MODULE_ZERO,
               "Front Left Wheel"),
           SwerveModule(
               TalonFX(Constants.Drivetrain.FRONT_RIGHT_STEERING_ID),
               TalonFX(Constants.Drivetrain.FRONT_RIGHT_DRIVE_ID),
               AnalogPotentiometer(
                   Constants.Drivetrain.FRONT_RIGHT_ANALOG_POTENTIOMETER, 2 * PI, 0.0),
-              0.degrees,
+            Constants.Drivetrain.FRONT_RIGHT_MODULE_ZERO,
               "Front Right Wheel"),
           SwerveModule(
               TalonFX(Constants.Drivetrain.BACK_LEFT_STEERING_ID),
               TalonFX(Constants.Drivetrain.BACK_LEFT_DRIVE_ID),
               AnalogPotentiometer(Constants.Drivetrain.BACK_LEFT_ANALOG_POTENTIOMETER, 2 * PI, 0.0),
-              0.degrees,
+            Constants.Drivetrain.BACK_LEFT_MODULE_ZERO,
               "Back Left Wheel"),
           SwerveModule(
               TalonFX(Constants.Drivetrain.BACK_RIGHT_STEERING_ID),
               TalonFX(Constants.Drivetrain.BACK_RIGHT_DRIVE_ID),
               AnalogPotentiometer(
                   Constants.Drivetrain.BACK_RIGHT_ANALOG_POTENTIOMETER, 2 * PI, 0.0),
-              0.degrees,
+              Constants.Drivetrain.BACK_RIGHT_MODULE_ZERO,
               "Back Right Wheel"))
 
   private val wheelSpeeds =

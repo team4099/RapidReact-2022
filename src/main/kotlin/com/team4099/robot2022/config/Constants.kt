@@ -5,6 +5,7 @@ import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.div
+import com.team4099.lib.units.derived.radians
 import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.perSecond
 
@@ -34,7 +35,7 @@ object Constants {
 
     const val FRONT_LEFT_DRIVE_ID = 11
     const val FRONT_LEFT_STEERING_ID = 21
-    const val FRONT_LEFT_ANALOG_POTENTIOMETER = 2
+    const val FRONT_LEFT_ANALOG_POTENTIOMETER = 0
 
     const val FRONT_RIGHT_DRIVE_ID = 12
     const val FRONT_RIGHT_STEERING_ID = 22
@@ -42,7 +43,7 @@ object Constants {
 
     const val BACK_RIGHT_DRIVE_ID = 13
     const val BACK_RIGHT_STEERING_ID = 23
-    const val BACK_RIGHT_ANALOG_POTENTIOMETER = 4
+    const val BACK_RIGHT_ANALOG_POTENTIOMETER = 2
 
     const val BACK_LEFT_DRIVE_ID = 14
     const val BACK_LEFT_STEERING_ID = 24
@@ -72,11 +73,16 @@ object Constants {
     const val DRIVE_SENSOR_CPR = 2048 // TODO
     const val STEERING_SENSOR_CPR = 2048 // TODO
     const val DRIVE_SENSOR_GEAR_RATIO = (14.0 / 50.0) * (27.0 / 17.0) * (15.0 / 45.0)
-    const val STEERING_SENSOR_GEAR_RATIO = 1.0 / 12.8
+    const val STEERING_SENSOR_GEAR_RATIO = 7.0 / 150.0
 
     val ALLOWED_ANGLE_ERROR = 1.degrees
     const val STEERING_SUPPLY_CURRENT_LIMIT = 20.0
     const val DRIVE_SUPPLY_CURRENT_LIMIT = 80.0
+
+    val FRONT_LEFT_MODULE_ZERO = 2.687684.radians
+    val FRONT_RIGHT_MODULE_ZERO = 5.966769.radians
+    val BACK_RIGHT_MODULE_ZERO = 4.608515.radians
+    val BACK_LEFT_MODULE_ZERO = 5.204072.radians
 
     object Gains {
       const val RAMSETE_B = 2.0

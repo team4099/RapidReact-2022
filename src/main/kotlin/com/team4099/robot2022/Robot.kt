@@ -39,6 +39,10 @@ object Robot : TimedRobot() {
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
   }
 
+  override fun robotInit() {
+    Drivetrain.zeroSteering()
+  }
+
   override fun autonomousInit() {
     // autonomousCommand.schedule()
   }
@@ -46,6 +50,7 @@ object Robot : TimedRobot() {
   override fun disabledInit() {
     // autonomousCommand.cancel()
   }
+
 
   override fun teleopInit() {
     // autonomousCommand.cancel()
