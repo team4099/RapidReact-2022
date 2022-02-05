@@ -26,5 +26,4 @@ object ControlBoard {
   val putIntakeUp = Trigger { operator.bButton }
   val runIntakeOut = Trigger { operator.xButton }
   val prepareClimb = Trigger { operator.startButton }
-
 }

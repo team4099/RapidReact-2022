@@ -6,11 +6,9 @@ import com.team4099.robot2022.config.Constants
 import edu.wpi.first.wpilibj2.command.CommandBase
 
 class PrepareClimbCommand : CommandBase() {
-init {
-  {
-    addRequirements(Intake)
+  init {
+    { addRequirements(Intake) }
   }
-}
 
   override fun initialize() {
     Intake.armState = Constants.Intake.ArmPos.IN
@@ -25,5 +23,4 @@ init {
   override fun isFinished(): Boolean {
     return true
   }
-
 }

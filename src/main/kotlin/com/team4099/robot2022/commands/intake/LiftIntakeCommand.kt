@@ -11,20 +11,17 @@ class LiftIntakeCommand : CommandBase() {
     addRequirements(Intake)
   }
 
-
   override fun initialize() {
     Intake.armState = Constants.Intake.ArmPos.IN
-    Logger.addEvent("Intake","Intake lifted")
+    Logger.addEvent("Intake", "Intake lifted")
   }
-  override fun execute(){}
+  override fun execute() {}
 
   override fun isFinished(): Boolean {
     return false
   }
 
-  override fun end(interrupted: Boolean)
-  {
+  override fun end(interrupted: Boolean) {
     Intake.armState = Constants.Intake.ArmPos.OUT
   }
-
 }

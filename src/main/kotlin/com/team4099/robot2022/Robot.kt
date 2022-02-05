@@ -1,4 +1,5 @@
 package com.team4099.robot2022
+
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
 import com.team4099.robot2021.subsystems.com.team4099.robot2022.subsystems.Intake
@@ -16,7 +17,6 @@ import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj2.command.CommandScheduler
-import javax.naming.ldap.Control
 import kotlin.math.pow
 
 object Robot : TimedRobot() {
@@ -47,14 +47,11 @@ object Robot : TimedRobot() {
     Intake.defaultCommand = IntakeIdleCommand()
 
     ControlBoard.runIntakeIn
-      //.whileActiveContinuous(FeederCommand(Constants.Feeder.FeederState.FORWARD_ALL))
-      .whileActiveContinuous(IntakeBallsCommand())
-    ControlBoard.putIntakeUp
-      .whileActiveContinuous(LiftIntakeCommand())
-    ControlBoard.runIntakeOut
-      .whileActiveContinuous(ReverseIntakeCommand())
-    ControlBoard.prepareClimb
-      .whileActiveContinuous(PrepareClimbCommand())
+        // .whileActiveContinuous(FeederCommand(Constants.Feeder.FeederState.FORWARD_ALL))
+        .whileActiveContinuous(IntakeBallsCommand())
+    ControlBoard.putIntakeUp.whileActiveContinuous(LiftIntakeCommand())
+    ControlBoard.runIntakeOut.whileActiveContinuous(ReverseIntakeCommand())
+    ControlBoard.prepareClimb.whileActiveContinuous(PrepareClimbCommand())
   }
 
   override fun autonomousInit() {
