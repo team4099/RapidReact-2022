@@ -14,7 +14,7 @@ class ExtendTelescopingArmCommand : CommandBase() {
 
   init {
     addRequirements(TelescopingClimber)
-    var goal: TrapezoidProfile.State =
+    goal =
         TrapezoidProfile.State(
             Constants.TelescopingClimber.TelescopingArmPosition.HIGH.length.inMeters, 0.0)
   }

@@ -14,9 +14,8 @@ class RotateInPivotArmCommand : CommandBase() {
   lateinit var rightProfile: TrapezoidProfile
 
   init {
-    addRequirements(TelescopingClimber)
-    var goal: TrapezoidProfile.State =
-        TrapezoidProfile.State(Constants.PivotClimber.PivotArmPosition.IN.angle.inDegrees, 0.0)
+    addRequirements(PivotClimber)
+    goal = TrapezoidProfile.State(Constants.PivotClimber.PivotArmPosition.IN.angle.inDegrees, 0.0)
   }
 
   override fun initialize() {

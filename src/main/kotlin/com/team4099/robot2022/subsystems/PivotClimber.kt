@@ -12,8 +12,6 @@ import com.team4099.lib.units.inDegreesPerSecondPerSecond
 import com.team4099.lib.units.sparkMaxAngularMechanismSensor
 import com.team4099.robot2022.config.Constants
 import edu.wpi.first.math.trajectory.TrapezoidProfile
-import edu.wpi.first.wpilibj.PneumaticsModuleType
-import edu.wpi.first.wpilibj.Solenoid
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import kotlin.math.sign
 
