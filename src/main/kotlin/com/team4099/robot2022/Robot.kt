@@ -41,7 +41,6 @@ object Robot : TimedRobot() {
             { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) })
 
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
-
   }
 
   override fun robotInit() {
