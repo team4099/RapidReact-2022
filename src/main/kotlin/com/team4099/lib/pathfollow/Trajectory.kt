@@ -16,7 +16,7 @@ class Trajectory(private val states: List<TrajectoryState>) {
     get() = states[states.size - 1].timestamp
 
   val startingPose = states[0].pose
-  val endingPose = states[states.size - 1].pose
+  val endingPose = states[-1].pose
 
   fun sample(time: Time): TrajectoryState {
     if (time <= startTime) {
@@ -50,5 +50,20 @@ class Trajectory(private val states: List<TrajectoryState>) {
         interpolate(lowState.curvature, highState.curvature, lerpScalar),
         interpolate(lowState.linearVelocity, highState.linearVelocity, lerpScalar),
         interpolate(lowState.linearAcceleration, highState.linearAcceleration, lerpScalar))
+    //        interpolate(lowState.angularVelocity, highState.angularVelocity, lerpScalar),
+    //        interpolate(lowState.angularAcceleration, highState.angularAcceleration, lerpScalar)
   }
+
+  //  private val path: Path,
+  //  private val startVelocity: LinearVelocity,
+  //  private val endVelocity: LinearVelocity,
+  //  private val trajectoryConfig: TrajectoryConfig
+
+  //  public fun convertToTrajectory(pathPlannerTrajectory: PathPlannerTrajectory):
+  // edu.wpi.first.wpilibj.trajectory.Trajectory{
+  //    var traj: Trajectory = edu.wpi.first.wpilibj.trajectory.Trajectory(
+  //      e),
+  //    pathPlannerTrajectory.
+  //    )
+  //  }
 }

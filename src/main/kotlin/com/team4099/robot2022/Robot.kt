@@ -16,7 +16,7 @@ import kotlin.math.pow
 
 object Robot : TimedRobot() {
   val robotName: Constants.Tuning.RobotName
-  val autonomousSelector: AutonomousSelector? = null
+  val autonomousSelector: AutonomousSelector = AutonomousSelector
 
   // val autonomousCommand = TestDriveCommand()
 
@@ -42,7 +42,6 @@ object Robot : TimedRobot() {
 
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
 
-    val autonomousSelector = AutonomousSelector()
   }
 
   override fun robotInit() {
@@ -52,7 +51,7 @@ object Robot : TimedRobot() {
 
   override fun autonomousInit() {
     // autonomousCommand.schedule()
-    autonomousSelector?.getCommand(Drivetrain)
+    autonomousSelector.getCommand().schedule()
   }
 
   override fun disabledInit() {

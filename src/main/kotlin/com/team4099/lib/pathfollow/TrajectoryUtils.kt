@@ -13,7 +13,7 @@ import com.team4099.lib.units.inMetersPerSecondPerSecond
 import com.team4099.lib.units.perSecond
 import edu.wpi.first.math.trajectory.TrajectoryParameterizer
 
-fun trajectoryFromPathfinder(pathPlannerTrajectory: PathPlannerTrajectory): Trajectory {
+fun trajectoryFromPathPlanner(pathPlannerTrajectory: PathPlannerTrajectory): Trajectory {
   return Trajectory(
       pathPlannerTrajectory.states.map { state ->
         state as PathPlannerTrajectory.PathPlannerState
