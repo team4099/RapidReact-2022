@@ -31,9 +31,6 @@ object PivotClimber : SubsystemBase() {
   private val rightPID = pivotRightArm.pidController
   private val leftPID = pivotLeftArm.pidController
 
-  private val pneumaticBrake =
-      Solenoid(PneumaticsModuleType.CTREPCM, Constants.PivotClimber.SOLENOID_ID)
-
   var constraints: TrapezoidProfile.Constraints =
       TrapezoidProfile.Constraints(
           Constants.PivotClimber.MAX_VELOCITY.inDegreesPerSecond,
@@ -45,16 +42,6 @@ object PivotClimber : SubsystemBase() {
       TrapezoidProfile.State(
           pivotRightArmSensor.position.inDegrees, pivotRightArmSensor.velocity.inDegreesPerSecond)
 
-  var isLocked: Boolean = true
-    set(value) {
-      pneumaticBrake.set(!value)
-      field = value
-    }
-  var brakeApplied = true
-    set(value) {
-      field = value
-      pneumaticBrake.set(!value)
-    }
   init {
     /* RIGHT ARM */
     Logger.addSource(Constants.PivotClimber.TAB, "Traversal Right Arm Motor Power") {
@@ -88,13 +75,6 @@ object PivotClimber : SubsystemBase() {
     }
     Logger.addSource(Constants.PivotClimber.TAB, "Climber Left Arm Current Position") {
       pivotLeftArmSensor.position.inDegrees
-    }
-
-    Logger.addSource(Constants.PivotClimber.TAB, "Right Pneumatics State") {
-      brakeApplied.toString()
-    }
-    Logger.addSource(Constants.PivotClimber.TAB, "Left Pneumatics State") {
-      brakeApplied.toString()
     }
 
     pivotRightArm.restoreFactoryDefaults()
