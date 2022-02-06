@@ -77,6 +77,14 @@ object Drivetrain : SubsystemBase() {
           0.feet.perSecond.perSecond)
 
   private val gyro = AHRS()
+  val gyroRate: AngularVelocity
+    get() {
+      if (gyro.isConnected) {
+        return gyro.rate.radians.perSecond
+      } else {
+        return -1.337.radians.perSecond
+      }
+    }
 
   var gyroOffset: Angle = 0.0.degrees
   /** The current angle of the drivetrain. */

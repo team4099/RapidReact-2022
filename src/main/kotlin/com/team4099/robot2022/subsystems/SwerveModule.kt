@@ -5,7 +5,6 @@ import com.ctre.phoenix.motorcontrol.DemandType
 import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration
-import com.team4099.lib.around
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.AngularMechanismSensor
 import com.team4099.lib.units.LinearAcceleration
@@ -111,12 +110,12 @@ class SwerveModule(
       // Logger.addEvent("Drivetrain", "label: $label, value: ${value.inDegrees}, reference raw
       // position: ${steeringSensor.positionToRawUnits(value)}, current raw position:
       // ${steeringSensor.getRawPosition()}")
-//      if (filter.calculate((steeringSensor.position).inRadians)
-//          .around(value.inRadians, (Constants.Drivetrain.ALLOWED_ANGLE_ERROR).inRadians)) {
-//        steeringFalcon.set(ControlMode.PercentOutput, 0.0)
-//      } else {
-        steeringFalcon.set(ControlMode.MotionMagic, steeringSensor.positionToRawUnits(value))
-//      }
+      //      if (filter.calculate((steeringSensor.position).inRadians)
+      //          .around(value.inRadians, (Constants.Drivetrain.ALLOWED_ANGLE_ERROR).inRadians)) {
+      //        steeringFalcon.set(ControlMode.PercentOutput, 0.0)
+      //      } else {
+      steeringFalcon.set(ControlMode.MotionMagic, steeringSensor.positionToRawUnits(value))
+      //      }
 
       field = value
     }
@@ -161,10 +160,10 @@ class SwerveModule(
     steeringConfiguration.slot0.kI = Constants.Drivetrain.PID.STEERING_KI
     steeringConfiguration.slot0.kD = Constants.Drivetrain.PID.STEERING_KD
     steeringConfiguration.slot0.kF = Constants.Drivetrain.PID.STEERING_KFF
-//    steeringConfiguration.motionCruiseVelocity =
-//        steeringSensor.velocityToRawUnits(Constants.Drivetrain.STEERING_VEL_MAX)
-//    steeringConfiguration.motionAcceleration =
-//        steeringSensor.accelerationToRawUnits(Constants.Drivetrain.STEERING_ACCEL_MAX)
+    //    steeringConfiguration.motionCruiseVelocity =
+    //        steeringSensor.velocityToRawUnits(Constants.Drivetrain.STEERING_VEL_MAX)
+    //    steeringConfiguration.motionAcceleration =
+    //        steeringSensor.accelerationToRawUnits(Constants.Drivetrain.STEERING_ACCEL_MAX)
     steeringConfiguration.motionCruiseVelocity = Constants.Drivetrain.STEERING_VEL_NATIVE_MAX
     steeringConfiguration.motionAcceleration = Constants.Drivetrain.STEERING_ACCEL_NATIVE_MAX
     steeringConfiguration.peakOutputForward = 1.0

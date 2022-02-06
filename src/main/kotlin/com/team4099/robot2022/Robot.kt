@@ -15,7 +15,7 @@ import kotlin.math.pow
 
 object Robot : TimedRobot() {
   val robotName: Constants.Tuning.RobotName
-  //val autonomousCommand = TestDriveCommand()
+  // val autonomousCommand = TestDriveCommand()
 
   init {
     val robotId =
@@ -38,8 +38,9 @@ object Robot : TimedRobot() {
             { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) })
 
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
-
   }
+
+  // val autonomousCommand = DriveCharacterizeCommand()
 
   override fun robotInit() {
     Drivetrain.zeroSteering()
@@ -47,15 +48,15 @@ object Robot : TimedRobot() {
   }
 
   override fun autonomousInit() {
-    //autonomousCommand.schedule()
+    // autonomousCommand.schedule()
   }
 
   override fun disabledInit() {
-    //autonomousCommand.cancel()
+    // autonomousCommand.cancel()
   }
 
   override fun teleopInit() {
-    //autonomousCommand.cancel()
+    // autonomousCommand.cancel()
   }
 
   override fun robotPeriodic() {
