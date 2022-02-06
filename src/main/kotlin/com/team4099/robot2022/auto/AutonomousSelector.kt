@@ -1,11 +1,8 @@
 package com.team4099.robot2022.auto
 
-import com.team4099.lib.pathfollow.trajectoryFromPathPlanner
 import com.team4099.lib.units.derived.Angle
 import com.team4099.lib.units.derived.degrees
 import com.team4099.robot2022.auto.mode.TestAutoPath
-import com.team4099.robot2022.commands.drivetrain.AutoDriveCommand
-import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 import edu.wpi.first.wpilibj2.command.CommandBase
@@ -20,7 +17,7 @@ object AutonomousSelector {
     orientationChooser.setDefaultOption("Forward", 0.degrees)
     orientationChooser.addOption("Backwards", 180.degrees)
     orientationChooser.addOption("Left", 90.degrees)
-    orientationChooser.addOption("Right",  270.degrees)
+    orientationChooser.addOption("Right", 270.degrees)
     autoTab.add("Starting Orientation", orientationChooser)
     autonomousModeChooser.addOption("Test", AutonomousMode.TEST_AUTO_PATH)
     autoTab.add("Mode", autonomousModeChooser)
@@ -29,8 +26,7 @@ object AutonomousSelector {
   fun getCommand(): CommandBase {
     val mode = autonomousModeChooser.selected
     when (mode) {
-      AutonomousMode.TEST_AUTO_PATH ->
-          return TestAutoPath()
+      AutonomousMode.TEST_AUTO_PATH -> return TestAutoPath()
       else -> println("ERROR: unexpected auto mode: $mode")
     }
     return InstantCommand()
