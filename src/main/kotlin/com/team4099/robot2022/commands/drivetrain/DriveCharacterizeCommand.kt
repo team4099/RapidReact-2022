@@ -7,6 +7,7 @@ import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.inRadians
 import com.team4099.lib.units.inMetersPerSecond
 import com.team4099.lib.units.inRadiansPerSecond
+import com.team4099.robot2022.config.Constants
 import com.team4099.robot2022.subsystems.Drivetrain
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 
@@ -19,11 +20,10 @@ class DriveCharacterizeCommand : SequentialCommandGroup() {
     val drivetrainGetter =
         {
           SysIdCommand.DriveTrainSysIdData(
-              // TODO: create constant wheel radius
-              Drivetrain.swerveModules[0].driveDistance.inMeters / 1.5.inches.inMeters,
-              Drivetrain.swerveModules[1].driveDistance.inMeters / 1.5.inches.inMeters,
-              Drivetrain.swerveModules[0].driveVelocity.inMetersPerSecond / 1.5.inches.inMeters,
-              Drivetrain.swerveModules[1].driveVelocity.inMetersPerSecond / 1.5.inches.inMeters,
+              Drivetrain.swerveModules[0].driveDistance.inMeters / Constants.Drivetrain.WHEEL_DIAMETER.inMeters,
+              Drivetrain.swerveModules[1].driveDistance.inMeters / Constants.Drivetrain.WHEEL_DIAMETER.inMeters,
+              Drivetrain.swerveModules[0].driveVelocity.inMetersPerSecond / Constants.Drivetrain.WHEEL_DIAMETER.inMeters,
+              Drivetrain.swerveModules[1].driveVelocity.inMetersPerSecond / Constants.Drivetrain.WHEEL_DIAMETER.inMeters,
               Drivetrain.gyroOffset.inRadians,
               Drivetrain.gyroRate.inRadiansPerSecond)
         }
