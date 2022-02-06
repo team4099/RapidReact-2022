@@ -1,6 +1,8 @@
 package com.team4099.robot2022.auto
 
 import com.team4099.lib.pathfollow.trajectoryFromPathPlanner
+import com.team4099.lib.units.derived.Angle
+import com.team4099.lib.units.derived.degrees
 import com.team4099.robot2022.commands.drivetrain.AutoDriveCommand
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
@@ -9,15 +11,15 @@ import edu.wpi.first.wpilibj2.command.CommandBase
 import edu.wpi.first.wpilibj2.command.InstantCommand
 
 object AutonomousSelector {
-  private var orientationChooser: SendableChooser<Rotation2d> = SendableChooser()
+  private var orientationChooser: SendableChooser<Angle> = SendableChooser()
   private var autonomousModeChooser: SendableChooser<AutonomousMode> = SendableChooser()
 
   init {
     val autoTab = Shuffleboard.getTab("Auto settings")
-    orientationChooser.setDefaultOption("Forward", Rotation2d.fromDegrees(0.0))
-    orientationChooser.addOption("Backwards", Rotation2d.fromDegrees(180.0))
-    orientationChooser.addOption("Left", Rotation2d.fromDegrees(90.0))
-    orientationChooser.addOption("Right", Rotation2d.fromDegrees(270.0))
+    orientationChooser.setDefaultOption("Forward", 0.degrees)
+    orientationChooser.addOption("Backwards", 180.degrees)
+    orientationChooser.addOption("Left", 90.degrees)
+    orientationChooser.addOption("Right",  270.degrees)
     autoTab.add("Starting Orientation", orientationChooser)
     autonomousModeChooser.addOption("Test", AutonomousMode.TEST_AUTO_PATH)
     autoTab.add("Mode", autonomousModeChooser)
