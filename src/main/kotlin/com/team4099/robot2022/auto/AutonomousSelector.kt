@@ -3,6 +3,7 @@ package com.team4099.robot2022.auto
 import com.team4099.lib.pathfollow.trajectoryFromPathPlanner
 import com.team4099.lib.units.derived.Angle
 import com.team4099.lib.units.derived.degrees
+import com.team4099.robot2022.auto.mode.TestAutoPath
 import com.team4099.robot2022.commands.drivetrain.AutoDriveCommand
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
@@ -29,7 +30,7 @@ object AutonomousSelector {
     val mode = autonomousModeChooser.selected
     when (mode) {
       AutonomousMode.TEST_AUTO_PATH ->
-          return AutoDriveCommand(trajectoryFromPathPlanner(PathStore.testAutoPath))
+          return TestAutoPath()
       else -> println("ERROR: unexpected auto mode: $mode")
     }
     return InstantCommand()
