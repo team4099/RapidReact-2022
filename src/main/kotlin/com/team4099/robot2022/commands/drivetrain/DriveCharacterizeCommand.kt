@@ -27,7 +27,7 @@ class DriveCharacterizeCommand : SequentialCommandGroup() {
                   (Constants.Drivetrain.WHEEL_DIAMETER.inMeters / 2),
               Drivetrain.swerveModules[1].driveVelocity.inMetersPerSecond /
                   (Constants.Drivetrain.WHEEL_DIAMETER.inMeters / 2),
-              Drivetrain.gyroOffset.inRadians,
+              Drivetrain.gyroAngle.inRadians,
               Drivetrain.gyroRate.inRadiansPerSecond)
         }
     Logger.addEvent("Drivetrain", "Started DriveCharacterizeCommand")

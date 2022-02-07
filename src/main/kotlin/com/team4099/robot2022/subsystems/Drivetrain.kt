@@ -80,9 +80,9 @@ object Drivetrain : SubsystemBase() {
   val gyroRate: AngularVelocity
     get() {
       if (gyro.isConnected) {
-        return gyro.rate.radians.perSecond
+        return gyro.rate.degrees.perSecond
       } else {
-        return -1.337.radians.perSecond
+        return -1.337.degrees.perSecond
       }
     }
 
@@ -90,9 +90,13 @@ object Drivetrain : SubsystemBase() {
   /** The current angle of the drivetrain. */
   val gyroAngle: Angle
     get() {
-      var rawAngle = gyro.angle + gyroOffset.inDegrees
-      rawAngle += Constants.Drivetrain.GYRO_RATE_COEFFICIENT * gyro.rate
-      return rawAngle.IEEErem(360.0).degrees
+      if (gyro.isConnected) {
+        var rawAngle = gyro.angle + gyroOffset.inDegrees
+        rawAngle += Constants.Drivetrain.GYRO_RATE_COEFFICIENT * gyro.rate
+        return rawAngle.IEEErem(360.0).degrees
+      } else {
+        return -1.337.degrees
+      }
     }
 
   private val frontLeftWheelLocation =
