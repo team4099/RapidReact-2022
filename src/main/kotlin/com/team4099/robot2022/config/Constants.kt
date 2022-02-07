@@ -55,7 +55,7 @@ object Constants {
     val DRIVETRAIN_WIDTH = 22.750.inches
 
     val DRIVE_SETPOINT_MAX = 15.feet.perSecond
-    val TURN_SETPOINT_MAX = 360.degrees.perSecond // TODO: Make sure this value is something good
+    val TURN_SETPOINT_MAX = 648.degrees.perSecond
 
     val STEERING_VEL_NATIVE_MAX = 17_000.0
     val STEERING_ACCEL_NATIVE_MAX = 170_000.0
