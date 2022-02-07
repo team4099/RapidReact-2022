@@ -2,7 +2,6 @@ package com.team4099.robot2022.commands.drivetrain
 
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.base.inMeters
-import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.inRadians
 import com.team4099.lib.units.inMetersPerSecond
@@ -20,10 +19,14 @@ class DriveCharacterizeCommand : SequentialCommandGroup() {
     val drivetrainGetter =
         {
           SysIdCommand.DriveTrainSysIdData(
-              Drivetrain.swerveModules[0].driveDistance.inMeters / Constants.Drivetrain.WHEEL_DIAMETER.inMeters,
-              Drivetrain.swerveModules[1].driveDistance.inMeters / Constants.Drivetrain.WHEEL_DIAMETER.inMeters,
-              Drivetrain.swerveModules[0].driveVelocity.inMetersPerSecond / Constants.Drivetrain.WHEEL_DIAMETER.inMeters,
-              Drivetrain.swerveModules[1].driveVelocity.inMetersPerSecond / Constants.Drivetrain.WHEEL_DIAMETER.inMeters,
+              Drivetrain.swerveModules[0].driveDistance.inMeters /
+                  (Constants.Drivetrain.WHEEL_DIAMETER.inMeters / 2),
+              Drivetrain.swerveModules[1].driveDistance.inMeters /
+                  (Constants.Drivetrain.WHEEL_DIAMETER.inMeters / 2),
+              Drivetrain.swerveModules[0].driveVelocity.inMetersPerSecond /
+                  (Constants.Drivetrain.WHEEL_DIAMETER.inMeters / 2),
+              Drivetrain.swerveModules[1].driveVelocity.inMetersPerSecond /
+                  (Constants.Drivetrain.WHEEL_DIAMETER.inMeters / 2),
               Drivetrain.gyroOffset.inRadians,
               Drivetrain.gyroRate.inRadiansPerSecond)
         }
