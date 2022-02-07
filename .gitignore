@@ -94,3 +94,5 @@ bin/
 # Simulation
 imgui.ini
 logs/*
+
+# Glass
