@@ -7,7 +7,7 @@ import com.team4099.lib.units.derived.inRadians
 import com.team4099.lib.units.inMetersPerSecond
 import com.team4099.lib.units.inRadiansPerSecond
 import com.team4099.robot2022.commands.general.SysIdCommand
-import com.team4099.robot2022.config.constants.Constants
+import com.team4099.robot2022.config.constants.DrivetrainConstants
 import com.team4099.robot2022.subsystems.Drivetrain
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 
@@ -21,13 +21,13 @@ class DriveCharacterizeCommand : SequentialCommandGroup() {
         {
           SysIdCommand.DriveTrainSysIdData(
               Drivetrain.swerveModules[0].driveDistance.inMeters /
-                  (Constants.Drivetrain.WHEEL_DIAMETER.inMeters / 2),
+                  (DrivetrainConstants.WHEEL_DIAMETER.inMeters / 2),
               Drivetrain.swerveModules[1].driveDistance.inMeters /
-                  (Constants.Drivetrain.WHEEL_DIAMETER.inMeters / 2),
+                  (DrivetrainConstants.WHEEL_DIAMETER.inMeters / 2),
               Drivetrain.swerveModules[0].driveVelocity.inMetersPerSecond /
-                  (Constants.Drivetrain.WHEEL_DIAMETER.inMeters / 2),
+                  (DrivetrainConstants.WHEEL_DIAMETER.inMeters / 2),
               Drivetrain.swerveModules[1].driveVelocity.inMetersPerSecond /
-                  (Constants.Drivetrain.WHEEL_DIAMETER.inMeters / 2),
+                  (DrivetrainConstants.WHEEL_DIAMETER.inMeters / 2),
               Drivetrain.gyroAngle.inRadians,
               Drivetrain.gyroRate.inRadiansPerSecond)
         }
