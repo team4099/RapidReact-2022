@@ -1,6 +1,6 @@
 package com.team4099.robot2022.commands.drivetrain
 
-import com.team4099.robot2022.config.Constants
+import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.subsystems.Drivetrain
 import edu.wpi.first.wpilibj2.command.CommandBase
 import kotlin.math.sign

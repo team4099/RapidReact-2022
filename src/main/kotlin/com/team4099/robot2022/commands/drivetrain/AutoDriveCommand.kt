@@ -17,7 +17,7 @@ import com.team4099.lib.units.derived.sin
 import com.team4099.lib.units.inRadiansPerSecond
 import com.team4099.lib.units.inRadiansPerSecondPerSecond
 import com.team4099.lib.units.perSecond
-import com.team4099.robot2022.config.Constants
+import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.subsystems.Drivetrain
 import edu.wpi.first.math.controller.PIDController
 import edu.wpi.first.math.controller.ProfiledPIDController

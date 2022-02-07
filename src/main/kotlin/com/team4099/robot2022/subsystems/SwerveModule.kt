@@ -26,7 +26,7 @@ import com.team4099.lib.units.derived.radians
 import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.inFeetPerSecond
 import com.team4099.lib.units.perSecond
-import com.team4099.robot2022.config.Constants
+import com.team4099.robot2022.config.constants.DrivetrainConstants
 import edu.wpi.first.math.filter.MedianFilter
 import edu.wpi.first.wpilibj.AnalogPotentiometer
 import kotlin.math.IEEErem
@@ -44,21 +44,18 @@ class SwerveModule(
   private val steeringSensor =
       ctreAngularMechanismSensor(
           steeringFalcon,
-          Constants.Drivetrain.STEERING_SENSOR_CPR,
-          Constants.Drivetrain.STEERING_SENSOR_GEAR_RATIO)
+          DrivetrainConstants.STEERING_SENSOR_CPR,
+          DrivetrainConstants.STEERING_SENSOR_GEAR_RATIO)
   private val driveSensor =
       ctreLinearMechanismSensor(
           driveFalcon,
-          Constants.Drivetrain.DRIVE_SENSOR_CPR,
-          Constants.Drivetrain.DRIVE_SENSOR_GEAR_RATIO,
-          Constants.Drivetrain.WHEEL_DIAMETER)
+          DrivetrainConstants.DRIVE_SENSOR_CPR,
+          DrivetrainConstants.DRIVE_SENSOR_GEAR_RATIO,
+          DrivetrainConstants.WHEEL_DIAMETER)
 
   private val steeringAbsolute =
       AngularMechanismSensor(
-          Constants.Drivetrain.ABSOLUTE_GEAR_RATIO,
-          Timescale.CTRE,
-          { 0.0 },
-          { potentiometer.get() })
+          DrivetrainConstants.ABSOLUTE_GEAR_RATIO, Timescale.CTRE, { 0.0 }, { potentiometer.get() })
 
   private val filter = MedianFilter(10)
 
@@ -111,7 +108,7 @@ class SwerveModule(
       // position: ${steeringSensor.positionToRawUnits(value)}, current raw position:
       // ${steeringSensor.getRawPosition()}")
       //      if (filter.calculate((steeringSensor.position).inRadians)
-      //          .around(value.inRadians, (Constants.Drivetrain.ALLOWED_ANGLE_ERROR).inRadians)) {
+      //          .around(value.inRadians, (DrivetrainConstants.ALLOWED_ANGLE_ERROR).inRadians)) {
       //        steeringFalcon.set(ControlMode.PercentOutput, 0.0)
       //      } else {
       steeringFalcon.set(ControlMode.MotionMagic, steeringSensor.positionToRawUnits(value))
@@ -152,38 +149,37 @@ class SwerveModule(
     Logger.addSource(
         "Drivetrain Tuning",
         "$label Azimuth kP",
-        { Constants.Drivetrain.PID.STEERING_KP },
+        { DrivetrainConstants.PID.STEERING_KP },
         { newP -> steeringFalcon.config_kP(0, newP) },
         false)
 
-    steeringConfiguration.slot0.kP = Constants.Drivetrain.PID.STEERING_KP
-    steeringConfiguration.slot0.kI = Constants.Drivetrain.PID.STEERING_KI
-    steeringConfiguration.slot0.kD = Constants.Drivetrain.PID.STEERING_KD
-    steeringConfiguration.slot0.kF = Constants.Drivetrain.PID.STEERING_KFF
+    steeringConfiguration.slot0.kP = DrivetrainConstants.PID.STEERING_KP
+    steeringConfiguration.slot0.kI = DrivetrainConstants.PID.STEERING_KI
+    steeringConfiguration.slot0.kD = DrivetrainConstants.PID.STEERING_KD
+    steeringConfiguration.slot0.kF = DrivetrainConstants.PID.STEERING_KFF
     //    steeringConfiguration.motionCruiseVelocity =
-    //        steeringSensor.velocityToRawUnits(Constants.Drivetrain.STEERING_VEL_MAX)
+    //        steeringSensor.velocityToRawUnits(DrivetrainConstants.STEERING_VEL_MAX)
     //    steeringConfiguration.motionAcceleration =
-    //        steeringSensor.accelerationToRawUnits(Constants.Drivetrain.STEERING_ACCEL_MAX)
-    steeringConfiguration.motionCruiseVelocity = Constants.Drivetrain.STEERING_VEL_NATIVE_MAX
-    steeringConfiguration.motionAcceleration = Constants.Drivetrain.STEERING_ACCEL_NATIVE_MAX
+    //        steeringSensor.accelerationToRawUnits(DrivetrainConstants.STEERING_ACCEL_MAX)
+    steeringConfiguration.motionCruiseVelocity = DrivetrainConstants.STEERING_VEL_NATIVE_MAX
+    steeringConfiguration.motionAcceleration = DrivetrainConstants.STEERING_ACCEL_NATIVE_MAX
     steeringConfiguration.peakOutputForward = 1.0
     steeringConfiguration.peakOutputReverse = -1.0
     steeringConfiguration.supplyCurrLimit.currentLimit =
-        Constants.Drivetrain.STEERING_SUPPLY_CURRENT_LIMIT
+        DrivetrainConstants.STEERING_SUPPLY_CURRENT_LIMIT
     steeringConfiguration.supplyCurrLimit.enable = true
 
     steeringFalcon.setNeutralMode(NeutralMode.Coast)
     steeringFalcon.inverted = false
     steeringFalcon.configAllSettings(steeringConfiguration)
     steeringFalcon.configAllowableClosedloopError(
-        0, steeringSensor.positionToRawUnits(Constants.Drivetrain.ALLOWED_ANGLE_ERROR))
+        0, steeringSensor.positionToRawUnits(DrivetrainConstants.ALLOWED_ANGLE_ERROR))
 
-    driveConfiguration.slot0.kP = Constants.Drivetrain.PID.DRIVE_KP
-    driveConfiguration.slot0.kI = Constants.Drivetrain.PID.DRIVE_KI
-    driveConfiguration.slot0.kD = Constants.Drivetrain.PID.DRIVE_KD
-    driveConfiguration.slot0.kF = Constants.Drivetrain.PID.DRIVE_KFF
-    driveConfiguration.supplyCurrLimit.currentLimit =
-        Constants.Drivetrain.DRIVE_SUPPLY_CURRENT_LIMIT
+    driveConfiguration.slot0.kP = DrivetrainConstants.PID.DRIVE_KP
+    driveConfiguration.slot0.kI = DrivetrainConstants.PID.DRIVE_KI
+    driveConfiguration.slot0.kD = DrivetrainConstants.PID.DRIVE_KD
+    driveConfiguration.slot0.kF = DrivetrainConstants.PID.DRIVE_KFF
+    driveConfiguration.supplyCurrLimit.currentLimit = DrivetrainConstants.DRIVE_SUPPLY_CURRENT_LIMIT
 
     driveFalcon.configAllSettings(driveConfiguration)
     driveFalcon.setNeutralMode(NeutralMode.Coast)
@@ -225,15 +221,15 @@ class SwerveModule(
           acceleration
         }
     steeringSetPoint = steeringSensor.position + steeringDifference
-    //    driveFalcon.set(speedSetPoint / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
+    //    driveFalcon.set(speedSetPoint / DrivetrainConstants.DRIVE_SETPOINT_MAX)
 
     driveFalcon.set(
         ControlMode.Velocity,
         driveSensor.velocityToRawUnits(speedSetPoint),
         DemandType.ArbitraryFeedForward,
-        (Constants.Drivetrain.PID.DRIVE_KS * sign(speedSetPoint.value) +
-                speedSetPoint * Constants.Drivetrain.PID.DRIVE_KV +
-                acceleration * Constants.Drivetrain.PID.DRIVE_KA).inVolts)
+        (DrivetrainConstants.PID.DRIVE_KS * sign(speedSetPoint.value) +
+                speedSetPoint * DrivetrainConstants.PID.DRIVE_KV +
+                acceleration * DrivetrainConstants.PID.DRIVE_KA).inVolts)
   }
 
   fun setOpenLoop(steering: Angle, speed: Double) {
