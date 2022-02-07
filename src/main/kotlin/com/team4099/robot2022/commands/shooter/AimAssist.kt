@@ -4,6 +4,7 @@ import com.team4099.lib.units.base.inMeters
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.rotations
 import com.team4099.lib.units.inRadiansPerSecond
+import com.team4099.lib.units.perMinute
 import com.team4099.lib.units.perSecond
 import com.team4099.robot2022.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2022.config.Constants.VisionConstants
@@ -15,8 +16,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase
 import org.photonvision.targeting.PhotonTrackedTarget
 
 class AimAssist : CommandBase() {
-  private var rangeToTarget = 0.0.meters
-  private var diff = 0.0.meters
+  var diff = 0.0.meters
+  var rangeToTarget = 0.0.meters
 
   init {
     addRequirements(Shooter)
@@ -25,15 +26,27 @@ class AimAssist : CommandBase() {
   }
 
   override fun execute() {
+    // get x and y distance from target
+    // determine whether to go back or forward
+    // drive drivetrain forward or backward
     rangeToTarget = Vision.getRangeToBestTarget()
     diff = VisionConstants.TARGET_RANGE - rangeToTarget
-    val target = Vision.bestTarget
-    val offsetToTarget = Vision.getOffsetToBestTarget()
-    OpenLoopDriveCommand({ rangeToTarget.inMeters / 2 }, { 0.0 }, { 0.0 })
+    val angleOffset = Vision.yaw
+    var toMoveY = if (rangeToTarget < VisionConstants.TARGET_RANGE) {
+      rangeToTarget - VisionConstants.TARGET_RANGE
+    } else {
+      rangeToTarget
+    }
+
+    Drivetrain.set(
+      -angleOffset!!.rotations.perSecond,
+      Pair(0.0.meters.perSecond, toMoveY.perSecond),
+      fieldOriented = false,
+    )
   }
 
   override fun isFinished(): Boolean {
     val diff = VisionConstants.TARGET_RANGE - rangeToTarget
-    return (diff <= VisionConstants.RANGE_THRESHOLD && diff > 0.0.meters) || Vision.bestTarget == null
+    return (diff <= VisionConstants.RANGE_THRESHOLD && diff > 0.0.meters) || !Vision.hasTargets!!
   }
 }

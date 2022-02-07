@@ -26,6 +26,9 @@ object Vision : SubsystemBase() {
   val bestTarget
     get() = latestResult?.bestTarget
 
+  val yaw
+    get() = bestTarget?.yaw
+
   fun getRangeToBestTarget(): Value<Meter> {
     return (PhotonUtils.calculateDistanceToTargetMeters(
       VisionConstants.CAMERA_HEIGHT.inMeters,
