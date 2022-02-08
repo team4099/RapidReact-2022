@@ -164,8 +164,17 @@ class SwerveModule(
     //        steeringSensor.velocityToRawUnits(DrivetrainConstants.STEERING_VEL_MAX)
     //    steeringConfiguration.motionAcceleration =
     //        steeringSensor.accelerationToRawUnits(DrivetrainConstants.STEERING_ACCEL_MAX)
-    steeringConfiguration.motionCruiseVelocity = DrivetrainConstants.STEERING_VEL_NATIVE_MAX.inRotationsPerSecond * Timescale.CTRE.velocity.inSeconds / (DrivetrainConstants.STEERING_SENSOR_GEAR_RATIO / DrivetrainConstants.STEERING_SENSOR_CPR)
-    steeringConfiguration.motionAcceleration = DrivetrainConstants.STEERING_ACCEL_NATIVE_MAX.inRotationsPerSecondPerSecond * Timescale.CTRE.velocity.inSeconds * Timescale.CTRE.acceleration.inSeconds / (DrivetrainConstants.STEERING_SENSOR_GEAR_RATIO / DrivetrainConstants.STEERING_SENSOR_CPR)
+    steeringConfiguration.motionCruiseVelocity =
+        DrivetrainConstants.STEERING_VEL_NATIVE_MAX.inRotationsPerSecond *
+            Timescale.CTRE.velocity.inSeconds /
+            (DrivetrainConstants.STEERING_SENSOR_GEAR_RATIO /
+                DrivetrainConstants.STEERING_SENSOR_CPR)
+    steeringConfiguration.motionAcceleration =
+        DrivetrainConstants.STEERING_ACCEL_NATIVE_MAX.inRotationsPerSecondPerSecond *
+            Timescale.CTRE.velocity.inSeconds *
+            Timescale.CTRE.acceleration.inSeconds /
+            (DrivetrainConstants.STEERING_SENSOR_GEAR_RATIO /
+                DrivetrainConstants.STEERING_SENSOR_CPR)
     steeringConfiguration.peakOutputForward = 1.0
     steeringConfiguration.peakOutputReverse = -1.0
     steeringConfiguration.supplyCurrLimit.currentLimit =
