@@ -1,5 +1,7 @@
 package com.team4099.robot2022.config.constants
 
+import com.team4099.lib.units.AngularMechanismSensor
+import com.team4099.lib.units.Timescale
 import com.team4099.lib.units.base.feet
 import com.team4099.lib.units.base.inMeters
 import com.team4099.lib.units.base.inches
@@ -7,6 +9,7 @@ import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.div
 import com.team4099.lib.units.derived.radians
+import com.team4099.lib.units.derived.rotations
 import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.inMetersPerSecond
 import com.team4099.lib.units.perSecond
@@ -26,8 +29,8 @@ object DrivetrainConstants {
           .perSecond // 648
 
   // cruise velocity in raw sensor units per 100 ms
-  val STEERING_VEL_NATIVE_MAX = 17_000.0
-  val STEERING_ACCEL_NATIVE_MAX = 170_000.0
+  val STEERING_VEL_NATIVE_MAX = 3.87.rotations.perSecond
+  val STEERING_ACCEL_NATIVE_MAX = 38.7.rotations.perSecond.perSecond
 
   const val GYRO_RATE_COEFFICIENT = 0.0 // TODO: Change this value
 

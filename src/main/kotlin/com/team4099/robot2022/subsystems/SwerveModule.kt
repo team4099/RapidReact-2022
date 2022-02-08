@@ -13,6 +13,7 @@ import com.team4099.lib.units.Timescale
 import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.base.feet
 import com.team4099.lib.units.base.inFeet
+import com.team4099.lib.units.base.inSeconds
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.ctreAngularMechanismSensor
 import com.team4099.lib.units.ctreLinearMechanismSensor
@@ -25,6 +26,8 @@ import com.team4099.lib.units.derived.inVolts
 import com.team4099.lib.units.derived.radians
 import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.inFeetPerSecond
+import com.team4099.lib.units.inRotationsPerSecond
+import com.team4099.lib.units.inRotationsPerSecondPerSecond
 import com.team4099.lib.units.perSecond
 import com.team4099.robot2022.config.constants.DrivetrainConstants
 import edu.wpi.first.math.filter.MedianFilter
@@ -161,8 +164,8 @@ class SwerveModule(
     //        steeringSensor.velocityToRawUnits(DrivetrainConstants.STEERING_VEL_MAX)
     //    steeringConfiguration.motionAcceleration =
     //        steeringSensor.accelerationToRawUnits(DrivetrainConstants.STEERING_ACCEL_MAX)
-    steeringConfiguration.motionCruiseVelocity = DrivetrainConstants.STEERING_VEL_NATIVE_MAX
-    steeringConfiguration.motionAcceleration = DrivetrainConstants.STEERING_ACCEL_NATIVE_MAX
+    steeringConfiguration.motionCruiseVelocity = DrivetrainConstants.STEERING_VEL_NATIVE_MAX.inRotationsPerSecond * Timescale.CTRE.velocity.inSeconds / (DrivetrainConstants.STEERING_SENSOR_GEAR_RATIO / DrivetrainConstants.STEERING_SENSOR_CPR)
+    steeringConfiguration.motionAcceleration = DrivetrainConstants.STEERING_ACCEL_NATIVE_MAX.inRotationsPerSecondPerSecond * Timescale.CTRE.velocity.inSeconds * Timescale.CTRE.acceleration.inSeconds / (DrivetrainConstants.STEERING_SENSOR_GEAR_RATIO / DrivetrainConstants.STEERING_SENSOR_CPR)
     steeringConfiguration.peakOutputForward = 1.0
     steeringConfiguration.peakOutputReverse = -1.0
     steeringConfiguration.supplyCurrLimit.currentLimit =
