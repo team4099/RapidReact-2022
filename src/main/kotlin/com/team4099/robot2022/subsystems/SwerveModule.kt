@@ -6,14 +6,11 @@ import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration
 import com.team4099.lib.logging.Logger
-import com.team4099.lib.units.AngularMechanismSensor
 import com.team4099.lib.units.LinearAcceleration
 import com.team4099.lib.units.LinearVelocity
-import com.team4099.lib.units.Timescale
 import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.base.feet
 import com.team4099.lib.units.base.inFeet
-import com.team4099.lib.units.base.inSeconds
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.ctreAngularMechanismSensor
 import com.team4099.lib.units.ctreLinearMechanismSensor
@@ -26,11 +23,8 @@ import com.team4099.lib.units.derived.inVolts
 import com.team4099.lib.units.derived.radians
 import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.inFeetPerSecond
-import com.team4099.lib.units.inRotationsPerSecond
-import com.team4099.lib.units.inRotationsPerSecondPerSecond
 import com.team4099.lib.units.perSecond
 import com.team4099.robot2022.config.constants.DrivetrainConstants
-import edu.wpi.first.math.filter.MedianFilter
 import edu.wpi.first.wpilibj.AnalogPotentiometer
 import kotlin.math.IEEErem
 import kotlin.math.sign
@@ -55,12 +49,6 @@ class SwerveModule(
           DrivetrainConstants.DRIVE_SENSOR_CPR,
           DrivetrainConstants.DRIVE_SENSOR_GEAR_RATIO,
           DrivetrainConstants.WHEEL_DIAMETER)
-
-  private val steeringAbsolute =
-      AngularMechanismSensor(
-          DrivetrainConstants.ABSOLUTE_GEAR_RATIO, Timescale.CTRE, { 0.0 }, { potentiometer.get() })
-
-  private val filter = MedianFilter(10)
 
   // motor params
   private val steeringConfiguration: TalonFXConfiguration = TalonFXConfiguration()
@@ -160,21 +148,10 @@ class SwerveModule(
     steeringConfiguration.slot0.kI = DrivetrainConstants.PID.STEERING_KI
     steeringConfiguration.slot0.kD = DrivetrainConstants.PID.STEERING_KD
     steeringConfiguration.slot0.kF = DrivetrainConstants.PID.STEERING_KFF
-    //    steeringConfiguration.motionCruiseVelocity =
-    //        steeringSensor.velocityToRawUnits(DrivetrainConstants.STEERING_VEL_MAX)
-    //    steeringConfiguration.motionAcceleration =
-    //        steeringSensor.accelerationToRawUnits(DrivetrainConstants.STEERING_ACCEL_MAX)
     steeringConfiguration.motionCruiseVelocity =
-        DrivetrainConstants.STEERING_VEL_NATIVE_MAX.inRotationsPerSecond *
-            Timescale.CTRE.velocity.inSeconds /
-            (DrivetrainConstants.STEERING_SENSOR_GEAR_RATIO /
-                DrivetrainConstants.STEERING_SENSOR_CPR)
+        steeringSensor.velocityToRawUnits(DrivetrainConstants.STEERING_VEL_NATIVE_MAX)
     steeringConfiguration.motionAcceleration =
-        DrivetrainConstants.STEERING_ACCEL_NATIVE_MAX.inRotationsPerSecondPerSecond *
-            Timescale.CTRE.velocity.inSeconds *
-            Timescale.CTRE.acceleration.inSeconds /
-            (DrivetrainConstants.STEERING_SENSOR_GEAR_RATIO /
-                DrivetrainConstants.STEERING_SENSOR_CPR)
+        steeringSensor.accelerationToRawUnits(DrivetrainConstants.STEERING_ACCEL_NATIVE_MAX)
     steeringConfiguration.peakOutputForward = 1.0
     steeringConfiguration.peakOutputReverse = -1.0
     steeringConfiguration.supplyCurrLimit.currentLimit =
