@@ -1,19 +1,13 @@
 package com.team4099.robot2022.commands.shooter
 
-import com.team4099.lib.units.base.inMeters
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.rotations
-import com.team4099.lib.units.inRadiansPerSecond
-import com.team4099.lib.units.perMinute
 import com.team4099.lib.units.perSecond
-import com.team4099.robot2022.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2022.config.Constants.VisionConstants
-import com.team4099.robot2022.config.Constants.ShooterConstants
 import com.team4099.robot2022.subsystems.Drivetrain
 import com.team4099.robot2022.subsystems.Shooter
 import com.team4099.robot2022.subsystems.Vision
 import edu.wpi.first.wpilibj2.command.CommandBase
-import org.photonvision.targeting.PhotonTrackedTarget
 
 class AimAssist : CommandBase() {
   var diff = 0.0.meters
@@ -46,7 +40,7 @@ class AimAssist : CommandBase() {
   }
 
   override fun isFinished(): Boolean {
-    val diff = VisionConstants.TARGET_RANGE - rangeToTarget
+//    val diff = VisionConstants.TARGET_RANGE - rangeToTarget
     return (diff <= VisionConstants.RANGE_THRESHOLD && diff > 0.0.meters) || !Vision.hasTargets!!
   }
 }
