@@ -5,22 +5,20 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.ctreAngularMechanismSensor
 import com.team4099.lib.units.inRotationsPerMinute
-import com.team4099.robot2022.config.Constants
-import com.team4099.robot2022.config.Constants.ShooterConstants
-import com.team4099.robot2022.config.Constants.ShooterConstants.ShooterState
+import com.team4099.robot2022.config.ShooterConstants
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 
 object Shooter : SubsystemBase() {
   private val leaderMotor = TalonFX(ShooterConstants.LEADER_MOTOR_ID)
   private val followerMotor = TalonFX(ShooterConstants.FOLLOWER_MOTOR_ID)
 
-  private val shooterSensor = ctreAngularMechanismSensor(
-    leaderMotor,
-    ShooterConstants.SHOOTER_SENSOR_CPR,
-    ShooterConstants.SHOOTER_SENSOR_GEAR_RATIO
-  )
+  private val shooterSensor =
+      ctreAngularMechanismSensor(
+          leaderMotor,
+          ShooterConstants.SHOOTER_SENSOR_CPR,
+          ShooterConstants.SHOOTER_SENSOR_GEAR_RATIO)
 
-  var shooterState = ShooterState.IDLE
+  var shooterState = ShooterConstants.ShooterState.IDLE
     set(value) {
       setVelocity(value.rotationsPerMinute)
       field = value
