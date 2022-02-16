@@ -2,6 +2,7 @@ package com.team4099.robot2022
 
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
+import com.team4099.robot2022.auto.AutonomousSelector
 import com.team4099.robot2022.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2022.commands.drivetrain.ResetGyroCommand
 import com.team4099.robot2022.config.ControlBoard
@@ -15,7 +16,7 @@ import kotlin.math.pow
 
 object Robot : TimedRobot() {
   val robotName: Constants.Tuning.RobotName
-  // val autonomousCommand = TestDriveCommand()
+  val autonomousSelector: AutonomousSelector = AutonomousSelector
 
   init {
     val robotId =
@@ -40,14 +41,13 @@ object Robot : TimedRobot() {
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
   }
 
-  // val autonomousCommand = DriveCharacterizeCommand()
-
   override fun robotInit() {
     Drivetrain.zeroSensors()
   }
 
   override fun autonomousInit() {
     // autonomousCommand.schedule()
+    autonomousSelector.getCommand().schedule()
   }
 
   override fun disabledInit() {
