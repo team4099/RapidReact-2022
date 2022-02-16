@@ -16,8 +16,7 @@ object Intake : SubsystemBase() {
   private val intakeConfiguration: TalonFXConfiguration = TalonFXConfiguration()
 
   private val intakeTalon = TalonFX(Constants.Intake.INTAKE_MOTOR)
-  private val intakeSolenoid =
-      Solenoid(PneumaticsModuleType.REVPH, Constants.Intake.ARM_SOLENOID_REVERSE)
+  private val intakeSolenoid = Solenoid(PneumaticsModuleType.REVPH, Constants.Intake.ARM_SOLENOID)
 
   var intakeState = IntakeConstants.IntakeState.IDLE
     set(state) {
