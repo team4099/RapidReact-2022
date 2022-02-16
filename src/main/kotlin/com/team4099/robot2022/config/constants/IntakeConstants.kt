@@ -1,7 +1,5 @@
 package com.team4099.robot2022.config.constants
 
-import edu.wpi.first.wpilibj.DoubleSolenoid
-
 object IntakeConstants {
   val RAMP_TIME = 1.0 // Change
   const val TAB = "Intake"
@@ -13,8 +11,8 @@ object IntakeConstants {
     OUT(-1.0)
   }
 
-  enum class ArmPos(val position: DoubleSolenoid.Value?) {
-    OUT(DoubleSolenoid.Value.kReverse),
-    IN(DoubleSolenoid.Value.kForward)
+  enum class ArmPos(val out: Boolean) {
+    OUT(true),
+    IN(false)
   }
 }

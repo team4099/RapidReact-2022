@@ -6,8 +6,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration
 import com.team4099.lib.logging.Logger
 import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.config.constants.IntakeConstants
-import edu.wpi.first.wpilibj.DoubleSolenoid
 import edu.wpi.first.wpilibj.PneumaticsModuleType
+import edu.wpi.first.wpilibj.Solenoid
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 
 object Intake : SubsystemBase() {
@@ -16,11 +16,8 @@ object Intake : SubsystemBase() {
   private val intakeConfiguration: TalonFXConfiguration = TalonFXConfiguration()
 
   private val intakeTalon = TalonFX(Constants.Intake.INTAKE_MOTOR)
-  private val intakeDoubleSolenoid =
-      DoubleSolenoid(
-          PneumaticsModuleType.CTREPCM,
-          Constants.Intake.ARM_SOLENOID_FORWARD,
-          Constants.Intake.ARM_SOLENOID_REVERSE)
+  private val intakeSolenoid =
+      Solenoid(PneumaticsModuleType.REVPH, Constants.Intake.ARM_SOLENOID_REVERSE)
 
   var intakeState = IntakeConstants.IntakeState.IDLE
     set(state) {
@@ -30,7 +27,7 @@ object Intake : SubsystemBase() {
 
   var armState = IntakeConstants.ArmPos.IN // Change Eventually
     set(state) {
-      intakeDoubleSolenoid.set(state.position)
+      intakeSolenoid.set(state.out)
       field = state
     }
 
@@ -48,6 +45,7 @@ object Intake : SubsystemBase() {
     Logger.addSource(IntakeConstants.TAB, "Arm State") { armState.toString() }
 
     intakeConfiguration.supplyCurrLimit.currentLimit = IntakeConstants.SUPPLY_CURRENT_LIMIT
+    intakeTalon.configAllSettings(intakeConfiguration)
     intakeTalon.configOpenloopRamp(IntakeConstants.RAMP_TIME)
   }
 }
