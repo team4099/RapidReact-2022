@@ -4,7 +4,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration
 import com.team4099.lib.logging.Logger
-import com.team4099.robot2022.config.Constants
+import com.team4099.robot2022.config.constants.Constants
+import com.team4099.robot2022.config.constants.IntakeConstants
 import edu.wpi.first.wpilibj.DoubleSolenoid
 import edu.wpi.first.wpilibj.PneumaticsModuleType
 import edu.wpi.first.wpilibj2.command.SubsystemBase
@@ -21,13 +22,13 @@ object Intake : SubsystemBase() {
           Constants.Intake.ARM_SOLENOID_FORWARD,
           Constants.Intake.ARM_SOLENOID_REVERSE)
 
-  var intakeState = Constants.Intake.IntakeState.IDLE
+  var intakeState = IntakeConstants.IntakeState.IDLE
     set(state) {
       intakeTalon.set(ControlMode.PercentOutput, state.speed)
       field = state
     }
 
-  var armState = Constants.Intake.ArmPos.IN // Change Eventually
+  var armState = IntakeConstants.ArmPos.IN // Change Eventually
     set(state) {
       intakeDoubleSolenoid.set(state.position)
       field = state
@@ -35,20 +36,18 @@ object Intake : SubsystemBase() {
 
   init {
     intakeTalon.configFactoryDefault()
-    Logger.addSource(Constants.Intake.TAB, "Intake State") { intakeState.toString() }
-    Logger.addSource(Constants.Intake.TAB, "Intake Motor Power") { intakeTalon.motorOutputPercent }
-    Logger.addSource(Constants.Intake.TAB, "Intake Motor Stator Current") {
+    Logger.addSource(IntakeConstants.TAB, "Intake State") { intakeState.toString() }
+    Logger.addSource(IntakeConstants.TAB, "Intake Motor Power") { intakeTalon.motorOutputPercent }
+    Logger.addSource(IntakeConstants.TAB, "Intake Motor Stator Current") {
       intakeTalon.statorCurrent
     }
-    Logger.addSource(Constants.Intake.TAB, "Intake Motor Supply Current") {
+    Logger.addSource(IntakeConstants.TAB, "Intake Motor Supply Current") {
       intakeTalon.supplyCurrent
     }
-    Logger.addSource(Constants.Intake.TAB, "Intake Motor Voltage") {
-      intakeTalon.motorOutputVoltage
-    }
-    Logger.addSource(Constants.Intake.TAB, "Arm State") { armState.toString() }
+    Logger.addSource(IntakeConstants.TAB, "Intake Motor Voltage") { intakeTalon.motorOutputVoltage }
+    Logger.addSource(IntakeConstants.TAB, "Arm State") { armState.toString() }
 
-    intakeConfiguration.supplyCurrLimit.currentLimit = Constants.Intake.SUPPLY_CURRENT_LIMIT
-    intakeTalon.configOpenloopRamp(Constants.Intake.RAMP_TIME)
+    intakeConfiguration.supplyCurrLimit.currentLimit = IntakeConstants.SUPPLY_CURRENT_LIMIT
+    intakeTalon.configOpenloopRamp(IntakeConstants.RAMP_TIME)
   }
 }

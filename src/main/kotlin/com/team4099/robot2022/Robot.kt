@@ -3,6 +3,7 @@ package com.team4099.robot2022
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
 import com.team4099.robot2021.subsystems.com.team4099.robot2022.subsystems.Intake
+import com.team4099.robot2022.auto.AutonomousSelector
 import com.team4099.robot2022.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2022.commands.drivetrain.ResetGyroCommand
 import com.team4099.robot2022.commands.intake.IntakeBallsCommand
@@ -10,8 +11,8 @@ import com.team4099.robot2022.commands.intake.IntakeIdleCommand
 import com.team4099.robot2022.commands.intake.LiftIntakeCommand
 import com.team4099.robot2022.commands.intake.PrepareClimbCommand
 import com.team4099.robot2022.commands.intake.ReverseIntakeCommand
-import com.team4099.robot2022.config.Constants
 import com.team4099.robot2022.config.ControlBoard
+import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.subsystems.Drivetrain
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.RobotController
@@ -21,6 +22,7 @@ import kotlin.math.pow
 
 object Robot : TimedRobot() {
   val robotName: Constants.Tuning.RobotName
+  val autonomousSelector: AutonomousSelector = AutonomousSelector
 
   init {
     val robotId =
@@ -54,8 +56,13 @@ object Robot : TimedRobot() {
     ControlBoard.prepareClimb.whileActiveContinuous(PrepareClimbCommand())
   }
 
+  override fun robotInit() {
+    Drivetrain.zeroSensors()
+  }
+
   override fun autonomousInit() {
     // autonomousCommand.schedule()
+    autonomousSelector.getCommand().schedule()
   }
 
   override fun disabledInit() {

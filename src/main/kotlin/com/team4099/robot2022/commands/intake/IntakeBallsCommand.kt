@@ -2,7 +2,7 @@ package com.team4099.robot2022.commands.intake
 
 import com.team4099.lib.logging.Logger
 import com.team4099.robot2021.subsystems.com.team4099.robot2022.subsystems.Intake
-import com.team4099.robot2022.config.Constants
+import com.team4099.robot2022.config.constants.IntakeConstants
 import edu.wpi.first.wpilibj2.command.CommandBase
 
 class IntakeBallsCommand : CommandBase() {
@@ -20,8 +20,8 @@ class IntakeBallsCommand : CommandBase() {
     }
      */
 
-    Intake.intakeState = Constants.Intake.IntakeState.IN
-    Intake.armState = Constants.Intake.ArmPos.OUT
+    Intake.intakeState = IntakeConstants.IntakeState.IN
+    Intake.armState = IntakeConstants.ArmPos.OUT
     Logger.addEvent("Intake", "Intake Balls")
   }
 
