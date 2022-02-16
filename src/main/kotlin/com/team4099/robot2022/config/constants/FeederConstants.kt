@@ -3,13 +3,9 @@ package com.team4099.robot2022.config.constants
 object FeederConstants {
   // feeder_power temp
   const val FEEDER_POWER = 1.0
-  const val FLOOR_MOTOR_ID = 61
-  const val VERTICAL_MOTOR_ID = 62
   const val TAB = "Feeder"
 
   // temp values
-  const val TOP_DIO_PIN = 0
-  const val BOTTOM_DIO_PIN = 1
   const val BEAM_BREAK_BROKEN_TIME = 0.05
   const val BEAM_BREAK_BACKWARDS_TIME = 0.05
 

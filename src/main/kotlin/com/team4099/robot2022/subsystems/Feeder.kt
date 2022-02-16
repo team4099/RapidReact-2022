@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.team4099.lib.logging.Logger
+import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.config.constants.FeederConstants
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj2.command.SubsystemBase
@@ -11,16 +12,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
 object Feeder : SubsystemBase() {
 
   // The motor that takes balls from the intake
-  private val floorMotor = TalonFX(FeederConstants.FLOOR_MOTOR_ID)
+  private val floorMotor = TalonFX(Constants.Feeder.FLOOR_MOTOR_ID)
 
   // The motor that takes balls to the shooter
-  private val verticalMotor = TalonFX(FeederConstants.VERTICAL_MOTOR_ID)
+  private val verticalMotor = TalonFX(Constants.Feeder.VERTICAL_MOTOR_ID)
 
   // The top Beam Break
-  private val topBeamDIO = DigitalInput(FeederConstants.TOP_DIO_PIN)
+  private val topBeamDIO = DigitalInput(Constants.Feeder.TOP_DIO_PIN)
 
   // The bottom Beam Break
-  private val bottomBeamDIO = DigitalInput(FeederConstants.BOTTOM_DIO_PIN)
+  private val bottomBeamDIO = DigitalInput(Constants.Feeder.BOTTOM_DIO_PIN)
 
   val topBeamBroken: Boolean
     get() = !topBeamDIO.get()

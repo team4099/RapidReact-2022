@@ -48,4 +48,12 @@ object Constants {
     const val BACK_LEFT_STEERING_ID = 24
     const val BACK_LEFT_ANALOG_POTENTIOMETER = 3
   }
+
+  object Feeder {
+    const val FLOOR_MOTOR_ID = 61
+    const val VERTICAL_MOTOR_ID = 62
+
+    const val TOP_DIO_PIN = 0
+    const val BOTTOM_DIO_PIN = 1
+  }
 }
