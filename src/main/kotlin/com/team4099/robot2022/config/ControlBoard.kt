@@ -23,8 +23,6 @@ object ControlBoard {
 
   val resetGyro = Trigger { driver.startButton && driver.selectButton }
 
-  val runIntakeIn = Trigger { operator.aButton }
-  val putIntakeUp = Trigger { operator.bButton }
-  val runIntakeOut = Trigger { operator.xButton }
+  val runIntake = Trigger { operator.aButton }
   val prepareClimb = Trigger { operator.startButton }
 }

@@ -10,7 +10,6 @@ import com.team4099.robot2022.commands.intake.IntakeBallsCommand
 import com.team4099.robot2022.commands.intake.IntakeIdleCommand
 import com.team4099.robot2022.commands.intake.LiftIntakeCommand
 import com.team4099.robot2022.commands.intake.PrepareClimbCommand
-import com.team4099.robot2022.commands.intake.ReverseIntakeCommand
 import com.team4099.robot2022.config.ControlBoard
 import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.subsystems.Drivetrain
@@ -48,11 +47,9 @@ object Robot : TimedRobot() {
 
     Intake.defaultCommand = IntakeIdleCommand()
 
-    ControlBoard.runIntakeIn
-        // .whileActiveContinuous(FeederCommand(Constants.Feeder.FeederState.FORWARD_ALL))
+    ControlBoard.runIntake
         .whileActiveContinuous(IntakeBallsCommand())
-    ControlBoard.putIntakeUp.whileActiveContinuous(LiftIntakeCommand())
-    ControlBoard.runIntakeOut.whileActiveContinuous(ReverseIntakeCommand())
+        .whenInactive(LiftIntakeCommand())
     ControlBoard.prepareClimb.whileActiveContinuous(PrepareClimbCommand())
   }
 
