@@ -9,11 +9,9 @@ class ShootCommand : CommandBase() {
     // addRequirements(Feeder)
   }
 
-  override fun execute() {
-
-  }
+  override fun execute() {}
 
   override fun isFinished(): Boolean {
-
+    return false
   }
 }

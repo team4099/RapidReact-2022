@@ -1,7 +1,5 @@
 package com.team4099.robot2022.config
 
-import com.team4099.lib.units.Value
-import com.team4099.lib.units.Velocity
 import com.team4099.lib.units.base.feet
 import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.meters
@@ -29,9 +27,8 @@ object Constants {
     }
 
     val ROBOT_ID_MAP =
-      mapOf<Int, RobotName>(
-        0 to RobotName.COMPETITION, 1 to RobotName.PRACTICE, 2 to RobotName.MULE
-      )
+        mapOf<Int, RobotName>(
+            0 to RobotName.COMPETITION, 1 to RobotName.PRACTICE, 2 to RobotName.MULE)
   }
 
   object Drivetrain {
