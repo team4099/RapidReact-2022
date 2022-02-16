@@ -1,80 +1,22 @@
 package com.team4099.lib.pathfollow
 
-import com.team4099.lib.geometry.Pose
-import com.team4099.lib.geometry.Translation
 import com.team4099.lib.geometry.interpolate
 import com.team4099.lib.interpolate
-import com.team4099.lib.units.LinearVelocity
 import com.team4099.lib.units.base.Time
-import com.team4099.lib.units.base.meters
-import com.team4099.lib.units.base.seconds
-import com.team4099.lib.units.derived.angle
-import com.team4099.lib.units.inMetersPerSecond
-import com.team4099.lib.units.inMetersPerSecondPerSecond
-import com.team4099.lib.units.perSecond
-import edu.wpi.first.math.trajectory.TrajectoryParameterizer
 
 /**
  * A wrapper around the WPILib trajectory class that handles smooth heading changes for holonomic
  * drivetrains.
  */
-class Trajectory(
-  private val startVelocity: LinearVelocity,
-  private val path: Path,
-  private val endVelocity: LinearVelocity,
-  private val trajectoryConfig: TrajectoryConfig
-) {
-  val states: List<TrajectoryState>
+class Trajectory(private val states: List<TrajectoryState>) {
+
   val startTime: Time
     get() = states[0].timestamp
   val endTime: Time
     get() = states[states.size - 1].timestamp
 
-  val startingPose = path.startingPose
-  val endingPose = path.endingPose
-
-  init {
-    if (!path.built) path.build()
-
-    val wpilibStates =
-        TrajectoryParameterizer.timeParameterizeTrajectory(
-                path.splinePoints,
-                trajectoryConfig.constraints,
-                startVelocity.inMetersPerSecond,
-                endVelocity.inMetersPerSecond,
-                trajectoryConfig.maxLinearVelocity.inMetersPerSecond,
-                trajectoryConfig.maxLinearAcceleration.inMetersPerSecondPerSecond,
-                false)
-            .states
-
-    states =
-        wpilibStates.mapIndexed { index, state ->
-          var headingTarget =
-              if (index == 0) {
-                path.startingPose.theta
-              } else if (index == wpilibStates.size - 1) {
-                path.endingPose.theta
-              } else {
-                val tailMap = path.headingPointMap.tailMap(index)
-                if (tailMap.size == 0) {
-                  path.endingPose.theta
-                } else {
-                  path.headingPointMap[tailMap.firstKey()]
-                }
-              }
-
-          if (headingTarget == null) {
-            headingTarget = path.endingPose.theta
-          }
-
-          TrajectoryState(
-              state.timeSeconds.seconds,
-              Pose(Translation(state.poseMeters.translation), headingTarget),
-              state.poseMeters.rotation.angle,
-              state.velocityMetersPerSecond.meters.perSecond,
-              state.accelerationMetersPerSecondSq.meters.perSecond.perSecond)
-        }
-  }
+  val startingPose = states[0].pose
+  val endingPose = states[-1].pose
 
   fun sample(time: Time): TrajectoryState {
     if (time <= startTime) {
@@ -108,5 +50,20 @@ class Trajectory(
         interpolate(lowState.curvature, highState.curvature, lerpScalar),
         interpolate(lowState.linearVelocity, highState.linearVelocity, lerpScalar),
         interpolate(lowState.linearAcceleration, highState.linearAcceleration, lerpScalar))
+    //        interpolate(lowState.angularVelocity, highState.angularVelocity, lerpScalar),
+    //        interpolate(lowState.angularAcceleration, highState.angularAcceleration, lerpScalar)
   }
+
+  //  private val path: Path,
+  //  private val startVelocity: LinearVelocity,
+  //  private val endVelocity: LinearVelocity,
+  //  private val trajectoryConfig: TrajectoryConfig
+
+  //  public fun convertToTrajectory(pathPlannerTrajectory: PathPlannerTrajectory):
+  // edu.wpi.first.wpilibj.trajectory.Trajectory{
+  //    var traj: Trajectory = edu.wpi.first.wpilibj.trajectory.Trajectory(
+  //      e),
+  //    pathPlannerTrajectory.
+  //    )
+  //  }
 }
