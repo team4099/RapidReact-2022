@@ -125,9 +125,12 @@ object Constants {
     const val LEADER_MOTOR_ID = 71 // TODO: update if incorrect
     const val FOLLOWER_MOTOR_ID = 72 // TODO: update if incorrect
 
-    const val SHOOTER_KP = 0.5
+    const val SHOOTER_KP = 0.5 // TODO: tune
     const val SHOOTER_KI = 0.0
     const val SHOOTER_KD = 0.0
+
+    const val SHOOTER_SENSOR_CPR = 2048
+    const val SHOOTER_SENSOR_GEAR_RATIO = 1.0
 
     // Target values
     val TARGET_VELOCITY = 1200.rotations.perMinute // TODO: Update with correct value
