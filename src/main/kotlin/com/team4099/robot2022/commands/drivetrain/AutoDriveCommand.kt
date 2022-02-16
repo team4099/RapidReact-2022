@@ -17,7 +17,7 @@ import com.team4099.lib.units.derived.sin
 import com.team4099.lib.units.inRadiansPerSecond
 import com.team4099.lib.units.inRadiansPerSecondPerSecond
 import com.team4099.lib.units.perSecond
-import com.team4099.robot2022.config.Constants
+import com.team4099.robot2022.config.constants.DrivetrainConstants
 import com.team4099.robot2022.subsystems.Drivetrain
 import edu.wpi.first.math.controller.PIDController
 import edu.wpi.first.math.controller.ProfiledPIDController
@@ -28,22 +28,22 @@ import kotlin.math.PI
 class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
   private val xPID =
       PIDController(
-          Constants.Drivetrain.PID.AUTO_POS_KP,
-          Constants.Drivetrain.PID.AUTO_POS_KI,
-          Constants.Drivetrain.PID.AUTO_POS_KD)
+          DrivetrainConstants.PID.AUTO_POS_KP,
+          DrivetrainConstants.PID.AUTO_POS_KI,
+          DrivetrainConstants.PID.AUTO_POS_KD)
   private val yPID =
       PIDController(
-          Constants.Drivetrain.PID.AUTO_POS_KP,
-          Constants.Drivetrain.PID.AUTO_POS_KI,
-          Constants.Drivetrain.PID.AUTO_POS_KD)
+          DrivetrainConstants.PID.AUTO_POS_KP,
+          DrivetrainConstants.PID.AUTO_POS_KI,
+          DrivetrainConstants.PID.AUTO_POS_KD)
   private val thetaPID =
       ProfiledPIDController(
-          Constants.Drivetrain.PID.DRIVE_THETA_PID_KP,
-          Constants.Drivetrain.PID.DRIVE_THETA_PID_KI,
-          Constants.Drivetrain.PID.DRIVE_THETA_PID_KD,
+          DrivetrainConstants.PID.DRIVE_THETA_PID_KP,
+          DrivetrainConstants.PID.DRIVE_THETA_PID_KI,
+          DrivetrainConstants.PID.DRIVE_THETA_PID_KD,
           TrapezoidProfile.Constraints(
-              Constants.Drivetrain.MAX_AUTO_ANGULAR_VEL.inRadiansPerSecond,
-              Constants.Drivetrain.MAX_AUTO_ANGULAR_ACCEL.inRadiansPerSecondPerSecond))
+              DrivetrainConstants.MAX_AUTO_ANGULAR_VEL.inRadiansPerSecond,
+              DrivetrainConstants.MAX_AUTO_ANGULAR_ACCEL.inRadiansPerSecondPerSecond))
 
   private var trajCurTime = 0.0.seconds
   private var trajStartTime = 0.0.seconds
@@ -57,19 +57,19 @@ class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
     Logger.addSource(
         "Drivetrain Tuning",
         "theta kP",
-        { Constants.Drivetrain.PID.DRIVE_THETA_PID_KP },
+        { DrivetrainConstants.PID.DRIVE_THETA_PID_KP },
         { newP -> thetaPID.p = newP },
         false)
     Logger.addSource(
         "Drivetrain Tuning",
         "theta kD",
-        { Constants.Drivetrain.PID.DRIVE_THETA_PID_KD },
+        { DrivetrainConstants.PID.DRIVE_THETA_PID_KD },
         { newD -> thetaPID.d = newD },
         false)
     Logger.addSource(
         "Drivetrain Tuning",
         "auto position kp",
-        { Constants.Drivetrain.PID.AUTO_POS_KP },
+        { DrivetrainConstants.PID.AUTO_POS_KP },
         { newP ->
           xPID.p = newP
           yPID.p = newP
@@ -78,7 +78,7 @@ class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
     Logger.addSource(
         "Drivetrain Tuning",
         "auto position kd",
-        { Constants.Drivetrain.PID.AUTO_POS_KD },
+        { DrivetrainConstants.PID.AUTO_POS_KD },
         { newD ->
           xPID.d = newD
           yPID.d = newD
@@ -99,7 +99,7 @@ class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
   }
 
   override fun initialize() {
-    Drivetrain.pose = trajectory.startingPose
+    Drivetrain.pose = trajectory.startingPose // move to individual auto commands
     trajStartTime = Clock.fpgaTime + trajectory.startTime
   }
 
