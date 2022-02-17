@@ -48,4 +48,9 @@ object Constants {
     const val BACK_LEFT_STEERING_ID = 24
     const val BACK_LEFT_ANALOG_POTENTIOMETER = 3
   }
+
+  object Intake {
+    const val INTAKE_MOTOR = 31
+    const val ARM_SOLENOID = 1
+  }
 }

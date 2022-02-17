@@ -22,4 +22,7 @@ object ControlBoard {
     get() = driver.rightXAxis
 
   val resetGyro = Trigger { driver.startButton && driver.selectButton }
+
+  val runIntake = Trigger { operator.aButton }
+  val prepareClimb = Trigger { operator.startButton }
 }
