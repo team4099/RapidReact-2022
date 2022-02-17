@@ -1,10 +1,13 @@
 package com.team4099.robot2022.subsystems
 
 import com.ctre.phoenix.motorcontrol.ControlMode
+import com.ctre.phoenix.motorcontrol.DemandType
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.team4099.lib.logging.Logger
+import com.team4099.lib.units.AngularVelocity
 import com.team4099.lib.units.ctreAngularMechanismSensor
 import com.team4099.lib.units.inRotationsPerMinute
+import com.team4099.lib.units.inRotationsPerSecond
 import com.team4099.robot2022.config.ShooterConstants
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 
@@ -19,9 +22,9 @@ object Shooter : SubsystemBase() {
           ShooterConstants.SHOOTER_SENSOR_GEAR_RATIO)
 
   var shooterState = ShooterConstants.ShooterState.IDLE
-    set(value) {
-      setVelocity(value.rotationsPerMinute)
-      field = value
+    set(state) {
+      setVelocity(state.rotationsPerMinute)
+      field = state
     }
 
   val shooterVelocity
@@ -56,5 +59,11 @@ object Shooter : SubsystemBase() {
     Logger.addSource("Shooter", "Shooter Follower Stator Current") { followerMotor.statorCurrent }
   }
 
-  fun setVelocity(velocity: Double) = leaderMotor.set(ControlMode.PercentOutput, velocity)
+  private fun setVelocity(velocity: AngularVelocity) =
+      leaderMotor.set(
+          ControlMode.Velocity,
+          shooterSensor.velocityToRawUnits(velocity),
+          DemandType.ArbitraryFeedForward,
+          (ShooterConstants.SHOOTER_KS +
+              ShooterConstants.SHOOTER_KV * velocity.inRotationsPerSecond) / 12.0)
 }
