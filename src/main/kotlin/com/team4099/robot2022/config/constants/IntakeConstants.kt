@@ -6,7 +6,7 @@ object IntakeConstants {
   const val SUPPLY_CURRENT_LIMIT = 30.0
 
   enum class IntakeState(val speed: Double) {
-    IDLE(0.0),
+    IDLE(-0.1),
     IN(1.0),
     OUT(-1.0)
   }

@@ -17,7 +17,9 @@ import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.config.constants.FeederConstants
 import com.team4099.robot2022.subsystems.Drivetrain
 import com.team4099.robot2022.subsystems.Feeder
+import edu.wpi.first.wpilibj.Compressor
 import edu.wpi.first.wpilibj.DigitalInput
+import edu.wpi.first.wpilibj.PneumaticsModuleType
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj2.command.CommandScheduler
@@ -59,12 +61,14 @@ object Robot : TimedRobot() {
 
     ControlBoard.runIntake
         .whileActiveContinuous(IntakeBallsCommand())
-        .whenInactive(LiftIntakeCommand())
+//        .whenInactive(LiftIntakeCommand())
     ControlBoard.prepareClimb.whileActiveContinuous(PrepareClimbCommand())
   }
 
   override fun robotInit() {
     Drivetrain.zeroSensors()
+    val compressor = Compressor(PneumaticsModuleType.REVPH)
+    compressor.enableAnalog(60.0, 120.0)
   }
 
   override fun autonomousInit() {
