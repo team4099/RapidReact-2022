@@ -56,4 +56,9 @@ object Constants {
     const val TOP_DIO_PIN = 9
     const val BOTTOM_DIO_PIN = 8
   }
+
+  object Intake {
+    const val INTAKE_MOTOR = 31
+    const val ARM_SOLENOID = 1
+  }
 }
