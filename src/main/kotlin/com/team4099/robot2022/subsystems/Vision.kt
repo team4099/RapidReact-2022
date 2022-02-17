@@ -5,7 +5,7 @@ import com.team4099.lib.units.base.Meter
 import com.team4099.lib.units.base.inMeters
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.inDegrees
-import com.team4099.robot2022.config.Constants.VisionConstants
+import com.team4099.robot2022.config.VisionConstants
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.geometry.Translation2d
 import edu.wpi.first.wpilibj2.command.SubsystemBase
@@ -31,14 +31,16 @@ object Vision : SubsystemBase() {
 
   fun getRangeToBestTarget(): Value<Meter> {
     return (PhotonUtils.calculateDistanceToTargetMeters(
-            VisionConstants.CAMERA_HEIGHT.inMeters,
-            VisionConstants.UPPER_HUB_TARGET_HEIGHT.inMeters,
-            0.0,
-            bestTarget!!.pitch) * cos(VisionConstants.CAMERA_ANGLE.inDegrees)).meters
+      VisionConstants.CAMERA_HEIGHT.inMeters,
+      VisionConstants.UPPER_HUB_TARGET_HEIGHT.inMeters,
+      0.0,
+      bestTarget!!.pitch
+    ) * cos(VisionConstants.CAMERA_ANGLE.inDegrees)).meters
   }
 
   fun getOffsetToBestTarget(): Translation2d {
     return PhotonUtils.estimateCameraToTargetTranslation(
-        getRangeToBestTarget().inMeters, Rotation2d.fromDegrees(-bestTarget!!.yaw))
+      getRangeToBestTarget().inMeters, Rotation2d.fromDegrees(-bestTarget!!.yaw)
+    )
   }
 }
