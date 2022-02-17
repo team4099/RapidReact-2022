@@ -51,6 +51,6 @@ object Constants {
 
   object Intake {
     const val INTAKE_MOTOR = 31
-    const val ARM_SOLENOID = 1
+    const val ARM_SOLENOID = 8
   }
 }
