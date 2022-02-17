@@ -24,7 +24,8 @@ object Feeder : SubsystemBase() {
   private val bottomBeamDIO = DigitalInput(Constants.Feeder.BOTTOM_DIO_PIN)
 
   val topBeamBroken: Boolean
-    get() = !topBeamDIO.get()
+//    get() = !topBeamDIO.get()
+    get() = false
 
   val bottomBeamBroken: Boolean
     get() = !bottomBeamDIO.get()
@@ -87,7 +88,9 @@ object Feeder : SubsystemBase() {
     floorMotor.enableVoltageCompensation(true)
     verticalMotor.enableVoltageCompensation(true)
 
-    floorMotor.setNeutralMode(NeutralMode.Brake)
-    verticalMotor.setNeutralMode(NeutralMode.Brake)
+    floorMotor.setNeutralMode(NeutralMode.Coast)
+    verticalMotor.setNeutralMode(NeutralMode.Coast)
+
+    floorMotor.inverted = true
   }
 }

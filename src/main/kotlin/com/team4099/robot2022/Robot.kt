@@ -7,6 +7,7 @@ import com.team4099.robot2022.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2022.commands.drivetrain.ResetGyroCommand
 import com.team4099.robot2022.commands.feeder.FeederCommand
 import com.team4099.robot2022.commands.feeder.FeederIdleCommand
+import com.team4099.robot2022.commands.feeder.FeederSerialize
 import com.team4099.robot2022.config.ControlBoard
 import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.config.constants.FeederConstants
@@ -36,7 +37,7 @@ object Robot : TimedRobot() {
 
     Logger.startLogging()
 
-    Feeder.defaultCommand = FeederIdleCommand()
+    Feeder.defaultCommand = FeederSerialize()
 
     ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(FeederConstants.FeederState.FORWARD_ALL))
     ControlBoard.runFeederOut
