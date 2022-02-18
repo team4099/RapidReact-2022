@@ -16,25 +16,36 @@ object Shooter : SubsystemBase() {
   private val followerMotor = TalonFX(ShooterConstants.FOLLOWER_MOTOR_ID)
 
   private val shooterSensor =
-      ctreAngularMechanismSensor(
-          leaderMotor,
-          ShooterConstants.SHOOTER_SENSOR_CPR,
-          ShooterConstants.SHOOTER_SENSOR_GEAR_RATIO)
+    ctreAngularMechanismSensor(
+      leaderMotor,
+      ShooterConstants.SHOOTER_SENSOR_CPR,
+      ShooterConstants.SHOOTER_SENSOR_GEAR_RATIO
+    )
 
-  var shooterState = ShooterConstants.ShooterState.IDLE
+  var shooterState = ShooterConstants.ShooterState.OFF
     set(state) {
-      setVelocity(state.rotationsPerMinute)
+      setVelocity(state.targetVelocity)
       field = state
     }
 
   val shooterVelocity
     get() = shooterSensor.velocity
 
+  val isOnTarget
+    get() =
+      (shooterState.targetVelocity - shooterVelocity).absoluteValue <=
+        ShooterConstants.TARGET_VELOCITY_THRESHOLD
+
   init {
     leaderMotor.configFactoryDefault()
-
     followerMotor.configFactoryDefault()
+
     followerMotor.follow(leaderMotor)
+
+    leaderMotor.enableVoltageCompensation(true)
+    followerMotor.enableVoltageCompensation(true)
+    leaderMotor.configVoltageCompSaturation(12.0)
+    followerMotor.configVoltageCompSaturation(12.0)
 
     leaderMotor.config_kP(0, ShooterConstants.SHOOTER_KP)
     leaderMotor.config_kI(0, ShooterConstants.SHOOTER_KI)
@@ -60,10 +71,15 @@ object Shooter : SubsystemBase() {
   }
 
   private fun setVelocity(velocity: AngularVelocity) =
-      leaderMotor.set(
-          ControlMode.Velocity,
-          shooterSensor.velocityToRawUnits(velocity),
-          DemandType.ArbitraryFeedForward,
-          (ShooterConstants.SHOOTER_KS +
-              ShooterConstants.SHOOTER_KV * velocity.inRotationsPerSecond) / 12.0)
+    leaderMotor.set(
+      ControlMode.Velocity,
+      shooterSensor.velocityToRawUnits(velocity),
+      DemandType.ArbitraryFeedForward,
+      (ShooterConstants.SHOOTER_KS +
+        ShooterConstants.SHOOTER_KV * velocity.inRotationsPerSecond) / 12.0
+    )
+
+  fun setOpenLoop(power: Double) {
+    leaderMotor.set(ControlMode.PercentOutput, power)
+  }
 }

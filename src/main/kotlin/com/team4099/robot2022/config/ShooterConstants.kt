@@ -22,7 +22,6 @@ object ShooterConstants {
   const val SHOOTER_SENSOR_GEAR_RATIO = 1.0
 
   // Target values
-  val TARGET_VELOCITY = 1200.rotations.perMinute // TODO: Update with correct value
   val TARGET_VELOCITY_THRESHOLD = 150.rotations.perMinute
 
   // Physical measurements
@@ -30,9 +29,9 @@ object ShooterConstants {
   val SHOOTER_HEIGHT = 33.0.inches
   val FLYWHEEL_RADIUS = 2.0.inches
 
-  enum class ShooterState(val rotationsPerMinute: AngularVelocity) {
-    OFF(0.0.rotations.perSecond),
-    IDLE(500.0.rotations.perSecond), // TODO: Fix with a better idle value
-    SPIN_UP(1200.0.rotations.perSecond)
+  enum class ShooterState(val targetVelocity: AngularVelocity) {
+    OFF(0.0.rotations.perMinute),
+    IDLE(500.0.rotations.perMinute), // TODO: Fix with a better idle value
+    SPIN_UP(1200.0.rotations.perMinute)
   }
 }

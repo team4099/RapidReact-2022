@@ -14,7 +14,6 @@ class SpinUpCommand() : CommandBase() {
   }
 
   override fun isFinished(): Boolean {
-    return ShooterConstants.TARGET_VELOCITY - Shooter.shooterVelocity <=
-        ShooterConstants.TARGET_VELOCITY_THRESHOLD
+    return Shooter.isOnTarget
   }
 }
