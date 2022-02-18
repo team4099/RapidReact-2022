@@ -31,16 +31,14 @@ object Vision : SubsystemBase() {
 
   fun getRangeToBestTarget(): Value<Meter> {
     return (PhotonUtils.calculateDistanceToTargetMeters(
-      VisionConstants.CAMERA_HEIGHT.inMeters,
-      VisionConstants.UPPER_HUB_TARGET_HEIGHT.inMeters,
-      0.0,
-      bestTarget!!.pitch
-    ) * cos(VisionConstants.CAMERA_ANGLE.inDegrees)).meters
+            VisionConstants.CAMERA_HEIGHT.inMeters,
+            VisionConstants.UPPER_HUB_TARGET_HEIGHT.inMeters,
+            0.0,
+            bestTarget!!.pitch) * cos(VisionConstants.CAMERA_ANGLE.inDegrees)).meters
   }
 
   fun getOffsetToBestTarget(): Translation2d {
     return PhotonUtils.estimateCameraToTargetTranslation(
-      getRangeToBestTarget().inMeters, Rotation2d.fromDegrees(-bestTarget!!.yaw)
-    )
+        getRangeToBestTarget().inMeters, Rotation2d.fromDegrees(-bestTarget!!.yaw))
   }
 }

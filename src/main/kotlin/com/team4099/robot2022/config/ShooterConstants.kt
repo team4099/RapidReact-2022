@@ -1,9 +1,11 @@
 package com.team4099.robot2022.config
 
+import com.team4099.lib.units.AngularVelocity
 import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.rotations
 import com.team4099.lib.units.perMinute
+import com.team4099.lib.units.perSecond
 
 object ShooterConstants {
   // Motor configuration
@@ -13,6 +15,8 @@ object ShooterConstants {
   const val SHOOTER_KP = 0.5 // TODO: tune
   const val SHOOTER_KI = 0.0
   const val SHOOTER_KD = 0.0
+  const val SHOOTER_KS = 0.0
+  const val SHOOTER_KV = 0.0
 
   const val SHOOTER_SENSOR_CPR = 2048
   const val SHOOTER_SENSOR_GEAR_RATIO = 1.0
@@ -26,9 +30,9 @@ object ShooterConstants {
   val SHOOTER_HEIGHT = 33.0.inches
   val FLYWHEEL_RADIUS = 2.0.inches
 
-  enum class ShooterState(public val rotationsPerMinute: Double) {
-    OFF(0.0),
-    IDLE(500.0), // TODO: Fix with a better idle value
-    SPIN_UP(1200.0)
+  enum class ShooterState(val rotationsPerMinute: AngularVelocity) {
+    OFF(0.0.rotations.perSecond),
+    IDLE(500.0.rotations.perSecond), // TODO: Fix with a better idle value
+    SPIN_UP(1200.0.rotations.perSecond)
   }
 }
