@@ -10,7 +10,6 @@ import com.team4099.robot2022.commands.feeder.FeederCommand
 import com.team4099.robot2022.commands.feeder.FeederSerialize
 import com.team4099.robot2022.commands.intake.IntakeBallsCommand
 import com.team4099.robot2022.commands.intake.IntakeIdleCommand
-import com.team4099.robot2022.commands.intake.LiftIntakeCommand
 import com.team4099.robot2022.commands.intake.PrepareClimbCommand
 import com.team4099.robot2022.config.ControlBoard
 import com.team4099.robot2022.config.constants.Constants
@@ -59,9 +58,8 @@ object Robot : TimedRobot() {
 
     Intake.defaultCommand = IntakeIdleCommand()
 
-    ControlBoard.runIntake
-        .whileActiveContinuous(IntakeBallsCommand())
-//        .whenInactive(LiftIntakeCommand())
+    ControlBoard.runIntake.whileActiveContinuous(IntakeBallsCommand())
+    //        .whenInactive(LiftIntakeCommand())
     ControlBoard.prepareClimb.whileActiveContinuous(PrepareClimbCommand())
   }
 
