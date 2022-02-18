@@ -6,13 +6,16 @@ import com.team4099.robot2021.subsystems.com.team4099.robot2022.subsystems.Intak
 import com.team4099.robot2022.auto.AutonomousSelector
 import com.team4099.robot2022.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2022.commands.drivetrain.ResetGyroCommand
+import com.team4099.robot2022.commands.feeder.FeederCommand
+import com.team4099.robot2022.commands.feeder.FeederSerialize
 import com.team4099.robot2022.commands.intake.IntakeBallsCommand
 import com.team4099.robot2022.commands.intake.IntakeIdleCommand
-import com.team4099.robot2022.commands.intake.LiftIntakeCommand
 import com.team4099.robot2022.commands.intake.PrepareClimbCommand
 import com.team4099.robot2022.config.ControlBoard
 import com.team4099.robot2022.config.constants.Constants
+import com.team4099.robot2022.config.constants.FeederConstants
 import com.team4099.robot2022.subsystems.Drivetrain
+import com.team4099.robot2022.subsystems.Feeder
 import edu.wpi.first.wpilibj.Compressor
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.PneumaticsModuleType
@@ -39,6 +42,12 @@ object Robot : TimedRobot() {
 
     Logger.startLogging()
 
+    Feeder.defaultCommand = FeederSerialize()
+
+    ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(FeederConstants.FeederState.FORWARD_ALL))
+    ControlBoard.runFeederOut
+        .whileActiveOnce(FeederCommand(FeederConstants.FeederState.BACKWARD_ALL))
+
     Drivetrain.defaultCommand =
         OpenLoopDriveCommand(
             { ControlBoard.strafe.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
@@ -49,9 +58,8 @@ object Robot : TimedRobot() {
 
     Intake.defaultCommand = IntakeIdleCommand()
 
-    ControlBoard.runIntake
-        .whileActiveContinuous(IntakeBallsCommand())
-//        .whenInactive(LiftIntakeCommand())
+    ControlBoard.runIntake.whileActiveContinuous(IntakeBallsCommand())
+    //        .whenInactive(LiftIntakeCommand())
     ControlBoard.prepareClimb.whileActiveContinuous(PrepareClimbCommand())
   }
 
