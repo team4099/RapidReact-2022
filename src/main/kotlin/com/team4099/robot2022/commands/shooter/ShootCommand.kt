@@ -1,6 +1,5 @@
 package com.team4099.robot2022.commands.shooter
 
-import com.team4099.robot2022.config.ShooterConstants
 import com.team4099.robot2022.config.constants.FeederConstants
 import com.team4099.robot2022.subsystems.Feeder
 import com.team4099.robot2022.subsystems.Shooter

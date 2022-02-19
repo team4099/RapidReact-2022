@@ -56,10 +56,7 @@ object Robot : TimedRobot() {
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
 
     Shooter.defaultCommand = ShooterIdleCommand()
-    ControlBoard.startShooter
-      .whileActiveOnce(
-        SpinUpCommand().alongWith(ShootCommand())
-      )
+    ControlBoard.startShooter.whileActiveOnce(SpinUpCommand().andThen(ShootCommand()))
 
     Intake.defaultCommand = IntakeIdleCommand()
     ControlBoard.runIntake.whileActiveContinuous(IntakeBallsCommand().alongWith(FeederSerialize()))
@@ -67,16 +64,15 @@ object Robot : TimedRobot() {
     ControlBoard.prepareClimb.whileActiveContinuous(PrepareClimbCommand())
 
     Feeder.defaultCommand = FeederIdleCommand()
-    ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(FeederConstants.FeederState.FORWARD_ALL))
-    ControlBoard.runFeederOut
-      .whileActiveOnce(FeederCommand(FeederConstants.FeederState.BACKWARD_ALL))
-
+//    ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(FeederConstants.FeederState.FORWARD_ALL))
+//    ControlBoard.runFeederOut
+//      .whileActiveOnce(FeederCommand(FeederConstants.FeederState.BACKWARD_ALL))
   }
 
   override fun robotInit() {
-    Drivetrain.zeroSensors()
-    val compressor = Compressor(PneumaticsModuleType.REVPH)
-    compressor.enableAnalog(60.0, 120.0)
+//    Drivetrain.zeroSensors()
+//    val compressor = Compressor(PneumaticsModuleType.REVPH)
+//    compressor.enableAnalog(60.0, 120.0)
   }
 
   override fun autonomousInit() {

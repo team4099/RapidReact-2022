@@ -31,6 +31,6 @@ object ControlBoard {
   val prepareClimb = Trigger { operator.startButton }
 
   // Shooter triggers
-  val startShooter = Trigger { operator.aButton }
+  val startShooter = Trigger { operator.xButton }
   val alignRobot = Trigger { operator.yButton }
 }
