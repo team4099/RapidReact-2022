@@ -3,7 +3,7 @@ package com.team4099.robot2022.commands.shooter
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.rotations
 import com.team4099.lib.units.perSecond
-import com.team4099.robot2022.config.VisionConstants
+import com.team4099.robot2022.config.constants.VisionConstants
 import com.team4099.robot2022.subsystems.Drivetrain
 import com.team4099.robot2022.subsystems.Shooter
 import com.team4099.robot2022.subsystems.Vision
