@@ -11,7 +11,7 @@ class SpinUpCommand() : CommandBase() {
 
   override fun initialize() {
     Shooter.shooterState = ShooterConstants.ShooterState.SPIN_UP
-//    Shooter.setOpenLoop(0.35)
+    //    Shooter.setOpenLoop(0.35)
   }
 
   override fun isFinished(): Boolean {

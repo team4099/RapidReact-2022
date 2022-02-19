@@ -9,17 +9,17 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 
 class ShooterCharacterizeCommand : SequentialCommandGroup() {
   init {
-    val shooterSetter = { voltage: Double ->
-      Shooter.setOpenLoop(voltage / 12.0)
-//      println("ShooterSetter voltage $voltage")
-    }
+    val shooterSetter =
+        { voltage: Double ->
+          Shooter.setOpenLoop(voltage / 12.0)
+        //      println("ShooterSetter voltage $voltage")
+        }
 
     val shooterGetter =
-      {
-        SysIdCommand.MechanismSysIdData(
-          Shooter.shooterPosition.inRadians, Shooter.shooterVelocity.inRadiansPerSecond
-        )
-      }
+        {
+          SysIdCommand.MechanismSysIdData(
+              Shooter.shooterPosition.inRadians, Shooter.shooterVelocity.inRadiansPerSecond)
+        }
     Logger.addEvent("Shooter", "Started ShooterCharacterizeCommand")
     addCommands(SysIdCommand(Shooter, shooterSetter, shooterGetter))
   }

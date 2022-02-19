@@ -23,9 +23,7 @@ object AutonomousSelector {
     autoTab.add("Starting Orientation", orientationChooser)
     autonomousModeChooser.addOption("Test", AutonomousMode.TEST_AUTO_PATH)
     autonomousModeChooser.addOption(
-      "Characterize Drivetrain",
-      AutonomousMode.CHARACTERIZE_DRIVETRAIN
-    )
+        "Characterize Drivetrain", AutonomousMode.CHARACTERIZE_DRIVETRAIN)
     autonomousModeChooser.addOption("Characterize Shooter", AutonomousMode.CHARACTERIZE_SHOOTER)
     autoTab.add("Mode", autonomousModeChooser)
   }

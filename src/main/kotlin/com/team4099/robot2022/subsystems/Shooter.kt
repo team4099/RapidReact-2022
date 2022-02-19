@@ -6,11 +6,9 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.AngularVelocity
 import com.team4099.lib.units.ctreAngularMechanismSensor
-import com.team4099.lib.units.derived.inVolts
 import com.team4099.lib.units.derived.rotations
 import com.team4099.lib.units.inRadiansPerSecond
 import com.team4099.lib.units.inRotationsPerMinute
-import com.team4099.lib.units.inRotationsPerSecond
 import com.team4099.lib.units.perMinute
 import com.team4099.robot2022.config.ShooterConstants
 import edu.wpi.first.wpilibj2.command.SubsystemBase
@@ -20,11 +18,10 @@ object Shooter : SubsystemBase() {
   private val followerMotor = TalonFX(ShooterConstants.FOLLOWER_MOTOR_ID)
 
   private val shooterSensor =
-    ctreAngularMechanismSensor(
-      leaderMotor,
-      ShooterConstants.SHOOTER_SENSOR_CPR,
-      ShooterConstants.SHOOTER_SENSOR_GEAR_RATIO
-    )
+      ctreAngularMechanismSensor(
+          leaderMotor,
+          ShooterConstants.SHOOTER_SENSOR_CPR,
+          ShooterConstants.SHOOTER_SENSOR_GEAR_RATIO)
 
   var shooterState = ShooterConstants.ShooterState.OFF
     set(state) {
@@ -40,8 +37,8 @@ object Shooter : SubsystemBase() {
 
   val isOnTarget
     get() =
-      (shooterState.targetVelocity - shooterVelocity).absoluteValue <=
-        ShooterConstants.TARGET_VELOCITY_THRESHOLD
+        (shooterState.targetVelocity - shooterVelocity).absoluteValue <=
+            ShooterConstants.TARGET_VELOCITY_THRESHOLD
 
   init {
     leaderMotor.configFactoryDefault()
@@ -60,9 +57,9 @@ object Shooter : SubsystemBase() {
 
     Logger.addSource("Shooter", "Shooter Velocity (rpm)") { shooterVelocity.inRotationsPerMinute }
 
-//    Logger.addSource("Shooter", "Shooter Leader Temperature") { leaderMotor.temperature }
-//
-//    Logger.addSource("Shooter", "Shooter Follower Temperature") { followerMotor.temperature }
+    //    Logger.addSource("Shooter", "Shooter Leader Temperature") { leaderMotor.temperature }
+    //
+    //    Logger.addSource("Shooter", "Shooter Follower Temperature") { followerMotor.temperature }
 
     Logger.addSource("Shooter", "Shooter Leader Bus Voltage") { leaderMotor.busVoltage }
 
@@ -72,9 +69,10 @@ object Shooter : SubsystemBase() {
 
     Logger.addSource("Shooter", "Shooter Follower Supply Current") { followerMotor.supplyCurrent }
 
-//    Logger.addSource("Shooter", "Shooter Leader Stator Current") { leaderMotor.statorCurrent }
-//
-//    Logger.addSource("Shooter", "Shooter Follower Stator Current") { followerMotor.statorCurrent }
+    //    Logger.addSource("Shooter", "Shooter Leader Stator Current") { leaderMotor.statorCurrent }
+    //
+    //    Logger.addSource("Shooter", "Shooter Follower Stator Current") {
+    // followerMotor.statorCurrent }
   }
 
   private fun setVelocity(velocity: AngularVelocity) {
@@ -82,12 +80,12 @@ object Shooter : SubsystemBase() {
       setOpenLoop(0.0)
     } else {
       leaderMotor.set(
-        ControlMode.Velocity,
-        shooterSensor.velocityToRawUnits(velocity),
-        DemandType.ArbitraryFeedForward,
-        (ShooterConstants.SHOOTER_KS_VOLTS +
-          ShooterConstants.SHOOTER_KV_VOLTS_PER_RADIAN_PER_SECOND * velocity.inRadiansPerSecond) / 12.0
-      )
+          ControlMode.Velocity,
+          shooterSensor.velocityToRawUnits(velocity),
+          DemandType.ArbitraryFeedForward,
+          (ShooterConstants.SHOOTER_KS_VOLTS +
+              ShooterConstants.SHOOTER_KV_VOLTS_PER_RADIAN_PER_SECOND *
+                  velocity.inRadiansPerSecond) / 12.0)
     }
   }
 
