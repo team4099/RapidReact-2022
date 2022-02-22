@@ -1,4 +1,4 @@
-package com.team4099.robot2021.subsystems.com.team4099.robot2022.subsystems
+package com.team4099.robot2021.subsystems
 
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.can.TalonFX
@@ -32,7 +32,7 @@ object Intake : SubsystemBase() {
 
   init {
     intakeTalon.configFactoryDefault()
-    Logger.addSource(IntakeConstants.TAB, "Intake State") { intakeState.toString() }
+//    Logger.addSource(IntakeConstants.TAB, "Intake State") { intakeState.toString() }
     Logger.addSource(IntakeConstants.TAB, "Intake Motor Power") { intakeTalon.motorOutputPercent }
     Logger.addSource(IntakeConstants.TAB, "Intake Motor Stator Current") {
       intakeTalon.statorCurrent
@@ -41,7 +41,7 @@ object Intake : SubsystemBase() {
       intakeTalon.supplyCurrent
     }
     Logger.addSource(IntakeConstants.TAB, "Intake Motor Voltage") { intakeTalon.motorOutputVoltage }
-    Logger.addSource(IntakeConstants.TAB, "Arm State") { armState.toString() }
+//    Logger.addSource(IntakeConstants.TAB, "Arm State") { armState.toString() }
 
     intakeConfiguration.supplyCurrLimit.currentLimit = IntakeConstants.SUPPLY_CURRENT_LIMIT
     intakeTalon.configAllSettings(intakeConfiguration)

@@ -2,6 +2,7 @@ package com.team4099.robot2022.subsystems
 
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.DemandType
+import com.ctre.phoenix.motorcontrol.InvertType
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.AngularVelocity
@@ -45,6 +46,8 @@ object Shooter : SubsystemBase() {
     followerMotor.configFactoryDefault()
 
     followerMotor.follow(leaderMotor)
+    leaderMotor.setInverted(InvertType.None)
+    followerMotor.setInverted(InvertType.OpposeMaster)
 
     leaderMotor.enableVoltageCompensation(true)
     followerMotor.enableVoltageCompensation(true)
@@ -90,7 +93,7 @@ object Shooter : SubsystemBase() {
   }
 
   fun setOpenLoop(power: Double) {
-    println("Shooter Power: $power :p XD (-__-)")
+//    println("Shooter Power: $power :p XD (-__-)")
     leaderMotor.set(ControlMode.PercentOutput, power)
   }
 }

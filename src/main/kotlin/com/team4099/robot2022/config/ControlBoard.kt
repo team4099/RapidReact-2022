@@ -32,5 +32,7 @@ object ControlBoard {
 
   // Shooter triggers
   val startShooter = Trigger { operator.xButton }
-  val alignRobot = Trigger { operator.yButton }
+  val startShooterFar = Trigger { operator.yButton }
+  val outTake = Trigger { operator.bButton }
+//  val alignRobot = Trigger { operator.yButton }
 }

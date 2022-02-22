@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Translation2d
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import kotlin.math.cos
 import org.photonvision.PhotonCamera
+//import org.photonvision.PhotonPipelineResult
 import org.photonvision.PhotonUtils
 import org.photonvision.targeting.PhotonPipelineResult
 
@@ -37,8 +38,8 @@ object Vision : SubsystemBase() {
             bestTarget!!.pitch) * cos(VisionConstants.CAMERA_ANGLE.inDegrees)).meters
   }
 
-  fun getOffsetToBestTarget(): Translation2d {
-    return PhotonUtils.estimateCameraToTargetTranslation(
-        getRangeToBestTarget().inMeters, Rotation2d.fromDegrees(-bestTarget!!.yaw))
-  }
+//  fun getOffsetToBestTarget(): Translation2d {
+//    return PhotonUtils.estimateCameraToTargetTranslation(
+//        getRangeToBestTarget().inMeters, Rotation2d.fromDegrees(-bestTarget!!.yaw))
+//  }
 }
