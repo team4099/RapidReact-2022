@@ -95,5 +95,7 @@ bin/
 imgui.ini
 logs/*
 
-#Mac
-.DS_Store
+# Glass
+.glass
+
+**/.DS_Store

@@ -1,20 +1,18 @@
 package com.team4099.robot2022.commands.led
 
-import com.team4099.robot2022.config.Constants
+import com.team4099.robot2022.config.constants.LEDConstants
 import com.team4099.robot2022.subsystems.LED
 import edu.wpi.first.wpilibj2.command.CommandBase
 
-class ChangeLedState(val changestate: Constants.LED.LEDState) : CommandBase() {
+class ChangeLedState(val changestate: LEDConstants.LEDState) : CommandBase() {
   init {
-    addRequirement(Intake)
-    addRequirement(Shooter)
-    addRequirement(LED)
+    addRequirements(LED)
   }
 
   override fun initialize() {
-    val isChanging = false
+    /* val isChanging = false
 
-    if (intakeTalon.supplyCurrent >= Constants.LED.CURRENT_THRESHOLD){
+    if (Intake.intakeTalon.supplyCurrent >= LEDConstants.CURRENT_THRESHOLD){
       LED.ballCount = LED.ballCount + 1
     }
     else {
@@ -28,17 +26,17 @@ class ChangeLedState(val changestate: Constants.LED.LEDState) : CommandBase() {
     when (LED.ballCount) {
       0 -> {
         if (isChanging) {
-          LED.ledState = Constants.LED.LEDState.CHANGING_ZERO
+          LED.ledState = LEDConstants.LEDState.CHANGING_ZERO
         } else {
-          LED.ledState = Constants.LED.LEDState.STANDING_ZERO
+          LED.ledState = LEDConstants.LEDState.STANDING_ZERO
         }
       }
       1 -> {
         val isChanging = false
         if (isChanging) {
-          LED.ledState = Constants.LED.LEDState.CHANGING_ONE
+          LED.ledState = LEDConstants.LEDState.CHANGING_ONE
         } else {
-          LED.ledState = Constants.LED.LEDState.STANDING_ONE
+          LED.ledState = LEDConstants.LEDState.STANDING_ONE
         }
       }
       2 -> {
@@ -46,11 +44,12 @@ class ChangeLedState(val changestate: Constants.LED.LEDState) : CommandBase() {
 
         if (isChanging) {
 
-          LED.ledState = Constants.LED.LEDState.CHANGING_TWO
+          LED.ledState = LEDConstants.LEDState.CHANGING_TWO
         } else {
-          LED.ledState = Constants.LED.LEDState.STANDING_TWO
+          LED.ledState = LEDConstants.LEDState.STANDING_TWO
         }
       }
     }
+    */
   }
 }

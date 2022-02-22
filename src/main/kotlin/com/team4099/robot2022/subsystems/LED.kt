@@ -1,7 +1,8 @@
 package com.team4099.robot2022.subsystems
 
 import com.team4099.lib.logging.Logger
-import com.team4099.robot2022.config.Constants
+import com.team4099.robot2022.config.constants.Constants
+import com.team4099.robot2022.config.constants.LEDConstants
 import edu.wpi.first.wpilibj.motorcontrol.Spark
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 
@@ -10,7 +11,7 @@ object LED : SubsystemBase() {
 
   var ballCount = 0
     set(newCount) {
-      if (intakeReady == true && 0 <= newCount && newCount <= 2){
+      if (intakeReady == true && 0 <= newCount && newCount <= 2) {
         field = newCount
         if (newCount > ballCount) {
           intakeReady = false
@@ -19,7 +20,7 @@ object LED : SubsystemBase() {
     }
   var intakeReady = true
 
-  var ledState = Constants.LED.LEDState.IDLE
+  var ledState = LEDConstants.LEDState.IDLE
     set(newState) {
       ledController.set(newState.pwmValue)
       field = newState

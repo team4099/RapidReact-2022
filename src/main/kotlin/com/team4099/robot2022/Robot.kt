@@ -1,11 +1,29 @@
 package com.team4099.robot2022
 
 import com.team4099.lib.logging.Logger
-import com.team4099.robot2022.commands.led.ChangeLedState
-import com.team4099.robot2022.config.Constants
+import com.team4099.robot2021.subsystems.Intake
+import com.team4099.robot2022.auto.AutonomousSelector
+import com.team4099.robot2022.commands.drivetrain.ResetGyroCommand
+import com.team4099.robot2022.commands.feeder.FeederCommand
+import com.team4099.robot2022.commands.feeder.FeederIdleCommand
+import com.team4099.robot2022.commands.feeder.FeederSerialize
+import com.team4099.robot2022.commands.intake.IntakeBallsCommand
+import com.team4099.robot2022.commands.intake.IntakeIdleCommand
+import com.team4099.robot2022.commands.intake.PrepareClimbCommand
+import com.team4099.robot2022.commands.intake.ReverseIntakeCommand
+import com.team4099.robot2022.commands.shooter.ShootCommand
+import com.team4099.robot2022.commands.shooter.ShooterIdleCommand
+import com.team4099.robot2022.commands.shooter.SpinUpCommand
+import com.team4099.robot2022.commands.shooter.SpinUpFarCommand
 import com.team4099.robot2022.config.ControlBoard
-import com.team4099.robot2022.subsystems.LED
+import com.team4099.robot2022.config.constants.Constants
+import com.team4099.robot2022.config.constants.FeederConstants
+import com.team4099.robot2022.subsystems.Drivetrain
+import com.team4099.robot2022.subsystems.Feeder
+import com.team4099.robot2022.subsystems.Shooter
+import edu.wpi.first.wpilibj.Compressor
 import edu.wpi.first.wpilibj.DigitalInput
+import edu.wpi.first.wpilibj.PneumaticsModuleType
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj2.command.CommandScheduler
@@ -13,6 +31,7 @@ import kotlin.math.pow
 
 object Robot : TimedRobot() {
   val robotName: Constants.Tuning.RobotName
+  val autonomousSelector: AutonomousSelector = AutonomousSelector
 
   init {
     val robotId =
@@ -29,29 +48,54 @@ object Robot : TimedRobot() {
     Logger.startLogging()
 
     /* Drivetrain.defaultCommand =
-        OpenLoopDriveCommand(
-            { ControlBoard.strafe.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
-            { ControlBoard.forward.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
-            { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) })
+       OpenLoopDriveCommand(
+           { ControlBoard.strafe.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
+           { ControlBoard.forward.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
+           { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) })
 
-    ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand()) */
+    */
+    ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
+
+    Shooter.defaultCommand = ShooterIdleCommand()
+    ControlBoard.startShooter.whileActiveOnce(SpinUpCommand().andThen(ShootCommand()))
+    ControlBoard.startShooterFar.whileActiveOnce(SpinUpFarCommand().andThen(ShootCommand()))
+
+    Intake.defaultCommand = IntakeIdleCommand()
+
+    ControlBoard.runIntake.whileActiveContinuous(IntakeBallsCommand().alongWith(FeederSerialize()))
+    ControlBoard.prepareClimb.whileActiveContinuous(PrepareClimbCommand())
+    ControlBoard.outTake
+        .whileActiveContinuous(
+            ReverseIntakeCommand().alongWith(
+                FeederCommand(FeederConstants.FeederState.BACKWARD_FLOOR)))
+    Feeder.defaultCommand = FeederIdleCommand()
+  }
+
+  override fun robotInit() {
+    addPeriodic({ Logger.saveLogs() }, 0.08, 0.01)
+
+    Drivetrain.zeroSensors()
+    val compressor = Compressor(PneumaticsModuleType.REVPH)
+    compressor.enableAnalog(60.0, 120.0)
   }
 
   override fun autonomousInit() {
     // autonomousCommand.schedule()
+    autonomousSelector.getCommand().schedule()
   }
 
   override fun disabledInit() {
+    autonomousSelector.getCommand().cancel()
     // autonomousCommand.cancel()
   }
 
   override fun teleopInit() {
+    autonomousSelector.getCommand().cancel()
     // autonomousCommand.cancel()
   }
 
   override fun robotPeriodic() {
     CommandScheduler.getInstance().run()
-    Logger.saveLogs()
     Logger.updateShuffleboard()
   }
 }
