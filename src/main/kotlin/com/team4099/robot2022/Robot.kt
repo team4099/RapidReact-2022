@@ -11,7 +11,6 @@ import com.team4099.robot2022.commands.feeder.FeederIdleCommand
 import com.team4099.robot2022.commands.feeder.FeederSerialize
 import com.team4099.robot2022.commands.intake.IntakeBallsCommand
 import com.team4099.robot2022.commands.intake.IntakeIdleCommand
-import com.team4099.robot2022.commands.intake.LiftIntakeCommand
 import com.team4099.robot2022.commands.intake.PrepareClimbCommand
 import com.team4099.robot2022.commands.intake.ReverseIntakeCommand
 import com.team4099.robot2022.commands.shooter.ShootCommand
@@ -50,34 +49,35 @@ object Robot : TimedRobot() {
 
     Logger.startLogging()
 
-        Drivetrain.defaultCommand =
-            OpenLoopDriveCommand(
-                { ControlBoard.strafe.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
-                { ControlBoard.forward.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
-                { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) })
+    Drivetrain.defaultCommand =
+        OpenLoopDriveCommand(
+            { ControlBoard.strafe.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
+            { ControlBoard.forward.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
+            { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) })
 
-        ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
+    ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
 
     Shooter.defaultCommand = ShooterIdleCommand()
     ControlBoard.startShooter.whileActiveOnce(SpinUpCommand().andThen(ShootCommand()))
     ControlBoard.startShooterFar.whileActiveOnce(SpinUpFarCommand().andThen(ShootCommand()))
 
-
     Intake.defaultCommand = IntakeIdleCommand()
 
-     ControlBoard.runIntake.whileActiveContinuous(IntakeBallsCommand().alongWith(FeederSerialize()))
-        ControlBoard.prepareClimb.whileActiveContinuous(PrepareClimbCommand())
-    ControlBoard.outTake.whileActiveContinuous(ReverseIntakeCommand().alongWith(FeederCommand(FeederConstants.FeederState.BACKWARD_FLOOR)))
-        Feeder.defaultCommand = FeederIdleCommand()
-
+    ControlBoard.runIntake.whileActiveContinuous(IntakeBallsCommand().alongWith(FeederSerialize()))
+    ControlBoard.prepareClimb.whileActiveContinuous(PrepareClimbCommand())
+    ControlBoard.outTake
+        .whileActiveContinuous(
+            ReverseIntakeCommand().alongWith(
+                FeederCommand(FeederConstants.FeederState.BACKWARD_FLOOR)))
+    Feeder.defaultCommand = FeederIdleCommand()
   }
 
   override fun robotInit() {
-        addPeriodic({ Logger.saveLogs() }, 0.08, 0.01)
+    addPeriodic({ Logger.saveLogs() }, 0.08, 0.01)
 
-        Drivetrain.zeroSensors()
-        val compressor = Compressor(PneumaticsModuleType.REVPH)
-        compressor.enableAnalog(60.0, 120.0)
+    Drivetrain.zeroSensors()
+    val compressor = Compressor(PneumaticsModuleType.REVPH)
+    compressor.enableAnalog(60.0, 120.0)
   }
 
   override fun autonomousInit() {
@@ -99,5 +99,4 @@ object Robot : TimedRobot() {
     CommandScheduler.getInstance().run()
     Logger.updateShuffleboard()
   }
-
 }

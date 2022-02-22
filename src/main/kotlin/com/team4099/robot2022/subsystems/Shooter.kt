@@ -93,7 +93,7 @@ object Shooter : SubsystemBase() {
   }
 
   fun setOpenLoop(power: Double) {
-//    println("Shooter Power: $power :p XD (-__-)")
+    //    println("Shooter Power: $power :p XD (-__-)")
     leaderMotor.set(ControlMode.PercentOutput, power)
   }
 }

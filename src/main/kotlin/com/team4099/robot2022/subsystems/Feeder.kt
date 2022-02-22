@@ -56,7 +56,7 @@ object Feeder : SubsystemBase() {
   }
 
   init {
-//    Logger.addSource(FeederConstants.TAB, "Feeder State") { feederState.toString() }
+    //    Logger.addSource(FeederConstants.TAB, "Feeder State") { feederState.toString() }
     // floor motor values
     Logger.addSource(FeederConstants.TAB, "Feeder Floor Motor Power") {
       floorMotor.motorOutputPercent
@@ -76,10 +76,11 @@ object Feeder : SubsystemBase() {
       verticalMotor.busVoltage
     }
     // beam broken values
-//    Logger.addSource(FeederConstants.TAB, "Feeder Top Beam DIO Broken") { topBeamBroken }
-//    Logger.addSource(FeederConstants.TAB, "Feeder Bottom Beam DIO Broken") { bottomBeamBroken }
+    //    Logger.addSource(FeederConstants.TAB, "Feeder Top Beam DIO Broken") { topBeamBroken }
+    //    Logger.addSource(FeederConstants.TAB, "Feeder Bottom Beam DIO Broken") { bottomBeamBroken
+    // }
     // ball count value
-//    Logger.addSource(FeederConstants.TAB, "Feeder Ball Count") { ballCount }
+    //    Logger.addSource(FeederConstants.TAB, "Feeder Ball Count") { ballCount }
 
     floorMotor.configFactoryDefault()
     verticalMotor.configFactoryDefault()
