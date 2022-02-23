@@ -17,12 +17,18 @@ object LEDConstants {
     STANDING_TWO(0.77),
 
     // Blinking Red
-    CHANGING_ZERO(-0.25),
+    INTAKING(-0.25),
 
     // Blinking Yellow
     CHANGING_ONE(0.05),
 
     // Blinking Green
-    CHANGING_TWO(0.25)
+    CHANGING_TWO(0.25),
+
+    // TODO
+    SPINNING_UP(0.00),
+
+    // TODO
+    READY_SHOOT(0.00)
   }
 }
