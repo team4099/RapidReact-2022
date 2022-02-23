@@ -94,3 +94,8 @@ bin/
 # Simulation
 imgui.ini
 logs/*
+
+# Glass
+.glass
+
+**/.DS_Store

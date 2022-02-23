@@ -2,7 +2,6 @@ package com.team4099.robot2022.commands.telescopingClimber
 
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.base.inMeters
-import com.team4099.robot2022.config.Constants
 import com.team4099.robot2022.subsystems.TelescopingClimber
 import edu.wpi.first.math.trajectory.TrapezoidProfile
 import edu.wpi.first.wpilibj2.command.CommandBase

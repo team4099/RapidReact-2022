@@ -12,7 +12,6 @@ import com.team4099.lib.units.ctreLinearMechanismSensor
 import com.team4099.lib.units.inInchesPerSecond
 import com.team4099.lib.units.inMetersPerSecond
 import com.team4099.lib.units.inMetersPerSecondPerSecond
-import com.team4099.robot2022.config.Constants
 import edu.wpi.first.math.trajectory.TrapezoidProfile
 import edu.wpi.first.wpilibj.PneumaticsModuleType
 import edu.wpi.first.wpilibj.Solenoid

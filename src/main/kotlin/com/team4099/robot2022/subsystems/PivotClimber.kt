@@ -2,7 +2,6 @@ package com.team4099.robot2022.subsystems
 
 import com.revrobotics.CANSparkMax
 import com.revrobotics.CANSparkMaxLowLevel
-import com.revrobotics.ControlType
 import com.revrobotics.SparkMaxPIDController
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.derived.degrees
@@ -10,7 +9,8 @@ import com.team4099.lib.units.derived.inDegrees
 import com.team4099.lib.units.inDegreesPerSecond
 import com.team4099.lib.units.inDegreesPerSecondPerSecond
 import com.team4099.lib.units.sparkMaxAngularMechanismSensor
-import com.team4099.robot2022.config.Constants
+import com.team4099.robot2022.config.constants.Constants
+import com.team4099.robot2022.config.constants.PivotClimberConstants
 import edu.wpi.first.math.trajectory.TrapezoidProfile
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import kotlin.math.sign
@@ -22,17 +22,17 @@ object PivotClimber : SubsystemBase() {
       CANSparkMax(Constants.PivotClimber.R_ARM_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
 
   private val pivotLeftArmSensor =
-      sparkMaxAngularMechanismSensor(pivotLeftArm, Constants.PivotClimber.GEAR_RATIO)
+      sparkMaxAngularMechanismSensor(pivotLeftArm, PivotClimberConstants.GEAR_RATIO)
   private val pivotRightArmSensor =
-      sparkMaxAngularMechanismSensor(pivotRightArm, Constants.PivotClimber.GEAR_RATIO)
+      sparkMaxAngularMechanismSensor(pivotRightArm, PivotClimberConstants.GEAR_RATIO)
 
   private val rightPID = pivotRightArm.pidController
   private val leftPID = pivotLeftArm.pidController
 
   var constraints: TrapezoidProfile.Constraints =
       TrapezoidProfile.Constraints(
-          Constants.PivotClimber.MAX_VELOCITY.inDegreesPerSecond,
-          Constants.PivotClimber.MAX_ACCELERATION.inDegreesPerSecondPerSecond)
+          PivotClimberConstants.MAX_VELOCITY.inDegreesPerSecond,
+          PivotClimberConstants.MAX_ACCELERATION.inDegreesPerSecondPerSecond)
   var leftSetpoint: TrapezoidProfile.State =
       TrapezoidProfile.State(
           pivotLeftArmSensor.position.inDegrees, pivotLeftArmSensor.velocity.inDegreesPerSecond)
@@ -42,69 +42,69 @@ object PivotClimber : SubsystemBase() {
 
   init {
     /* RIGHT ARM */
-    Logger.addSource(Constants.PivotClimber.TAB, "Traversal Right Arm Motor Power") {
+    Logger.addSource(PivotClimberConstants.TAB, "Traversal Right Arm Motor Power") {
       pivotRightArm.get()
     }
-    Logger.addSource(Constants.PivotClimber.TAB, "Climber Right Arm Output Current") {
+    Logger.addSource(PivotClimberConstants.TAB, "Climber Right Arm Output Current") {
       pivotRightArm.outputCurrent
     }
-    Logger.addSource(Constants.PivotClimber.TAB, "Climber Right Arm Motor Applied Voltage") {
+    Logger.addSource(PivotClimberConstants.TAB, "Climber Right Arm Motor Applied Voltage") {
       pivotRightArm.busVoltage
     }
-    Logger.addSource(Constants.PivotClimber.TAB, "Climber Right Arm Motor Velocity") {
+    Logger.addSource(PivotClimberConstants.TAB, "Climber Right Arm Motor Velocity") {
       pivotRightArmSensor.velocity.inDegreesPerSecond
     }
-    Logger.addSource(Constants.PivotClimber.TAB, "Climber Right Arm Current Position") {
+    Logger.addSource(PivotClimberConstants.TAB, "Climber Right Arm Current Position") {
       pivotRightArmSensor.position.inDegrees
     }
 
     /* LEFT ARM */
-    Logger.addSource(Constants.PivotClimber.TAB, "Climber Left Arm Motor Power") {
+    Logger.addSource(PivotClimberConstants.TAB, "Climber Left Arm Motor Power") {
       pivotLeftArm.get()
     }
-    Logger.addSource(Constants.PivotClimber.TAB, "Climber Left Arm Output Current") {
+    Logger.addSource(PivotClimberConstants.TAB, "Climber Left Arm Output Current") {
       pivotLeftArm.outputCurrent
     }
-    Logger.addSource(Constants.PivotClimber.TAB, "Climber Left Arm Motor Applied Voltage") {
+    Logger.addSource(PivotClimberConstants.TAB, "Climber Left Arm Motor Applied Voltage") {
       pivotLeftArm.busVoltage
     }
-    Logger.addSource(Constants.PivotClimber.TAB, "Climber Left Arm Motor Velocity") {
+    Logger.addSource(PivotClimberConstants.TAB, "Climber Left Arm Motor Velocity") {
       pivotLeftArmSensor.velocity.inDegreesPerSecond
     }
-    Logger.addSource(Constants.PivotClimber.TAB, "Climber Left Arm Current Position") {
+    Logger.addSource(PivotClimberConstants.TAB, "Climber Left Arm Current Position") {
       pivotLeftArmSensor.position.inDegrees
     }
 
     pivotRightArm.restoreFactoryDefaults()
-    rightPID.p = Constants.PivotClimber.KP
-    rightPID.i = Constants.PivotClimber.KI
-    rightPID.d = Constants.PivotClimber.KD
-    rightPID.ff = Constants.PivotClimber.KFF
+    rightPID.p = PivotClimberConstants.KP
+    rightPID.i = PivotClimberConstants.KI
+    rightPID.d = PivotClimberConstants.KD
+    rightPID.ff = PivotClimberConstants.KFF
     rightPID.setSmartMotionMaxVelocity(
-        pivotRightArmSensor.velocityToRawUnits(Constants.Drivetrain.DIRECTION_VEL_MAX), 0)
+        pivotRightArmSensor.velocityToRawUnits(PivotClimberConstants.MAX_VELOCITY), 0)
     rightPID.setSmartMotionMaxAccel(
-        pivotRightArmSensor.accelerationToRawUnits(Constants.Drivetrain.DIRECTION_ACCEL_MAX), 0)
+        pivotRightArmSensor.accelerationToRawUnits(PivotClimberConstants.MAX_ACCELERATION), 0)
     rightPID.setOutputRange(-1.0, 1.0)
     rightPID.setSmartMotionMinOutputVelocity(0.0, 0)
     rightPID.setSmartMotionAllowedClosedLoopError(
-        pivotRightArmSensor.positionToRawUnits(Constants.Drivetrain.ALLOWED_ANGLE_ERROR), 0)
-    pivotRightArm.setSmartCurrentLimit(Constants.PivotClimber.SMART_CURRENT_LIMIT)
+        pivotRightArmSensor.positionToRawUnits(PivotClimberConstants.ALLOWED_ANGLE_ERROR), 0)
+    pivotRightArm.setSmartCurrentLimit(PivotClimberConstants.SMART_CURRENT_LIMIT)
     pivotRightArm.burnFlash()
 
     pivotLeftArm.restoreFactoryDefaults()
-    leftPID.p = Constants.PivotClimber.KP
-    leftPID.i = Constants.PivotClimber.KI
-    leftPID.d = Constants.PivotClimber.KD
-    leftPID.ff = Constants.PivotClimber.KFF
+    leftPID.p = PivotClimberConstants.KP
+    leftPID.i = PivotClimberConstants.KI
+    leftPID.d = PivotClimberConstants.KD
+    leftPID.ff = PivotClimberConstants.KFF
     leftPID.setSmartMotionMaxVelocity(
-        pivotLeftArmSensor.velocityToRawUnits(Constants.Drivetrain.DIRECTION_VEL_MAX), 0)
+        pivotLeftArmSensor.velocityToRawUnits(PivotClimberConstants.MAX_VELOCITY), 0)
     leftPID.setSmartMotionMaxAccel(
-        pivotLeftArmSensor.accelerationToRawUnits(Constants.Drivetrain.DIRECTION_ACCEL_MAX), 0)
+        pivotLeftArmSensor.accelerationToRawUnits(PivotClimberConstants.MAX_ACCELERATION), 0)
     leftPID.setOutputRange(-1.0, 1.0)
     leftPID.setSmartMotionMinOutputVelocity(0.0, 0)
     leftPID.setSmartMotionAllowedClosedLoopError(
-        pivotLeftArmSensor.positionToRawUnits(Constants.Drivetrain.ALLOWED_ANGLE_ERROR), 0)
-    pivotLeftArm.setSmartCurrentLimit(Constants.PivotClimber.SMART_CURRENT_LIMIT)
+        pivotLeftArmSensor.positionToRawUnits(PivotClimberConstants.ALLOWED_ANGLE_ERROR), 0)
+    pivotLeftArm.setSmartCurrentLimit(PivotClimberConstants.SMART_CURRENT_LIMIT)
     pivotLeftArm.burnFlash()
   }
 
@@ -121,30 +121,30 @@ object PivotClimber : SubsystemBase() {
           pivotLeftArmSensor.positionToRawUnits(leftSetpoint.position.degrees),
           CANSparkMax.ControlType.kPosition,
           0,
-          Constants.PivotClimber.NO_LOAD_KS * sign(leftSetpoint.position) +
-              Constants.PivotClimber.NO_LOAD_KV * leftSetpoint.velocity,
+          PivotClimberConstants.NO_LOAD_KS * sign(leftSetpoint.position) +
+              PivotClimberConstants.NO_LOAD_KV * leftSetpoint.velocity,
           SparkMaxPIDController.ArbFFUnits.kVoltage)
       rightPID.setReference(
           pivotRightArmSensor.positionToRawUnits(rightSetpoint.position.degrees),
           CANSparkMax.ControlType.kPosition,
           0,
-          Constants.PivotClimber.NO_LOAD_KS * sign(rightSetpoint.position) +
-              Constants.PivotClimber.NO_LOAD_KV * rightSetpoint.velocity,
+          PivotClimberConstants.NO_LOAD_KS * sign(rightSetpoint.position) +
+              PivotClimberConstants.NO_LOAD_KV * rightSetpoint.velocity,
           SparkMaxPIDController.ArbFFUnits.kVoltage)
     } else {
       leftPID.setReference(
           pivotLeftArmSensor.positionToRawUnits(leftSetpoint.position.degrees),
           CANSparkMax.ControlType.kPosition,
           0,
-          Constants.PivotClimber.LOAD_KS * sign(leftSetpoint.position) +
-              Constants.PivotClimber.LOAD_KV * leftSetpoint.velocity,
+          PivotClimberConstants.LOAD_KS * sign(leftSetpoint.position) +
+              PivotClimberConstants.LOAD_KV * leftSetpoint.velocity,
           SparkMaxPIDController.ArbFFUnits.kVoltage)
       rightPID.setReference(
           pivotRightArmSensor.positionToRawUnits(rightSetpoint.position.degrees),
           CANSparkMax.ControlType.kPosition,
           0,
-          Constants.PivotClimber.LOAD_KS * sign(rightSetpoint.position) +
-              Constants.PivotClimber.LOAD_KV * rightSetpoint.velocity,
+          PivotClimberConstants.LOAD_KS * sign(rightSetpoint.position) +
+              PivotClimberConstants.LOAD_KV * rightSetpoint.velocity,
           SparkMaxPIDController.ArbFFUnits.kVoltage)
     }
   }
