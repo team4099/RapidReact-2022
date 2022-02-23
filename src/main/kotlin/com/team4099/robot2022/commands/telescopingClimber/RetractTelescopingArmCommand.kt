@@ -2,6 +2,7 @@ package com.team4099.robot2022.commands.telescopingClimber
 
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.base.inMeters
+import com.team4099.robot2022.config.constants.TelescopingClimberConstants
 import com.team4099.robot2022.subsystems.TelescopingClimber
 import edu.wpi.first.math.trajectory.TrapezoidProfile
 import edu.wpi.first.wpilibj2.command.CommandBase
@@ -15,7 +16,7 @@ class RetractTelescopingArmCommand : CommandBase() {
     addRequirements(TelescopingClimber)
     goal =
         TrapezoidProfile.State(
-            Constants.TelescopingClimber.TelescopingArmPosition.LOW.length.inMeters, 0.0)
+            TelescopingClimberConstants.TelescopingArmPosition.LOW.length.inMeters, 0.0)
   }
 
   override fun initialize() {

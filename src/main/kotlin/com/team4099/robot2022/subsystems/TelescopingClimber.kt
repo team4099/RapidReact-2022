@@ -12,6 +12,8 @@ import com.team4099.lib.units.ctreLinearMechanismSensor
 import com.team4099.lib.units.inInchesPerSecond
 import com.team4099.lib.units.inMetersPerSecond
 import com.team4099.lib.units.inMetersPerSecondPerSecond
+import com.team4099.robot2022.config.constants.Constants
+import com.team4099.robot2022.config.constants.TelescopingClimberConstants
 import edu.wpi.first.math.trajectory.TrapezoidProfile
 import edu.wpi.first.wpilibj.PneumaticsModuleType
 import edu.wpi.first.wpilibj.Solenoid
@@ -25,22 +27,22 @@ object TelescopingClimber : SubsystemBase() {
   private val telescopingRightArmSensor =
       ctreLinearMechanismSensor(
           telescopingRightArm,
-          Constants.TelescopingClimber.R_SENSOR_CPR,
-          Constants.TelescopingClimber.R_GEAR_RATIO,
-          Constants.TelescopingClimber.PULLEY_MECHANISM)
+          TelescopingClimberConstants.SENSOR_CPR,
+          TelescopingClimberConstants.GEAR_RATIO,
+          TelescopingClimberConstants.PULLEY_MECHANISM)
   private val telescopingLeftArmSensor =
       ctreLinearMechanismSensor(
           telescopingLeftArm,
-          Constants.TelescopingClimber.L_SENSOR_CPR,
-          Constants.TelescopingClimber.L_GEAR_RATIO,
-          Constants.TelescopingClimber.PULLEY_MECHANISM)
+          TelescopingClimberConstants.SENSOR_CPR,
+          TelescopingClimberConstants.GEAR_RATIO,
+          TelescopingClimberConstants.PULLEY_MECHANISM)
 
   private val telescopingConfiguration: TalonFXConfiguration = TalonFXConfiguration()
 
   var constraints: TrapezoidProfile.Constraints =
       TrapezoidProfile.Constraints(
-          Constants.TelescopingClimber.MAX_VELOCITY.inMetersPerSecond,
-          Constants.TelescopingClimber.MAX_ACCELERATION.inMetersPerSecondPerSecond)
+          TelescopingClimberConstants.MAX_VELOCITY.inMetersPerSecond,
+          TelescopingClimberConstants.MAX_ACCELERATION.inMetersPerSecondPerSecond)
   var leftSetpoint: TrapezoidProfile.State =
       TrapezoidProfile.State(
           telescopingLeftArmSensor.position.inMeters,
@@ -64,51 +66,51 @@ object TelescopingClimber : SubsystemBase() {
       pneumaticBrake.set(!value)
     }
   init {
-    Logger.addSource(Constants.TelescopingClimber.TAB, "Telescoping Right Arm Motor Power") {
+    Logger.addSource(TelescopingClimberConstants.TAB, "Telescoping Right Arm Motor Power") {
       telescopingRightArm.motorOutputPercent
     }
-    Logger.addSource(Constants.TelescopingClimber.TAB, "Telescoping Right Arm Output Current") {
+    Logger.addSource(TelescopingClimberConstants.TAB, "Telescoping Right Arm Output Current") {
       telescopingRightArm.supplyCurrent
     }
     Logger.addSource(
-        Constants.TelescopingClimber.TAB, "Telescoping Right Arm Motor Applied Voltage") {
+        TelescopingClimberConstants.TAB, "Telescoping Right Arm Motor Applied Voltage") {
       telescopingRightArm.busVoltage
     }
-    Logger.addSource(Constants.TelescopingClimber.TAB, "Telescoping Right Arm Motor Velocity") {
+    Logger.addSource(TelescopingClimberConstants.TAB, "Telescoping Right Arm Motor Velocity") {
       telescopingRightArmSensor.velocity.inInchesPerSecond
     }
-    Logger.addSource(Constants.TelescopingClimber.TAB, "Telescoping Right Arm Current Position") {
+    Logger.addSource(TelescopingClimberConstants.TAB, "Telescoping Right Arm Current Position") {
       telescopingRightArmSensor.position.inInches
     }
 
-    Logger.addSource(Constants.TelescopingClimber.TAB, "Telescoping Left Arm Motor Power") {
+    Logger.addSource(TelescopingClimberConstants.TAB, "Telescoping Left Arm Motor Power") {
       telescopingLeftArm.motorOutputPercent
     }
-    Logger.addSource(Constants.TelescopingClimber.TAB, "Telescoping Left Arm Output Current") {
+    Logger.addSource(TelescopingClimberConstants.TAB, "Telescoping Left Arm Output Current") {
       telescopingLeftArm.supplyCurrent
     }
     Logger.addSource(
-        Constants.TelescopingClimber.TAB, "Telescoping Left Arm Motor Applied Voltage") {
+        TelescopingClimberConstants.TAB, "Telescoping Left Arm Motor Applied Voltage") {
       telescopingLeftArm.busVoltage
     }
-    Logger.addSource(Constants.TelescopingClimber.TAB, "Telescoping Left Arm Motor Velocity") {
+    Logger.addSource(TelescopingClimberConstants.TAB, "Telescoping Left Arm Motor Velocity") {
       telescopingLeftArmSensor.velocity.inInchesPerSecond
     }
-    Logger.addSource(Constants.TelescopingClimber.TAB, "Telescoping Left Arm Current Position") {
+    Logger.addSource(TelescopingClimberConstants.TAB, "Telescoping Left Arm Current Position") {
       telescopingLeftArmSensor.position.inInches
     }
 
-    Logger.addSource(Constants.TelescopingClimber.TAB, "Telescoping Right Pneumatics State") {
+    Logger.addSource(TelescopingClimberConstants.TAB, "Telescoping Right Pneumatics State") {
       brakeApplied.toString()
     }
-    Logger.addSource(Constants.TelescopingClimber.TAB, "Telescoping Left Pneumatics State") {
+    Logger.addSource(TelescopingClimberConstants.TAB, "Telescoping Left Pneumatics State") {
       brakeApplied.toString()
     }
 
-    telescopingConfiguration.slot0.kP = Constants.TelescopingClimber.KP
-    telescopingConfiguration.slot0.kI = Constants.TelescopingClimber.KI
-    telescopingConfiguration.slot0.kD = Constants.TelescopingClimber.KD
-    telescopingConfiguration.slot0.kF = Constants.TelescopingClimber.KFF
+    telescopingConfiguration.slot0.kP = TelescopingClimberConstants.KP
+    telescopingConfiguration.slot0.kI = TelescopingClimberConstants.KI
+    telescopingConfiguration.slot0.kD = TelescopingClimberConstants.KD
+    telescopingConfiguration.slot0.kF = TelescopingClimberConstants.KFF
 
     telescopingRightArm.configFactoryDefault()
     telescopingRightArm.configAllSettings(telescopingConfiguration)
@@ -134,26 +136,26 @@ object TelescopingClimber : SubsystemBase() {
           leftSetpoint.position,
           DemandType.ArbitraryFeedForward,
           // feed forward stuff im too braindead to do
-          (leftSetpoint.velocity * Constants.TelescopingClimber.NO_LOAD_KV))
+          (leftSetpoint.velocity * TelescopingClimberConstants.NO_LOAD_KV))
 
       telescopingRightArm.set(
           ControlMode.Position,
           rightSetpoint.position,
           DemandType.ArbitraryFeedForward,
-          (leftSetpoint.velocity * Constants.TelescopingClimber.NO_LOAD_KV))
+          (leftSetpoint.velocity * TelescopingClimberConstants.NO_LOAD_KV))
     } else {
       telescopingLeftArm.set(
           ControlMode.Position,
           leftSetpoint.position,
           DemandType.ArbitraryFeedForward,
           // feed forward stuff im too braindead to do
-          (leftSetpoint.velocity * Constants.TelescopingClimber.LOAD_KV))
+          (leftSetpoint.velocity * TelescopingClimberConstants.LOAD_KV))
 
       telescopingRightArm.set(
           ControlMode.Position,
           rightSetpoint.position,
           DemandType.ArbitraryFeedForward,
-          (leftSetpoint.velocity * Constants.TelescopingClimber.LOAD_KV))
+          (leftSetpoint.velocity * TelescopingClimberConstants.LOAD_KV))
     }
   }
 }
