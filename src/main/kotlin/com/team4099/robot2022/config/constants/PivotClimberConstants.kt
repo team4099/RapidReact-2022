@@ -30,9 +30,9 @@ object PivotClimberConstants {
     IN(0.degrees)
   }
 
-  const val GEAR_RATIO = 0.0
+  const val GEAR_RATIO = (15 / 36) * (1 / 125)
 
-  const val SMART_CURRENT_LIMIT = 0 // TODO
+  const val SMART_CURRENT_LIMIT = 40
 
   const val SOLENOID_ID = 0
 
@@ -40,5 +40,5 @@ object PivotClimberConstants {
 
   const val TAB = "Pivot Climber"
 
-  val ALLOWED_ANGLE_ERROR = 0.0.radians // TODO
+  val ALLOWED_ANGLE_ERROR = 1.0.degrees
 }

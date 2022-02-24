@@ -8,8 +8,8 @@ import com.team4099.lib.units.base.seconds
 import com.team4099.lib.units.perSecond
 
 object TelescopingClimberConstants {
-  const val SENSOR_CPR = 0
-  const val GEAR_RATIO = 0.0
+  const val SENSOR_CPR = 2048
+  const val GEAR_RATIO = (8/54) * (28/44)
 
   const val KP = 0.0
   const val KI = 0.0

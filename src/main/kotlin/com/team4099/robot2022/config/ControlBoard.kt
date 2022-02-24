@@ -35,4 +35,11 @@ object ControlBoard {
   val startShooterFar = Trigger { operator.yButton }
   val outTake = Trigger { operator.bButton }
   //  val alignRobot = Trigger { operator.yButton }
+
+  val extendTelescoping = Trigger { operator.rightShoulderButton }
+  val retractTelescoping = Trigger { operator.leftShoulderButton }
+  val rotateOutPivot: Double
+    get() = operator.rightTriggerAxis
+  val rotateInPivot:Double
+    get() = operator.leftTriggerAxis
 }

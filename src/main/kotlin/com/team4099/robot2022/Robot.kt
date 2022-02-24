@@ -17,6 +17,8 @@ import com.team4099.robot2022.commands.shooter.ShootCommand
 import com.team4099.robot2022.commands.shooter.ShooterIdleCommand
 import com.team4099.robot2022.commands.shooter.SpinUpCommand
 import com.team4099.robot2022.commands.shooter.SpinUpFarCommand
+import com.team4099.robot2022.commands.telescopingClimber.ExtendTelescopingArmCommand
+import com.team4099.robot2022.commands.telescopingClimber.RetractTelescopingArmCommand
 import com.team4099.robot2022.config.ControlBoard
 import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.config.constants.FeederConstants
@@ -70,6 +72,9 @@ object Robot : TimedRobot() {
             ReverseIntakeCommand().alongWith(
                 FeederCommand(FeederConstants.FeederState.BACKWARD_FLOOR)))
     Feeder.defaultCommand = FeederIdleCommand()
+
+    ControlBoard.extendTelescoping.toggleWhenActive(ExtendTelescopingArmCommand()).whenInactive(RetractTelescopingArmCommand())
+
   }
 
   override fun robotInit() {
