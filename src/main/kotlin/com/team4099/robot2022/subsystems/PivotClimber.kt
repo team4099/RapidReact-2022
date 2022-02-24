@@ -42,36 +42,32 @@ object PivotClimber : SubsystemBase() {
 
   init {
     /* RIGHT ARM */
-    Logger.addSource(PivotClimberConstants.TAB, "Traversal Right Arm Motor Power") {
-      pivotRightArm.get()
-    }
-    Logger.addSource(PivotClimberConstants.TAB, "Climber Right Arm Output Current") {
+    Logger.addSource(PivotClimberConstants.TAB, "Right Arm Motor Power") { pivotRightArm.get() }
+    Logger.addSource(PivotClimberConstants.TAB, "Right Arm Output Current") {
       pivotRightArm.outputCurrent
     }
-    Logger.addSource(PivotClimberConstants.TAB, "Climber Right Arm Motor Applied Voltage") {
+    Logger.addSource(PivotClimberConstants.TAB, "Right Arm Motor Applied Voltage") {
       pivotRightArm.busVoltage
     }
-    Logger.addSource(PivotClimberConstants.TAB, "Climber Right Arm Motor Velocity") {
+    Logger.addSource(PivotClimberConstants.TAB, "Right Arm Motor Velocity") {
       pivotRightArmSensor.velocity.inDegreesPerSecond
     }
-    Logger.addSource(PivotClimberConstants.TAB, "Climber Right Arm Current Position") {
+    Logger.addSource(PivotClimberConstants.TAB, "Right Arm Current Position") {
       pivotRightArmSensor.position.inDegrees
     }
 
     /* LEFT ARM */
-    Logger.addSource(PivotClimberConstants.TAB, "Climber Left Arm Motor Power") {
-      pivotLeftArm.get()
-    }
-    Logger.addSource(PivotClimberConstants.TAB, "Climber Left Arm Output Current") {
+    Logger.addSource(PivotClimberConstants.TAB, "Left Arm Motor Power") { pivotLeftArm.get() }
+    Logger.addSource(PivotClimberConstants.TAB, "Left Arm Output Current") {
       pivotLeftArm.outputCurrent
     }
-    Logger.addSource(PivotClimberConstants.TAB, "Climber Left Arm Motor Applied Voltage") {
+    Logger.addSource(PivotClimberConstants.TAB, "Left Arm Motor Applied Voltage") {
       pivotLeftArm.busVoltage
     }
-    Logger.addSource(PivotClimberConstants.TAB, "Climber Left Arm Motor Velocity") {
+    Logger.addSource(PivotClimberConstants.TAB, "Left Arm Motor Velocity") {
       pivotLeftArmSensor.velocity.inDegreesPerSecond
     }
-    Logger.addSource(PivotClimberConstants.TAB, "Climber Left Arm Current Position") {
+    Logger.addSource(PivotClimberConstants.TAB, "Left Arm Current Position") {
       pivotLeftArmSensor.position.inDegrees
     }
 
