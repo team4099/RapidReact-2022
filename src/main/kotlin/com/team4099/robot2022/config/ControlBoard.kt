@@ -40,6 +40,6 @@ object ControlBoard {
   val retractTelescoping = Trigger { operator.leftShoulderButton }
   val rotateOutPivot: Double
     get() = operator.rightTriggerAxis
-  val rotateInPivot:Double
+  val rotateInPivot: Double
     get() = operator.leftTriggerAxis
 }

@@ -73,8 +73,9 @@ object Robot : TimedRobot() {
                 FeederCommand(FeederConstants.FeederState.BACKWARD_FLOOR)))
     Feeder.defaultCommand = FeederIdleCommand()
 
-    ControlBoard.extendTelescoping.toggleWhenActive(ExtendTelescopingArmCommand()).whenInactive(RetractTelescopingArmCommand())
-
+    ControlBoard.extendTelescoping
+        .toggleWhenActive(ExtendTelescopingArmCommand())
+        .whenInactive(RetractTelescopingArmCommand())
   }
 
   override fun robotInit() {

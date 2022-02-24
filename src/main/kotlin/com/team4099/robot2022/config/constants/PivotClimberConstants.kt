@@ -1,8 +1,5 @@
 package com.team4099.robot2022.config.constants
 
-import com.team4099.lib.units.Value
-import com.team4099.lib.units.base.Second
-import com.team4099.lib.units.base.seconds
 import com.team4099.lib.units.derived.Angle
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.radians
@@ -30,13 +27,9 @@ object PivotClimberConstants {
     IN(0.degrees)
   }
 
-  const val GEAR_RATIO = (15 / 36) * (1 / 125)
+  const val GEAR_RATIO = (15.0 / 36.0) * (1.0 / 125.0)
 
   const val SMART_CURRENT_LIMIT = 40
-
-  const val SOLENOID_ID = 0
-
-  val BRAKE_RELEASE_TIMEOUT: Value<Second> = 0.0.seconds
 
   const val TAB = "Pivot Climber"
 

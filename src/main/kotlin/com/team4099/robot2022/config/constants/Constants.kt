@@ -69,7 +69,7 @@ object Constants {
   }
 
   object PivotClimber {
-    const val L_ARM_ID = 51
-    const val R_ARM_ID = 52
+    const val L_ARM_ID = 43
+    const val R_ARM_ID = 44
   }
 }
