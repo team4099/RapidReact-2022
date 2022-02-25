@@ -4,11 +4,15 @@ import com.revrobotics.CANSparkMax
 import com.revrobotics.CANSparkMaxLowLevel
 import com.revrobotics.SparkMaxPIDController
 import com.team4099.lib.logging.Logger
+import com.team4099.lib.units.derived.Angle
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.inDegrees
 import com.team4099.lib.units.inDegreesPerSecond
 import com.team4099.lib.units.inDegreesPerSecondPerSecond
 import com.team4099.lib.units.sparkMaxAngularMechanismSensor
+import com.team4099.robot2022.config.constants.ClimberConstants.ActualPivotStates
+import com.team4099.robot2022.config.constants.ClimberConstants.DesiredPivotStates
+import com.team4099.robot2022.config.constants.ClimberConstants.pivotTolerance
 import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.config.constants.PivotClimberConstants
 import edu.wpi.first.math.trajectory.TrapezoidProfile
@@ -21,13 +25,50 @@ object PivotClimber : SubsystemBase() {
   private val pivotLeftArm: CANSparkMax =
       CANSparkMax(Constants.PivotClimber.R_ARM_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
 
-  private val pivotLeftArmSensor =
+  val pivotLeftArmSensor =
       sparkMaxAngularMechanismSensor(pivotLeftArm, PivotClimberConstants.GEAR_RATIO)
-  private val pivotRightArmSensor =
+  val pivotRightArmSensor =
       sparkMaxAngularMechanismSensor(pivotRightArm, PivotClimberConstants.GEAR_RATIO)
 
   private val rightPID = pivotRightArm.pidController
   private val leftPID = pivotLeftArm.pidController
+
+  val currentAngle: Angle
+    get() {
+      if (pivotLeftArmSensor.position < pivotRightArmSensor.position) {
+        return pivotLeftArmSensor.position.inDegrees.degrees
+      } else {
+        return pivotRightArmSensor.position.inDegrees.degrees
+      }
+    }
+  var desiredState = DesiredPivotStates.VERTICAL
+  val currentState: ActualPivotStates
+    get() {
+      return when (currentAngle) {
+        in Double.NEGATIVE_INFINITY.degrees..DesiredPivotStates.BEHIND_TELESCOPE.angle -
+                pivotTolerance -> ActualPivotStates.BEHIND_BEHIND_TELESCOPE
+        in DesiredPivotStates.BEHIND_TELESCOPE.angle -
+            pivotTolerance..DesiredPivotStates.BEHIND_TELESCOPE.angle + pivotTolerance ->
+            ActualPivotStates.BEHIND_TELESCOPE
+        in DesiredPivotStates.BEHIND_TELESCOPE.angle + pivotTolerance..DesiredPivotStates.VERTICAL
+                .angle - pivotTolerance -> ActualPivotStates.BETWEEN_BEHIND_TELESCOPE_AND_VERTICAL
+        in DesiredPivotStates.VERTICAL.angle - pivotTolerance..DesiredPivotStates.VERTICAL.angle +
+                pivotTolerance -> ActualPivotStates.VERTICAL
+        in DesiredPivotStates.VERTICAL.angle + pivotTolerance..DesiredPivotStates.MID_FORWARD
+                .angle - pivotTolerance -> ActualPivotStates.BETWEEN_VERTICAL_AND_MID_FORWARD
+        in DesiredPivotStates.MID_FORWARD.angle - pivotTolerance..DesiredPivotStates.MID_FORWARD
+                .angle + pivotTolerance -> ActualPivotStates.MID_FORWARD
+        in DesiredPivotStates.MID_FORWARD.angle + pivotTolerance..DesiredPivotStates.FULL_FORWARD
+                .angle - pivotTolerance -> ActualPivotStates.BETWEEN_MID_FORWARD_AND_FULL_FORWARD
+        in DesiredPivotStates.FULL_FORWARD.angle - pivotTolerance..DesiredPivotStates.FULL_FORWARD
+                .angle + pivotTolerance -> ActualPivotStates.FULL_FORWARD
+        in DesiredPivotStates.FULL_FORWARD.angle + pivotTolerance..Double.POSITIVE_INFINITY
+                .degrees -> ActualPivotStates.PAST_FULL_FORWARD
+        else -> {
+          ActualPivotStates.BEHIND_TELESCOPE
+        }
+      }
+    }
 
   var constraints: TrapezoidProfile.Constraints =
       TrapezoidProfile.Constraints(
@@ -103,7 +144,10 @@ object PivotClimber : SubsystemBase() {
     pivotLeftArm.setSmartCurrentLimit(PivotClimberConstants.SMART_CURRENT_LIMIT)
     pivotLeftArm.burnFlash()
   }
-
+  fun setOpenLoop(leftPower: Double, rightPower: Double) {
+    pivotLeftArm.set(leftPower)
+    pivotRightArm.set(rightPower)
+  }
   fun setAngle(
     leftProfile: TrapezoidProfile,
     rightProfile: TrapezoidProfile,

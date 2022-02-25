@@ -42,4 +42,7 @@ object ControlBoard {
     get() = operator.rightTriggerAxis
   val rotateInPivot: Double
     get() = operator.leftTriggerAxis
+
+  val advanceAndClimb = Trigger { operator.startButton }
+  val climbWithoutAdvance = Trigger { operator.selectButton }
 }
