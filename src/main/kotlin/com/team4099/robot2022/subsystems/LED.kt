@@ -34,16 +34,20 @@ object LED : SubsystemBase() {
   }
 
   override fun periodic() {
+    // when (Climber.telescopeState) {
+    //  ClimberConstants.TelescopeState.OFF -> {
+    //    insert current code
+    //  }
+    //  else ->
+    // }
     when (Shooter.shooterState) {
       ShooterConstants.ShooterState.OFF -> {
         ledState =
             if (Robot.isDisabled) {
               LEDConstants.LEDState.IDLE
-            }
-            else if (Intake.intakeTalon.supplyCurrent >= LEDConstants.CURRENT_THRESHOLD) {
+            } else if (Intake.intakeTalon.supplyCurrent >= LEDConstants.CURRENT_THRESHOLD) {
               LEDConstants.LEDState.INTAKING
-            }
-            else {
+            } else {
               LEDConstants.LEDState.STANDING_ZERO
             }
       }
