@@ -24,8 +24,7 @@ object Feeder : SubsystemBase() {
   private val bottomBeamDIO = DigitalInput(Constants.Feeder.BOTTOM_DIO_PIN)
 
   val topBeamBroken: Boolean
-    //    get() = !topBeamDIO.get()
-    get() = false
+    get() = !topBeamDIO.get()
 
   val bottomBeamBroken: Boolean
     get() = !bottomBeamDIO.get()
@@ -76,9 +75,8 @@ object Feeder : SubsystemBase() {
       verticalMotor.busVoltage
     }
     // beam broken values
-    //    Logger.addSource(FeederConstants.TAB, "Feeder Top Beam DIO Broken") { topBeamBroken }
-    //    Logger.addSource(FeederConstants.TAB, "Feeder Bottom Beam DIO Broken") { bottomBeamBroken
-    // }
+    Logger.addSource(FeederConstants.TAB, "Feeder Top Beam DIO Broken") { topBeamBroken }
+    Logger.addSource(FeederConstants.TAB, "Feeder Bottom Beam DIO Broken") { bottomBeamBroken }
     // ball count value
     //    Logger.addSource(FeederConstants.TAB, "Feeder Ball Count") { ballCount }
 
