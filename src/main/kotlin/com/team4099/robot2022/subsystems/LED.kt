@@ -2,6 +2,7 @@ package com.team4099.robot2022.subsystems
 
 import com.team4099.lib.logging.Logger
 import com.team4099.robot2021.subsystems.Intake
+import com.team4099.robot2022.Robot
 import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.config.constants.LEDConstants
 import com.team4099.robot2022.config.constants.ShooterConstants
@@ -36,9 +37,13 @@ object LED : SubsystemBase() {
     when (Shooter.shooterState) {
       ShooterConstants.ShooterState.OFF -> {
         ledState =
-            if (Intake.intakeTalon.supplyCurrent >= LEDConstants.CURRENT_THRESHOLD) {
+            if (Robot.isDisabled) {
+              LEDConstants.LEDState.IDLE
+            }
+            else if (Intake.intakeTalon.supplyCurrent >= LEDConstants.CURRENT_THRESHOLD) {
               LEDConstants.LEDState.INTAKING
-            } else {
+            }
+            else {
               LEDConstants.LEDState.STANDING_ZERO
             }
       }
