@@ -2,15 +2,19 @@ package com.team4099.robot2022.config
 
 import com.team4099.lib.units.AngularVelocity
 import com.team4099.lib.units.base.inches
+import com.team4099.lib.units.base.seconds
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.div
 import com.team4099.lib.units.derived.rotations
+import com.team4099.lib.units.milli
 import com.team4099.lib.units.perMinute
 
 object ShooterConstants {
   // Motor configuration
   const val LEADER_MOTOR_ID = 51 // put in values from the design tool (leader motor is left)
   const val FOLLOWER_MOTOR_ID = 52
+
+  val FOLLOWER_STATUS_FRAME_PERIOD = 255.milli.seconds
 
   const val SHOOTER_KP = 0.5 // TODO: tune
   const val SHOOTER_KI = 0.0

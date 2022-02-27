@@ -2,9 +2,11 @@ package com.team4099.robot2022.subsystems
 
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.DemandType
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.AngularVelocity
+import com.team4099.lib.units.base.inMilliseconds
 import com.team4099.lib.units.ctreAngularMechanismSensor
 import com.team4099.lib.units.derived.rotations
 import com.team4099.lib.units.inRadiansPerSecond
@@ -12,6 +14,7 @@ import com.team4099.lib.units.inRotationsPerMinute
 import com.team4099.lib.units.perMinute
 import com.team4099.robot2022.config.ShooterConstants
 import edu.wpi.first.wpilibj2.command.SubsystemBase
+import kotlin.time.Duration.Companion.milliseconds
 
 object Shooter : SubsystemBase() {
   private val leaderMotor = TalonFX(ShooterConstants.LEADER_MOTOR_ID)
@@ -45,6 +48,8 @@ object Shooter : SubsystemBase() {
     followerMotor.configFactoryDefault()
 
     followerMotor.follow(leaderMotor)
+    followerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, ShooterConstants.FOLLOWER_STATUS_FRAME_PERIOD.inMilliseconds.toInt())
+    followerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, ShooterConstants.FOLLOWER_STATUS_FRAME_PERIOD.inMilliseconds.toInt())
 
     leaderMotor.enableVoltageCompensation(true)
     followerMotor.enableVoltageCompensation(true)
