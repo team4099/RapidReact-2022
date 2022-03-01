@@ -34,13 +34,13 @@ object TelescopingClimber : SubsystemBase() {
           telescopingRightArm,
           TelescopingClimberConstants.SENSOR_CPR,
           TelescopingClimberConstants.GEAR_RATIO,
-          TelescopingClimberConstants.PULLEY_MECHANISM)
+          TelescopingClimberConstants.SPOOL_RADIUS * 2)
   val telescopingLeftArmSensor =
       ctreLinearMechanismSensor(
           telescopingLeftArm,
           TelescopingClimberConstants.SENSOR_CPR,
           TelescopingClimberConstants.GEAR_RATIO,
-          TelescopingClimberConstants.PULLEY_MECHANISM)
+          TelescopingClimberConstants.SPOOL_RADIUS * 2)
 
   private val telescopingConfiguration: TalonFXConfiguration = TalonFXConfiguration()
 
@@ -103,18 +103,18 @@ object TelescopingClimber : SubsystemBase() {
           telescopingRightArmSensor.velocity.inMetersPerSecond)
 
   // PneumaticsModuleType new?
-  private val pneumaticBrake = // TODO delete pneumatic brakes
-      Solenoid(PneumaticsModuleType.CTREPCM, Constants.TelescopingClimber.SOLENOID_ID)
-  var isLocked: Boolean = true
-    set(value) {
-      pneumaticBrake.set(!value)
-      field = value
-    }
-  var brakeApplied = true
-    set(value) {
-      field = value
-      pneumaticBrake.set(!value)
-    }
+//  private val pneumaticBrake = // TODO delete pneumatic brakes
+//      Solenoid(PneumaticsModuleType.CTREPCM, Constants.TelescopingClimber.SOLENOID_ID)
+//  var isLocked: Boolean = true
+//    set(value) {
+//      pneumaticBrake.set(!value)
+//      field = value
+//    }
+//  var brakeApplied = true
+//    set(value) {
+//      field = value
+//      pneumaticBrake.set(!value)
+//    }
   init {
     Logger.addSource(TelescopingClimberConstants.TAB, "Right Arm Motor Power") {
       telescopingRightArm.motorOutputPercent
@@ -148,12 +148,12 @@ object TelescopingClimber : SubsystemBase() {
       telescopingLeftArmSensor.position.inInches
     }
 
-    Logger.addSource(TelescopingClimberConstants.TAB, "Right Pneumatics State") {
-      brakeApplied.toString()
-    }
-    Logger.addSource(TelescopingClimberConstants.TAB, "Left Pneumatics State") {
-      brakeApplied.toString()
-    }
+//    Logger.addSource(TelescopingClimberConstants.TAB, "Right Pneumatics State") {
+//      brakeApplied.toString()
+//    }
+//    Logger.addSource(TelescopingClimberConstants.TAB, "Left Pneumatics State") {
+//      brakeApplied.toString()
+//    }
 
     telescopingConfiguration.slot0.kP = TelescopingClimberConstants.KP
     telescopingConfiguration.slot0.kI = TelescopingClimberConstants.KI
@@ -164,11 +164,13 @@ object TelescopingClimber : SubsystemBase() {
     telescopingRightArm.configAllSettings(telescopingConfiguration)
     telescopingRightArm.setNeutralMode(NeutralMode.Brake)
     telescopingRightArm.enableVoltageCompensation(true)
+    telescopingRightArm.inverted = true
 
     telescopingLeftArm.configFactoryDefault()
     telescopingLeftArm.configAllSettings(telescopingConfiguration)
     telescopingLeftArm.setNeutralMode(NeutralMode.Brake)
     telescopingLeftArm.enableVoltageCompensation(true)
+    telescopingLeftArm.inverted = true
   }
   fun setOpenLoop(leftPower: Double, rightPower: Double) {
     telescopingLeftArm.set(ControlMode.PercentOutput, leftPower)
@@ -212,4 +214,12 @@ object TelescopingClimber : SubsystemBase() {
               rightSetpoint.velocity * TelescopingClimberConstants.LOAD_KV))
     }
   }
+  fun zeroLeftEncoder(){
+    telescopingLeftArm.selectedSensorPosition = 0.0
+  }
+
+  fun zeroRightEncoder(){
+    telescopingRightArm.selectedSensorPosition = 0.0
+  }
+
 }

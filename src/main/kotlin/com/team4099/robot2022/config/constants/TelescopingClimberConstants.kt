@@ -3,6 +3,7 @@ package com.team4099.robot2022.config.constants
 import com.team4099.lib.units.Value
 import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.base.Second
+import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.base.seconds
 import com.team4099.lib.units.perSecond
@@ -24,7 +25,7 @@ object TelescopingClimberConstants {
   val LOAD_KV = 0.0
   val LOAD_KA = 0.0
 
-  val PULLEY_MECHANISM = 0.0.meters // TODO
+  val SPOOL_RADIUS = 0.5.inches
   val MAX_VELOCITY = 0.0.meters.perSecond
   val MAX_ACCELERATION = 0.0.meters.perSecond.perSecond
 

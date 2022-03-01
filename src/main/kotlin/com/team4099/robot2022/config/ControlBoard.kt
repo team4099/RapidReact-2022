@@ -45,4 +45,7 @@ object ControlBoard {
 
   val advanceAndClimb = Trigger { operator.startButton }
   val climbWithoutAdvance = Trigger { operator.selectButton }
+
+  val leftSpoolDown = Trigger { driver.leftShoulderButton }
+  val rightSpoolDown = Trigger { driver.rightShoulderButton }
 }

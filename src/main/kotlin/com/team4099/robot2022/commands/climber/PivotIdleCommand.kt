@@ -8,11 +8,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase
 
 class PivotIdleCommand : CommandBase() {
   init {
-    addRequirements(TelescopingClimber, PivotClimber)
+    addRequirements(PivotClimber)
   }
 
   override fun execute() {
-    TelescopingClimber.setOpenLoop(0.0, 0.0)
     PivotClimber.setOpenLoop(0.0, 0.0)
   }
   override fun initialize() {

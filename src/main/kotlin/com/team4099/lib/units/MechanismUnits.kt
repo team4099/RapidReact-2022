@@ -36,7 +36,7 @@ class LinearMechanismSensor(
   val getRawVelocity: () -> Double,
   val getRawPosition: () -> Double
 ) : MechanismSensor<Meter> {
-  override val position: Value<Meter>
+  override val position: Length
     get() = diameter * getRawPosition() * ratio * PI
 
   override val velocity: Value<Velocity<Meter>>
@@ -104,8 +104,9 @@ fun ctreLinearMechanismSensor(
       diameter,
       ratio / sensorCpr,
       Timescale.CTRE,
-      { controller.selectedSensorPosition.toDouble() },
-      { controller.selectedSensorVelocity.toDouble() })
+      { controller.selectedSensorVelocity.toDouble() },
+      { controller.selectedSensorPosition.toDouble() })
+
 }
 
 fun sparkMaxAngularMechanismSensor(controller: CANSparkMax, ratio: Double): AngularMechanismSensor {
