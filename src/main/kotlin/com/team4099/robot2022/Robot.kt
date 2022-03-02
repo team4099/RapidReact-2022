@@ -2,8 +2,9 @@ package com.team4099.robot2022
 
 import com.team4099.lib.logging.Logger
 import com.team4099.robot2022.auto.AutonomousSelector
-import com.team4099.robot2022.commands.climber.SpoolLeftClimberCommand
-import com.team4099.robot2022.commands.climber.SpoolRightClimberCommand
+import com.team4099.robot2022.commands.climber.SpoolLeftDownCommand
+import com.team4099.robot2022.commands.climber.SpoolRightDownCommand
+import com.team4099.robot2022.commands.climber.SpootLeftUpCommand
 import com.team4099.robot2022.commands.climber.TelescopingIdleCommand
 import com.team4099.robot2022.config.ControlBoard
 import com.team4099.robot2022.config.constants.Constants
@@ -58,8 +59,10 @@ object Robot : TimedRobot() {
     //    Feeder.defaultCommand = FeederIdleCommand()
 
     TelescopingClimber.defaultCommand = TelescopingIdleCommand()
-    ControlBoard.leftSpoolDown.whileActiveContinuous(SpoolLeftClimberCommand())
-    ControlBoard.rightSpoolDown.whileActiveContinuous(SpoolRightClimberCommand())
+    ControlBoard.leftSpoolDown.whileActiveContinuous(SpoolLeftDownCommand())
+    ControlBoard.rightSpoolDown.whileActiveContinuous(SpoolRightDownCommand())
+    ControlBoard.leftSpoolUp.whileActiveContinuous(SpootLeftUpCommand())
+    ControlBoard.rightSpoolUp.whileActiveContinuous(SpoolRightDownCommand())
     //    PivotClimber.defaultCommand = PivotIdleCommand()
     //
     //
