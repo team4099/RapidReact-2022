@@ -37,7 +37,7 @@ class LinearMechanismSensor(
   val getRawPosition: () -> Double
 ) : MechanismSensor<Meter> {
   override val position: Length
-    get() = diameter * getRawPosition() * ratio * PI
+    get() = (diameter * PI) * getRawPosition() * ratio
 
   override val velocity: Value<Velocity<Meter>>
     get() {
