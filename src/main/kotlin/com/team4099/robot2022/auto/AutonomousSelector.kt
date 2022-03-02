@@ -27,7 +27,7 @@ object AutonomousSelector {
     autonomousModeChooser.addOption(
         "Characterize Drivetrain", AutonomousMode.CHARACTERIZE_DRIVETRAIN)
     autonomousModeChooser.addOption(
-      "Characterize Telescoping Arms", AutonomousMode.CHARACTERIZE_CLIMBER_TELESCOPE)
+        "Characterize Telescoping Arms", AutonomousMode.CHARACTERIZE_CLIMBER_TELESCOPE)
     autonomousModeChooser.addOption("Characterize Shooter", AutonomousMode.CHARACTERIZE_SHOOTER)
     autoTab.add("Mode", autonomousModeChooser)
   }

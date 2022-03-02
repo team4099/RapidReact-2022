@@ -20,8 +20,6 @@ import com.team4099.robot2022.config.constants.ClimberConstants.telescopingToler
 import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.config.constants.TelescopingClimberConstants
 import edu.wpi.first.math.trajectory.TrapezoidProfile
-import edu.wpi.first.wpilibj.PneumaticsModuleType
-import edu.wpi.first.wpilibj.Solenoid
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 
 object TelescopingClimber : SubsystemBase() {
@@ -103,18 +101,18 @@ object TelescopingClimber : SubsystemBase() {
           telescopingRightArmSensor.velocity.inMetersPerSecond)
 
   // PneumaticsModuleType new?
-//  private val pneumaticBrake = // TODO delete pneumatic brakes
-//      Solenoid(PneumaticsModuleType.CTREPCM, Constants.TelescopingClimber.SOLENOID_ID)
-//  var isLocked: Boolean = true
-//    set(value) {
-//      pneumaticBrake.set(!value)
-//      field = value
-//    }
-//  var brakeApplied = true
-//    set(value) {
-//      field = value
-//      pneumaticBrake.set(!value)
-//    }
+  //  private val pneumaticBrake = // TODO delete pneumatic brakes
+  //      Solenoid(PneumaticsModuleType.CTREPCM, Constants.TelescopingClimber.SOLENOID_ID)
+  //  var isLocked: Boolean = true
+  //    set(value) {
+  //      pneumaticBrake.set(!value)
+  //      field = value
+  //    }
+  //  var brakeApplied = true
+  //    set(value) {
+  //      field = value
+  //      pneumaticBrake.set(!value)
+  //    }
   init {
     Logger.addSource(TelescopingClimberConstants.TAB, "Right Arm Motor Power") {
       telescopingRightArm.motorOutputPercent
@@ -148,12 +146,12 @@ object TelescopingClimber : SubsystemBase() {
       telescopingLeftArmSensor.position.inInches
     }
 
-//    Logger.addSource(TelescopingClimberConstants.TAB, "Right Pneumatics State") {
-//      brakeApplied.toString()
-//    }
-//    Logger.addSource(TelescopingClimberConstants.TAB, "Left Pneumatics State") {
-//      brakeApplied.toString()
-//    }
+    //    Logger.addSource(TelescopingClimberConstants.TAB, "Right Pneumatics State") {
+    //      brakeApplied.toString()
+    //    }
+    //    Logger.addSource(TelescopingClimberConstants.TAB, "Left Pneumatics State") {
+    //      brakeApplied.toString()
+    //    }
 
     telescopingConfiguration.slot0.kP = TelescopingClimberConstants.KP
     telescopingConfiguration.slot0.kI = TelescopingClimberConstants.KI
@@ -214,12 +212,11 @@ object TelescopingClimber : SubsystemBase() {
               rightSetpoint.velocity * TelescopingClimberConstants.LOAD_KV))
     }
   }
-  fun zeroLeftEncoder(){
+  fun zeroLeftEncoder() {
     telescopingLeftArm.selectedSensorPosition = 0.0
   }
 
-  fun zeroRightEncoder(){
+  fun zeroRightEncoder() {
     telescopingRightArm.selectedSensorPosition = 0.0
   }
-
 }

@@ -106,7 +106,6 @@ fun ctreLinearMechanismSensor(
       Timescale.CTRE,
       { controller.selectedSensorVelocity.toDouble() },
       { controller.selectedSensorPosition.toDouble() })
-
 }
 
 fun sparkMaxAngularMechanismSensor(controller: CANSparkMax, ratio: Double): AngularMechanismSensor {
