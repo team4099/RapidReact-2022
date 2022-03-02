@@ -1,4 +1,4 @@
-package com.team4099.robot2022.config
+package com.team4099.robot2022.config.constants
 
 import com.team4099.lib.units.AngularVelocity
 import com.team4099.lib.units.base.inches
