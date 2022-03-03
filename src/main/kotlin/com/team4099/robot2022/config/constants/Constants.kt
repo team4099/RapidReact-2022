@@ -26,6 +26,7 @@ object Constants {
   object Joysticks {
     const val DRIVER_PORT = 0
     const val SHOTGUN_PORT = 1
+    const val TECHNICIAN_PORT = 2
 
     const val THROTTLE_DEADBAND = 0.05
     const val TURN_DEADBAND = 0.05

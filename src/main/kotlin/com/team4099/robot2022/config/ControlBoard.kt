@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger
 object ControlBoard {
   private val driver = XboxOneGamepad(Constants.Joysticks.DRIVER_PORT)
   private val operator = XboxOneGamepad(Constants.Joysticks.SHOTGUN_PORT)
+  private val technician = XboxOneGamepad(Constants.Joysticks.TECHNICIAN_PORT)
 
   val strafe: Double
     get() = -driver.leftXAxis
@@ -46,8 +47,8 @@ object ControlBoard {
   val advanceAndClimb = Trigger { operator.startButton }
   val climbWithoutAdvance = Trigger { operator.selectButton }
 
-  val leftSpoolDown = Trigger { driver.leftShoulderButton }
-  val rightSpoolDown = Trigger { driver.rightShoulderButton }
+  val leftSpoolDown = Trigger { technician.leftShoulderButton }
+  val rightSpoolDown = Trigger { technician.rightShoulderButton }
 
   val leftSpoolUp = Trigger { driver.leftTriggerAxis > 0.5 }
   val rightSpoolUp = Trigger { driver.rightTriggerAxis > 0.5 }

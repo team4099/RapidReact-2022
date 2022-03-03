@@ -163,12 +163,24 @@ object TelescopingClimber : SubsystemBase() {
     telescopingRightArm.setNeutralMode(NeutralMode.Brake)
     telescopingRightArm.enableVoltageCompensation(true)
     telescopingRightArm.inverted = true
+    telescopingRightArm.configForwardSoftLimitThreshold(
+        telescopingRightArmSensor.positionToRawUnits(
+            TelescopingClimberConstants.FORWARD_SOFT_LIMIT))
+    telescopingRightArm.configForwardSoftLimitEnable(true)
+    telescopingRightArm.configReverseSoftLimitThreshold(
+        telescopingRightArmSensor.positionToRawUnits(
+            TelescopingClimberConstants.REVERSE_SOFT_LIMIT))
 
     telescopingLeftArm.configFactoryDefault()
     telescopingLeftArm.configAllSettings(telescopingConfiguration)
     telescopingLeftArm.setNeutralMode(NeutralMode.Brake)
     telescopingLeftArm.enableVoltageCompensation(true)
     telescopingLeftArm.inverted = true
+    telescopingLeftArm.configForwardSoftLimitThreshold(
+        telescopingLeftArmSensor.positionToRawUnits(TelescopingClimberConstants.FORWARD_SOFT_LIMIT))
+    telescopingLeftArm.configForwardSoftLimitEnable(true)
+    telescopingLeftArm.configReverseSoftLimitThreshold(
+        telescopingLeftArmSensor.positionToRawUnits(TelescopingClimberConstants.REVERSE_SOFT_LIMIT))
   }
   fun setOpenLoop(leftPower: Double, rightPower: Double) {
     telescopingLeftArm.set(ControlMode.PercentOutput, leftPower)

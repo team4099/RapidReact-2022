@@ -39,5 +39,8 @@ object TelescopingClimberConstants {
 
   val BRAKE_RELEASE_TIMEOUT: Value<Second> = 0.0.seconds
 
+  val FORWARD_SOFT_LIMIT = 20.inches
+  val REVERSE_SOFT_LIMIT = 0.inches
+
   const val TAB = "Telescoping Climber"
 }
