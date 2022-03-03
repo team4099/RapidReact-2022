@@ -3,9 +3,11 @@ package com.team4099.robot2022.subsystems
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.DemandType
 import com.ctre.phoenix.motorcontrol.InvertType
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.AngularVelocity
+import com.team4099.lib.units.base.inMilliseconds
 import com.team4099.lib.units.ctreAngularMechanismSensor
 import com.team4099.lib.units.derived.rotations
 import com.team4099.lib.units.inRadiansPerSecond
@@ -48,6 +50,8 @@ object Shooter : SubsystemBase() {
     followerMotor.follow(leaderMotor)
     leaderMotor.setInverted(InvertType.None)
     followerMotor.setInverted(InvertType.OpposeMaster)
+//    followerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, ShooterConstants.FOLLOWER_STATUS_FRAME_PERIOD.inMilliseconds.toInt())
+//    followerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, ShooterConstants.FOLLOWER_STATUS_FRAME_PERIOD.inMilliseconds.toInt())
 
     leaderMotor.enableVoltageCompensation(true)
     followerMotor.enableVoltageCompensation(true)

@@ -2,9 +2,11 @@ package com.team4099.robot2022.config.constants
 
 import com.team4099.lib.units.AngularVelocity
 import com.team4099.lib.units.base.inches
+import com.team4099.lib.units.base.seconds
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.div
 import com.team4099.lib.units.derived.rotations
+import com.team4099.lib.units.milli
 import com.team4099.lib.units.perMinute
 
 object ShooterConstants {
@@ -20,6 +22,8 @@ object ShooterConstants {
 
   const val SHOOTER_SENSOR_CPR = 2048
   const val SHOOTER_SENSOR_GEAR_RATIO = 1.0
+
+//  val FOLLOWER_STATUS_FRAME_PERIOD = 255.milli.seconds
 
   // Target values
   val TARGET_VELOCITY_THRESHOLD = 150.rotations.perMinute
