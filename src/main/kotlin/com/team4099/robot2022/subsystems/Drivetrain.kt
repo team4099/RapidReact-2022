@@ -24,7 +24,8 @@ import com.team4099.lib.units.derived.times
 import com.team4099.lib.units.inFeetPerSecond
 import com.team4099.lib.units.inMetersPerSecond
 import com.team4099.lib.units.perSecond
-import com.team4099.robot2022.config.Constants
+import com.team4099.robot2022.config.constants.Constants
+import com.team4099.robot2022.config.constants.DrivetrainConstants
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry
 import edu.wpi.first.math.kinematics.SwerveModuleState
@@ -41,27 +42,27 @@ object Drivetrain : SubsystemBase() {
               TalonFX(Constants.Drivetrain.FRONT_LEFT_DRIVE_ID),
               AnalogPotentiometer(
                   Constants.Drivetrain.FRONT_LEFT_ANALOG_POTENTIOMETER, 2 * PI, 0.0),
-              0.degrees,
+              DrivetrainConstants.FRONT_LEFT_MODULE_ZERO,
               "Front Left Wheel"),
           SwerveModule(
               TalonFX(Constants.Drivetrain.FRONT_RIGHT_STEERING_ID),
               TalonFX(Constants.Drivetrain.FRONT_RIGHT_DRIVE_ID),
               AnalogPotentiometer(
                   Constants.Drivetrain.FRONT_RIGHT_ANALOG_POTENTIOMETER, 2 * PI, 0.0),
-              0.degrees,
+              DrivetrainConstants.FRONT_RIGHT_MODULE_ZERO,
               "Front Right Wheel"),
           SwerveModule(
               TalonFX(Constants.Drivetrain.BACK_LEFT_STEERING_ID),
               TalonFX(Constants.Drivetrain.BACK_LEFT_DRIVE_ID),
               AnalogPotentiometer(Constants.Drivetrain.BACK_LEFT_ANALOG_POTENTIOMETER, 2 * PI, 0.0),
-              0.degrees,
+              DrivetrainConstants.BACK_LEFT_MODULE_ZERO,
               "Back Left Wheel"),
           SwerveModule(
               TalonFX(Constants.Drivetrain.BACK_RIGHT_STEERING_ID),
               TalonFX(Constants.Drivetrain.BACK_RIGHT_DRIVE_ID),
               AnalogPotentiometer(
                   Constants.Drivetrain.BACK_RIGHT_ANALOG_POTENTIOMETER, 2 * PI, 0.0),
-              0.degrees,
+              DrivetrainConstants.BACK_RIGHT_MODULE_ZERO,
               "Back Right Wheel"))
 
   private val wheelSpeeds =
@@ -77,28 +78,40 @@ object Drivetrain : SubsystemBase() {
           0.feet.perSecond.perSecond)
 
   private val gyro = AHRS()
+  val gyroRate: AngularVelocity
+    get() {
+      if (gyro.isConnected) {
+        return gyro.rate.degrees.perSecond
+      } else {
+        return -1.337.degrees.perSecond
+      }
+    }
 
   var gyroOffset: Angle = 0.0.degrees
   /** The current angle of the drivetrain. */
   val gyroAngle: Angle
     get() {
-      var rawAngle = gyro.angle + gyroOffset.inDegrees
-      rawAngle += Constants.Drivetrain.GYRO_RATE_COEFFICIENT * gyro.rate
-      return rawAngle.IEEErem(360.0).degrees
+      if (gyro.isConnected) {
+        var rawAngle = gyro.angle + gyroOffset.inDegrees
+        rawAngle += DrivetrainConstants.GYRO_RATE_COEFFICIENT * gyro.rate
+        return rawAngle.IEEErem(360.0).degrees
+      } else {
+        return -1.337.degrees
+      }
     }
 
   private val frontLeftWheelLocation =
       Translation(
-          -Constants.Drivetrain.DRIVETRAIN_WIDTH / 2, Constants.Drivetrain.DRIVETRAIN_LENGTH / 2)
+          -DrivetrainConstants.DRIVETRAIN_WIDTH / 2, DrivetrainConstants.DRIVETRAIN_LENGTH / 2)
   private val frontRightWheelLocation =
       Translation(
-          Constants.Drivetrain.DRIVETRAIN_WIDTH / 2, Constants.Drivetrain.DRIVETRAIN_LENGTH / 2)
+          DrivetrainConstants.DRIVETRAIN_WIDTH / 2, DrivetrainConstants.DRIVETRAIN_LENGTH / 2)
   private val backLeftWheelLocation =
       Translation(
-          -Constants.Drivetrain.DRIVETRAIN_WIDTH / 2, -Constants.Drivetrain.DRIVETRAIN_LENGTH / 2)
+          -DrivetrainConstants.DRIVETRAIN_WIDTH / 2, -DrivetrainConstants.DRIVETRAIN_LENGTH / 2)
   private val backRightWheelLocation =
       Translation(
-          Constants.Drivetrain.DRIVETRAIN_WIDTH / 2, -Constants.Drivetrain.DRIVETRAIN_LENGTH / 2)
+          DrivetrainConstants.DRIVETRAIN_WIDTH / 2, -DrivetrainConstants.DRIVETRAIN_LENGTH / 2)
 
   val swerveDriveKinematics =
       SwerveDriveKinematics(
@@ -198,10 +211,10 @@ object Drivetrain : SubsystemBase() {
           driveAcceleration.first
         }
 
-    val a = vX - angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
-    val b = vX + angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
-    val c = vY - angularVelocity * Constants.Drivetrain.DRIVETRAIN_WIDTH / 2
-    val d = vY + angularVelocity * Constants.Drivetrain.DRIVETRAIN_WIDTH / 2
+    val a = vX + angularVelocity * DrivetrainConstants.DRIVETRAIN_LENGTH / 2
+    val b = vX - angularVelocity * DrivetrainConstants.DRIVETRAIN_LENGTH / 2
+    val c = vY + angularVelocity * DrivetrainConstants.DRIVETRAIN_WIDTH / 2
+    val d = vY - angularVelocity * DrivetrainConstants.DRIVETRAIN_WIDTH / 2
     // Logger.addEvent("Drivetrain", "vX: $vX, angular velocity: $angularVelocity")
 
     wheelSpeeds[0] = hypot(b, d)
@@ -210,23 +223,23 @@ object Drivetrain : SubsystemBase() {
     wheelSpeeds[3] = hypot(a, c)
 
     val aA =
-        aX -
-            (angularAcceleration.value * Constants.Drivetrain.DRIVETRAIN_LENGTH.value / 2).inches
+        aX +
+            (angularAcceleration.value * DrivetrainConstants.DRIVETRAIN_LENGTH.value / 2).inches
                 .perSecond
                 .perSecond
     val aB =
-        aX +
-            (angularAcceleration.value * Constants.Drivetrain.DRIVETRAIN_LENGTH.value / 2).inches
+        aX -
+            (angularAcceleration.value * DrivetrainConstants.DRIVETRAIN_LENGTH.value / 2).inches
                 .perSecond
                 .perSecond
     val aC =
-        aY -
-            (angularAcceleration.value * Constants.Drivetrain.DRIVETRAIN_WIDTH.value / 2).inches
+        aY +
+            (angularAcceleration.value * DrivetrainConstants.DRIVETRAIN_WIDTH.value / 2).inches
                 .perSecond
                 .perSecond
     val aD =
         aY -
-            (angularAcceleration.value * Constants.Drivetrain.DRIVETRAIN_WIDTH.value / 2).inches
+            (angularAcceleration.value * DrivetrainConstants.DRIVETRAIN_WIDTH.value / 2).inches
                 .perSecond
                 .perSecond
 
@@ -236,8 +249,8 @@ object Drivetrain : SubsystemBase() {
     wheelAccelerations[3] = kotlin.math.hypot(aA.value, aC.value).feet.perSecond.perSecond
 
     val maxWheelSpeed = wheelSpeeds.maxOrNull()
-    if (maxWheelSpeed != null && maxWheelSpeed > Constants.Drivetrain.DRIVE_SETPOINT_MAX) {
-      for (i in 0 until Constants.Drivetrain.WHEEL_COUNT) {
+    if (maxWheelSpeed != null && maxWheelSpeed > DrivetrainConstants.DRIVE_SETPOINT_MAX) {
+      for (i in 0 until DrivetrainConstants.WHEEL_COUNT) {
         wheelSpeeds[i] = wheelSpeeds[i] / maxWheelSpeed.inMetersPerSecond
       }
     }
@@ -273,10 +286,10 @@ object Drivetrain : SubsystemBase() {
           driveVector.second
         }
 
-    val a = vX - angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
-    val b = vX + angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
-    val c = vY - angularVelocity * Constants.Drivetrain.DRIVETRAIN_WIDTH / 2
-    val d = vY + angularVelocity * Constants.Drivetrain.DRIVETRAIN_WIDTH / 2
+    val a = vX + angularVelocity * DrivetrainConstants.DRIVETRAIN_LENGTH / 2
+    val b = vX - angularVelocity * DrivetrainConstants.DRIVETRAIN_LENGTH / 2
+    val c = vY + angularVelocity * DrivetrainConstants.DRIVETRAIN_WIDTH / 2
+    val d = vY - angularVelocity * DrivetrainConstants.DRIVETRAIN_WIDTH / 2
 
     wheelSpeeds[0] = hypot(b, d)
     wheelSpeeds[1] = hypot(b, c)
@@ -284,11 +297,11 @@ object Drivetrain : SubsystemBase() {
     wheelSpeeds[3] = hypot(a, c)
 
     val maxWheelSpeed = wheelSpeeds.maxOrNull()
-    if (maxWheelSpeed != null && maxWheelSpeed > Constants.Drivetrain.DRIVE_SETPOINT_MAX) {
-      for (i in 0 until Constants.Drivetrain.WHEEL_COUNT) {
+    if (maxWheelSpeed != null && maxWheelSpeed > DrivetrainConstants.DRIVE_SETPOINT_MAX) {
+      for (i in 0 until DrivetrainConstants.WHEEL_COUNT) {
         wheelSpeeds[i] =
             wheelSpeeds[i] / maxWheelSpeed.inMetersPerSecond *
-                Constants.Drivetrain.DRIVE_SETPOINT_MAX.inMetersPerSecond
+                DrivetrainConstants.DRIVE_SETPOINT_MAX.inMetersPerSecond
       }
     }
     wheelAngles[0] = atan2(b, d)
@@ -297,13 +310,13 @@ object Drivetrain : SubsystemBase() {
     wheelAngles[3] = atan2(a, c)
 
     swerveModules[0].setOpenLoop(
-        wheelAngles[0], wheelSpeeds[0] / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
+        wheelAngles[0], wheelSpeeds[0] / DrivetrainConstants.DRIVE_SETPOINT_MAX)
     swerveModules[1].setOpenLoop(
-        wheelAngles[1], wheelSpeeds[1] / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
+        wheelAngles[1], wheelSpeeds[1] / DrivetrainConstants.DRIVE_SETPOINT_MAX)
     swerveModules[2].setOpenLoop(
-        wheelAngles[2], wheelSpeeds[2] / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
+        wheelAngles[2], wheelSpeeds[2] / DrivetrainConstants.DRIVE_SETPOINT_MAX)
     swerveModules[3].setOpenLoop(
-        wheelAngles[3], wheelSpeeds[3] / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
+        wheelAngles[3], wheelSpeeds[3] / DrivetrainConstants.DRIVE_SETPOINT_MAX)
   }
 
   private fun updateOdometry() {
