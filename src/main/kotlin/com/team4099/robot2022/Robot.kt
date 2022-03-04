@@ -23,9 +23,7 @@ import com.team4099.robot2022.config.constants.FeederConstants
 import com.team4099.robot2022.subsystems.Drivetrain
 import com.team4099.robot2022.subsystems.Feeder
 import com.team4099.robot2022.subsystems.Shooter
-import edu.wpi.first.wpilibj.Compressor
 import edu.wpi.first.wpilibj.DigitalInput
-import edu.wpi.first.wpilibj.PneumaticsModuleType
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj2.command.CommandScheduler
@@ -44,24 +42,24 @@ object Robot : TimedRobot() {
             .sum()
     robotName =
         Constants.Tuning.ROBOT_ID_MAP.getOrDefault(robotId, Constants.Tuning.RobotName.COMPETITION)
-    Logger.addEvent("Robot", "Robot Construction (running on $robotName)")
-    Logger.addSource("Robot", "Battery Voltage", RobotController::getBatteryVoltage)
+  }
 
-    Logger.startLogging()
-
+  fun mapDefaultCommands() {
     Drivetrain.defaultCommand =
         OpenLoopDriveCommand(
             { ControlBoard.strafe.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
             { ControlBoard.forward.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
             { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) })
+    Shooter.defaultCommand = ShooterIdleCommand()
+    Intake.defaultCommand = IntakeIdleCommand()
+    Feeder.defaultCommand = FeederIdleCommand()
+  }
 
+  fun mapTeleopControls() {
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
 
-    Shooter.defaultCommand = ShooterIdleCommand()
     ControlBoard.startShooter.whileActiveOnce(SpinUpNearCommand().andThen(ShootCommand()))
     ControlBoard.startShooterFar.whileActiveOnce(SpinUpFarCommand().andThen(ShootCommand()))
-
-    Intake.defaultCommand = IntakeIdleCommand()
 
     ControlBoard.runIntake.whileActiveContinuous(IntakeBallsCommand().alongWith(FeederSerialize()))
     ControlBoard.prepareClimb.whileActiveContinuous(PrepareClimbCommand())
@@ -69,15 +67,20 @@ object Robot : TimedRobot() {
         .whileActiveContinuous(
             ReverseIntakeCommand().alongWith(
                 FeederCommand(FeederConstants.FeederState.BACKWARD_FLOOR)))
-    Feeder.defaultCommand = FeederIdleCommand()
   }
 
+  fun mapTestControls() {}
+
   override fun robotInit() {
+    Logger.startLogging()
+    Logger.addEvent("Robot", "Robot Construction (running on $robotName)")
+    Logger.addSource("Robot", "Battery Voltage", RobotController::getBatteryVoltage)
+
     addPeriodic({ Logger.saveLogs() }, 0.08, 0.01)
 
+    mapDefaultCommands()
+
     Drivetrain.zeroSensors()
-    val compressor = Compressor(PneumaticsModuleType.REVPH)
-    compressor.enableAnalog(60.0, 120.0)
   }
 
   override fun autonomousInit() {
@@ -91,8 +94,14 @@ object Robot : TimedRobot() {
   }
 
   override fun teleopInit() {
+    mapTeleopControls()
     autonomousSelector.getCommand().cancel()
     // autonomousCommand.cancel()
+  }
+
+  override fun testInit() {
+    mapTestControls()
+    autonomousSelector.getCommand().cancel()
   }
 
   override fun robotPeriodic() {
