@@ -42,7 +42,7 @@ object LED : SubsystemBase() {
           else -> {
             if (Robot.isDisabled) {
               LEDConstants.LEDState.IDLE
-            } else if (Intake.intakeTalon.statorCurrent >= LEDConstants.CURRENT_THRESHOLD &&
+            } else if (Intake.statorCurrent >= LEDConstants.CURRENT_THRESHOLD &&
                 Intake.intakeState == IntakeConstants.IntakeState.IN) {
               LEDConstants.LEDState.INTAKING
             } else {

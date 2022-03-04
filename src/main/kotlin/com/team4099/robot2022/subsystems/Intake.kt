@@ -17,7 +17,7 @@ object Intake : SubsystemBase() {
   // motor params
   private val intakeConfiguration: TalonFXConfiguration = TalonFXConfiguration()
 
-  val intakeTalon = TalonFX(Constants.Intake.INTAKE_MOTOR)
+  private val intakeTalon = TalonFX(Constants.Intake.INTAKE_MOTOR)
   private val intakeSolenoid = Solenoid(PneumaticsModuleType.REVPH, Constants.Intake.ARM_SOLENOID)
 
   var intakeState = IntakeConstants.IntakeState.IDLE
@@ -32,13 +32,14 @@ object Intake : SubsystemBase() {
       field = state
     }
 
+  val statorCurrent: Double
+    get() = intakeTalon.statorCurrent
+
   init {
     intakeTalon.configFactoryDefault()
     //    Logger.addSource(IntakeConstants.TAB, "Intake State") { intakeState.toString() }
     Logger.addSource(IntakeConstants.TAB, "Intake Motor Power") { intakeTalon.motorOutputPercent }
-    Logger.addSource(IntakeConstants.TAB, "Intake Motor Stator Current") {
-      intakeTalon.statorCurrent
-    }
+    Logger.addSource(IntakeConstants.TAB, "Intake Motor Stator Current") { statorCurrent }
     Logger.addSource(IntakeConstants.TAB, "Intake Motor Supply Current") {
       intakeTalon.supplyCurrent
     }
