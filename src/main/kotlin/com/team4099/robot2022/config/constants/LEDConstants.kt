@@ -5,32 +5,32 @@ import com.team4099.lib.drivers.BlinkinLedDriver
 object LEDConstants {
   const val CURRENT_THRESHOLD = 20
 
-  enum class LEDState(val pwmValue: Double) {
+  enum class LEDState(val blinkinMode: BlinkinLedDriver.BlinkinLedMode) {
     // Solid Orange
-    IDLE(BlinkinLedDriver.BlinkinLedMode.SOLID_ORANGE.value),
+    IDLE(BlinkinLedDriver.BlinkinLedMode.SOLID_ORANGE),
 
     // Solid Red
-    STANDING_ZERO(BlinkinLedDriver.BlinkinLedMode.SOLID_GOLD.value),
+    STANDING_ZERO(BlinkinLedDriver.BlinkinLedMode.SOLID_GOLD),
 
     // Solid Yellow
-    STANDING_ONE(BlinkinLedDriver.BlinkinLedMode.SOLID_YELLOW.value),
+    STANDING_ONE(BlinkinLedDriver.BlinkinLedMode.SOLID_YELLOW),
 
     // Solid Green
-    STANDING_TWO(BlinkinLedDriver.BlinkinLedMode.SOLID_GREEN.value),
+    STANDING_TWO(BlinkinLedDriver.BlinkinLedMode.SOLID_GREEN),
 
     // Blinking Red
-    INTAKING(BlinkinLedDriver.BlinkinLedMode.SOLID_BLUE.value),
+    INTAKING(BlinkinLedDriver.BlinkinLedMode.SOLID_BLUE),
 
     // Blinking Yellow
-    CHANGING_ONE(0.05),
+    CHANGING_ONE(BlinkinLedDriver.BlinkinLedMode.SOLID_YELLOW),
 
     // Blinking Green
-    CHANGING_TWO(0.25),
+    CHANGING_TWO(BlinkinLedDriver.BlinkinLedMode.SOLID_GREEN),
 
     // TODO
-    SPINNING_UP(0.00),
+    SPINNING_UP(BlinkinLedDriver.BlinkinLedMode.SOLID_BLACK),
 
     // TODO
-    READY_SHOOT(0.00)
+    READY_SHOOT(BlinkinLedDriver.BlinkinLedMode.SOLID_GREEN)
   }
 }
