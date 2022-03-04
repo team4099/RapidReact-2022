@@ -1,9 +1,11 @@
 package com.team4099.robot2021.subsystems
 
 import com.ctre.phoenix.motorcontrol.ControlMode
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration
 import com.team4099.lib.logging.Logger
+import com.team4099.lib.units.base.inMilliseconds
 import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.config.constants.IntakeConstants
 import edu.wpi.first.wpilibj.PneumaticsModuleType
@@ -44,7 +46,48 @@ object Intake : SubsystemBase() {
     //    Logger.addSource(IntakeConstants.TAB, "Arm State") { armState.toString() }
 
     intakeConfiguration.supplyCurrLimit.currentLimit = IntakeConstants.SUPPLY_CURRENT_LIMIT
+
     intakeTalon.configAllSettings(intakeConfiguration)
     intakeTalon.configOpenloopRamp(IntakeConstants.RAMP_TIME)
+
+    intakeTalon.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_1_General,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    intakeTalon.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_2_Feedback0,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    intakeTalon.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_3_Quadrature,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    intakeTalon.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_4_AinTempVbat,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    intakeTalon.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_6_Misc,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    intakeTalon.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_8_PulseWidth,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    intakeTalon.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_9_MotProfBuffer,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    intakeTalon.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_10_MotionMagic,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    intakeTalon.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_10_Targets,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    intakeTalon.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_12_Feedback1,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    intakeTalon.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_13_Base_PIDF0,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    intakeTalon.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_14_Turn_PIDF1,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    intakeTalon.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_15_FirmwareApiStatus,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
   }
 }

@@ -25,9 +25,9 @@ object DrivetrainConstants {
       (DRIVE_SETPOINT_MAX.inMetersPerSecond / DRIVETRAIN_LENGTH.inMeters / 2 * sqrt(2.0)).radians
           .perSecond // 648
 
-  // cruise velocity in raw sensor units per 100 ms
-  val STEERING_VEL_NATIVE_MAX = 1393.2.degrees.perSecond
-  val STEERING_ACCEL_NATIVE_MAX = 13932.degrees.perSecond.perSecond
+  // cruise velocity and accel for steering motor
+  val STEERING_VEL_MAX = 1393.2.degrees.perSecond
+  val STEERING_ACCEL_MAX = 13932.degrees.perSecond.perSecond
 
   const val GYRO_RATE_COEFFICIENT = 0.0 // TODO: Change this value
 

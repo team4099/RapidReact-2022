@@ -29,11 +29,11 @@ class FeederSerialize : CommandBase() {
     }
     Feeder.feederState =
         when {
+          (lastUnbrokenTime - lastBrokenTime < FeederConstants.BEAM_BREAK_BACKWARDS_TIME) ->
+              FeederConstants.FeederState.BACKWARD_VERTICAL
           Feeder.topBeamBroken -> FeederConstants.FeederState.NEUTRAL
           (currentTime - lastBrokenTime < FeederConstants.BEAM_BREAK_BROKEN_TIME) ->
               FeederConstants.FeederState.FORWARD_ALL
-          (lastUnbrokenTime - lastBrokenTime < FeederConstants.BEAM_BREAK_BACKWARDS_TIME) ->
-              FeederConstants.FeederState.BACKWARD_VERTICAL
           else -> FeederConstants.FeederState.FORWARD_FLOOR
         }
   }
