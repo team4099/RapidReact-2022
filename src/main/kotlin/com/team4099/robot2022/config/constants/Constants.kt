@@ -1,11 +1,15 @@
 package com.team4099.robot2022.config.constants
 
+import com.team4099.lib.units.base.seconds
 import com.team4099.lib.units.derived.div
+import com.team4099.lib.units.milli
 
 object Constants {
   object Universal {
     const val CTRE_CONFIG_TIMEOUT = 0
     const val EPSILON = 1E-9
+
+    val SLOW_STATUS_FRAME_TIME = 255.milli.seconds
   }
 
   object Tuning {
