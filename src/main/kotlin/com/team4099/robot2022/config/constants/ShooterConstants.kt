@@ -12,17 +12,19 @@ object ShooterConstants {
   const val LEADER_MOTOR_ID = 51 // put in values from the design tool (leader motor is left)
   const val FOLLOWER_MOTOR_ID = 52
 
-  const val SHOOTER_KP = 0.05 // TODO: tune
+  const val SHOOTER_KP = 0.075 // TODO: tune
   const val SHOOTER_KI = 0.0
-  const val SHOOTER_KD = 0.0
-  val SHOOTER_KS_VOLTS = 0.175
+  const val SHOOTER_KD = 2.0
+  val SHOOTER_KS_VOLTS = 0.73157
   val SHOOTER_KV_VOLTS_PER_RADIAN_PER_SECOND = 0.018
 
   const val SHOOTER_SENSOR_CPR = 2048
   const val SHOOTER_SENSOR_GEAR_RATIO = 1.0
 
+  //  val FOLLOWER_STATUS_FRAME_PERIOD = 255.milli.seconds
+
   // Target values
-  val TARGET_VELOCITY_THRESHOLD = 150.rotations.perMinute
+  val TARGET_VELOCITY_THRESHOLD = 50.rotations.perMinute
 
   // Physical measurements
   val ANGLE = 80.0.degrees
@@ -32,7 +34,7 @@ object ShooterConstants {
   enum class ShooterState(val targetVelocity: AngularVelocity) {
     OFF(0.0.rotations.perMinute),
     IDLE(500.0.rotations.perMinute), // TODO: Fix with a better idle value
-    SPIN_UP(1800.0.rotations.perMinute),
+    SPIN_UP_NEAR(1800.0.rotations.perMinute),
     SPIN_UP_FAR(2000.0.rotations.perMinute)
   }
 }

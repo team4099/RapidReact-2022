@@ -52,9 +52,9 @@ object LED : SubsystemBase() {
               LEDConstants.LEDState.STANDING_ZERO
             }
       }
-      ShooterConstants.ShooterState.SPIN_UP -> {
+      ShooterConstants.ShooterState.SPIN_UP_NEAR, ShooterConstants.ShooterState.SPIN_UP_FAR -> {
         ledState =
-            if (Shooter.shooterVelocity > ShooterConstants.ShooterState.SPIN_UP.targetVelocity) {
+            if (Shooter.isOnTarget) {
               LEDConstants.LEDState.READY_SHOOT
             } else {
               LEDConstants.LEDState.SPINNING_UP
