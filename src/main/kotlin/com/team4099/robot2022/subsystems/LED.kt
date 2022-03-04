@@ -30,23 +30,25 @@ object LED : SubsystemBase() {
     //  }
     //  else ->
     // }
-    ledState = when (Shooter.shooterState) {
-      ShooterConstants.ShooterState.SPIN_UP_NEAR, ShooterConstants.ShooterState.SPIN_UP_FAR -> {
+    ledState =
+        when (Shooter.shooterState) {
+          ShooterConstants.ShooterState.SPIN_UP_NEAR, ShooterConstants.ShooterState.SPIN_UP_FAR -> {
             if (Shooter.isOnTarget) {
               LEDConstants.LEDState.READY_SHOOT
             } else {
               LEDConstants.LEDState.SPINNING_UP
             }
-      }
-      else -> {
-        if (Robot.isDisabled) {
-          LEDConstants.LEDState.IDLE
-        } else if (Intake.intakeTalon.statorCurrent >= LEDConstants.CURRENT_THRESHOLD && Intake.intakeState == IntakeConstants.IntakeState.IN) {
-          LEDConstants.LEDState.INTAKING
-        } else {
-          LEDConstants.LEDState.STANDING_ZERO
+          }
+          else -> {
+            if (Robot.isDisabled) {
+              LEDConstants.LEDState.IDLE
+            } else if (Intake.intakeTalon.statorCurrent >= LEDConstants.CURRENT_THRESHOLD &&
+                Intake.intakeState == IntakeConstants.IntakeState.IN) {
+              LEDConstants.LEDState.INTAKING
+            } else {
+              LEDConstants.LEDState.STANDING_ZERO
+            }
+          }
         }
-      }
-    }
   }
 }
