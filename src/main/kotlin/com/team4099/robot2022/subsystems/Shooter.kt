@@ -1,10 +1,8 @@
 package com.team4099.robot2022.subsystems
 
-import com.ctre.phoenix.motorcontrol.ControlFrameEnhanced
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.DemandType
 import com.ctre.phoenix.motorcontrol.InvertType
-import com.ctre.phoenix.motorcontrol.StatusFrame
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.team4099.lib.around
@@ -85,33 +83,82 @@ object Shooter : SubsystemBase() {
 
     Logger.addSource("Shooter", "Shooter On Target") { isOnTarget }
 
-//    leaderMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
-//    leaderMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
-    leaderMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
-    leaderMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
-//    leaderMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_6_Misc, Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
-    leaderMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_8_PulseWidth, Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
-    leaderMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_9_MotProfBuffer, Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
-    leaderMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
-    leaderMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_Targets, Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
-    leaderMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
-    leaderMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
-    leaderMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_14_Turn_PIDF1, Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
-    leaderMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_15_FirmwareApiStatus, Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    //    leaderMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General,
+    // Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    //    leaderMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0,
+    // Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    leaderMotor.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_3_Quadrature,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    leaderMotor.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_4_AinTempVbat,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    //    leaderMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_6_Misc,
+    // Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    leaderMotor.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_8_PulseWidth,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    leaderMotor.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_9_MotProfBuffer,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    leaderMotor.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_10_MotionMagic,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    leaderMotor.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_10_Targets,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    leaderMotor.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_12_Feedback1,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    leaderMotor.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_13_Base_PIDF0,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    leaderMotor.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_14_Turn_PIDF1,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    leaderMotor.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_15_FirmwareApiStatus,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
 
-    followerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
-    followerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
-    followerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
-    followerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
-    followerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_6_Misc, Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
-    followerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_8_PulseWidth, Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
-    followerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_9_MotProfBuffer, Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
-    followerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
-    followerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_Targets, Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
-    followerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
-    followerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
-    followerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_14_Turn_PIDF1, Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
-    followerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_15_FirmwareApiStatus, Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    followerMotor.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_1_General,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    followerMotor.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_2_Feedback0,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    followerMotor.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_3_Quadrature,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    followerMotor.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_4_AinTempVbat,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    followerMotor.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_6_Misc,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    followerMotor.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_8_PulseWidth,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    followerMotor.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_9_MotProfBuffer,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    followerMotor.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_10_MotionMagic,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    followerMotor.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_10_Targets,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    followerMotor.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_12_Feedback1,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    followerMotor.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_13_Base_PIDF0,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    followerMotor.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_14_Turn_PIDF1,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    followerMotor.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_15_FirmwareApiStatus,
+        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
   }
 
   private fun setVelocity(velocity: AngularVelocity) {
