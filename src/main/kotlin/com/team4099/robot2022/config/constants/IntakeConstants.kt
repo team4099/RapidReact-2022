@@ -7,7 +7,7 @@ object IntakeConstants {
 
   enum class IntakeState(val speed: Double) {
     IDLE(-0.1),
-    IN(0.75),
+    IN(0.86),
     OUT(-1.0)
   }
 
