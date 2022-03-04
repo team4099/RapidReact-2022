@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.DemandType
 import com.ctre.phoenix.motorcontrol.InvertType
 import com.ctre.phoenix.motorcontrol.can.TalonFX
+import com.team4099.lib.around
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.AngularVelocity
 import com.team4099.lib.units.ctreAngularMechanismSensor
@@ -12,11 +13,14 @@ import com.team4099.lib.units.inRadiansPerSecond
 import com.team4099.lib.units.inRotationsPerMinute
 import com.team4099.lib.units.perMinute
 import com.team4099.robot2022.config.constants.ShooterConstants
+import edu.wpi.first.math.filter.MedianFilter
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 
 object Shooter : SubsystemBase() {
   private val leaderMotor = TalonFX(ShooterConstants.LEADER_MOTOR_ID)
   private val followerMotor = TalonFX(ShooterConstants.FOLLOWER_MOTOR_ID)
+
+  private val filter = MedianFilter(100)
 
   private val shooterSensor =
       ctreAngularMechanismSensor(
@@ -36,10 +40,7 @@ object Shooter : SubsystemBase() {
   val shooterPosition
     get() = shooterSensor.position
 
-  val isOnTarget
-    get() =
-        (shooterState.targetVelocity - shooterVelocity).absoluteValue <=
-            ShooterConstants.TARGET_VELOCITY_THRESHOLD
+  var isOnTarget = false
 
   init {
     leaderMotor.configFactoryDefault()
@@ -80,6 +81,8 @@ object Shooter : SubsystemBase() {
     //
     //    Logger.addSource("Shooter", "Shooter Follower Stator Current") {
     // followerMotor.statorCurrent }
+
+    Logger.addSource("Shooter", "Shooter On Target") { isOnTarget }
   }
 
   private fun setVelocity(velocity: AngularVelocity) {
@@ -99,5 +102,14 @@ object Shooter : SubsystemBase() {
   fun setOpenLoop(power: Double) {
     //    println("Shooter Power: $power :p XD (-__-)")
     leaderMotor.set(ControlMode.PercentOutput, power)
+  }
+
+  override fun periodic() {
+    isOnTarget =
+        shooterState != ShooterConstants.ShooterState.OFF &&
+            filter.calculate(shooterVelocity.inRotationsPerMinute)
+                .around(
+                    shooterState.targetVelocity.inRotationsPerMinute,
+                    ShooterConstants.TARGET_VELOCITY_THRESHOLD.inRotationsPerMinute)
   }
 }

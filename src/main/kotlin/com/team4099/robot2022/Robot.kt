@@ -15,8 +15,8 @@ import com.team4099.robot2022.commands.intake.PrepareClimbCommand
 import com.team4099.robot2022.commands.intake.ReverseIntakeCommand
 import com.team4099.robot2022.commands.shooter.ShootCommand
 import com.team4099.robot2022.commands.shooter.ShooterIdleCommand
-import com.team4099.robot2022.commands.shooter.SpinUpCommand
 import com.team4099.robot2022.commands.shooter.SpinUpFarCommand
+import com.team4099.robot2022.commands.shooter.SpinUpNearCommand
 import com.team4099.robot2022.config.ControlBoard
 import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.config.constants.FeederConstants
@@ -58,7 +58,7 @@ object Robot : TimedRobot() {
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
 
     Shooter.defaultCommand = ShooterIdleCommand()
-    ControlBoard.startShooter.whileActiveOnce(SpinUpCommand().andThen(ShootCommand()))
+    ControlBoard.startShooter.whileActiveOnce(SpinUpNearCommand().andThen(ShootCommand()))
     ControlBoard.startShooterFar.whileActiveOnce(SpinUpFarCommand().andThen(ShootCommand()))
 
     Intake.defaultCommand = IntakeIdleCommand()
