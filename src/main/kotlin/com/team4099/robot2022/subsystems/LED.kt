@@ -4,6 +4,7 @@ import com.team4099.lib.logging.Logger
 import com.team4099.robot2021.subsystems.Intake
 import com.team4099.robot2022.Robot
 import com.team4099.robot2022.config.constants.Constants
+import com.team4099.robot2022.config.constants.IntakeConstants
 import com.team4099.robot2022.config.constants.LEDConstants
 import com.team4099.robot2022.config.constants.ShooterConstants
 import edu.wpi.first.wpilibj.motorcontrol.Spark
@@ -45,7 +46,7 @@ object LED : SubsystemBase() {
         ledState =
             if (Robot.isDisabled) {
               LEDConstants.LEDState.IDLE
-            } else if (Intake.intakeTalon.supplyCurrent >= LEDConstants.CURRENT_THRESHOLD) {
+            } else if (Intake.intakeTalon.statorCurrent >= LEDConstants.CURRENT_THRESHOLD && Intake.intakeState == IntakeConstants.IntakeState.IN) {
               LEDConstants.LEDState.INTAKING
             } else {
               LEDConstants.LEDState.STANDING_ZERO

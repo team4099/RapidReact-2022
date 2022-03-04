@@ -1,23 +1,25 @@
 package com.team4099.robot2022.config.constants
 
+import com.team4099.lib.drivers.BlinkinLedDriver
+
 object LEDConstants {
-  const val CURRENT_THRESHOLD = 12
+  const val CURRENT_THRESHOLD = 20
 
   enum class LEDState(val pwmValue: Double) {
     // Solid Orange
-    IDLE(0.65),
+    IDLE(BlinkinLedDriver.BlinkinLedMode.SOLID_ORANGE.value),
 
     // Solid Red
-    STANDING_ZERO(0.61),
+    STANDING_ZERO(BlinkinLedDriver.BlinkinLedMode.SOLID_GOLD.value),
 
     // Solid Yellow
-    STANDING_ONE(0.69),
+    STANDING_ONE(BlinkinLedDriver.BlinkinLedMode.SOLID_YELLOW.value),
 
     // Solid Green
-    STANDING_TWO(0.77),
+    STANDING_TWO(BlinkinLedDriver.BlinkinLedMode.SOLID_GREEN.value),
 
     // Blinking Red
-    INTAKING(-0.25),
+    INTAKING(BlinkinLedDriver.BlinkinLedMode.SOLID_BLUE.value),
 
     // Blinking Yellow
     CHANGING_ONE(0.05),
