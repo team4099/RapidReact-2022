@@ -149,9 +149,9 @@ class SwerveModule(
     steeringConfiguration.slot0.kD = DrivetrainConstants.PID.STEERING_KD
     steeringConfiguration.slot0.kF = DrivetrainConstants.PID.STEERING_KFF
     steeringConfiguration.motionCruiseVelocity =
-        steeringSensor.velocityToRawUnits(DrivetrainConstants.STEERING_VEL_NATIVE_MAX)
+        steeringSensor.velocityToRawUnits(DrivetrainConstants.STEERING_VEL_MAX)
     steeringConfiguration.motionAcceleration =
-        steeringSensor.accelerationToRawUnits(DrivetrainConstants.STEERING_ACCEL_NATIVE_MAX)
+        steeringSensor.accelerationToRawUnits(DrivetrainConstants.STEERING_ACCEL_MAX)
     steeringConfiguration.peakOutputForward = 1.0
     steeringConfiguration.peakOutputReverse = -1.0
     steeringConfiguration.supplyCurrLimit.currentLimit =
