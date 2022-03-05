@@ -93,12 +93,6 @@ object Robot : TimedRobot() {
     ControlBoard.rightSpoolDown.whileActiveContinuous(SpoolRightDownCommand())
     ControlBoard.leftSpoolUp.whileActiveContinuous(SpootLeftUpCommand())
     ControlBoard.rightSpoolUp.whileActiveContinuous(SpoolRightDownCommand())
-
-    //    PivotClimber.defaultCommand = PivotIdleCommand()
-    //
-    //
-    // ControlBoard.advanceAndClimb.whileActiveOnce(AdvanceClimberCommand().andThen(RunClimbCommand()))
-    //    ControlBoard.climbWithoutAdvance.whileActiveOnce(RunClimbCommand())
   }
 
   override fun robotInit() {
@@ -112,9 +106,9 @@ object Robot : TimedRobot() {
 
     val compressor = Compressor(PneumaticsModuleType.REVPH)
     compressor.enableAnalog(60.0, 120.0)
+//    compressor.disable()
 
     Drivetrain.zeroSensors()
-    compressor.disable()
   }
 
   override fun autonomousInit() {
