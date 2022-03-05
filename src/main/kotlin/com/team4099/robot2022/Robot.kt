@@ -4,6 +4,12 @@ import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
 import com.team4099.robot2021.subsystems.Intake
 import com.team4099.robot2022.auto.AutonomousSelector
+import com.team4099.robot2022.commands.climber.SpoolBothDownCommand
+import com.team4099.robot2022.commands.climber.SpoolBothUpCommand
+import com.team4099.robot2022.commands.climber.SpoolLeftDownCommand
+import com.team4099.robot2022.commands.climber.SpoolRightDownCommand
+import com.team4099.robot2022.commands.climber.SpootLeftUpCommand
+import com.team4099.robot2022.commands.climber.TelescopingIdleCommand
 import com.team4099.robot2022.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2022.commands.drivetrain.ResetGyroCommand
 import com.team4099.robot2022.commands.feeder.FeederCommand
@@ -23,6 +29,7 @@ import com.team4099.robot2022.config.constants.FeederConstants
 import com.team4099.robot2022.subsystems.Drivetrain
 import com.team4099.robot2022.subsystems.Feeder
 import com.team4099.robot2022.subsystems.Shooter
+import com.team4099.robot2022.subsystems.TelescopingClimber
 import edu.wpi.first.wpilibj.Compressor
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.PneumaticsModuleType
@@ -55,6 +62,8 @@ object Robot : TimedRobot() {
     Shooter.defaultCommand = ShooterIdleCommand()
     Intake.defaultCommand = IntakeIdleCommand()
     Feeder.defaultCommand = FeederIdleCommand()
+    TelescopingClimber.defaultCommand = TelescopingIdleCommand()
+    //    PivotClimber.defaultCommand = PivotIdleCommand()
   }
 
   fun mapTeleopControls() {
@@ -69,9 +78,24 @@ object Robot : TimedRobot() {
         .whileActiveContinuous(
             ReverseIntakeCommand().alongWith(
                 FeederCommand(FeederConstants.FeederState.BACKWARD_FLOOR)))
+
+    // ControlBoard.advanceAndClimb.whileActiveOnce(AdvanceClimberCommand().andThen(RunClimbCommand()))
+    //    ControlBoard.climbWithoutAdvance.whileActiveOnce(RunClimbCommand())
   }
 
-  fun mapTestControls() {}
+  fun mapTestControls() {
+    ControlBoard.leftSpoolDown.whileActiveContinuous(SpoolLeftDownCommand())
+    ControlBoard.rightSpoolDown.whileActiveContinuous(SpoolRightDownCommand())
+    ControlBoard.leftSpoolUp.whileActiveContinuous(SpootLeftUpCommand())
+    ControlBoard.rightSpoolUp.whileActiveContinuous(SpoolRightDownCommand())
+    ControlBoard.extendTelescoping.whileActiveContinuous(SpoolBothUpCommand())
+    ControlBoard.retractTelescoping.whileActiveContinuous(SpoolBothDownCommand())
+    //    PivotClimber.defaultCommand = PivotIdleCommand()
+    //
+    //
+    // ControlBoard.advanceAndClimb.whileActiveOnce(AdvanceClimberCommand().andThen(RunClimbCommand()))
+    //    ControlBoard.climbWithoutAdvance.whileActiveOnce(RunClimbCommand())
+  }
 
   override fun robotInit() {
     Logger.startLogging()
@@ -86,6 +110,7 @@ object Robot : TimedRobot() {
     compressor.enableAnalog(60.0, 120.0)
 
     Drivetrain.zeroSensors()
+    compressor.disable()
   }
 
   override fun autonomousInit() {
