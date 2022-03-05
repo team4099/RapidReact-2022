@@ -22,6 +22,7 @@ import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.config.constants.FeederConstants
 import com.team4099.robot2022.subsystems.Drivetrain
 import com.team4099.robot2022.subsystems.Feeder
+import com.team4099.robot2022.subsystems.LED
 import com.team4099.robot2022.subsystems.Shooter
 import edu.wpi.first.wpilibj.Compressor
 import edu.wpi.first.wpilibj.DigitalInput
@@ -55,6 +56,7 @@ object Robot : TimedRobot() {
     Shooter.defaultCommand = ShooterIdleCommand()
     Intake.defaultCommand = IntakeIdleCommand()
     Feeder.defaultCommand = FeederIdleCommand()
+    LED
   }
 
   fun mapTeleopControls() {
