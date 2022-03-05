@@ -23,7 +23,9 @@ import com.team4099.robot2022.config.constants.FeederConstants
 import com.team4099.robot2022.subsystems.Drivetrain
 import com.team4099.robot2022.subsystems.Feeder
 import com.team4099.robot2022.subsystems.Shooter
+import edu.wpi.first.wpilibj.Compressor
 import edu.wpi.first.wpilibj.DigitalInput
+import edu.wpi.first.wpilibj.PneumaticsModuleType
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj2.command.CommandScheduler
@@ -79,6 +81,9 @@ object Robot : TimedRobot() {
     addPeriodic({ Logger.saveLogs() }, 0.08, 0.01)
 
     mapDefaultCommands()
+
+    val compressor = Compressor(PneumaticsModuleType.REVPH)
+    compressor.enableAnalog(60.0, 120.0)
 
     Drivetrain.zeroSensors()
   }
