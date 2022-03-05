@@ -2,6 +2,7 @@ package com.team4099.robot2022.auto
 
 import com.team4099.lib.units.derived.Angle
 import com.team4099.lib.units.derived.degrees
+import com.team4099.robot2022.auto.commands.OneBallFenderShotThenTaxi
 import com.team4099.robot2022.auto.mode.TestAutoPath
 import com.team4099.robot2022.commands.drivetrain.DriveCharacterizeCommand
 import com.team4099.robot2022.commands.shooter.ShooterCharacterizeCommand
@@ -21,6 +22,11 @@ object AutonomousSelector {
     orientationChooser.addOption("Left", 90.degrees)
     orientationChooser.addOption("Right", 270.degrees)
     autoTab.add("Starting Orientation", orientationChooser)
+    autonomousModeChooser.addOption(
+        "One Ball Fender Shot Then Taxi: Left", AutonomousMode.ONE_BALL_FENDER_SHOT_THEN_TAXI_LEFT)
+    autonomousModeChooser.addOption(
+        "One Ball Fender Shot Then Taxi: Right",
+        AutonomousMode.ONE_BALL_FENDER_SHOT_THEN_TAXI_RIGHT)
     autonomousModeChooser.addOption("Test", AutonomousMode.TEST_AUTO_PATH)
     autonomousModeChooser.addOption(
         "Characterize Drivetrain", AutonomousMode.CHARACTERIZE_DRIVETRAIN)
@@ -34,6 +40,10 @@ object AutonomousSelector {
       AutonomousMode.TEST_AUTO_PATH -> return TestAutoPath()
       AutonomousMode.CHARACTERIZE_DRIVETRAIN -> return DriveCharacterizeCommand()
       AutonomousMode.CHARACTERIZE_SHOOTER -> return ShooterCharacterizeCommand()
+      AutonomousMode.ONE_BALL_FENDER_SHOT_THEN_TAXI_LEFT ->
+          return OneBallFenderShotThenTaxi(-24.degrees)
+      AutonomousMode.ONE_BALL_FENDER_SHOT_THEN_TAXI_RIGHT ->
+          return OneBallFenderShotThenTaxi(66.degrees)
       else -> println("ERROR: unexpected auto mode: $mode")
     }
     return InstantCommand()
@@ -42,6 +52,8 @@ object AutonomousSelector {
   private enum class AutonomousMode {
     TEST_AUTO_PATH,
     CHARACTERIZE_DRIVETRAIN,
-    CHARACTERIZE_SHOOTER
+    CHARACTERIZE_SHOOTER,
+    ONE_BALL_FENDER_SHOT_THEN_TAXI_LEFT,
+    ONE_BALL_FENDER_SHOT_THEN_TAXI_RIGHT,
   }
 }
