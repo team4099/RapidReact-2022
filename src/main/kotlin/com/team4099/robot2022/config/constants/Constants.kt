@@ -30,6 +30,7 @@ object Constants {
   object Joysticks {
     const val DRIVER_PORT = 0
     const val SHOTGUN_PORT = 1
+    const val TECHNICIAN_PORT = 2
 
     const val THROTTLE_DEADBAND = 0.05
     const val TURN_DEADBAND = 0.05
@@ -69,5 +70,16 @@ object Constants {
   object LED {
     const val LED_CONTROLLER_ID = 0
     const val TAB = "LED"
+  }
+
+  object TelescopingClimber {
+    const val SOLENOID_ID = 0
+    const val R_ARM_ID = 42
+    const val L_ARM_ID = 41
+  }
+
+  object PivotClimber {
+    const val L_ARM_ID = 43
+    const val R_ARM_ID = 44
   }
 }

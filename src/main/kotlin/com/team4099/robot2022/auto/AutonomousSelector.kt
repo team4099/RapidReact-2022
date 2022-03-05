@@ -4,6 +4,8 @@ import com.team4099.lib.units.derived.Angle
 import com.team4099.lib.units.derived.degrees
 import com.team4099.robot2022.auto.commands.OneBallFenderShotThenTaxi
 import com.team4099.robot2022.auto.mode.TestAutoPath
+import com.team4099.robot2022.commands.climber.PivotCharacterizationCommand
+import com.team4099.robot2022.commands.climber.TelescopingCharacterizationCommand
 import com.team4099.robot2022.commands.drivetrain.DriveCharacterizeCommand
 import com.team4099.robot2022.commands.shooter.ShooterCharacterizeCommand
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
@@ -30,6 +32,8 @@ object AutonomousSelector {
     autonomousModeChooser.addOption("Test", AutonomousMode.TEST_AUTO_PATH)
     autonomousModeChooser.addOption(
         "Characterize Drivetrain", AutonomousMode.CHARACTERIZE_DRIVETRAIN)
+    autonomousModeChooser.addOption(
+        "Characterize Telescoping Arms", AutonomousMode.CHARACTERIZE_CLIMBER_TELESCOPE)
     autonomousModeChooser.addOption("Characterize Shooter", AutonomousMode.CHARACTERIZE_SHOOTER)
     autoTab.add("Mode", autonomousModeChooser)
   }
@@ -40,6 +44,8 @@ object AutonomousSelector {
       AutonomousMode.TEST_AUTO_PATH -> return TestAutoPath()
       AutonomousMode.CHARACTERIZE_DRIVETRAIN -> return DriveCharacterizeCommand()
       AutonomousMode.CHARACTERIZE_SHOOTER -> return ShooterCharacterizeCommand()
+      AutonomousMode.CHARACTERIZE_CLIMBER_TELESCOPE -> return TelescopingCharacterizationCommand()
+      AutonomousMode.CHARACTERIZE_CLIMBER_PIVOT -> return PivotCharacterizationCommand()
       AutonomousMode.ONE_BALL_FENDER_SHOT_THEN_TAXI_LEFT ->
           return OneBallFenderShotThenTaxi(-24.degrees)
       AutonomousMode.ONE_BALL_FENDER_SHOT_THEN_TAXI_RIGHT ->
@@ -53,7 +59,9 @@ object AutonomousSelector {
     TEST_AUTO_PATH,
     CHARACTERIZE_DRIVETRAIN,
     CHARACTERIZE_SHOOTER,
+    CHARACTERIZE_CLIMBER_TELESCOPE,
+    CHARACTERIZE_CLIMBER_PIVOT,
     ONE_BALL_FENDER_SHOT_THEN_TAXI_LEFT,
-    ONE_BALL_FENDER_SHOT_THEN_TAXI_RIGHT,
+    ONE_BALL_FENDER_SHOT_THEN_TAXI_RIGHT
   }
 }
