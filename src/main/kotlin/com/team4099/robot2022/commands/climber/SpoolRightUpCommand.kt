@@ -17,6 +17,6 @@ class SpoolRightUpCommand : CommandBase() {
 
   override fun end(interrupted: Boolean) {
     TelescopingClimber.setOpenLoop(0.0, 0.0)
-    TelescopingClimber.zeroLeftEncoder()
+//    TelescopingClimber.zeroLeftEncoder()
   }
 }

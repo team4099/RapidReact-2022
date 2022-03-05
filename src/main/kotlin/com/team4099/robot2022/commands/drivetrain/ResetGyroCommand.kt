@@ -13,4 +13,8 @@ class ResetGyroCommand(val toAngle: Angle = 0.0.degrees) : CommandBase() {
   override fun initialize() {
     Drivetrain.zeroGyro(toAngle)
   }
+
+  override fun isFinished(): Boolean {
+    return true
+  }
 }

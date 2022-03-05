@@ -2,7 +2,7 @@ package com.team4099.robot2022.auto
 
 import com.team4099.lib.units.derived.Angle
 import com.team4099.lib.units.derived.degrees
-import com.team4099.robot2022.auto.commands.OneBallFenderShotThenTaxi
+import com.team4099.robot2022.auto.mode.OneBallFenderShotThenTaxi
 import com.team4099.robot2022.auto.mode.TestAutoPath
 import com.team4099.robot2022.commands.climber.PivotCharacterizationCommand
 import com.team4099.robot2022.commands.climber.TelescopingCharacterizationCommand

@@ -1,4 +1,4 @@
-package com.team4099.robot2022.auto.commands
+package com.team4099.robot2022.auto.mode
 
 import com.team4099.lib.units.derived.Angle
 import com.team4099.robot2022.commands.drivetrain.OpenLoopReverseCommand

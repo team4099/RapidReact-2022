@@ -19,4 +19,8 @@ class SpoolLeftDownCommand : CommandBase() {
     TelescopingClimber.setOpenLoop(0.0, 0.0)
     TelescopingClimber.zeroLeftEncoder()
   }
+
+  override fun isFinished(): Boolean {
+    return false
+  }
 }

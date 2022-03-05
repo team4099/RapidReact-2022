@@ -4,7 +4,7 @@ import com.team4099.lib.logging.Logger
 import com.team4099.robot2022.subsystems.TelescopingClimber
 import edu.wpi.first.wpilibj2.command.CommandBase
 
-class SpootLeftUpCommand : CommandBase() {
+class SpoolLeftUpCommand : CommandBase() {
   init {
     addRequirements(TelescopingClimber)
   }
@@ -17,6 +17,6 @@ class SpootLeftUpCommand : CommandBase() {
 
   override fun end(interrupted: Boolean) {
     TelescopingClimber.setOpenLoop(0.0, 0.0)
-    TelescopingClimber.zeroLeftEncoder()
+//    TelescopingClimber.zeroLeftEncoder()
   }
 }
