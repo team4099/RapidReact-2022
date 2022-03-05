@@ -1,8 +1,10 @@
 package com.team4099.robot2022
 
 import com.team4099.lib.logging.Logger
+import com.team4099.lib.smoothDeadband
 import com.team4099.robot2021.subsystems.Intake
 import com.team4099.robot2022.auto.AutonomousSelector
+import com.team4099.robot2022.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2022.commands.drivetrain.ResetGyroCommand
 import com.team4099.robot2022.commands.feeder.FeederCommand
 import com.team4099.robot2022.commands.feeder.FeederIdleCommand
@@ -20,7 +22,6 @@ import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.config.constants.FeederConstants
 import com.team4099.robot2022.subsystems.Drivetrain
 import com.team4099.robot2022.subsystems.Feeder
-import com.team4099.robot2022.subsystems.LED
 import com.team4099.robot2022.subsystems.Shooter
 import edu.wpi.first.wpilibj.Compressor
 import edu.wpi.first.wpilibj.DigitalInput
@@ -43,25 +44,24 @@ object Robot : TimedRobot() {
             .sum()
     robotName =
         Constants.Tuning.ROBOT_ID_MAP.getOrDefault(robotId, Constants.Tuning.RobotName.COMPETITION)
-    Logger.addEvent("Robot", "Robot Construction (running on $robotName)")
-    Logger.addSource("Robot", "Battery Voltage", RobotController::getBatteryVoltage)
+  }
 
-    Logger.startLogging()
+  fun mapDefaultCommands() {
+    Drivetrain.defaultCommand =
+        OpenLoopDriveCommand(
+            { ControlBoard.strafe.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
+            { ControlBoard.forward.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
+            { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) })
+    Shooter.defaultCommand = ShooterIdleCommand()
+    Intake.defaultCommand = IntakeIdleCommand()
+    Feeder.defaultCommand = FeederIdleCommand()
+  }
 
-    /* Drivetrain.defaultCommand =
-       OpenLoopDriveCommand(
-           { ControlBoard.strafe.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
-           { ControlBoard.forward.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
-           { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) })
-
-    */
+  fun mapTeleopControls() {
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
 
-    Shooter.defaultCommand = ShooterIdleCommand()
     ControlBoard.startShooter.whileActiveOnce(SpinUpNearCommand().andThen(ShootCommand()))
     ControlBoard.startShooterFar.whileActiveOnce(SpinUpFarCommand().andThen(ShootCommand()))
-
-    Intake.defaultCommand = IntakeIdleCommand()
 
     ControlBoard.runIntake.whileActiveContinuous(IntakeBallsCommand().alongWith(FeederSerialize()))
     ControlBoard.prepareClimb.whileActiveContinuous(PrepareClimbCommand())
@@ -69,17 +69,23 @@ object Robot : TimedRobot() {
         .whileActiveContinuous(
             ReverseIntakeCommand().alongWith(
                 FeederCommand(FeederConstants.FeederState.BACKWARD_FLOOR)))
-    Feeder.defaultCommand = FeederIdleCommand()
-
-    LED
   }
 
+  fun mapTestControls() {}
+
   override fun robotInit() {
+    Logger.startLogging()
+    Logger.addEvent("Robot", "Robot Construction (running on $robotName)")
+    Logger.addSource("Robot", "Battery Voltage", RobotController::getBatteryVoltage)
+
     addPeriodic({ Logger.saveLogs() }, 0.08, 0.01)
 
-    Drivetrain.zeroSensors()
+    mapDefaultCommands()
+
     val compressor = Compressor(PneumaticsModuleType.REVPH)
     compressor.enableAnalog(60.0, 120.0)
+
+    Drivetrain.zeroSensors()
   }
 
   override fun autonomousInit() {
@@ -93,8 +99,14 @@ object Robot : TimedRobot() {
   }
 
   override fun teleopInit() {
+    mapTeleopControls()
     autonomousSelector.getCommand().cancel()
     // autonomousCommand.cancel()
+  }
+
+  override fun testInit() {
+    mapTestControls()
+    autonomousSelector.getCommand().cancel()
   }
 
   override fun robotPeriodic() {

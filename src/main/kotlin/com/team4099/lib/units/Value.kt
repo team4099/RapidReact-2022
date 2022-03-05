@@ -10,14 +10,15 @@ inline class Value<T : UnitKey>(internal val value: Double) : Comparable<Value<T
   operator fun minus(o: Value<T>): Value<T> = Value(value - o.value)
 
   operator fun times(k: Double): Value<T> = Value(value * k)
-  operator fun times(k: Number): Value<T> = div(k.toDouble())
+  operator fun times(k: Number): Value<T> = this * k.toDouble()
   operator fun <K : UnitKey> times(o: Value<Fraction<K, T>>): Value<K> = Value(value * o.value)
 
   operator fun unaryMinus(): Value<T> = Value(-value)
 
   operator fun div(k: Double): Value<T> = Value(value / k)
-  operator fun div(k: Number): Value<T> = div(k.toDouble())
+  operator fun div(k: Number): Value<T> = this / k.toDouble()
   operator fun div(o: Value<T>): Double = value / o.value
+  // TODO create div function that returns a fraction
 
   override operator fun compareTo(other: Value<T>): Int = value.compareTo(other.value)
 }
