@@ -166,7 +166,7 @@ object TelescopingClimber : SubsystemBase() {
     telescopingRightArm.configForwardSoftLimitThreshold(
         telescopingRightArmSensor.positionToRawUnits(
             TelescopingClimberConstants.FORWARD_SOFT_LIMIT))
-    telescopingRightArm.configForwardSoftLimitEnable(true)
+    telescopingRightArm.configForwardSoftLimitEnable(false)
     telescopingRightArm.configReverseSoftLimitThreshold(
         telescopingRightArmSensor.positionToRawUnits(
             TelescopingClimberConstants.REVERSE_SOFT_LIMIT))
@@ -178,14 +178,33 @@ object TelescopingClimber : SubsystemBase() {
     telescopingLeftArm.inverted = true
     telescopingLeftArm.configForwardSoftLimitThreshold(
         telescopingLeftArmSensor.positionToRawUnits(TelescopingClimberConstants.FORWARD_SOFT_LIMIT))
-    telescopingLeftArm.configForwardSoftLimitEnable(true)
+    telescopingLeftArm.configForwardSoftLimitEnable(false)
     telescopingLeftArm.configReverseSoftLimitThreshold(
         telescopingLeftArmSensor.positionToRawUnits(TelescopingClimberConstants.REVERSE_SOFT_LIMIT))
   }
-  fun setOpenLoop(leftPower: Double, rightPower: Double) {
-    telescopingLeftArm.set(ControlMode.PercentOutput, leftPower)
-    telescopingRightArm.set(ControlMode.PercentOutput, rightPower)
+
+  fun setOpenLoop(leftPower: Double, rightPower: Double, useSoftLimits: Boolean = true) {
+    if (useSoftLimits &&
+        ((telescopingLeftArmSensor.position >= TelescopingClimberConstants.FORWARD_SOFT_LIMIT &&
+            leftPower > 0.0) ||
+            (telescopingLeftArmSensor.position <= TelescopingClimberConstants.REVERSE_SOFT_LIMIT &&
+                leftPower < 0.0))) {
+      telescopingLeftArm.set(ControlMode.PercentOutput, 0.0)
+    } else {
+      telescopingLeftArm.set(ControlMode.PercentOutput, leftPower)
+    }
+
+    if (useSoftLimits &&
+        ((telescopingRightArmSensor.position >= TelescopingClimberConstants.FORWARD_SOFT_LIMIT &&
+            leftPower > 0.0) ||
+            (telescopingRightArmSensor.position <= TelescopingClimberConstants.REVERSE_SOFT_LIMIT &&
+                leftPower < 0.0))) {
+      telescopingRightArm.set(ControlMode.PercentOutput, 0.0)
+    } else {
+      telescopingRightArm.set(ControlMode.PercentOutput, rightPower)
+    }
   }
+
   fun setPosition(
     leftProfile: TrapezoidProfile,
     rightProfile: TrapezoidProfile,

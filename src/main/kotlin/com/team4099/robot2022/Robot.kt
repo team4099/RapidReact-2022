@@ -4,8 +4,8 @@ import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
 import com.team4099.robot2021.subsystems.Intake
 import com.team4099.robot2022.auto.AutonomousSelector
-import com.team4099.robot2022.commands.climber.SpoolBothDownCommand
-import com.team4099.robot2022.commands.climber.SpoolBothUpCommand
+import com.team4099.robot2022.commands.climber.OpenLoopClimbCommand
+import com.team4099.robot2022.commands.climber.OpenLoopExtendClimberCommand
 import com.team4099.robot2022.commands.climber.SpoolLeftDownCommand
 import com.team4099.robot2022.commands.climber.SpoolRightDownCommand
 import com.team4099.robot2022.commands.climber.SpootLeftUpCommand
@@ -81,8 +81,8 @@ object Robot : TimedRobot() {
             ReverseIntakeCommand().alongWith(
                 FeederCommand(FeederConstants.FeederState.BACKWARD_FLOOR)))
 
-    ControlBoard.extendTelescoping.whileActiveContinuous(SpoolBothUpCommand())
-    ControlBoard.retractTelescoping.whileActiveContinuous(SpoolBothDownCommand())
+    ControlBoard.extendTelescoping.whileActiveContinuous(OpenLoopExtendClimberCommand())
+    ControlBoard.retractTelescoping.whileActiveContinuous(OpenLoopClimbCommand())
 
     // ControlBoard.advanceAndClimb.whileActiveOnce(AdvanceClimberCommand().andThen(RunClimbCommand()))
     //    ControlBoard.climbWithoutAdvance.whileActiveOnce(RunClimbCommand())
