@@ -2,8 +2,10 @@ package com.team4099.robot2022.subsystems
 
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.NeutralMode
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.team4099.lib.logging.Logger
+import com.team4099.lib.units.base.inMilliseconds
 import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.config.constants.FeederConstants
 import edu.wpi.first.wpilibj.DigitalInput
@@ -91,5 +93,85 @@ object Feeder : SubsystemBase() {
     verticalMotor.setNeutralMode(NeutralMode.Coast)
 
     floorMotor.inverted = true
+
+//    floorMotor.setStatusFramePeriod(
+//        StatusFrameEnhanced.Status_1_General,
+//        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+//    floorMotor.setStatusFramePeriod(
+//        StatusFrameEnhanced.Status_2_Feedback0,
+//        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+//    floorMotor.setStatusFramePeriod(
+//        StatusFrameEnhanced.Status_3_Quadrature,
+//        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+//    floorMotor.setStatusFramePeriod(
+//        StatusFrameEnhanced.Status_4_AinTempVbat,
+//        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+//    floorMotor.setStatusFramePeriod(
+//        StatusFrameEnhanced.Status_6_Misc,
+//        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+//    floorMotor.setStatusFramePeriod(
+//        StatusFrameEnhanced.Status_8_PulseWidth,
+//        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+//    floorMotor.setStatusFramePeriod(
+//        StatusFrameEnhanced.Status_9_MotProfBuffer,
+//        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+//    floorMotor.setStatusFramePeriod(
+//        StatusFrameEnhanced.Status_10_MotionMagic,
+//        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+//    floorMotor.setStatusFramePeriod(
+//        StatusFrameEnhanced.Status_10_Targets,
+//        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+//    floorMotor.setStatusFramePeriod(
+//        StatusFrameEnhanced.Status_12_Feedback1,
+//        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+//    floorMotor.setStatusFramePeriod(
+//        StatusFrameEnhanced.Status_13_Base_PIDF0,
+//        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+//    floorMotor.setStatusFramePeriod(
+//        StatusFrameEnhanced.Status_14_Turn_PIDF1,
+//        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+//    floorMotor.setStatusFramePeriod(
+//        StatusFrameEnhanced.Status_15_FirmwareApiStatus,
+//        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+//
+//    verticalMotor.setStatusFramePeriod(
+//        StatusFrameEnhanced.Status_1_General,
+//        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+//    verticalMotor.setStatusFramePeriod(
+//        StatusFrameEnhanced.Status_2_Feedback0,
+//        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+//    verticalMotor.setStatusFramePeriod(
+//        StatusFrameEnhanced.Status_3_Quadrature,
+//        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+//    verticalMotor.setStatusFramePeriod(
+//        StatusFrameEnhanced.Status_4_AinTempVbat,
+//        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+//    verticalMotor.setStatusFramePeriod(
+//        StatusFrameEnhanced.Status_6_Misc,
+//        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+//    verticalMotor.setStatusFramePeriod(
+//        StatusFrameEnhanced.Status_8_PulseWidth,
+//        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+//    verticalMotor.setStatusFramePeriod(
+//        StatusFrameEnhanced.Status_9_MotProfBuffer,
+//        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+//    verticalMotor.setStatusFramePeriod(
+//        StatusFrameEnhanced.Status_10_MotionMagic,
+//        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+//    verticalMotor.setStatusFramePeriod(
+//        StatusFrameEnhanced.Status_10_Targets,
+//        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+//    verticalMotor.setStatusFramePeriod(
+//        StatusFrameEnhanced.Status_12_Feedback1,
+//        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+//    verticalMotor.setStatusFramePeriod(
+//        StatusFrameEnhanced.Status_13_Base_PIDF0,
+//        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+//    verticalMotor.setStatusFramePeriod(
+//        StatusFrameEnhanced.Status_14_Turn_PIDF1,
+//        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+//    verticalMotor.setStatusFramePeriod(
+//        StatusFrameEnhanced.Status_15_FirmwareApiStatus,
+//        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
   }
 }
