@@ -106,7 +106,7 @@ object Robot : TimedRobot() {
 
     val compressor = Compressor(PneumaticsModuleType.REVPH)
     compressor.enableAnalog(60.0, 120.0)
-//    compressor.disable()
+    //    compressor.disable()
 
     Drivetrain.zeroSensors()
   }
