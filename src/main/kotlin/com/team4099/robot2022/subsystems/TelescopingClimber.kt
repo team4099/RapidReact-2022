@@ -196,9 +196,9 @@ object TelescopingClimber : SubsystemBase() {
 
     if (useSoftLimits &&
         ((telescopingRightArmSensor.position >= TelescopingClimberConstants.FORWARD_SOFT_LIMIT &&
-            leftPower > 0.0) ||
+            rightPower > 0.0) ||
             (telescopingRightArmSensor.position <= TelescopingClimberConstants.REVERSE_SOFT_LIMIT &&
-                leftPower < 0.0))) {
+                rightPower < 0.0))) {
       telescopingRightArm.set(ControlMode.PercentOutput, 0.0)
     } else {
       telescopingRightArm.set(ControlMode.PercentOutput, rightPower)

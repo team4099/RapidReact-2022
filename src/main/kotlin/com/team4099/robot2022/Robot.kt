@@ -7,9 +7,9 @@ import com.team4099.robot2022.auto.AutonomousSelector
 import com.team4099.robot2022.commands.climber.OpenLoopClimbCommand
 import com.team4099.robot2022.commands.climber.OpenLoopExtendClimberCommand
 import com.team4099.robot2022.commands.climber.SpoolLeftDownCommand
+import com.team4099.robot2022.commands.climber.SpoolLeftUpCommand
 import com.team4099.robot2022.commands.climber.SpoolRightDownCommand
 import com.team4099.robot2022.commands.climber.SpoolRightUpCommand
-import com.team4099.robot2022.commands.climber.SpoolLeftUpCommand
 import com.team4099.robot2022.commands.climber.TelescopingIdleCommand
 import com.team4099.robot2022.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2022.commands.drivetrain.ResetGyroCommand
@@ -95,10 +95,10 @@ object Robot : TimedRobot() {
   }
 
   fun mapTestControls() {
-//    ControlBoard.leftSpoolDown.whileActiveContinuous(SpoolLeftDownCommand())
-//    ControlBoard.rightSpoolDown.whileActiveContinuous(SpoolRightDownCommand())
-//    ControlBoard.leftSpoolUp.whileActiveContinuous(SpoolLeftUpCommand())
-//    ControlBoard.rightSpoolUp.whileActiveContinuous(SpoolRightUpCommand())
+    //    ControlBoard.leftSpoolDown.whileActiveContinuous(SpoolLeftDownCommand())
+    //    ControlBoard.rightSpoolDown.whileActiveContinuous(SpoolRightDownCommand())
+    //    ControlBoard.leftSpoolUp.whileActiveContinuous(SpoolLeftUpCommand())
+    //    ControlBoard.rightSpoolUp.whileActiveContinuous(SpoolRightUpCommand())
   }
 
   override fun robotInit() {

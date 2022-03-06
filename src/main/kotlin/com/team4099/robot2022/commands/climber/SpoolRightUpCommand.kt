@@ -10,13 +10,13 @@ class SpoolRightUpCommand : CommandBase() {
   }
 
   override fun execute() {
-    TelescopingClimber.setOpenLoop(0.0, 0.5, useSoftLimits = false)
+    TelescopingClimber.setOpenLoop(0.0, 0.75, useSoftLimits = false)
 
     Logger.addEvent("Climber", "Right Climber spooling up")
   }
 
   override fun end(interrupted: Boolean) {
     TelescopingClimber.setOpenLoop(0.0, 0.0)
-//    TelescopingClimber.zeroLeftEncoder()
+    //    TelescopingClimber.zeroLeftEncoder()
   }
 }

@@ -10,7 +10,7 @@ class OpenLoopExtendClimberCommand : CommandBase() {
   }
 
   override fun execute() {
-    TelescopingClimber.setOpenLoop(0.3, 0.3)
+    TelescopingClimber.setOpenLoop(1.5, 1.5)
 
     Logger.addEvent("Climber", "Telescoping climber spooling up")
   }
