@@ -11,7 +11,7 @@ class FeederIdleCommand(val feeder: Feeder) : CommandBase() {
   }
 
   override fun initialize() {
-    feeder.feederState = FeederConstants.FeederState.NEUTRAL
+    feeder.state = FeederConstants.FeederState.NEUTRAL
     Logger.addEvent(FeederConstants.TAB, "Feeder Idle")
   }
 }

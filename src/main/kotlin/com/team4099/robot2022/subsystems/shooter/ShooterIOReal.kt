@@ -8,6 +8,7 @@ import com.team4099.lib.units.AngularVelocity
 import com.team4099.lib.units.base.amps
 import com.team4099.lib.units.ctreAngularMechanismSensor
 import com.team4099.lib.units.derived.rotations
+import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.inRadiansPerSecond
 import com.team4099.lib.units.perMinute
 import com.team4099.robot2022.config.constants.ShooterConstants
@@ -126,6 +127,8 @@ object ShooterIOReal : ShooterIO {
     inputs.supplyCurrent[1] = followerMotor.supplyCurrent.amps
     inputs.tempCelcius[0] = leaderMotor.temperature
     inputs.tempCelcius[1] = followerMotor.temperature
+
+    inputs.appliedVoltage = leaderMotor.motorOutputVoltage.volts
   }
 
   private fun setVelocity(velocity: AngularVelocity) {

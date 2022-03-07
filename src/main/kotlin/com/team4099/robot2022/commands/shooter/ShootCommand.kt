@@ -11,7 +11,7 @@ class ShootCommand(val shooter: Shooter, val feeder: Feeder) : CommandBase() {
   }
 
   override fun initialize() {
-    feeder.feederState = FeederConstants.FeederState.SHOOT
+    feeder.state = FeederConstants.FeederState.SHOOT
   }
 
   override fun isFinished(): Boolean {

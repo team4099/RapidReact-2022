@@ -22,16 +22,16 @@ class FeederSerialize(val feeder: Feeder) : CommandBase() {
 
   override fun execute() {
     currentTime = Timer.getFPGATimestamp()
-    if (feeder.bottomBeamBroken) {
+    if (feeder.inputs.bottomBeamBroken) {
       lastBrokenTime = currentTime
     } else {
       lastUnbrokenTime = currentTime
     }
-    feeder.feederState =
+    feeder.state =
         when {
           (lastUnbrokenTime - lastBrokenTime < FeederConstants.BEAM_BREAK_BACKWARDS_TIME) ->
               FeederConstants.FeederState.BACKWARD_VERTICAL
-          feeder.topBeamBroken -> FeederConstants.FeederState.NEUTRAL
+          feeder.inputs.topBeamBroken -> FeederConstants.FeederState.NEUTRAL
           (currentTime - lastBrokenTime < FeederConstants.BEAM_BREAK_BROKEN_TIME) ->
               FeederConstants.FeederState.FORWARD_ALL
           else -> FeederConstants.FeederState.FORWARD_FLOOR

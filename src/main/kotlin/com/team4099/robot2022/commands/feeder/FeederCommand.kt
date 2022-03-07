@@ -11,7 +11,7 @@ class FeederCommand(val feeder: Feeder, var state: FeederConstants.FeederState) 
   }
 
   override fun initialize() {
-    feeder.feederState = state
-    Logger.addEvent("Feeder", "Feeder state: ${feeder.feederState}")
+    feeder.state = state
+    Logger.addEvent("Feeder", "Feeder state: ${feeder.state}")
   }
 }
