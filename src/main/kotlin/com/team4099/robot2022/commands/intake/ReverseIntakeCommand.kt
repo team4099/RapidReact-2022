@@ -11,8 +11,8 @@ class ReverseIntakeCommand(val intake: Intake) : CommandBase() {
   }
 
   override fun initialize() {
-    intake.intakeState = IntakeConstants.IntakeState.OUT
-    intake.armState = IntakeConstants.ArmPos.OUT
+    intake.rollerState = IntakeConstants.RollerState.OUT
+    intake.armState = IntakeConstants.ArmState.OUT
     Logger.addEvent("Intake", "Intake reversed")
   }
 

@@ -11,8 +11,8 @@ class PrepareClimbCommand(val intake: Intake) : CommandBase() {
   }
 
   override fun initialize() {
-    intake.armState = IntakeConstants.ArmPos.IN
-    intake.intakeState = IntakeConstants.IntakeState.IDLE
+    intake.armState = IntakeConstants.ArmState.IN
+    intake.rollerState = IntakeConstants.RollerState.IDLE
     // Use this later maybe? Shooter.hoodState
     Logger.addEvent("Intake", "Intake lifted and idle")
     // Use later: Logger.addEvent("Shooter", "HoodRetracted")

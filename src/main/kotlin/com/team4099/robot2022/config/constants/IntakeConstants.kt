@@ -7,13 +7,13 @@ object IntakeConstants {
   const val SENSOR_CPR = 2048
   const val GEAR_RATIO = (12.0 / 36.0)
 
-  enum class IntakeState(val speed: Double) {
+  enum class RollerState(val speed: Double) {
     IDLE(-0.1),
     IN(0.86),
     OUT(-1.0)
   }
 
-  enum class ArmPos(val out: Boolean) {
+  enum class ArmState(val out: Boolean) {
     OUT(true),
     IN(false)
   }

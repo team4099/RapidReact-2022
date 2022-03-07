@@ -21,6 +21,8 @@ object ShooterConstants {
   const val SHOOTER_SENSOR_CPR = 2048
   const val SHOOTER_SENSOR_GEAR_RATIO = 1.0
 
+  const val FILTER_SIZE = 100
+
   //  val FOLLOWER_STATUS_FRAME_PERIOD = 255.milli.seconds
 
   // Target values

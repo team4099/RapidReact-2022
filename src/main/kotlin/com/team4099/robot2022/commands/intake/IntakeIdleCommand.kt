@@ -11,8 +11,8 @@ class IntakeIdleCommand(val intake: Intake) : CommandBase() {
   }
 
   override fun initialize() {
-    intake.intakeState = IntakeConstants.IntakeState.IDLE
-    intake.armState = IntakeConstants.ArmPos.IN
+    intake.rollerState = IntakeConstants.RollerState.IDLE
+    intake.armState = IntakeConstants.ArmState.IN
     Logger.addEvent("Intake", "Intake Idle")
   }
 

@@ -8,13 +8,13 @@ class Intake(val io: IntakeIO) : SubsystemBase() {
 
   val inputs = IntakeIO.IntakeIOInputs()
 
-  var intakeState = IntakeConstants.IntakeState.IDLE
+  var rollerState = IntakeConstants.RollerState.IDLE
     set(state) {
       io.setRollerState(state)
       field = state
     }
 
-  var armState = IntakeConstants.ArmPos.IN
+  var armState = IntakeConstants.ArmState.IN
     set(state) {
       io.setArmState(state)
       field = state
@@ -22,12 +22,14 @@ class Intake(val io: IntakeIO) : SubsystemBase() {
 
   init {
     // necessary because the setter is not called on initialization
-    intakeState = intakeState
+    rollerState = rollerState
     armState = armState
   }
 
   override fun periodic() {
     io.updateInputs(inputs)
     Logger.getInstance().processInputs("Intake", inputs)
+    Logger.getInstance().recordOutput("Intake/rollerState", rollerState.name)
+    Logger.getInstance().recordOutput("Intake/armState", armState.name)
   }
 }

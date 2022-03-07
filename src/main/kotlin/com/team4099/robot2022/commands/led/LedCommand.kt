@@ -14,7 +14,7 @@ class LedCommand(val intake: Intake, val shooter: Shooter) : CommandBase() {
 
   override fun execute() {
     LED.ledState =
-        when (shooter.shooterState) {
+        when (shooter.state) {
           ShooterConstants.ShooterState.SPIN_UP_NEAR, ShooterConstants.ShooterState.SPIN_UP_FAR -> {
             if (shooter.isOnTarget) {
               LEDConstants.LEDState.READY_SHOOT
@@ -26,7 +26,7 @@ class LedCommand(val intake: Intake, val shooter: Shooter) : CommandBase() {
             if (Robot.isDisabled) {
               LEDConstants.LEDState.IDLE
             } else if (intake.inputs.rollerStatorCurrent >= LEDConstants.INTAKE_CURRENT_THRESHOLD &&
-                intake.intakeState == IntakeConstants.IntakeState.IN) {
+                intake.rollerState == IntakeConstants.RollerState.IN) {
               LEDConstants.LEDState.INTAKING
             } else {
               LEDConstants.LEDState.STANDING_ZERO

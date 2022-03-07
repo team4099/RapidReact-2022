@@ -10,7 +10,7 @@ class SpinUpNearCommand(val shooter: Shooter) : CommandBase() {
   }
 
   override fun initialize() {
-    shooter.shooterState = ShooterConstants.ShooterState.SPIN_UP_NEAR
+    shooter.state = ShooterConstants.ShooterState.SPIN_UP_NEAR
     //    Shooter.setOpenLoop(0.35)
   }
 

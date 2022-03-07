@@ -70,16 +70,16 @@ object IntakeIOReal : IntakeIO {
     //        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
   }
 
-  override fun setRollerState(rollerState: IntakeConstants.IntakeState) {
+  override fun setRollerState(rollerState: IntakeConstants.RollerState) {
     intakeTalon.set(ControlMode.PercentOutput, rollerState.speed)
   }
 
-  override fun setArmState(armState: IntakeConstants.ArmPos) {
+  override fun setArmState(armState: IntakeConstants.ArmState) {
     intakeSolenoid.set(armState.out)
   }
 
   override fun updateInputs(inputs: IntakeIO.IntakeIOInputs) {
-    inputs.extended = intakeSolenoid.get() == IntakeConstants.ArmPos.OUT.out
+    inputs.extended = intakeSolenoid.get() == IntakeConstants.ArmState.OUT.out
 
     inputs.rollerPosition = intakeSensor.position
     inputs.rollerVelocity = intakeSensor.velocity

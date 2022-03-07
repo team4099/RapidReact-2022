@@ -10,7 +10,7 @@ class SpinUpFarCommand(val shooter: Shooter) : CommandBase() {
   }
 
   override fun initialize() {
-    shooter.shooterState = ShooterConstants.ShooterState.SPIN_UP_FAR
+    shooter.state = ShooterConstants.ShooterState.SPIN_UP_FAR
     //    Shooter.setOpenLoop(0.35)
   }
 

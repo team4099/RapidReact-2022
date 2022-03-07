@@ -20,8 +20,8 @@ class IntakeBallsCommand(val intake: Intake) : CommandBase() {
     }
      */
 
-    intake.intakeState = IntakeConstants.IntakeState.IN
-    intake.armState = IntakeConstants.ArmPos.OUT
+    intake.rollerState = IntakeConstants.RollerState.IN
+    intake.armState = IntakeConstants.ArmState.OUT
     Logger.addEvent("Intake", "Intake Balls")
   }
 

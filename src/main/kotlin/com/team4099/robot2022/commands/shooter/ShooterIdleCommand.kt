@@ -10,7 +10,7 @@ class ShooterIdleCommand(val shooter: Shooter) : CommandBase() {
   }
 
   override fun initialize() {
-    shooter.shooterState = ShooterConstants.ShooterState.OFF
+    shooter.state = ShooterConstants.ShooterState.OFF
   }
 
   override fun isFinished(): Boolean = false

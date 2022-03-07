@@ -12,7 +12,7 @@ class LiftIntakeCommand(val intake: Intake) : CommandBase() {
   }
 
   override fun initialize() {
-    intake.armState = IntakeConstants.ArmPos.IN
+    intake.armState = IntakeConstants.ArmState.IN
     Logger.addEvent("Intake", "Intake lifted")
   }
   override fun execute() {}
@@ -22,6 +22,6 @@ class LiftIntakeCommand(val intake: Intake) : CommandBase() {
   }
 
   override fun end(interrupted: Boolean) {
-    intake.armState = IntakeConstants.ArmPos.OUT
+    intake.armState = IntakeConstants.ArmState.OUT
   }
 }
