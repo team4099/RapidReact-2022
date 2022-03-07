@@ -1,6 +1,5 @@
 package com.team4099.robot2022
 
-import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
 import com.team4099.robot2021.subsystems.Intake
 import com.team4099.robot2022.auto.AutonomousSelector
@@ -37,9 +36,15 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj2.command.CommandScheduler
+import org.littletonrobotics.junction.LoggedRobot
+import org.littletonrobotics.junction.Logger
+import org.littletonrobotics.junction.inputs.LoggedNetworkTables
+import org.littletonrobotics.junction.io.ByteLogReceiver
+import org.littletonrobotics.junction.io.ByteLogReplay
+import org.littletonrobotics.junction.io.LogSocketServer
 import kotlin.math.pow
 
-object Robot : TimedRobot() {
+object Robot : LoggedRobot() {
   val robotName: Constants.Tuning.RobotName
   val autonomousSelector: AutonomousSelector = AutonomousSelector
 
@@ -96,11 +101,28 @@ object Robot : TimedRobot() {
   }
 
   override fun robotInit() {
-    Logger.startLogging()
-    Logger.addEvent("Robot", "Robot Construction (running on $robotName)")
-    Logger.addSource("Robot", "Battery Voltage", RobotController::getBatteryVoltage)
+    // set up AdvantageKit logging
+    // allow running faster than real time when replaying logs
+    setUseTiming(isReal())
 
-    addPeriodic({ Logger.saveLogs() }, 0.08, 0.01)
+    // log smart dashboard values (otherwise nothing is logged by default
+    LoggedNetworkTables.getInstance().addTable("/SmartDashboard")
+
+    // metadata value (not timed -- just metadata for given log file)
+    Logger.getInstance().recordMetadata("RobotName", robotName.name)
+
+    if (isReal()) {
+      // log to USB stick and network for real time data viewing on AdvantageScope
+      Logger.getInstance().addDataReceiver(ByteLogReceiver("/media/sda1/"))
+      Logger.getInstance().addDataReceiver(LogSocketServer(5800))
+    } else {
+      // if in replay mode get file path from command line and read log file
+      val path = ByteLogReplay.promptForPath()
+      Logger.getInstance().setReplaySource(ByteLogReplay(path))
+      Logger.getInstance().addDataReceiver(ByteLogReceiver(ByteLogReceiver.addPathSuffix(path, "_sim")))
+    }
+    Logger.getInstance().start()
+
 
     mapDefaultCommands()
 
@@ -134,6 +156,5 @@ object Robot : TimedRobot() {
 
   override fun robotPeriodic() {
     CommandScheduler.getInstance().run()
-    Logger.updateShuffleboard()
   }
 }
