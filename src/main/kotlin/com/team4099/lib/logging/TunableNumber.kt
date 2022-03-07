@@ -3,11 +3,12 @@ package com.team4099.lib.logging
 import com.team4099.robot2022.config.constants.Constants
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 
-
 /**
- * Taken from https://github.com/Mechanical-Advantage/RobotCode2022/blob/main/src/main/java/frc/robot/util/TunableNumber.java
+ * Taken from
+ * https://github.com/Mechanical-Advantage/RobotCode2022/blob/main/src/main/java/frc/robot/util/TunableNumber.java
  */
 class TunableNumber(dashboardKey: String, val defaultValue: Double) {
+  private val tableKey = "TunableNumbers"
   private val key: String
   private var lastHasChangedValue = defaultValue
 
@@ -20,10 +21,9 @@ class TunableNumber(dashboardKey: String, val defaultValue: Double) {
     key = tableKey + "/" + dashboardKey
     if (Constants.Tuning.TUNING_MODE) {
       // This makes sure the data is on NetworkTables but will not change it
-      SmartDashboard.putNumber(key,
-        SmartDashboard.getNumber(key, defaultValue));
+      SmartDashboard.putNumber(key, SmartDashboard.getNumber(key, defaultValue))
     } else {
-      SmartDashboard.delete(key);
+      SmartDashboard.delete(key)
     }
   }
 
@@ -33,7 +33,8 @@ class TunableNumber(dashboardKey: String, val defaultValue: Double) {
    * @return The current value
    */
   fun get(): Double {
-    return if (Constants.Tuning.TUNING_MODE) SmartDashboard.getNumber(key, defaultValue) else defaultValue
+    return if (Constants.Tuning.TUNING_MODE) SmartDashboard.getNumber(key, defaultValue)
+    else defaultValue
   }
 
   /**
@@ -49,9 +50,5 @@ class TunableNumber(dashboardKey: String, val defaultValue: Double) {
       return true
     }
     return false
-  }
-
-  companion object {
-    private const val tableKey = "TunableNumbers"
   }
 }

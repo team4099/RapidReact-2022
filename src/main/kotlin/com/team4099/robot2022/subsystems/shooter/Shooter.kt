@@ -16,8 +16,11 @@ class Shooter(val io: ShooterIO) : SubsystemBase() {
   private val kI = TunableNumber("Shooter/kI", ShooterConstants.SHOOTER_KI)
   private val kD = TunableNumber("Shooter/kD", ShooterConstants.SHOOTER_KD)
 
-  private val filterSize = TunableNumber("Shooter/filterSize", ShooterConstants.FILTER_SIZE.toDouble())
-  private val shooterToleranceRPM = TunableNumber("Shooter/toleranceRPM", ShooterConstants.TARGET_VELOCITY_THRESHOLD.inRotationsPerMinute)
+  private val filterSize =
+      TunableNumber("Shooter/filterSize", ShooterConstants.FILTER_SIZE.toDouble())
+  private val shooterToleranceRPM =
+      TunableNumber(
+          "Shooter/toleranceRPM", ShooterConstants.TARGET_VELOCITY_THRESHOLD.inRotationsPerMinute)
 
   var state = ShooterConstants.ShooterState.OFF
     set(state) {
@@ -39,9 +42,7 @@ class Shooter(val io: ShooterIO) : SubsystemBase() {
     isOnTarget =
         state != ShooterConstants.ShooterState.OFF &&
             filter.calculate(inputs.velocity.inRotationsPerMinute)
-                .around(
-                    state.targetVelocity.inRotationsPerMinute,
-                    shooterToleranceRPM.get())
+                .around(state.targetVelocity.inRotationsPerMinute, shooterToleranceRPM.get())
 
     Logger.getInstance().processInputs("Shooter", inputs)
     Logger.getInstance()
@@ -56,6 +57,5 @@ class Shooter(val io: ShooterIO) : SubsystemBase() {
     if (filterSize.hasChanged()) {
       filter = MedianFilter(filterSize.get().toInt())
     }
-
   }
 }
