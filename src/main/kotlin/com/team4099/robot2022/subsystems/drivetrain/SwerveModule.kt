@@ -5,7 +5,7 @@ import com.ctre.phoenix.motorcontrol.DemandType
 import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration
-import com.team4099.lib.logging.Logger
+import com.team4099.lib.logging.TunableNumber
 import com.team4099.lib.units.LinearAcceleration
 import com.team4099.lib.units.LinearVelocity
 import com.team4099.lib.units.base.Length
@@ -23,155 +23,60 @@ import com.team4099.lib.units.derived.inVolts
 import com.team4099.lib.units.derived.radians
 import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.inFeetPerSecond
+import com.team4099.lib.units.inMetersPerSecond
+import com.team4099.lib.units.inMetersPerSecondPerSecond
+import com.team4099.lib.units.inRadiansPerSecond
+import com.team4099.lib.units.inRadiansPerSecondPerSecond
 import com.team4099.lib.units.perSecond
 import com.team4099.robot2022.config.constants.DrivetrainConstants
 import edu.wpi.first.wpilibj.AnalogPotentiometer
+import org.littletonrobotics.junction.Logger
 import kotlin.math.IEEErem
 import kotlin.math.sign
 import kotlin.math.withSign
 
-class SwerveModule(
-  private val steeringFalcon: TalonFX,
-  private val driveFalcon: TalonFX,
-  private val potentiometer: AnalogPotentiometer,
-  private val zeroOffset: Angle,
-  val label: String
-) {
-
-  private val steeringSensor =
-      ctreAngularMechanismSensor(
-          steeringFalcon,
-          DrivetrainConstants.STEERING_SENSOR_CPR,
-          DrivetrainConstants.STEERING_SENSOR_GEAR_RATIO)
-  private val driveSensor =
-      ctreLinearMechanismSensor(
-          driveFalcon,
-          DrivetrainConstants.DRIVE_SENSOR_CPR,
-          DrivetrainConstants.DRIVE_SENSOR_GEAR_RATIO,
-          DrivetrainConstants.WHEEL_DIAMETER)
-
-  // motor params
-  private val steeringConfiguration: TalonFXConfiguration = TalonFXConfiguration()
-  private val driveConfiguration: TalonFXConfiguration = TalonFXConfiguration()
-
-  private val driveTemp: Double
-    get() = driveFalcon.temperature
-
-  private val steeringTemp: Double
-    get() = steeringFalcon.temperature
-
-  private val driveOutputCurrent: Double
-    get() = steeringFalcon.statorCurrent
-
-  private val steeringOutputCurrent: Double
-    get() = steeringFalcon.statorCurrent
-
-  private val drivePercentOutput: Double
-    get() = driveFalcon.motorOutputPercent
-
-  private val steeringPercentOutput: Double
-    get() = steeringFalcon.motorOutputPercent
-
-  private val driveBusVoltage: ElectricalPotential
-    get() = driveFalcon.busVoltage.volts
-
-  private val steeringBusVoltage: ElectricalPotential
-    get() = steeringFalcon.busVoltage.volts
-
-  val driveOutputVoltage: ElectricalPotential
-    get() = driveBusVoltage * drivePercentOutput
-
-  val driveDistance: Length
-    get() = driveSensor.position
-
-  val driveVelocity: LinearVelocity
-    get() = driveSensor.velocity
-
-  val steeringPosition: Angle
-    get() = steeringSensor.position
+class SwerveModule(val io: SwerveModuleIO) {
+  val inputs = SwerveModuleIO.SwerveModuleIOInputs()
 
   private var speedSetPoint: LinearVelocity = 0.feet.perSecond
   private var accelerationSetPoint: LinearAcceleration = 0.feet.perSecond.perSecond
 
   private var steeringSetPoint: Angle = 0.degrees
-    set(value) {
-      // Logger.addEvent("Drivetrain", "label: $label, value: ${value.inDegrees}, reference raw
-      // position: ${steeringSensor.positionToRawUnits(value)}, current raw position:
-      // ${steeringSensor.getRawPosition()}")
-      //      if (filter.calculate((steeringSensor.position).inRadians)
-      //          .around(value.inRadians, (DrivetrainConstants.ALLOWED_ANGLE_ERROR).inRadians)) {
-      //        steeringFalcon.set(ControlMode.PercentOutput, 0.0)
-      //      } else {
-      steeringFalcon.set(ControlMode.MotionMagic, steeringSensor.positionToRawUnits(value))
-      //      }
 
-      field = value
-    }
+  private val steeringkP = TunableNumber("Drivetrain/moduleSteeringkP", DrivetrainConstants.PID.STEERING_KP)
+  private val steeringkI = TunableNumber("Drivetrain/moduleSteeringkI", DrivetrainConstants.PID.STEERING_KI)
+  private val steeringkD = TunableNumber("Drivetrain/moduleSteeringkD", DrivetrainConstants.PID.STEERING_KD)
+
+  private val steeringMaxVel = TunableNumber("Drivetrain/moduleSteeringMaxVelRadPerSec", DrivetrainConstants.STEERING_VEL_MAX.inRadiansPerSecond)
+  private val steeringMaxAccel = TunableNumber("Drivetrain/moduleSteeringMaxAccelRadPerSecSq", DrivetrainConstants.STEERING_ACCEL_MAX.inRadiansPerSecondPerSecond)
+
+  private val drivekP = TunableNumber("Drivetrain/moduleDrivekP", DrivetrainConstants.PID.DRIVE_KP)
+  private val drivekI = TunableNumber("Drivetrain/moduleDrivekI", DrivetrainConstants.PID.DRIVE_KI)
+  private val drivekD = TunableNumber("Drivetrain/moduleDrivekD", DrivetrainConstants.PID.DRIVE_KD)
 
   init {
-    driveFalcon.configFactoryDefault()
-    steeringFalcon.configFactoryDefault()
 
-    driveFalcon.clearStickyFaults()
-    steeringFalcon.clearStickyFaults()
+  }
 
-    // Logger.addSource("$label Drivetrain", "Drive Faults") { driveFalcon.getFaults() }
-    // Logger.addSource("$label Drivetrain", "Steering Faults") { steeringFalcon.getFaults() }
-    Logger.addSource("$label Drivetrain", "Drive Output Current") { driveOutputCurrent }
-    Logger.addSource("$label Drivetrain", "Steering Output Current") { steeringOutputCurrent }
+  fun periodic() {
+    io.updateInputs(inputs)
 
-    //    Logger.addSource("$label Drivetrain", "Drive Temperature") { driveTemp }
-    //    Logger.addSource("$label Drivetrain", "Steering Temperature") { steeringTemp }
+    if (steeringkP.hasChanged() || steeringkI.hasChanged() || steeringkD.hasChanged()) {
+      io.configureSteeringPID(steeringkP.get(), steeringkI.get(), steeringkD.get())
+    }
 
-    //    Logger.addSource("$label Drivetrain", "Drive Percent Output") { drivePercentOutput }
-    //    Logger.addSource("$label Drivetrain", "Steering Percent Output") { steeringPercentOutput }
-    //
-    Logger.addSource("$label Drivetrain", "Drive Bus Voltage") { driveBusVoltage }
-    Logger.addSource("$label Drivetrain", "Steering Bus Voltage") { steeringBusVoltage }
-    //
-    Logger.addSource("$label Drivetrain", "Drive SetPoint") { speedSetPoint.inFeetPerSecond }
-    //    Logger.addSource("$label Drivetrain", "Steering SetPoint") { steeringSetPoint.inDegrees }
+    if (steeringMaxVel.hasChanged() || steeringMaxAccel.hasChanged()) {
+      io.configureSteeringMotionMagic(steeringMaxVel.get().radians.perSecond, steeringMaxAccel.get().radians.perSecond.perSecond)
+    }
 
-    Logger.addSource("$label Drivetrain", "Drive Position") { driveSensor.position.inFeet }
-    Logger.addSource("$label Drivetrain", "Steering Position") { steeringPosition.inDegrees }
+    if (drivekP.hasChanged() || drivekI.hasChanged() || drivekD.hasChanged()) {
+      io.configureDrivePID(drivekP.get(), drivekI.get(), drivekD.get())
+    }
 
-    Logger.addSource("$label Drivetrain", "Steering Position Raw") { potentiometer.get() }
-
-    //    Logger.addSource(
-    //        "Drivetrain Tuning",
-    //        "$label Azimuth kP",
-    //        { DrivetrainConstants.PID.STEERING_KP },
-    //        { newP -> steeringFalcon.config_kP(0, newP) },
-    //        false)
-
-    steeringConfiguration.slot0.kP = DrivetrainConstants.PID.STEERING_KP
-    steeringConfiguration.slot0.kI = DrivetrainConstants.PID.STEERING_KI
-    steeringConfiguration.slot0.kD = DrivetrainConstants.PID.STEERING_KD
-    steeringConfiguration.slot0.kF = DrivetrainConstants.PID.STEERING_KFF
-    steeringConfiguration.motionCruiseVelocity =
-        steeringSensor.velocityToRawUnits(DrivetrainConstants.STEERING_VEL_MAX)
-    steeringConfiguration.motionAcceleration =
-        steeringSensor.accelerationToRawUnits(DrivetrainConstants.STEERING_ACCEL_MAX)
-    steeringConfiguration.peakOutputForward = 1.0
-    steeringConfiguration.peakOutputReverse = -1.0
-    steeringConfiguration.supplyCurrLimit.currentLimit =
-        DrivetrainConstants.STEERING_SUPPLY_CURRENT_LIMIT
-    steeringConfiguration.supplyCurrLimit.enable = true
-
-    steeringFalcon.setNeutralMode(NeutralMode.Coast)
-    steeringFalcon.inverted = false
-    steeringFalcon.configAllSettings(steeringConfiguration)
-    steeringFalcon.configAllowableClosedloopError(
-        0, steeringSensor.positionToRawUnits(DrivetrainConstants.ALLOWED_ANGLE_ERROR))
-
-    driveConfiguration.slot0.kP = DrivetrainConstants.PID.DRIVE_KP
-    driveConfiguration.slot0.kI = DrivetrainConstants.PID.DRIVE_KI
-    driveConfiguration.slot0.kD = DrivetrainConstants.PID.DRIVE_KD
-    driveConfiguration.slot0.kF = DrivetrainConstants.PID.DRIVE_KFF
-    driveConfiguration.supplyCurrLimit.currentLimit = DrivetrainConstants.DRIVE_SUPPLY_CURRENT_LIMIT
-
-    driveFalcon.configAllSettings(driveConfiguration)
-    driveFalcon.setNeutralMode(NeutralMode.Coast)
+    Logger.getInstance().processInputs(io.label, inputs)
+    Logger.getInstance().recordOutput("${io.label}/driveSpeedSetpointMetersPerSecond", speedSetPoint.inMetersPerSecond)
+    Logger.getInstance().recordOutput("${io.label}/driveAccelSetpointMetersPerSecondSq", accelerationSetPoint.inMetersPerSecondPerSecond)
+    Logger.getInstance().recordOutput("${io.label}/steeringSetpointDegrees", steeringSetPoint.inDegrees)
   }
 
   /**
@@ -187,10 +92,11 @@ class SwerveModule(
     acceleration: LinearAcceleration = 0.0.meters.perSecond.perSecond
   ) {
     if (speed == 0.feet.perSecond) {
-      driveFalcon.set(ControlMode.PercentOutput, 0.0)
+      io.setOpenLoop(steeringSetPoint, 0.0)
+      return
     }
     var steeringDifference =
-        (steering - steeringSensor.position).inRadians.IEEErem(2 * Math.PI).radians
+        (steering - inputs.steeringPosition).inRadians.IEEErem(2 * Math.PI).radians
 
     val isInverted = steeringDifference.absoluteValue > (Math.PI / 2).radians
     if (isInverted) {
@@ -209,21 +115,16 @@ class SwerveModule(
         } else {
           acceleration
         }
-    steeringSetPoint = steeringSensor.position + steeringDifference
+    steeringSetPoint = inputs.steeringPosition + steeringDifference
     //    driveFalcon.set(speedSetPoint / DrivetrainConstants.DRIVE_SETPOINT_MAX)
 
-    driveFalcon.set(
-        ControlMode.Velocity,
-        driveSensor.velocityToRawUnits(speedSetPoint),
-        DemandType.ArbitraryFeedForward,
-        (DrivetrainConstants.PID.DRIVE_KS * sign(speedSetPoint.value) +
-                speedSetPoint * DrivetrainConstants.PID.DRIVE_KV +
-                acceleration * DrivetrainConstants.PID.DRIVE_KA).inVolts)
+    io.setClosedLoop(steeringSetPoint, speedSetPoint, accelerationSetPoint)
+
   }
 
   fun setOpenLoop(steering: Angle, speed: Double) {
     var steeringDifference =
-        (steering - steeringSensor.position).inRadians.IEEErem(2 * Math.PI).radians
+        (steering - inputs.steeringPosition).inRadians.IEEErem(2 * Math.PI).radians
 
     val isInverted = steeringDifference.absoluteValue > (Math.PI / 2).radians
     if (isInverted) {
@@ -236,28 +137,22 @@ class SwerveModule(
         } else {
           speed
         }
-    steeringSetPoint = steeringSensor.position + steeringDifference
-    driveFalcon.set(ControlMode.PercentOutput, outputPower)
+    steeringSetPoint = inputs.steeringPosition + steeringDifference
+    io.setOpenLoop(steering, outputPower)
   }
 
   /** Creates event of the current potentiometer value as needs to be manually readjusted. */
   fun resetModuleZero() {
-    Logger.addEvent("Drivetrain", "Absolute Potentiometer Value $label (${potentiometer.get()}")
+    io.resetModuleZero()
   }
 
   /** Zeros the steering motor */
   fun zeroSteering() {
-    steeringFalcon.selectedSensorPosition =
-        steeringSensor.positionToRawUnits(
-            -(potentiometer.get().radians) + zeroOffset.inRadians.radians)
-    Logger.addEvent(
-        "Drivetrain",
-        "Loading Zero for Module $label (${steeringSensor.positionToRawUnits(
-          -(potentiometer.get().radians) + zeroOffset.inRadians.radians)})")
+    io.zeroSteering()
   }
 
   /** Zeros the drive motor */
   fun zeroDrive() {
-    driveFalcon.selectedSensorPosition = 0.0
+    io.zeroDrive()
   }
 }
