@@ -17,8 +17,6 @@ object ShooterIOReal : ShooterIO {
   private val leaderMotor = TalonFX(ShooterConstants.LEADER_MOTOR_ID)
   private val followerMotor = TalonFX(ShooterConstants.FOLLOWER_MOTOR_ID)
 
-  private val filter = MedianFilter(100)
-
   private val shooterSensor =
       ctreAngularMechanismSensor(
           leaderMotor,
