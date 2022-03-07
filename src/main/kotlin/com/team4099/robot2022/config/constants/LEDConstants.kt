@@ -1,9 +1,10 @@
 package com.team4099.robot2022.config.constants
 
 import com.team4099.lib.drivers.BlinkinLedDriver
+import com.team4099.lib.units.base.amps
 
 object LEDConstants {
-  const val CURRENT_THRESHOLD = 20
+  val INTAKE_CURRENT_THRESHOLD = 20.amps
 
   enum class LEDState(val blinkinMode: BlinkinLedDriver.BlinkinLedMode) {
     // Solid Orange

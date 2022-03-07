@@ -3,6 +3,7 @@ package com.team4099.robot2022.config.constants
 import com.team4099.lib.units.base.seconds
 import com.team4099.lib.units.derived.div
 import com.team4099.lib.units.milli
+import edu.wpi.first.wpilibj.RobotBase
 
 object Constants {
   object Universal {
@@ -13,18 +14,20 @@ object Constants {
   }
 
   object Tuning {
-    const val TUNING_TOGGLE_PIN = 0
-    val ROBOT_ID_PINS = 1..2
-
-    enum class RobotName {
-      COMPETITION,
-      PRACTICE,
-      MULE
+    enum class RobotType {
+      REAL,
+      SIM,
+      REPLAY
     }
 
-    val ROBOT_ID_MAP =
-        mapOf<Int, RobotName>(
-            0 to RobotName.COMPETITION, 1 to RobotName.PRACTICE, 2 to RobotName.MULE)
+    val type: RobotType
+      get() {
+        if (RobotBase.isReal()) {
+          return RobotType.REAL
+        } else {
+          return RobotType.REPLAY
+        }
+      }
   }
 
   object Joysticks {
