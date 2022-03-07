@@ -19,7 +19,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import kotlin.math.sign
 
-object PivotClimber : SubsystemBase() {
+class PivotClimber : SubsystemBase() {
   private val pivotRightArm: CANSparkMax =
       CANSparkMax(Constants.PivotClimber.L_ARM_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
   private val pivotLeftArm: CANSparkMax =

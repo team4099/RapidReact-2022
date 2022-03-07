@@ -4,18 +4,18 @@ import com.team4099.lib.logging.Logger
 import com.team4099.robot2022.subsystems.climber.TelescopingClimber
 import edu.wpi.first.wpilibj2.command.CommandBase
 
-class OpenLoopExtendClimberCommand : CommandBase() {
+class OpenLoopExtendClimberCommand(val telescopingClimber: TelescopingClimber) : CommandBase() {
   init {
-    addRequirements(TelescopingClimber)
+    addRequirements(telescopingClimber)
   }
 
   override fun execute() {
-    TelescopingClimber.setOpenLoop(0.3, 0.3)
+    telescopingClimber.setOpenLoop(0.3, 0.3)
 
     Logger.addEvent("Climber", "Telescoping climber spooling up")
   }
 
   override fun end(interrupted: Boolean) {
-    TelescopingClimber.setOpenLoop(0.0, 0.0)
+    telescopingClimber.setOpenLoop(0.0, 0.0)
   }
 }

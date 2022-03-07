@@ -8,76 +8,79 @@ import com.team4099.robot2022.subsystems.climber.PivotClimber
 import com.team4099.robot2022.subsystems.climber.TelescopingClimber
 import edu.wpi.first.wpilibj2.command.CommandBase
 
-class AdvanceClimberCommand : CommandBase() {
+class AdvanceClimberCommand(
+  val telescopingClimber: TelescopingClimber,
+  val pivotClimber: PivotClimber
+) : CommandBase() {
   init {
-    addRequirements(TelescopingClimber, PivotClimber)
+    addRequirements(telescopingClimber, pivotClimber)
   }
   override fun initialize() {
-    when (TelescopingClimber.desiredState) {
+    when (telescopingClimber.desiredState) {
       DesiredTelescopeStates.START ->
-          when (PivotClimber.desiredState) {
+          when (pivotClimber.desiredState) {
             DesiredPivotStates.BEHIND_TELESCOPE ->
-                TelescopingClimber.desiredState = DesiredTelescopeStates.MAX_EXTENSION
+                telescopingClimber.desiredState = DesiredTelescopeStates.MAX_EXTENSION
             DesiredPivotStates.VERTICAL ->
-                PivotClimber.desiredState = DesiredPivotStates.BEHIND_TELESCOPE
+                pivotClimber.desiredState = DesiredPivotStates.BEHIND_TELESCOPE
             else ->
                 Logger.addEvent(
                     TAB,
                     "Illegal Climb State. " +
-                        "Telescoping Desired State: ${TelescopingClimber.desiredState}, " +
-                        "Pivot Desired State: ${PivotClimber.desiredState}")
+                        "Telescoping Desired State: ${telescopingClimber.desiredState}, " +
+                        "Pivot Desired State: ${pivotClimber.desiredState}")
           }
       DesiredTelescopeStates.MAX_EXTENSION ->
-          when (PivotClimber.desiredState) {
+          when (pivotClimber.desiredState) {
             DesiredPivotStates.BEHIND_TELESCOPE ->
-                TelescopingClimber.desiredState = DesiredTelescopeStates.MAX_RETRACT
+                telescopingClimber.desiredState = DesiredTelescopeStates.MAX_RETRACT
             DesiredPivotStates.MID_FORWARD ->
-                TelescopingClimber.desiredState = DesiredTelescopeStates.RELEASE_HOOK
+                telescopingClimber.desiredState = DesiredTelescopeStates.RELEASE_HOOK
             DesiredPivotStates.FULL_FORWARD ->
-                PivotClimber.desiredState = DesiredPivotStates.MID_FORWARD
+                pivotClimber.desiredState = DesiredPivotStates.MID_FORWARD
             else ->
                 Logger.addEvent(
                     TAB,
                     "Illegal Climb State." +
-                        " Telescoping Desired State: ${TelescopingClimber.desiredState}," +
-                        " Pivot Desired State: ${PivotClimber.desiredState} ")
+                        " Telescoping Desired State: ${telescopingClimber.desiredState}," +
+                        " Pivot Desired State: ${pivotClimber.desiredState} ")
           }
       DesiredTelescopeStates.MAX_RETRACT ->
-          when (PivotClimber.desiredState) {
+          when (pivotClimber.desiredState) {
             DesiredPivotStates.BEHIND_TELESCOPE ->
-                PivotClimber.desiredState = DesiredPivotStates.VERTICAL
+                pivotClimber.desiredState = DesiredPivotStates.VERTICAL
             DesiredPivotStates.VERTICAL ->
-                TelescopingClimber.desiredState = DesiredTelescopeStates.RELEASE_HOOK
+                telescopingClimber.desiredState = DesiredTelescopeStates.RELEASE_HOOK
             else ->
                 Logger.addEvent(
                     TAB,
                     "Illegal Climb State." +
-                        " Telescoping Desired State: ${TelescopingClimber.desiredState}," +
-                        " Pivot Desired State: ${PivotClimber.desiredState} ")
+                        " Telescoping Desired State: ${telescopingClimber.desiredState}," +
+                        " Pivot Desired State: ${pivotClimber.desiredState} ")
           }
       DesiredTelescopeStates.RELEASE_HOOK ->
-          when (PivotClimber.desiredState) {
+          when (pivotClimber.desiredState) {
             DesiredPivotStates.BEHIND_TELESCOPE ->
-                TelescopingClimber.desiredState = DesiredTelescopeStates.MAX_RETRACT
+                telescopingClimber.desiredState = DesiredTelescopeStates.MAX_RETRACT
             DesiredPivotStates.VERTICAL ->
-                PivotClimber.desiredState = DesiredPivotStates.FULL_FORWARD
+                pivotClimber.desiredState = DesiredPivotStates.FULL_FORWARD
             DesiredPivotStates.MID_FORWARD ->
-                PivotClimber.desiredState = DesiredPivotStates.BEHIND_TELESCOPE
+                pivotClimber.desiredState = DesiredPivotStates.BEHIND_TELESCOPE
             DesiredPivotStates.FULL_FORWARD ->
-                TelescopingClimber.desiredState = DesiredTelescopeStates.MAX_EXTENSION
+                telescopingClimber.desiredState = DesiredTelescopeStates.MAX_EXTENSION
             else ->
                 Logger.addEvent(
                     TAB,
                     "Illegal Climb State. " +
-                        "Telescoping Desired State: ${TelescopingClimber.desiredState}, " +
-                        "Pivot Desired State: ${PivotClimber.desiredState} ")
+                        "Telescoping Desired State: ${telescopingClimber.desiredState}, " +
+                        "Pivot Desired State: ${pivotClimber.desiredState} ")
           }
       else ->
           Logger.addEvent(
               TAB,
               "Illegal Climb State. " +
-                  "Telescoping Desired State: ${TelescopingClimber.desiredState}, " +
-                  "Pivot Desired State: ${PivotClimber.desiredState} ")
+                  "Telescoping Desired State: ${telescopingClimber.desiredState}, " +
+                  "Pivot Desired State: ${pivotClimber.desiredState} ")
     }
   }
 

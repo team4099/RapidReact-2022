@@ -34,7 +34,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
 import kotlin.math.IEEErem
 import kotlin.math.PI
 
-object Drivetrain : SubsystemBase() {
+class Drivetrain : SubsystemBase() {
   val swerveModules =
       listOf(
           SwerveModule(

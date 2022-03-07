@@ -25,7 +25,8 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile
 import edu.wpi.first.wpilibj2.command.CommandBase
 import kotlin.math.PI
 
-class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
+class AutoDriveCommand(val drivetrain: Drivetrain, private val trajectory: Trajectory) :
+    CommandBase() {
   private val xPID =
       PIDController(
           DrivetrainConstants.PID.AUTO_POS_KP,
@@ -49,7 +50,7 @@ class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
   private var trajStartTime = 0.0.seconds
 
   init {
-    addRequirements(Drivetrain)
+    addRequirements(drivetrain)
     thetaPID.enableContinuousInput(-PI, PI)
 
     Logger.addSource("Drivetrain", "Path Follow Start Timestamp") { trajStartTime.inSeconds }
@@ -99,7 +100,7 @@ class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
   }
 
   override fun initialize() {
-    Drivetrain.pose = trajectory.startingPose // move to individual auto commands
+    drivetrain.pose = trajectory.startingPose // move to individual auto commands
     trajStartTime = Clock.fpgaTime + trajectory.startTime
   }
 
@@ -109,20 +110,20 @@ class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
     val xFF = desiredState.linearVelocity * desiredState.curvature.cos
     val yFF = desiredState.linearVelocity * desiredState.curvature.sin
     val thetaFF =
-        thetaPID.calculate(-Drivetrain.pose.theta.inRadians, desiredState.pose.theta.inRadians)
+        thetaPID.calculate(-drivetrain.pose.theta.inRadians, desiredState.pose.theta.inRadians)
             .radians
             .perSecond
 
     // Calculate feedback velocities (based on position error).
     val xFeedback =
-        -xPID.calculate(Drivetrain.pose.x.inMeters, desiredState.pose.x.inMeters).meters.perSecond
+        -xPID.calculate(drivetrain.pose.x.inMeters, desiredState.pose.x.inMeters).meters.perSecond
     val yFeedback =
-        -yPID.calculate(Drivetrain.pose.y.inMeters, desiredState.pose.y.inMeters).meters.perSecond
+        -yPID.calculate(drivetrain.pose.y.inMeters, desiredState.pose.y.inMeters).meters.perSecond
 
     val xAccel = desiredState.linearAcceleration * desiredState.curvature.cos
     val yAccel = desiredState.linearAcceleration * desiredState.curvature.sin
 
-    Drivetrain.set(
+    drivetrain.set(
         thetaFF,
         Pair(yFF + yFeedback, xFF + xFeedback),
         true,
@@ -138,7 +139,7 @@ class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
   override fun end(interrupted: Boolean) {
     if (interrupted) {
       // Stop where we are if interrupted
-      Drivetrain.set(0.degrees.perSecond, Pair(0.meters.perSecond, 0.meters.perSecond))
+      drivetrain.set(0.degrees.perSecond, Pair(0.meters.perSecond, 0.meters.perSecond))
     } else {
       // Execute one last time to end up in the final state of the trajectory
       // Since we weren't interrupted, we know curTime > endTime

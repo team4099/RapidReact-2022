@@ -7,13 +7,13 @@ import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj2.command.CommandBase
 
 // not final
-class FeederSerialize : CommandBase() {
+class FeederSerialize(val feeder: Feeder) : CommandBase() {
   var currentTime = 0.0
   var lastBrokenTime = 0.0
   var lastUnbrokenTime = 0.0
 
   init {
-    addRequirements(Feeder)
+    addRequirements(feeder)
   }
 
   override fun initialize() {
@@ -22,16 +22,16 @@ class FeederSerialize : CommandBase() {
 
   override fun execute() {
     currentTime = Timer.getFPGATimestamp()
-    if (Feeder.bottomBeamBroken) {
+    if (feeder.bottomBeamBroken) {
       lastBrokenTime = currentTime
     } else {
       lastUnbrokenTime = currentTime
     }
-    Feeder.feederState =
+    feeder.feederState =
         when {
           (lastUnbrokenTime - lastBrokenTime < FeederConstants.BEAM_BREAK_BACKWARDS_TIME) ->
               FeederConstants.FeederState.BACKWARD_VERTICAL
-          Feeder.topBeamBroken -> FeederConstants.FeederState.NEUTRAL
+          feeder.topBeamBroken -> FeederConstants.FeederState.NEUTRAL
           (currentTime - lastBrokenTime < FeederConstants.BEAM_BREAK_BROKEN_TIME) ->
               FeederConstants.FeederState.FORWARD_ALL
           else -> FeederConstants.FeederState.FORWARD_FLOOR

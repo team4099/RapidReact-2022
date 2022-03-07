@@ -5,13 +5,13 @@ import com.team4099.robot2022.subsystems.feeder.Feeder
 import com.team4099.robot2022.subsystems.shooter.Shooter
 import edu.wpi.first.wpilibj2.command.CommandBase
 
-class ShootCommand(val shooter: Shooter) : CommandBase() {
+class ShootCommand(val shooter: Shooter, val feeder: Feeder) : CommandBase() {
   init {
-    addRequirements(Feeder, shooter)
+    addRequirements(feeder, shooter)
   }
 
   override fun initialize() {
-    Feeder.feederState = FeederConstants.FeederState.SHOOT
+    feeder.feederState = FeederConstants.FeederState.SHOOT
   }
 
   override fun isFinished(): Boolean {

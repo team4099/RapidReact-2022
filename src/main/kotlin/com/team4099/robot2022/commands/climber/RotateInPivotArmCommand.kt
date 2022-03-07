@@ -4,17 +4,16 @@ import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.derived.inDegrees
 import com.team4099.robot2022.config.constants.PivotClimberConstants
 import com.team4099.robot2022.subsystems.climber.PivotClimber
-import com.team4099.robot2022.subsystems.climber.TelescopingClimber
 import edu.wpi.first.math.trajectory.TrapezoidProfile
 import edu.wpi.first.wpilibj2.command.CommandBase
 
-class RotateInPivotArmCommand : CommandBase() {
+class RotateInPivotArmCommand(val pivotClimber: PivotClimber) : CommandBase() {
   var goal: TrapezoidProfile.State = TrapezoidProfile.State(0.0, 0.0)
   lateinit var leftProfile: TrapezoidProfile
   lateinit var rightProfile: TrapezoidProfile
 
   init {
-    addRequirements(PivotClimber)
+    addRequirements(pivotClimber)
     goal = TrapezoidProfile.State(PivotClimberConstants.PivotArmPosition.IN.angle.inDegrees, 0.0)
   }
 
@@ -23,8 +22,8 @@ class RotateInPivotArmCommand : CommandBase() {
   }
 
   override fun execute() {
-    leftProfile = TrapezoidProfile(PivotClimber.constraints, goal, PivotClimber.leftSetpoint)
-    rightProfile = TrapezoidProfile(PivotClimber.constraints, goal, PivotClimber.rightSetpoint)
-    TelescopingClimber.setPosition(leftProfile, rightProfile, true)
+    leftProfile = TrapezoidProfile(pivotClimber.constraints, goal, pivotClimber.leftSetpoint)
+    rightProfile = TrapezoidProfile(pivotClimber.constraints, goal, pivotClimber.rightSetpoint)
+    pivotClimber.setAngle(leftProfile, rightProfile, true)
   }
 }

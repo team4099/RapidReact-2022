@@ -5,13 +5,13 @@ import com.team4099.robot2022.config.constants.ClimberConstants
 import com.team4099.robot2022.subsystems.climber.PivotClimber
 import edu.wpi.first.wpilibj2.command.CommandBase
 
-class PivotIdleCommand : CommandBase() {
+class PivotIdleCommand(val pivotClimber: PivotClimber) : CommandBase() {
   init {
-    addRequirements(PivotClimber)
+    addRequirements(pivotClimber)
   }
 
   override fun execute() {
-    PivotClimber.setOpenLoop(0.0, 0.0)
+    pivotClimber.setOpenLoop(0.0, 0.0)
   }
   override fun initialize() {
     Logger.addEvent(ClimberConstants.TAB, "Climber Idle")

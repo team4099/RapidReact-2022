@@ -7,18 +7,18 @@ import com.team4099.robot2022.commands.general.SysIdCommand
 import com.team4099.robot2022.subsystems.climber.PivotClimber
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 
-class PivotCharacterizationCommand : SequentialCommandGroup() {
+class PivotCharacterizationCommand(val pivotClimber: PivotClimber) : SequentialCommandGroup() {
   init {
     val pivotSetter =
-        { voltage: Double -> PivotClimber.setOpenLoop(voltage / 12.0, voltage / 12.0) }
+        { voltage: Double -> pivotClimber.setOpenLoop(voltage / 12.0, voltage / 12.0) }
 
     val pivotGetter =
         {
           SysIdCommand.MechanismSysIdData(
-              PivotClimber.pivotLeftArmSensor.position.inRadians,
-              PivotClimber.pivotLeftArmSensor.velocity.inRadiansPerSecond)
+              pivotClimber.pivotLeftArmSensor.position.inRadians,
+              pivotClimber.pivotLeftArmSensor.velocity.inRadiansPerSecond)
         }
     Logger.addEvent("Climber", "Started Telescoping Characterization")
-    addCommands(SysIdCommand(PivotClimber, pivotSetter, pivotGetter))
+    addCommands(SysIdCommand(pivotClimber, pivotSetter, pivotGetter))
   }
 }

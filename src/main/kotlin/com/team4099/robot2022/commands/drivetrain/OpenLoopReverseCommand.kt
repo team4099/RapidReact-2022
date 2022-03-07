@@ -6,13 +6,13 @@ import com.team4099.lib.units.perSecond
 import com.team4099.robot2022.subsystems.drivetrain.Drivetrain
 import edu.wpi.first.wpilibj2.command.CommandBase
 
-class OpenLoopReverseCommand() : CommandBase() {
+class OpenLoopReverseCommand(val drivetrain: Drivetrain) : CommandBase() {
   init {
-    addRequirements(Drivetrain)
+    addRequirements(drivetrain)
   }
 
   override fun execute() {
-    Drivetrain.setOpenLoop(
+    drivetrain.setOpenLoop(
         0.degrees.perSecond, Pair(0.0.feet.perSecond, 2.5.feet.perSecond), fieldOriented = false)
   }
 

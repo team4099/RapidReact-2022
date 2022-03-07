@@ -9,7 +9,7 @@ import com.team4099.robot2022.config.constants.FeederConstants
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 
-object Feeder : SubsystemBase() {
+class Feeder : SubsystemBase() {
 
   // The motor that takes balls from the intake
   private val floorMotor = TalonFX(Constants.Feeder.FLOOR_MOTOR_ID)

@@ -11,27 +11,27 @@ import com.team4099.robot2022.config.constants.DrivetrainConstants
 import com.team4099.robot2022.subsystems.drivetrain.Drivetrain
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 
-class DriveCharacterizeCommand : SequentialCommandGroup() {
+class DriveCharacterizeCommand(val drivetrain: Drivetrain) : SequentialCommandGroup() {
   init {
     val drivetrainSetter =
         { leftPower: Double, rightPower: Double ->
-          Drivetrain.swerveModules.forEach { it.setOpenLoop(0.degrees, leftPower / 12) }
+          drivetrain.swerveModules.forEach { it.setOpenLoop(0.degrees, leftPower / 12) }
         }
     val drivetrainGetter =
         {
           SysIdCommand.DriveTrainSysIdData(
-              Drivetrain.swerveModules[0].driveDistance.inMeters /
+              drivetrain.swerveModules[0].driveDistance.inMeters /
                   (DrivetrainConstants.WHEEL_DIAMETER.inMeters / 2),
-              Drivetrain.swerveModules[1].driveDistance.inMeters /
+              drivetrain.swerveModules[1].driveDistance.inMeters /
                   (DrivetrainConstants.WHEEL_DIAMETER.inMeters / 2),
-              Drivetrain.swerveModules[0].driveVelocity.inMetersPerSecond /
+              drivetrain.swerveModules[0].driveVelocity.inMetersPerSecond /
                   (DrivetrainConstants.WHEEL_DIAMETER.inMeters / 2),
-              Drivetrain.swerveModules[1].driveVelocity.inMetersPerSecond /
+              drivetrain.swerveModules[1].driveVelocity.inMetersPerSecond /
                   (DrivetrainConstants.WHEEL_DIAMETER.inMeters / 2),
-              Drivetrain.gyroAngle.inRadians,
-              Drivetrain.gyroRate.inRadiansPerSecond)
+              drivetrain.gyroAngle.inRadians,
+              drivetrain.gyroRate.inRadiansPerSecond)
         }
     Logger.addEvent("Drivetrain", "Started DriveCharacterizeCommand")
-    addCommands(SysIdCommand(Drivetrain, drivetrainSetter, drivetrainGetter))
+    addCommands(SysIdCommand(drivetrain, drivetrainSetter, drivetrainGetter))
   }
 }

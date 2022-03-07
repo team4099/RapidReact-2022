@@ -8,8 +8,8 @@ import com.team4099.robot2022.commands.climber.SpoolLeftDownCommand
 import com.team4099.robot2022.commands.climber.SpoolRightDownCommand
 import com.team4099.robot2022.commands.climber.SpootLeftUpCommand
 import com.team4099.robot2022.commands.climber.TelescopingIdleCommand
-import com.team4099.robot2022.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2022.commands.drivetrain.ResetGyroCommand
+import com.team4099.robot2022.commands.drivetrain.TeleopDriveCommand
 import com.team4099.robot2022.commands.feeder.FeederCommand
 import com.team4099.robot2022.commands.feeder.FeederIdleCommand
 import com.team4099.robot2022.commands.feeder.FeederSerialize
@@ -38,19 +38,28 @@ import edu.wpi.first.wpilibj.Compressor
 import edu.wpi.first.wpilibj.PneumaticsModuleType
 
 object RobotContainer {
+  private val drivetrain: Drivetrain
   private val intake: Intake
   private val shooter: Shooter
+  private val feeder: Feeder
+  private val telescopingClimber: TelescopingClimber
   private var compressor: Compressor? = null
 
   init {
     if (Constants.Tuning.type == Constants.Tuning.RobotType.REAL) {
       compressor = Compressor(PneumaticsModuleType.REVPH)
 
+      drivetrain = Drivetrain()
       intake = Intake(IntakeIOReal)
       shooter = Shooter(ShooterIOReal)
+      feeder = Feeder()
+      telescopingClimber = TelescopingClimber()
     } else {
+      drivetrain = Drivetrain()
       intake = Intake(object : IntakeIO {})
       shooter = Shooter(object : ShooterIO {})
+      feeder = Feeder()
+      telescopingClimber = TelescopingClimber()
     }
   }
 
@@ -63,52 +72,55 @@ object RobotContainer {
   }
 
   fun mapDefaultCommands() {
-    Drivetrain.defaultCommand =
-        OpenLoopDriveCommand(
+    drivetrain.defaultCommand =
+        TeleopDriveCommand(
             { ControlBoard.strafe.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
             { ControlBoard.forward.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
-            { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) })
+            { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) },
+            drivetrain)
     intake.defaultCommand = IntakeIdleCommand(intake)
     shooter.defaultCommand = ShooterIdleCommand(shooter)
-    Feeder.defaultCommand = FeederIdleCommand()
-    TelescopingClimber.defaultCommand = TelescopingIdleCommand()
+    feeder.defaultCommand = FeederIdleCommand(feeder)
+    telescopingClimber.defaultCommand = TelescopingIdleCommand(telescopingClimber)
     //    PivotClimber.defaultCommand = PivotIdleCommand()
     LED
   }
 
   fun zeroSensors() {
-    Drivetrain.zeroSensors()
+    drivetrain.zeroSensors()
   }
 
   fun mapTeleopControls() {
-    ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
+    ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand(drivetrain))
 
     ControlBoard.startShooter
-        .whileActiveOnce(SpinUpNearCommand(shooter).andThen(ShootCommand(shooter)))
+        .whileActiveOnce(SpinUpNearCommand(shooter).andThen(ShootCommand(shooter, feeder)))
     ControlBoard.startShooterFar
-        .whileActiveOnce(SpinUpFarCommand(shooter).andThen(ShootCommand(shooter)))
+        .whileActiveOnce(SpinUpFarCommand(shooter).andThen(ShootCommand(shooter, feeder)))
 
     ControlBoard.runIntake
-        .whileActiveContinuous(IntakeBallsCommand(intake).alongWith(FeederSerialize()))
+        .whileActiveContinuous(IntakeBallsCommand(intake).alongWith(FeederSerialize(feeder)))
     ControlBoard.prepareClimb.whileActiveContinuous(PrepareClimbCommand(intake))
     ControlBoard.outTake
         .whileActiveContinuous(
             ReverseIntakeCommand(intake).alongWith(
-                FeederCommand(FeederConstants.FeederState.BACKWARD_FLOOR)))
+                FeederCommand(feeder, FeederConstants.FeederState.BACKWARD_FLOOR)))
 
-    ControlBoard.extendTelescoping.whileActiveContinuous(OpenLoopExtendClimberCommand())
-    ControlBoard.retractTelescoping.whileActiveContinuous(OpenLoopClimbCommand())
+    ControlBoard.extendTelescoping
+        .whileActiveContinuous(OpenLoopExtendClimberCommand(telescopingClimber))
+    ControlBoard.retractTelescoping.whileActiveContinuous(OpenLoopClimbCommand(telescopingClimber))
 
     // ControlBoard.advanceAndClimb.whileActiveOnce(AdvanceClimberCommand().andThen(RunClimbCommand()))
     //    ControlBoard.climbWithoutAdvance.whileActiveOnce(RunClimbCommand())
   }
 
   fun mapTestControls() {
-    ControlBoard.leftSpoolDown.whileActiveContinuous(SpoolLeftDownCommand())
-    ControlBoard.rightSpoolDown.whileActiveContinuous(SpoolRightDownCommand())
-    ControlBoard.leftSpoolUp.whileActiveContinuous(SpootLeftUpCommand())
-    ControlBoard.rightSpoolUp.whileActiveContinuous(SpoolRightDownCommand())
+    ControlBoard.leftSpoolDown.whileActiveContinuous(SpoolLeftDownCommand(telescopingClimber))
+    ControlBoard.rightSpoolDown.whileActiveContinuous(SpoolRightDownCommand(telescopingClimber))
+    ControlBoard.leftSpoolUp.whileActiveContinuous(SpootLeftUpCommand(telescopingClimber))
+    ControlBoard.rightSpoolUp.whileActiveContinuous(SpoolRightDownCommand(telescopingClimber))
   }
 
-  fun getAutonomousCommand() = AutonomousSelector.getCommand(Drivetrain, intake, Feeder, shooter)
+  fun getAutonomousCommand() =
+      AutonomousSelector.getCommand(drivetrain, intake, feeder, shooter, telescopingClimber)
 }

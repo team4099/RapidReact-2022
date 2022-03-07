@@ -8,11 +8,12 @@ import kotlin.math.sign
 class TeleopDriveCommand(
   val driveX: () -> Double,
   val driveY: () -> Double,
-  val turn: () -> Double
+  val turn: () -> Double,
+  val drivetrain: Drivetrain
 ) : CommandBase() {
 
   init {
-    addRequirements(Drivetrain)
+    addRequirements(drivetrain)
   }
 
   override fun initialize() {}
@@ -23,7 +24,7 @@ class TeleopDriveCommand(
             DrivetrainConstants.DRIVE_SETPOINT_MAX * driveX() * driveX() * sign(driveX()),
             DrivetrainConstants.DRIVE_SETPOINT_MAX * driveY() * driveY() * sign(driveY()))
     val direction = DrivetrainConstants.TURN_SETPOINT_MAX * turn() * turn() * sign(turn())
-    Drivetrain.set(direction, speed, fieldOriented = true)
+    drivetrain.set(direction, speed, fieldOriented = true)
   }
   override fun isFinished(): Boolean {
     return false

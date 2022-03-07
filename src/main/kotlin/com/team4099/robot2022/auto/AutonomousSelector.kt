@@ -4,10 +4,10 @@ import com.team4099.lib.units.derived.Angle
 import com.team4099.lib.units.derived.degrees
 import com.team4099.robot2022.auto.commands.OneBallFenderShotThenTaxi
 import com.team4099.robot2022.auto.mode.TestAutoPath
-import com.team4099.robot2022.commands.climber.PivotCharacterizationCommand
 import com.team4099.robot2022.commands.climber.TelescopingCharacterizationCommand
 import com.team4099.robot2022.commands.drivetrain.DriveCharacterizeCommand
 import com.team4099.robot2022.commands.shooter.ShooterCharacterizeCommand
+import com.team4099.robot2022.subsystems.climber.TelescopingClimber
 import com.team4099.robot2022.subsystems.drivetrain.Drivetrain
 import com.team4099.robot2022.subsystems.feeder.Feeder
 import com.team4099.robot2022.subsystems.intake.Intake
@@ -46,19 +46,22 @@ object AutonomousSelector {
     drivetrain: Drivetrain,
     intake: Intake,
     feeder: Feeder,
-    shooter: Shooter
+    shooter: Shooter,
+    telescopingClimber: TelescopingClimber
   ): CommandBase {
     val mode = autonomousModeChooser.selected
     when (mode) {
-      AutonomousMode.TEST_AUTO_PATH -> return TestAutoPath()
-      AutonomousMode.CHARACTERIZE_DRIVETRAIN -> return DriveCharacterizeCommand()
+      AutonomousMode.TEST_AUTO_PATH -> return TestAutoPath(drivetrain)
+      AutonomousMode.CHARACTERIZE_DRIVETRAIN -> return DriveCharacterizeCommand(drivetrain)
       AutonomousMode.CHARACTERIZE_SHOOTER -> return ShooterCharacterizeCommand(shooter)
-      AutonomousMode.CHARACTERIZE_CLIMBER_TELESCOPE -> return TelescopingCharacterizationCommand()
-      AutonomousMode.CHARACTERIZE_CLIMBER_PIVOT -> return PivotCharacterizationCommand()
+      AutonomousMode.CHARACTERIZE_CLIMBER_TELESCOPE ->
+          return TelescopingCharacterizationCommand(telescopingClimber)
+      //      AutonomousMode.CHARACTERIZE_CLIMBER_PIVOT -> return
+      // PivotCharacterizationCommand(pivotClimber)
       AutonomousMode.ONE_BALL_FENDER_SHOT_THEN_TAXI_LEFT ->
-          return OneBallFenderShotThenTaxi(-24.degrees, shooter)
+          return OneBallFenderShotThenTaxi(drivetrain, feeder, shooter, -24.degrees)
       AutonomousMode.ONE_BALL_FENDER_SHOT_THEN_TAXI_RIGHT ->
-          return OneBallFenderShotThenTaxi(66.degrees, shooter)
+          return OneBallFenderShotThenTaxi(drivetrain, feeder, shooter, 66.degrees)
       else -> println("ERROR: unexpected auto mode: $mode")
     }
     return InstantCommand()

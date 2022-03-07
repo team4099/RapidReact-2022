@@ -7,13 +7,13 @@ import com.team4099.robot2022.subsystems.climber.TelescopingClimber
 import edu.wpi.first.math.trajectory.TrapezoidProfile
 import edu.wpi.first.wpilibj2.command.CommandBase
 
-class RetractTelescopingArmCommand : CommandBase() {
+class RetractTelescopingArmCommand(val telescopingClimber: TelescopingClimber) : CommandBase() {
   var goal: TrapezoidProfile.State = TrapezoidProfile.State(0.0, 0.0)
   lateinit var leftProfile: TrapezoidProfile
   lateinit var rightProfile: TrapezoidProfile
 
   init {
-    addRequirements(TelescopingClimber)
+    addRequirements(telescopingClimber)
     goal =
         TrapezoidProfile.State(
             TelescopingClimberConstants.TelescopingArmPosition.LOW.length.inMeters, 0.0)
@@ -25,9 +25,9 @@ class RetractTelescopingArmCommand : CommandBase() {
 
   override fun execute() {
     leftProfile =
-        TrapezoidProfile(TelescopingClimber.constraints, goal, TelescopingClimber.leftSetpoint)
+        TrapezoidProfile(telescopingClimber.constraints, goal, telescopingClimber.leftSetpoint)
     rightProfile =
-        TrapezoidProfile(TelescopingClimber.constraints, goal, TelescopingClimber.rightSetpoint)
-    TelescopingClimber.setPosition(leftProfile, rightProfile, true)
+        TrapezoidProfile(telescopingClimber.constraints, goal, telescopingClimber.rightSetpoint)
+    telescopingClimber.setPosition(leftProfile, rightProfile, true)
   }
 }

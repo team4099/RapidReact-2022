@@ -22,7 +22,7 @@ import com.team4099.robot2022.config.constants.TelescopingClimberConstants
 import edu.wpi.first.math.trajectory.TrapezoidProfile
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 
-object TelescopingClimber : SubsystemBase() {
+class TelescopingClimber : SubsystemBase() {
 
   private val telescopingRightArm: TalonFX = TalonFX(Constants.TelescopingClimber.R_ARM_ID)
   private val telescopingLeftArm: TalonFX = TalonFX(Constants.TelescopingClimber.L_ARM_ID)
