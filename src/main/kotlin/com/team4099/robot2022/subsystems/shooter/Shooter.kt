@@ -39,6 +39,8 @@ class Shooter(val io: ShooterIO) : SubsystemBase() {
   }
 
   override fun periodic() {
+    io.updateInputs(inputs)
+
     isOnTarget =
         state != ShooterConstants.ShooterState.OFF &&
             filter.calculate(inputs.velocity.inRotationsPerMinute)
