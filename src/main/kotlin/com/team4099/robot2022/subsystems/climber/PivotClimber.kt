@@ -1,4 +1,4 @@
-package com.team4099.robot2022.subsystems
+package com.team4099.robot2022.subsystems.climber
 
 import com.revrobotics.CANSparkMax
 import com.revrobotics.CANSparkMaxLowLevel

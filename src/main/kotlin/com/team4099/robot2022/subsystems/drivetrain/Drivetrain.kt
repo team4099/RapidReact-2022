@@ -1,4 +1,4 @@
-package com.team4099.robot2022.subsystems
+package com.team4099.robot2022.subsystems.drivetrain
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.kauailabs.navx.frc.AHRS
@@ -159,7 +159,7 @@ object Drivetrain : SubsystemBase() {
   }
 
   override fun periodic() {
-    this.updateOdometry()
+    updateOdometry()
   }
 
   /**

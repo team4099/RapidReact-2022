@@ -24,14 +24,14 @@ import com.team4099.robot2022.commands.shooter.SpinUpNearCommand
 import com.team4099.robot2022.config.ControlBoard
 import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.config.constants.FeederConstants
-import com.team4099.robot2022.subsystems.Drivetrain
-import com.team4099.robot2022.subsystems.Feeder
 import com.team4099.robot2022.subsystems.LED
-import com.team4099.robot2022.subsystems.Shooter
-import com.team4099.robot2022.subsystems.TelescopingClimber
+import com.team4099.robot2022.subsystems.climber.TelescopingClimber
+import com.team4099.robot2022.subsystems.drivetrain.Drivetrain
+import com.team4099.robot2022.subsystems.feeder.Feeder
 import com.team4099.robot2022.subsystems.intake.Intake
 import com.team4099.robot2022.subsystems.intake.IntakeIO
 import com.team4099.robot2022.subsystems.intake.IntakeIOReal
+import com.team4099.robot2022.subsystems.shooter.Shooter
 import edu.wpi.first.wpilibj.Compressor
 import edu.wpi.first.wpilibj.PneumaticsModuleType
 

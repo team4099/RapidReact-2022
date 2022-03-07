@@ -4,8 +4,8 @@ import com.team4099.lib.logging.Logger
 import com.team4099.robot2022.config.constants.ClimberConstants.DesiredPivotStates
 import com.team4099.robot2022.config.constants.ClimberConstants.DesiredTelescopeStates
 import com.team4099.robot2022.config.constants.ClimberConstants.TAB
-import com.team4099.robot2022.subsystems.PivotClimber
-import com.team4099.robot2022.subsystems.TelescopingClimber
+import com.team4099.robot2022.subsystems.climber.PivotClimber
+import com.team4099.robot2022.subsystems.climber.TelescopingClimber
 import edu.wpi.first.wpilibj2.command.CommandBase
 
 class AdvanceClimberCommand : CommandBase() {

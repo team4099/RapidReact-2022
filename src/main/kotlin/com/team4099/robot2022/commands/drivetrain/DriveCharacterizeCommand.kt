@@ -8,7 +8,7 @@ import com.team4099.lib.units.inMetersPerSecond
 import com.team4099.lib.units.inRadiansPerSecond
 import com.team4099.robot2022.commands.general.SysIdCommand
 import com.team4099.robot2022.config.constants.DrivetrainConstants
-import com.team4099.robot2022.subsystems.Drivetrain
+import com.team4099.robot2022.subsystems.drivetrain.Drivetrain
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 
 class DriveCharacterizeCommand : SequentialCommandGroup() {

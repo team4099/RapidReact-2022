@@ -1,4 +1,4 @@
-package com.team4099.robot2022.subsystems
+package com.team4099.robot2022.subsystems.feeder
 
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.NeutralMode
