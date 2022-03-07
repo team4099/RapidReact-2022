@@ -7,20 +7,20 @@ import com.team4099.robot2022.commands.general.SysIdCommand
 import com.team4099.robot2022.subsystems.shooter.Shooter
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 
-class ShooterCharacterizeCommand : SequentialCommandGroup() {
+class ShooterCharacterizeCommand(val shooter: Shooter) : SequentialCommandGroup() {
   init {
     val shooterSetter =
         { voltage: Double ->
-          Shooter.setOpenLoop(voltage / 12.0)
+          shooter.setOpenLoop(voltage / 12.0)
         //      println("ShooterSetter voltage $voltage")
         }
 
     val shooterGetter =
         {
           SysIdCommand.MechanismSysIdData(
-              Shooter.shooterPosition.inRadians, Shooter.shooterVelocity.inRadiansPerSecond)
+              shooter.inputs.position.inRadians, shooter.inputs.velocity.inRadiansPerSecond)
         }
     Logger.addEvent("Shooter", "Started ShooterCharacterizeCommand")
-    addCommands(SysIdCommand(Shooter, shooterSetter, shooterGetter))
+    addCommands(SysIdCommand(shooter, shooterSetter, shooterGetter))
   }
 }

@@ -9,14 +9,14 @@ import com.team4099.robot2022.subsystems.intake.Intake
 import com.team4099.robot2022.subsystems.shooter.Shooter
 import edu.wpi.first.wpilibj2.command.CommandBase
 
-class LedCommand(val intake: Intake) : CommandBase() {
+class LedCommand(val intake: Intake, val shooter: Shooter) : CommandBase() {
   init {}
 
   override fun execute() {
     LED.ledState =
-        when (Shooter.shooterState) {
+        when (shooter.shooterState) {
           ShooterConstants.ShooterState.SPIN_UP_NEAR, ShooterConstants.ShooterState.SPIN_UP_FAR -> {
-            if (Shooter.isOnTarget) {
+            if (shooter.isOnTarget) {
               LEDConstants.LEDState.READY_SHOOT
             } else {
               LEDConstants.LEDState.SPINNING_UP

@@ -4,13 +4,13 @@ import com.team4099.robot2022.config.constants.ShooterConstants
 import com.team4099.robot2022.subsystems.shooter.Shooter
 import edu.wpi.first.wpilibj2.command.CommandBase
 
-class ShooterIdleCommand : CommandBase() {
+class ShooterIdleCommand(val shooter: Shooter) : CommandBase() {
   init {
-    addRequirements(Shooter)
+    addRequirements(shooter)
   }
 
   override fun initialize() {
-    Shooter.shooterState = ShooterConstants.ShooterState.OFF
+    shooter.shooterState = ShooterConstants.ShooterState.OFF
   }
 
   override fun isFinished(): Boolean = false

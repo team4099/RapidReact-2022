@@ -5,9 +5,9 @@ import com.team4099.robot2022.subsystems.feeder.Feeder
 import com.team4099.robot2022.subsystems.shooter.Shooter
 import edu.wpi.first.wpilibj2.command.CommandBase
 
-class ShootCommand() : CommandBase() {
+class ShootCommand(val shooter: Shooter) : CommandBase() {
   init {
-    addRequirements(Feeder, Shooter)
+    addRequirements(Feeder, shooter)
   }
 
   override fun initialize() {

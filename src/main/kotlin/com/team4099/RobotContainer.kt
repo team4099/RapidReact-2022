@@ -32,11 +32,14 @@ import com.team4099.robot2022.subsystems.intake.Intake
 import com.team4099.robot2022.subsystems.intake.IntakeIO
 import com.team4099.robot2022.subsystems.intake.IntakeIOReal
 import com.team4099.robot2022.subsystems.shooter.Shooter
+import com.team4099.robot2022.subsystems.shooter.ShooterIO
+import com.team4099.robot2022.subsystems.shooter.ShooterIOReal
 import edu.wpi.first.wpilibj.Compressor
 import edu.wpi.first.wpilibj.PneumaticsModuleType
 
 object RobotContainer {
   private val intake: Intake
+  private val shooter: Shooter
   private var compressor: Compressor? = null
 
   init {
@@ -44,8 +47,10 @@ object RobotContainer {
       compressor = Compressor(PneumaticsModuleType.REVPH)
 
       intake = Intake(IntakeIOReal)
+      shooter = Shooter(ShooterIOReal)
     } else {
       intake = Intake(object : IntakeIO {})
+      shooter = Shooter(object : ShooterIO {})
     }
   }
 
@@ -64,7 +69,7 @@ object RobotContainer {
             { ControlBoard.forward.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
             { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) })
     intake.defaultCommand = IntakeIdleCommand(intake)
-    Shooter.defaultCommand = ShooterIdleCommand()
+    shooter.defaultCommand = ShooterIdleCommand(shooter)
     Feeder.defaultCommand = FeederIdleCommand()
     TelescopingClimber.defaultCommand = TelescopingIdleCommand()
     //    PivotClimber.defaultCommand = PivotIdleCommand()
@@ -78,8 +83,10 @@ object RobotContainer {
   fun mapTeleopControls() {
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
 
-    ControlBoard.startShooter.whileActiveOnce(SpinUpNearCommand().andThen(ShootCommand()))
-    ControlBoard.startShooterFar.whileActiveOnce(SpinUpFarCommand().andThen(ShootCommand()))
+    ControlBoard.startShooter
+        .whileActiveOnce(SpinUpNearCommand(shooter).andThen(ShootCommand(shooter)))
+    ControlBoard.startShooterFar
+        .whileActiveOnce(SpinUpFarCommand(shooter).andThen(ShootCommand(shooter)))
 
     ControlBoard.runIntake
         .whileActiveContinuous(IntakeBallsCommand(intake).alongWith(FeederSerialize()))
@@ -103,5 +110,5 @@ object RobotContainer {
     ControlBoard.rightSpoolUp.whileActiveContinuous(SpoolRightDownCommand())
   }
 
-  fun getAutonomousCommand() = AutonomousSelector.getCommand()
+  fun getAutonomousCommand() = AutonomousSelector.getCommand(Drivetrain, intake, Feeder, shooter)
 }

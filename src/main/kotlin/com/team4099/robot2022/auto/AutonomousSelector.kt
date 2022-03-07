@@ -8,6 +8,10 @@ import com.team4099.robot2022.commands.climber.PivotCharacterizationCommand
 import com.team4099.robot2022.commands.climber.TelescopingCharacterizationCommand
 import com.team4099.robot2022.commands.drivetrain.DriveCharacterizeCommand
 import com.team4099.robot2022.commands.shooter.ShooterCharacterizeCommand
+import com.team4099.robot2022.subsystems.drivetrain.Drivetrain
+import com.team4099.robot2022.subsystems.feeder.Feeder
+import com.team4099.robot2022.subsystems.intake.Intake
+import com.team4099.robot2022.subsystems.shooter.Shooter
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 import edu.wpi.first.wpilibj2.command.CommandBase
@@ -38,18 +42,23 @@ object AutonomousSelector {
     autoTab.add("Mode", autonomousModeChooser)
   }
 
-  fun getCommand(): CommandBase {
+  fun getCommand(
+    drivetrain: Drivetrain,
+    intake: Intake,
+    feeder: Feeder,
+    shooter: Shooter
+  ): CommandBase {
     val mode = autonomousModeChooser.selected
     when (mode) {
       AutonomousMode.TEST_AUTO_PATH -> return TestAutoPath()
       AutonomousMode.CHARACTERIZE_DRIVETRAIN -> return DriveCharacterizeCommand()
-      AutonomousMode.CHARACTERIZE_SHOOTER -> return ShooterCharacterizeCommand()
+      AutonomousMode.CHARACTERIZE_SHOOTER -> return ShooterCharacterizeCommand(shooter)
       AutonomousMode.CHARACTERIZE_CLIMBER_TELESCOPE -> return TelescopingCharacterizationCommand()
       AutonomousMode.CHARACTERIZE_CLIMBER_PIVOT -> return PivotCharacterizationCommand()
       AutonomousMode.ONE_BALL_FENDER_SHOT_THEN_TAXI_LEFT ->
-          return OneBallFenderShotThenTaxi(-24.degrees)
+          return OneBallFenderShotThenTaxi(-24.degrees, shooter)
       AutonomousMode.ONE_BALL_FENDER_SHOT_THEN_TAXI_RIGHT ->
-          return OneBallFenderShotThenTaxi(66.degrees)
+          return OneBallFenderShotThenTaxi(66.degrees, shooter)
       else -> println("ERROR: unexpected auto mode: $mode")
     }
     return InstantCommand()
