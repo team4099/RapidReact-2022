@@ -1,6 +1,5 @@
 package com.team4099.robot2022.subsystems.drivetrain
 
-import com.team4099.lib.units.Acceleration
 import com.team4099.lib.units.AngularAcceleration
 import com.team4099.lib.units.AngularVelocity
 import com.team4099.lib.units.LinearAcceleration
@@ -10,7 +9,6 @@ import com.team4099.lib.units.base.inAmperes
 import com.team4099.lib.units.base.inMeters
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.Angle
-import com.team4099.lib.units.derived.ElectricalPotential
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.inRadians
 import com.team4099.lib.units.derived.inVolts
@@ -19,12 +17,11 @@ import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.inMetersPerSecond
 import com.team4099.lib.units.inRadiansPerSecond
 import com.team4099.lib.units.perSecond
-import edu.wpi.first.math.controller.ArmFeedforward
 import org.littletonrobotics.junction.LogTable
 import org.littletonrobotics.junction.inputs.LoggableInputs
 
 interface SwerveModuleIO {
-  class SwerveModuleIOInputs: LoggableInputs {
+  class SwerveModuleIOInputs : LoggableInputs {
     var driveAppliedVoltage = 0.0.volts
     var steeringAppliedVoltage = 0.0.volts
 
@@ -58,16 +55,35 @@ interface SwerveModuleIO {
     }
 
     override fun fromLog(table: LogTable?) {
-      table?.getDouble("driveAppliedVoltage", driveAppliedVoltage.inVolts)?.let { driveAppliedVoltage = it.volts }
-      table?.getDouble("steeringAppliedVoltage", steeringAppliedVoltage.inVolts)?.let { steeringAppliedVoltage = it.volts }
-      table?.getDouble("driveStatorCurrentAmps", driveStatorCurrent.inAmperes)?.let { driveStatorCurrent = it.amps }
-      table?.getDouble("driveSupplyCurrentAmps", driveSupplyCurrent.inAmperes)?.let { driveSupplyCurrent = it.amps }
-      table?.getDouble("steeringStatorCurrentAmps", steeringStatorCurrent.inAmperes)?.let { steeringStatorCurrent = it.amps }
-      table?.getDouble("steeringSupplyCurrentAmps", steeringSupplyCurrent.inAmperes)?.let { steeringSupplyCurrent = it.amps }
-      table?.getDouble("drivePositionMeters", drivePosition.inMeters)?.let { drivePosition = it.meters }
-      table?.getDouble("steeringPositionRadians", steeringPosition.inRadians)?.let { steeringPosition = it.radians }
-      table?.getDouble("driveVelocityMetersPerSecond", driveVelocity.inMetersPerSecond)?.let { driveVelocity = it.meters.perSecond }
-      table?.getDouble("steeringVelocityRadiansPerSecond", steeringVelocity.inRadiansPerSecond)?.let { steeringVelocity = it.radians.perSecond }
+      table?.getDouble("driveAppliedVoltage", driveAppliedVoltage.inVolts)?.let {
+        driveAppliedVoltage = it.volts
+      }
+      table?.getDouble("steeringAppliedVoltage", steeringAppliedVoltage.inVolts)?.let {
+        steeringAppliedVoltage = it.volts
+      }
+      table?.getDouble("driveStatorCurrentAmps", driveStatorCurrent.inAmperes)?.let {
+        driveStatorCurrent = it.amps
+      }
+      table?.getDouble("driveSupplyCurrentAmps", driveSupplyCurrent.inAmperes)?.let {
+        driveSupplyCurrent = it.amps
+      }
+      table?.getDouble("steeringStatorCurrentAmps", steeringStatorCurrent.inAmperes)?.let {
+        steeringStatorCurrent = it.amps
+      }
+      table?.getDouble("steeringSupplyCurrentAmps", steeringSupplyCurrent.inAmperes)?.let {
+        steeringSupplyCurrent = it.amps
+      }
+      table?.getDouble("drivePositionMeters", drivePosition.inMeters)?.let {
+        drivePosition = it.meters
+      }
+      table?.getDouble("steeringPositionRadians", steeringPosition.inRadians)?.let {
+        steeringPosition = it.radians
+      }
+      table?.getDouble("driveVelocityMetersPerSecond", driveVelocity.inMetersPerSecond)?.let {
+        driveVelocity = it.meters.perSecond
+      }
+      table?.getDouble("steeringVelocityRadiansPerSecond", steeringVelocity.inRadiansPerSecond)
+          ?.let { steeringVelocity = it.radians.perSecond }
       table?.getDouble("driveTempCelcius", driveTempCelcius)?.let { driveTempCelcius = it }
       table?.getDouble("steeringTempCelcius", steeringTempCelcius)?.let { steeringTempCelcius = it }
     }
@@ -88,5 +104,4 @@ interface SwerveModuleIO {
   fun configureDrivePID(kP: Double, kI: Double, kD: Double) {}
   fun configureSteeringPID(kP: Double, kI: Double, kD: Double) {}
   fun configureSteeringMotionMagic(maxVel: AngularVelocity, maxAccel: AngularAcceleration) {}
-
 }

@@ -27,6 +27,8 @@ import com.team4099.robot2022.config.constants.FeederConstants
 import com.team4099.robot2022.subsystems.LED
 import com.team4099.robot2022.subsystems.climber.TelescopingClimber
 import com.team4099.robot2022.subsystems.drivetrain.Drivetrain
+import com.team4099.robot2022.subsystems.drivetrain.DrivetrainIO
+import com.team4099.robot2022.subsystems.drivetrain.DrivetrainIOReal
 import com.team4099.robot2022.subsystems.feeder.Feeder
 import com.team4099.robot2022.subsystems.feeder.FeederIO
 import com.team4099.robot2022.subsystems.feeder.FeederIOReal
@@ -51,13 +53,13 @@ object RobotContainer {
     if (Constants.Tuning.type == Constants.Tuning.RobotType.REAL) {
       compressor = Compressor(PneumaticsModuleType.REVPH)
 
-      drivetrain = Drivetrain()
+      drivetrain = Drivetrain(DrivetrainIOReal)
       intake = Intake(IntakeIOReal)
       shooter = Shooter(ShooterIOReal)
       feeder = Feeder(FeederIOReal)
       telescopingClimber = TelescopingClimber()
     } else {
-      drivetrain = Drivetrain()
+      drivetrain = Drivetrain(object : DrivetrainIO {})
       intake = Intake(object : IntakeIO {})
       shooter = Shooter(object : ShooterIO {})
       feeder = Feeder(object : FeederIO {})

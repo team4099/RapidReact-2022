@@ -20,16 +20,16 @@ class DriveCharacterizeCommand(val drivetrain: Drivetrain) : SequentialCommandGr
     val drivetrainGetter =
         {
           SysIdCommand.DriveTrainSysIdData(
-              drivetrain.swerveModules[0].driveDistance.inMeters /
+              drivetrain.swerveModules[0].inputs.drivePosition.inMeters /
                   (DrivetrainConstants.WHEEL_DIAMETER.inMeters / 2),
-              drivetrain.swerveModules[1].driveDistance.inMeters /
+              drivetrain.swerveModules[1].inputs.drivePosition.inMeters /
                   (DrivetrainConstants.WHEEL_DIAMETER.inMeters / 2),
-              drivetrain.swerveModules[0].driveVelocity.inMetersPerSecond /
+              drivetrain.swerveModules[0].inputs.driveVelocity.inMetersPerSecond /
                   (DrivetrainConstants.WHEEL_DIAMETER.inMeters / 2),
-              drivetrain.swerveModules[1].driveVelocity.inMetersPerSecond /
+              drivetrain.swerveModules[1].inputs.driveVelocity.inMetersPerSecond /
                   (DrivetrainConstants.WHEEL_DIAMETER.inMeters / 2),
-              drivetrain.gyroAngle.inRadians,
-              drivetrain.gyroRate.inRadiansPerSecond)
+              drivetrain.inputs.gyroAngle.inRadians,
+              drivetrain.inputs.gyroVelocity.inRadiansPerSecond)
         }
     Logger.addEvent("Drivetrain", "Started DriveCharacterizeCommand")
     addCommands(SysIdCommand(drivetrain, drivetrainSetter, drivetrainGetter))

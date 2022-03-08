@@ -1,69 +1,41 @@
 package com.team4099.robot2022.subsystems.drivetrain
 
-import com.ctre.phoenix.motorcontrol.can.TalonFX
-import com.kauailabs.navx.frc.AHRS
 import com.team4099.lib.geometry.Pose
 import com.team4099.lib.geometry.Translation
-import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.AngularAcceleration
 import com.team4099.lib.units.AngularVelocity
 import com.team4099.lib.units.LinearAcceleration
 import com.team4099.lib.units.LinearVelocity
 import com.team4099.lib.units.base.feet
-import com.team4099.lib.units.base.inFeet
+import com.team4099.lib.units.base.inMeters
 import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.Angle
 import com.team4099.lib.units.derived.cos
 import com.team4099.lib.units.derived.degrees
-import com.team4099.lib.units.derived.inDegrees
+import com.team4099.lib.units.derived.inRadians
 import com.team4099.lib.units.derived.inRotation2ds
 import com.team4099.lib.units.derived.radians
 import com.team4099.lib.units.derived.sin
 import com.team4099.lib.units.derived.times
-import com.team4099.lib.units.inFeetPerSecond
 import com.team4099.lib.units.inMetersPerSecond
 import com.team4099.lib.units.perSecond
-import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.config.constants.DrivetrainConstants
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry
 import edu.wpi.first.math.kinematics.SwerveModuleState
-import edu.wpi.first.wpilibj.AnalogPotentiometer
 import edu.wpi.first.wpilibj2.command.SubsystemBase
-import kotlin.math.IEEErem
-import kotlin.math.PI
+import org.littletonrobotics.junction.Logger
 
-class Drivetrain : SubsystemBase() {
-  val swerveModules =
-      listOf(
-          SwerveModule(
-              TalonFX(Constants.Drivetrain.FRONT_LEFT_STEERING_ID),
-              TalonFX(Constants.Drivetrain.FRONT_LEFT_DRIVE_ID),
-              AnalogPotentiometer(
-                  Constants.Drivetrain.FRONT_LEFT_ANALOG_POTENTIOMETER, 2 * PI, 0.0),
-              DrivetrainConstants.FRONT_LEFT_MODULE_ZERO,
-              "Front Left Wheel"),
-          SwerveModule(
-              TalonFX(Constants.Drivetrain.FRONT_RIGHT_STEERING_ID),
-              TalonFX(Constants.Drivetrain.FRONT_RIGHT_DRIVE_ID),
-              AnalogPotentiometer(
-                  Constants.Drivetrain.FRONT_RIGHT_ANALOG_POTENTIOMETER, 2 * PI, 0.0),
-              DrivetrainConstants.FRONT_RIGHT_MODULE_ZERO,
-              "Front Right Wheel"),
-          SwerveModule(
-              TalonFX(Constants.Drivetrain.BACK_LEFT_STEERING_ID),
-              TalonFX(Constants.Drivetrain.BACK_LEFT_DRIVE_ID),
-              AnalogPotentiometer(Constants.Drivetrain.BACK_LEFT_ANALOG_POTENTIOMETER, 2 * PI, 0.0),
-              DrivetrainConstants.BACK_LEFT_MODULE_ZERO,
-              "Back Left Wheel"),
-          SwerveModule(
-              TalonFX(Constants.Drivetrain.BACK_RIGHT_STEERING_ID),
-              TalonFX(Constants.Drivetrain.BACK_RIGHT_DRIVE_ID),
-              AnalogPotentiometer(
-                  Constants.Drivetrain.BACK_RIGHT_ANALOG_POTENTIOMETER, 2 * PI, 0.0),
-              DrivetrainConstants.BACK_RIGHT_MODULE_ZERO,
-              "Back Right Wheel"))
+class Drivetrain(val io: DrivetrainIO) : SubsystemBase() {
+  val inputs = DrivetrainIO.DrivetrainIOInputs()
+
+  val swerveModules = io.getSwerveModules()
+
+  init {
+    // Wheel speeds
+    zeroSteering()
+  }
 
   private val wheelSpeeds =
       mutableListOf(0.feet.perSecond, 0.feet.perSecond, 0.feet.perSecond, 0.feet.perSecond)
@@ -76,29 +48,6 @@ class Drivetrain : SubsystemBase() {
           0.feet.perSecond.perSecond,
           0.feet.perSecond.perSecond,
           0.feet.perSecond.perSecond)
-
-  private val gyro = AHRS()
-  val gyroRate: AngularVelocity
-    get() {
-      if (gyro.isConnected) {
-        return gyro.rate.degrees.perSecond
-      } else {
-        return -1.337.degrees.perSecond
-      }
-    }
-
-  var gyroOffset: Angle = 0.0.degrees
-  /** The current angle of the drivetrain. */
-  val gyroAngle: Angle
-    get() {
-      if (gyro.isConnected) {
-        var rawAngle = gyro.angle + gyroOffset.inDegrees
-        rawAngle += DrivetrainConstants.GYRO_RATE_COEFFICIENT * gyro.rate
-        return rawAngle.IEEErem(360.0).degrees
-      } else {
-        return -1.337.degrees
-      }
-    }
 
   private val frontLeftWheelLocation =
       Translation(
@@ -123,43 +72,41 @@ class Drivetrain : SubsystemBase() {
   private val swerveDriveOdometry =
       SwerveDriveOdometry(
           swerveDriveKinematics,
-          gyroAngle.inRotation2ds,
+          inputs.gyroAngle.inRotation2ds,
           Pose(0.meters, 0.meters, 0.degrees).pose2d)
 
   var pose: Pose
     get() = Pose(swerveDriveOdometry.poseMeters)
     set(value) {
-      swerveDriveOdometry.resetPosition(value.pose2d, gyroAngle.inRotation2ds)
+      swerveDriveOdometry.resetPosition(value.pose2d, inputs.gyroAngle.inRotation2ds)
       zeroGyro(pose.theta)
     }
 
-  init {
-    // Wheel speeds
-    Logger.addSource("Drivetrain", "Front Left Wheel Speed") { wheelSpeeds[0].inFeetPerSecond }
-    Logger.addSource("Drivetrain", "Front Right Wheel Speed") { wheelSpeeds[1].inFeetPerSecond }
-    Logger.addSource("Drivetrain", "Back Left Wheel Speed") { wheelSpeeds[2].inFeetPerSecond }
-    Logger.addSource("Drivetrain", "Back Right Wheel Speed") { wheelSpeeds[3].inFeetPerSecond }
+  override fun periodic() {
+    io.updateInputs(inputs)
+    swerveModules.forEach { it.periodic() }
+    updateOdometry()
+
+    Logger.getInstance().processInputs("Drivetrain", inputs)
+
+    Logger.getInstance()
+        .recordOutput("Drivetrain/frontLeftSpeedMetersPerSecond", wheelSpeeds[0].inMetersPerSecond)
+    Logger.getInstance()
+        .recordOutput("Drivetrain/frontRightSpeedMetersPerSecond", wheelSpeeds[1].inMetersPerSecond)
+    Logger.getInstance()
+        .recordOutput("Drivetrain/backLeftSpeedMetersPerSecond", wheelSpeeds[2].inMetersPerSecond)
+    Logger.getInstance()
+        .recordOutput("Drivetrain/backRightSpeedMetersPerSecond", wheelSpeeds[3].inMetersPerSecond)
 
     // Wheel angles
-    Logger.addSource("Drivetrain", "Front Left Wheel Angles") { wheelAngles[0].inDegrees }
-    Logger.addSource("Drivetrain", "Front Right Wheel Angles") { wheelAngles[1].inDegrees }
-    Logger.addSource("Drivetrain", "Back Left Wheel Angles") { wheelAngles[2].inDegrees }
-    Logger.addSource("Drivetrain", "Back Right Wheel Angles") { wheelAngles[3].inDegrees }
+    Logger.getInstance().recordOutput("Drivetrain/frontLeftAngleRadians", wheelAngles[0].inRadians)
+    Logger.getInstance().recordOutput("Drivetrain/frontRightAngleRadians", wheelAngles[1].inRadians)
+    Logger.getInstance().recordOutput("Drivetrain/backLeftAngleRadians", wheelAngles[2].inRadians)
+    Logger.getInstance().recordOutput("Drivetrain/backRightAngleRadians", wheelAngles[3].inRadians)
 
-    //  gyro angle
-    Logger.addSource("Drivetrain", "Gyro Angle") { gyroAngle.inDegrees }
-
-    //  if gyro is connected boolean
-    Logger.addSource("Drivetrain", "Gyro Connected") {}
-
-    Logger.addSource("Drivetrain", "pos x") { pose.x.inFeet }
-    Logger.addSource("Drivetrain", "pos y") { pose.y.inFeet }
-
-    zeroSteering()
-  }
-
-  override fun periodic() {
-    updateOdometry()
+    Logger.getInstance().recordOutput("Drivetrain/poseXMeters", pose.x.inMeters)
+    Logger.getInstance().recordOutput("Drivetrain/poseYMeters", pose.y.inMeters)
+    Logger.getInstance().recordOutput("Drivetrain/poseThetaRadians", pose.theta.inRadians)
   }
 
   /**
@@ -187,26 +134,28 @@ class Drivetrain : SubsystemBase() {
     //    Logger.addEvent("Drivetrain", "gyro angle: ${(-gyroAngle).inDegrees}")
     val vX =
         if (fieldOriented) {
-          driveVector.first * (-gyroAngle).cos - driveVector.second * (-gyroAngle).sin
+          driveVector.first * (-inputs.gyroAngle).cos - driveVector.second * (-inputs.gyroAngle).sin
         } else {
           driveVector.first
         }
     val vY =
         if (fieldOriented) {
-          driveVector.second * (-gyroAngle).cos + driveVector.first * (-gyroAngle).sin
+          driveVector.second * (-inputs.gyroAngle).cos + driveVector.first * (-inputs.gyroAngle).sin
         } else {
           driveVector.second
         }
 
     val aY =
         if (fieldOriented) {
-          driveAcceleration.second * (-gyroAngle).cos + driveAcceleration.first * (-gyroAngle).sin
+          driveAcceleration.second * (-inputs.gyroAngle).cos +
+              driveAcceleration.first * (-inputs.gyroAngle).sin
         } else {
           driveAcceleration.second
         }
     val aX =
         if (fieldOriented) {
-          driveAcceleration.first * (-gyroAngle).cos - driveAcceleration.second * (-gyroAngle).sin
+          driveAcceleration.first * (-inputs.gyroAngle).cos -
+              driveAcceleration.second * (-inputs.gyroAngle).sin
         } else {
           driveAcceleration.first
         }
@@ -275,13 +224,13 @@ class Drivetrain : SubsystemBase() {
 
     val vX =
         if (fieldOriented) {
-          driveVector.first * (-gyroAngle).cos - driveVector.second * (-gyroAngle).sin
+          driveVector.first * (-inputs.gyroAngle).cos - driveVector.second * (-inputs.gyroAngle).sin
         } else {
           driveVector.first
         }
     val vY =
         if (fieldOriented) {
-          driveVector.second * (-gyroAngle).cos + driveVector.first * (-gyroAngle).sin
+          driveVector.second * (-inputs.gyroAngle).cos + driveVector.first * (-inputs.gyroAngle).sin
         } else {
           driveVector.second
         }
@@ -321,19 +270,19 @@ class Drivetrain : SubsystemBase() {
 
   private fun updateOdometry() {
     swerveDriveOdometry.update(
-        gyroAngle.inRotation2ds,
+        inputs.gyroAngle.inRotation2ds,
         SwerveModuleState(
-            swerveModules[0].driveVelocity.inMetersPerSecond,
-            swerveModules[0].steeringPosition.inRotation2ds),
+            swerveModules[0].inputs.driveVelocity.inMetersPerSecond,
+            swerveModules[0].inputs.steeringPosition.inRotation2ds),
         SwerveModuleState(
-            swerveModules[1].driveVelocity.inMetersPerSecond,
-            swerveModules[1].steeringPosition.inRotation2ds),
+            swerveModules[1].inputs.driveVelocity.inMetersPerSecond,
+            swerveModules[1].inputs.steeringPosition.inRotation2ds),
         SwerveModuleState(
-            swerveModules[2].driveVelocity.inMetersPerSecond,
-            swerveModules[2].steeringPosition.inRotation2ds),
+            swerveModules[2].inputs.driveVelocity.inMetersPerSecond,
+            swerveModules[2].inputs.steeringPosition.inRotation2ds),
         SwerveModuleState(
-            swerveModules[3].driveVelocity.inMetersPerSecond,
-            swerveModules[3].steeringPosition.inRotation2ds))
+            swerveModules[3].inputs.driveVelocity.inMetersPerSecond,
+            swerveModules[3].inputs.steeringPosition.inRotation2ds))
   }
 
   private fun hypot(a: LinearVelocity, b: LinearVelocity): LinearVelocity {
@@ -361,7 +310,7 @@ class Drivetrain : SubsystemBase() {
    * @param toAngle Zeros the gyro to the value
    */
   fun zeroGyro(toAngle: Angle = 0.degrees) {
-    gyroOffset = (toAngle.inDegrees - gyro.angle).degrees
+    io.zeroGyro(toAngle)
   }
 
   /** Zeros the steering motors for each swerve module. */
