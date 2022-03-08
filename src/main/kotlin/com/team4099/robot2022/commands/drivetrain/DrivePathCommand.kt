@@ -132,6 +132,8 @@ class DrivePathCommand(
     val xAccel = desiredState.linearAcceleration * desiredState.curvature.cos
     val yAccel = desiredState.linearAcceleration * desiredState.curvature.sin
 
+    drivetrain.targetPose = desiredState.pose
+
     drivetrain.set(
         thetaFF,
         Pair(yFF + yFeedback, xFF + xFeedback),
