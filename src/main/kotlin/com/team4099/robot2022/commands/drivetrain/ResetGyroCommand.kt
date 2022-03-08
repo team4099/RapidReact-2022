@@ -14,4 +14,8 @@ class ResetGyroCommand(val drivetrain: Drivetrain, val toAngle: Angle = 0.0.degr
   override fun initialize() {
     drivetrain.zeroGyro(toAngle)
   }
+
+  override fun isFinished(): Boolean {
+    return true
+  }
 }

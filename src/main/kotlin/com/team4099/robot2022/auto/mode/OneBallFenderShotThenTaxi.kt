@@ -1,4 +1,4 @@
-package com.team4099.robot2022.auto.commands
+package com.team4099.robot2022.auto.mode
 
 import com.team4099.lib.units.derived.Angle
 import com.team4099.robot2022.commands.drivetrain.OpenLoopReverseCommand
@@ -22,7 +22,7 @@ class OneBallFenderShotThenTaxi(
     addCommands(
         ResetGyroCommand(drivetrain, startingAngle),
         ParallelDeadlineGroup(
-            WaitCommand(3.0), SpinUpNearCommand(shooter).andThen(ShootCommand(shooter, feeder))),
-        OpenLoopReverseCommand(drivetrain).withTimeout(4.0))
+            WaitCommand(5.0), SpinUpNearCommand(shooter).andThen(ShootCommand(shooter, feeder))),
+        OpenLoopReverseCommand(drivetrain).withTimeout(6.0))
   }
 }

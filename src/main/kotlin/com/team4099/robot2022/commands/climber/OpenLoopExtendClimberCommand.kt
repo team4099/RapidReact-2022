@@ -10,7 +10,7 @@ class OpenLoopExtendClimberCommand(val telescopingClimber: TelescopingClimber) :
   }
 
   override fun execute() {
-    telescopingClimber.setOpenLoop(0.3, 0.3)
+    telescopingClimber.setOpenLoop(1.0, 1.0)
 
     Logger.addEvent("Climber", "Telescoping climber spooling up")
   }

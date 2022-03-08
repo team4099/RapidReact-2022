@@ -50,6 +50,6 @@ object ControlBoard {
   val leftSpoolDown = Trigger { technician.leftShoulderButton }
   val rightSpoolDown = Trigger { technician.rightShoulderButton }
 
-  val leftSpoolUp = Trigger { driver.leftTriggerAxis > 0.5 }
-  val rightSpoolUp = Trigger { driver.rightTriggerAxis > 0.5 }
+  val leftSpoolUp = Trigger { technician.leftTriggerAxis > 0.5 }
+  val rightSpoolUp = Trigger { technician.rightTriggerAxis > 0.5 }
 }

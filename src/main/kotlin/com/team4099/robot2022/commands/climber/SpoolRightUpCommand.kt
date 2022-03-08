@@ -10,13 +10,13 @@ class SpoolRightUpCommand(val telescopingClimber: TelescopingClimber) : CommandB
   }
 
   override fun execute() {
-    telescopingClimber.setOpenLoop(0.0, 0.5, useSoftLimits = false)
+    telescopingClimber.setOpenLoop(0.0, 0.75, useSoftLimits = false)
 
     Logger.addEvent("Climber", "Right Climber spooling up")
   }
 
   override fun end(interrupted: Boolean) {
     telescopingClimber.setOpenLoop(0.0, 0.0)
-    telescopingClimber.zeroLeftEncoder()
+//    telescopingClimber.zeroLeftEncoder()
   }
 }

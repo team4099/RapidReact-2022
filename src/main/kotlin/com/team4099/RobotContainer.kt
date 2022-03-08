@@ -6,7 +6,7 @@ import com.team4099.robot2022.commands.climber.OpenLoopClimbCommand
 import com.team4099.robot2022.commands.climber.OpenLoopExtendClimberCommand
 import com.team4099.robot2022.commands.climber.SpoolLeftDownCommand
 import com.team4099.robot2022.commands.climber.SpoolRightDownCommand
-import com.team4099.robot2022.commands.climber.SpootLeftUpCommand
+import com.team4099.robot2022.commands.climber.SpoolLeftUpCommand
 import com.team4099.robot2022.commands.climber.TelescopingIdleCommand
 import com.team4099.robot2022.commands.drivetrain.ResetGyroCommand
 import com.team4099.robot2022.commands.drivetrain.TeleopDriveCommand
@@ -119,13 +119,15 @@ object RobotContainer {
 
     // ControlBoard.advanceAndClimb.whileActiveOnce(AdvanceClimberCommand().andThen(RunClimbCommand()))
     //    ControlBoard.climbWithoutAdvance.whileActiveOnce(RunClimbCommand())
+
+    ControlBoard.leftSpoolDown.whileActiveContinuous(SpoolLeftDownCommand(telescopingClimber))
+    ControlBoard.rightSpoolDown.whileActiveContinuous(SpoolRightDownCommand(telescopingClimber))
+    ControlBoard.leftSpoolUp.whileActiveContinuous(SpoolLeftUpCommand(telescopingClimber))
+    ControlBoard.rightSpoolUp.whileActiveContinuous(SpoolRightDownCommand(telescopingClimber))
   }
 
   fun mapTestControls() {
-    ControlBoard.leftSpoolDown.whileActiveContinuous(SpoolLeftDownCommand(telescopingClimber))
-    ControlBoard.rightSpoolDown.whileActiveContinuous(SpoolRightDownCommand(telescopingClimber))
-    ControlBoard.leftSpoolUp.whileActiveContinuous(SpootLeftUpCommand(telescopingClimber))
-    ControlBoard.rightSpoolUp.whileActiveContinuous(SpoolRightDownCommand(telescopingClimber))
+
   }
 
   fun getAutonomousCommand() =
