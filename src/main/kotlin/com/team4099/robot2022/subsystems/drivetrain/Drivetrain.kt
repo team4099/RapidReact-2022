@@ -82,6 +82,8 @@ class Drivetrain(val io: DrivetrainIO) : SubsystemBase() {
       zeroGyro(pose.theta)
     }
 
+  var targetPose: Pose = Pose(0.meters, 0.meters, 0.radians)
+
   override fun periodic() {
     io.updateInputs(inputs)
     swerveModules.forEach { it.periodic() }
@@ -104,9 +106,14 @@ class Drivetrain(val io: DrivetrainIO) : SubsystemBase() {
     Logger.getInstance().recordOutput("Drivetrain/backLeftAngleRadians", wheelAngles[2].inRadians)
     Logger.getInstance().recordOutput("Drivetrain/backRightAngleRadians", wheelAngles[3].inRadians)
 
-    Logger.getInstance().recordOutput("Drivetrain/poseXMeters", pose.x.inMeters)
-    Logger.getInstance().recordOutput("Drivetrain/poseYMeters", pose.y.inMeters)
-    Logger.getInstance().recordOutput("Drivetrain/poseThetaRadians", pose.theta.inRadians)
+    Logger.getInstance().recordOutput("Odometry/poseXMeters", pose.x.inMeters)
+    Logger.getInstance().recordOutput("Odometry/poseYMeters", pose.y.inMeters)
+    Logger.getInstance().recordOutput("Odometry/poseThetaRadians", pose.theta.inRadians)
+
+    Logger.getInstance().recordOutput("Pathfollow/targetPoseXMeters", targetPose.x.inMeters)
+    Logger.getInstance().recordOutput("Pathfollow/targetPoseYMeters", targetPose.y.inMeters)
+    Logger.getInstance().recordOutput("Pathfollow/targetPoseThetaRadians", targetPose.theta.inRadians)
+
   }
 
   /**
@@ -311,6 +318,7 @@ class Drivetrain(val io: DrivetrainIO) : SubsystemBase() {
    */
   fun zeroGyro(toAngle: Angle = 0.degrees) {
     io.zeroGyro(toAngle)
+    swerveDriveOdometry.resetPosition(pose.pose2d, toAngle.inRotation2ds)
   }
 
   /** Zeros the steering motors for each swerve module. */

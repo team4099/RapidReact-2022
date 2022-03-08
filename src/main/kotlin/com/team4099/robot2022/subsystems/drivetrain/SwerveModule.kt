@@ -28,6 +28,8 @@ class SwerveModule(val io: SwerveModuleIO) {
 
   private var steeringSetPoint: Angle = 0.degrees
 
+  private var shouldInvert = false
+
   private val steeringkP =
       TunableNumber("Drivetrain/moduleSteeringkP", DrivetrainConstants.PID.STEERING_KP)
   private val steeringkI =
@@ -70,7 +72,7 @@ class SwerveModule(val io: SwerveModuleIO) {
     Logger.getInstance().processInputs(io.label, inputs)
     Logger.getInstance()
         .recordOutput(
-            "${io.label}/driveSpeedSetpointMetersPerSecond", speedSetPoint.inMetersPerSecond)
+            "${io.label}/driveSpeedSetpointMetersPerSecond", if (!shouldInvert) speedSetPoint.inMetersPerSecond else -speedSetPoint.inMetersPerSecond)
     Logger.getInstance()
         .recordOutput(
             "${io.label}/driveAccelSetpointMetersPerSecondSq",
@@ -89,7 +91,8 @@ class SwerveModule(val io: SwerveModuleIO) {
   fun set(
     steering: Angle,
     speed: LinearVelocity,
-    acceleration: LinearAcceleration = 0.0.meters.perSecond.perSecond
+    acceleration: LinearAcceleration = 0.0.meters.perSecond.perSecond,
+    optimize: Boolean = true
   ) {
     if (speed == 0.feet.perSecond) {
       io.setOpenLoop(steeringSetPoint, 0.0)
@@ -98,19 +101,19 @@ class SwerveModule(val io: SwerveModuleIO) {
     var steeringDifference =
         (steering - inputs.steeringPosition).inRadians.IEEErem(2 * Math.PI).radians
 
-    val isInverted = steeringDifference.absoluteValue > (Math.PI / 2).radians
-    if (isInverted) {
+    shouldInvert = steeringDifference.absoluteValue > (Math.PI / 2).radians && optimize
+    if (shouldInvert) {
       steeringDifference -= Math.PI.withSign(steeringDifference.inRadians).radians
     }
 
     speedSetPoint =
-        if (isInverted) {
+        if (shouldInvert) {
           speed * -1
         } else {
           speed
         }
     accelerationSetPoint =
-        if (isInverted) {
+        if (shouldInvert) {
           acceleration * -1
         } else {
           acceleration
@@ -121,17 +124,17 @@ class SwerveModule(val io: SwerveModuleIO) {
     io.setClosedLoop(steeringSetPoint, speedSetPoint, accelerationSetPoint)
   }
 
-  fun setOpenLoop(steering: Angle, speed: Double) {
+  fun setOpenLoop(steering: Angle, speed: Double, optimize: Boolean = true) {
     var steeringDifference =
         (steering - inputs.steeringPosition).inRadians.IEEErem(2 * Math.PI).radians
 
-    val isInverted = steeringDifference.absoluteValue > (Math.PI / 2).radians
-    if (isInverted) {
+    shouldInvert = steeringDifference.absoluteValue > (Math.PI / 2).radians && optimize
+    if (shouldInvert) {
       steeringDifference -= Math.PI.withSign(steeringDifference.inRadians).radians
     }
 
     val outputPower =
-        if (isInverted) {
+        if (shouldInvert) {
           speed * -1
         } else {
           speed

@@ -25,7 +25,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile
 import edu.wpi.first.wpilibj2.command.CommandBase
 import kotlin.math.PI
 
-class AutoDriveCommand(val drivetrain: Drivetrain, private val trajectory: Trajectory) :
+class DrivePathCommand(val drivetrain: Drivetrain, private val trajectory: Trajectory, val resetPose: Boolean = false) :
     CommandBase() {
   private val xPID =
       PIDController(
@@ -39,9 +39,9 @@ class AutoDriveCommand(val drivetrain: Drivetrain, private val trajectory: Traje
           DrivetrainConstants.PID.AUTO_POS_KD)
   private val thetaPID =
       ProfiledPIDController(
-          DrivetrainConstants.PID.DRIVE_THETA_PID_KP,
-          DrivetrainConstants.PID.DRIVE_THETA_PID_KI,
-          DrivetrainConstants.PID.DRIVE_THETA_PID_KD,
+          DrivetrainConstants.PID.AUTO_THETA_PID_KP,
+          DrivetrainConstants.PID.AUTO_THETA_PID_KI,
+          DrivetrainConstants.PID.AUTO_THETA_PID_KD,
           TrapezoidProfile.Constraints(
               DrivetrainConstants.MAX_AUTO_ANGULAR_VEL.inRadiansPerSecond,
               DrivetrainConstants.MAX_AUTO_ANGULAR_ACCEL.inRadiansPerSecondPerSecond))
@@ -58,13 +58,13 @@ class AutoDriveCommand(val drivetrain: Drivetrain, private val trajectory: Traje
     Logger.addSource(
         "Drivetrain Tuning",
         "theta kP",
-        { DrivetrainConstants.PID.DRIVE_THETA_PID_KP },
+        { DrivetrainConstants.PID.AUTO_THETA_PID_KP },
         { newP -> thetaPID.p = newP },
         false)
     Logger.addSource(
         "Drivetrain Tuning",
         "theta kD",
-        { DrivetrainConstants.PID.DRIVE_THETA_PID_KD },
+        { DrivetrainConstants.PID.AUTO_THETA_PID_KD },
         { newD -> thetaPID.d = newD },
         false)
     Logger.addSource(
@@ -100,7 +100,9 @@ class AutoDriveCommand(val drivetrain: Drivetrain, private val trajectory: Traje
   }
 
   override fun initialize() {
-    drivetrain.pose = trajectory.startingPose // move to individual auto commands
+    if (resetPose) {
+      drivetrain.pose = trajectory.startingPose
+    }
     trajStartTime = Clock.fpgaTime + trajectory.startTime
   }
 
@@ -110,7 +112,7 @@ class AutoDriveCommand(val drivetrain: Drivetrain, private val trajectory: Traje
     val xFF = desiredState.linearVelocity * desiredState.curvature.cos
     val yFF = desiredState.linearVelocity * desiredState.curvature.sin
     val thetaFF =
-        thetaPID.calculate(-drivetrain.pose.theta.inRadians, desiredState.pose.theta.inRadians)
+        thetaPID.calculate(-drivetrain.pose.theta.inRadians, TrapezoidProfile.State(desiredState.pose.theta.inRadians, desiredState.angularVelocity.inRadiansPerSecond))
             .radians
             .perSecond
 

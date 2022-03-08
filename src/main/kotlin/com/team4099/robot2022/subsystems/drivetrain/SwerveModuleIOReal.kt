@@ -69,15 +69,18 @@ class SwerveModuleIOReal(
     steeringFalcon.inverted = false
     steeringFalcon.configAllSettings(steeringConfiguration)
     steeringFalcon.configAllowableClosedloopError(
-        0, steeringSensor.positionToRawUnits(DrivetrainConstants.ALLOWED_ANGLE_ERROR))
+        0, steeringSensor.positionToRawUnits(DrivetrainConstants.ALLOWED_STEERING_ANGLE_ERROR))
 
     driveConfiguration.slot0.kP = DrivetrainConstants.PID.DRIVE_KP
     driveConfiguration.slot0.kI = DrivetrainConstants.PID.DRIVE_KI
     driveConfiguration.slot0.kD = DrivetrainConstants.PID.DRIVE_KD
     driveConfiguration.slot0.kF = DrivetrainConstants.PID.DRIVE_KFF
     driveConfiguration.supplyCurrLimit.currentLimit = DrivetrainConstants.DRIVE_SUPPLY_CURRENT_LIMIT
+    driveConfiguration.voltageCompSaturation = 12.0
 
     driveFalcon.configAllSettings(driveConfiguration)
+    driveFalcon.enableVoltageCompensation(true)
+
     driveFalcon.setNeutralMode(NeutralMode.Coast)
   }
 
@@ -90,10 +93,10 @@ class SwerveModuleIOReal(
     inputs.steeringStatorCurrent = steeringFalcon.statorCurrent.amps
     inputs.steeringSupplyCurrent = steeringFalcon.statorCurrent.amps
 
-    inputs.drivePosition = driveSensor.position
+    inputs.drivePosition = -driveSensor.position
     inputs.steeringPosition = steeringSensor.position
 
-    inputs.driveVelocity = driveSensor.velocity
+    inputs.driveVelocity = -driveSensor.velocity
     inputs.steeringVelocity = steeringSensor.velocity
 
     inputs.driveTempCelcius = driveFalcon.temperature

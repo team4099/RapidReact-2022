@@ -20,11 +20,11 @@ fun trajectoryFromPathPlanner(pathPlannerTrajectory: PathPlannerTrajectory): Tra
         TrajectoryState(
             state.timeSeconds.seconds,
             Pose(
-                Translation(state.poseMeters.translation), state.holonomicRotation.radians.radians),
+                Translation(state.poseMeters.translation), state.holonomicRotation.angle),
             state.poseMeters.rotation.angle,
             state.velocityMetersPerSecond.meters.perSecond,
-            state.accelerationMetersPerSecondSq.meters.perSecond.perSecond)
-      //            state.angularVelocity.angle.perSecond,
+            state.accelerationMetersPerSecondSq.meters.perSecond.perSecond,
+            state.angularVelocity.angle.perSecond)
       //            state.angularAcceleration.angle.perSecond.perSecond)
       })
 }
