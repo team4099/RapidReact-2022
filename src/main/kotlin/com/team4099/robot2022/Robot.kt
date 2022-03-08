@@ -1,6 +1,5 @@
 package com.team4099.robot2022
 
-import com.team4099.RobotContainer
 import com.team4099.robot2022.auto.AutonomousSelector
 import com.team4099.robot2022.config.constants.Constants
 import edu.wpi.first.wpilibj2.command.CommandScheduler
@@ -23,6 +22,9 @@ object Robot : LoggedRobot() {
 
   override fun robotInit() {
     // set up AdvantageKit logging
+
+    val logger = Logger.getInstance()
+
     // allow running faster than real time when replaying logs
     setUseTiming(isReal())
 
@@ -30,20 +32,32 @@ object Robot : LoggedRobot() {
     LoggedNetworkTables.getInstance().addTable("/SmartDashboard")
 
     // metadata value (not timed -- just metadata for given log file)
-    Logger.getInstance().recordMetadata("RobotName", robotName.name)
+    logger.recordMetadata("RobotName", robotName.name)
+    logger.recordMetadata("TuningMode", Constants.Tuning.TUNING_MODE.toString())
+    logger.recordMetadata("RuntimeType", getRuntimeType().name)
+
+    logger.recordMetadata("ProjectName", MAVEN_NAME)
+    logger.recordMetadata("BuildDate", BUILD_DATE)
+    logger.recordMetadata("GitSHA", GIT_SHA)
+    logger.recordMetadata("GitBranch", GIT_BRANCH)
+    when(DIRTY) {
+      0 -> logger.recordMetadata("GitDirty", "All changes committed")
+      1 -> logger.recordMetadata("GitDirty", "Uncommitted changes")
+      else -> logger.recordMetadata("GitDirty", "Unknown")
+    }
 
     if (isReal()) {
       // log to USB stick and network for real time data viewing on AdvantageScope
-      Logger.getInstance().addDataReceiver(ByteLogReceiver("/media/sda1/"))
-      Logger.getInstance().addDataReceiver(LogSocketServer(5800))
+      logger.addDataReceiver(ByteLogReceiver("/media/sda1/"))
+      logger.addDataReceiver(LogSocketServer(5800))
     } else {
       // if in replay mode get file path from command line and read log file
       val path = ByteLogReplay.promptForPath()
-      Logger.getInstance().setReplaySource(ByteLogReplay(path))
-      Logger.getInstance()
+      logger.setReplaySource(ByteLogReplay(path))
+      logger
           .addDataReceiver(ByteLogReceiver(ByteLogReceiver.addPathSuffix(path, "_sim")))
     }
-    Logger.getInstance().start()
+    logger.start()
 
     RobotContainer.mapDefaultCommands()
     RobotContainer.zeroSensors()

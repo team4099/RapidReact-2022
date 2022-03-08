@@ -99,3 +99,4 @@ logs/*
 .glass
 
 **/.DS_Store
+/src/main/kotlin/com/team4099/robot2022/BuildConstants.kt
