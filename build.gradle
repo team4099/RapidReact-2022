@@ -117,6 +117,10 @@ spotless {
 	}
 	kotlin {
 		// by default the target is every '.kt' and '.kts` file in the java sourcesets
+		target fileTree(".") {
+			include "**/*.kt"
+			exclude "**/BuildConstants.kt", "**/build/**"
+		}
 		ktfmt()
 		ktlint().userData(['max_line_length': '100', 'insert_final_newline': 'true', 'indent_size': '2', 'continuation_indent_size': '2'])
 	}
@@ -139,7 +143,7 @@ gversion {
 	classPackage = "com.team4099.robot2022"
 	className    = "BuildConstants"                // optional. If not specified GVersion is used
 	dateFormat   = "yyyy-MM-dd'T'HH:mm:ss'Z'" // optional. This is the default
-	timeZone     = "UTC"                      // optional. UTC is default
+	timeZone     = "EST"                      // optional. UTC is default
 	debug        = false                      // optional. print out extra debug information
 	language     = "kotlin"                     // optional. Can be Java, Kotlin, YAML, or Properties. Case insensitive.
 	explicitType = false                      // optional. Force types to be explicitly printed
