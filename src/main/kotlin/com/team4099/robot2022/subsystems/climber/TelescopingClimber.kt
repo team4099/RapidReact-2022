@@ -1,53 +1,51 @@
 package com.team4099.robot2022.subsystems.climber
 
-import com.ctre.phoenix.motorcontrol.ControlMode
-import com.ctre.phoenix.motorcontrol.DemandType
-import com.ctre.phoenix.motorcontrol.NeutralMode
-import com.ctre.phoenix.motorcontrol.can.TalonFX
-import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration
-import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.base.Length
-import com.team4099.lib.units.base.inInches
 import com.team4099.lib.units.base.inMeters
 import com.team4099.lib.units.base.meters
-import com.team4099.lib.units.ctreLinearMechanismSensor
-import com.team4099.lib.units.inInchesPerSecond
+import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.inMetersPerSecond
 import com.team4099.lib.units.inMetersPerSecondPerSecond
 import com.team4099.robot2022.config.constants.ClimberConstants.ActualTelescopeStates
 import com.team4099.robot2022.config.constants.ClimberConstants.DesiredTelescopeStates
 import com.team4099.robot2022.config.constants.ClimberConstants.telescopingTolerance
-import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.config.constants.TelescopingClimberConstants
 import edu.wpi.first.math.trajectory.TrapezoidProfile
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 
-class TelescopingClimber : SubsystemBase() {
+class TelescopingClimber(val io: TelescopingClimberIO) : SubsystemBase() {
+  val inputs = TelescopingClimberIO.TelescopingClimberIOInputs()
 
-  private val telescopingRightArm: TalonFX = TalonFX(Constants.TelescopingClimber.R_ARM_ID)
-  private val telescopingLeftArm: TalonFX = TalonFX(Constants.TelescopingClimber.L_ARM_ID)
+  init {}
 
-  val telescopingRightArmSensor =
-      ctreLinearMechanismSensor(
-          telescopingRightArm,
-          TelescopingClimberConstants.SENSOR_CPR,
-          TelescopingClimberConstants.GEAR_RATIO,
-          TelescopingClimberConstants.SPOOL_RADIUS * 2)
-  val telescopingLeftArmSensor =
-      ctreLinearMechanismSensor(
-          telescopingLeftArm,
-          TelescopingClimberConstants.SENSOR_CPR,
-          TelescopingClimberConstants.GEAR_RATIO,
-          TelescopingClimberConstants.SPOOL_RADIUS * 2)
+  fun setOpenLoop(leftPower: Double, rightPower: Double, useSoftLimits: Boolean = true) {
+    if (useSoftLimits &&
+        ((inputs.leftPosition >= TelescopingClimberConstants.FORWARD_SOFT_LIMIT &&
+            leftPower > 0.0) ||
+            (inputs.leftPosition <= TelescopingClimberConstants.REVERSE_SOFT_LIMIT &&
+                leftPower < 0.0))) {
+      io.setLeftOpenLoop(0.0)
+    } else {
+      io.setLeftOpenLoop(leftPower)
+    }
 
-  private val telescopingConfiguration: TalonFXConfiguration = TalonFXConfiguration()
+    if (useSoftLimits &&
+        ((inputs.rightPosition >= TelescopingClimberConstants.FORWARD_SOFT_LIMIT &&
+            rightPower > 0.0) ||
+            (inputs.rightPosition <= TelescopingClimberConstants.REVERSE_SOFT_LIMIT &&
+                rightPower < 0.0))) {
+      io.setRightOpenLoop(0.0)
+    } else {
+      io.setRightOpenLoop(rightPower)
+    }
+  }
 
   val currentPosition: Length
     get() {
-      if (telescopingLeftArmSensor.position > telescopingRightArmSensor.position) {
-        return telescopingLeftArmSensor.position
+      if (inputs.leftPosition > inputs.rightPosition) {
+        return inputs.leftPosition
       } else {
-        return telescopingRightArmSensor.position
+        return inputs.rightPosition
       }
     }
 
@@ -92,118 +90,9 @@ class TelescopingClimber : SubsystemBase() {
           TelescopingClimberConstants.MAX_VELOCITY.inMetersPerSecond,
           TelescopingClimberConstants.MAX_ACCELERATION.inMetersPerSecondPerSecond)
   var leftSetpoint: TrapezoidProfile.State =
-      TrapezoidProfile.State(
-          telescopingLeftArmSensor.position.inMeters,
-          telescopingLeftArmSensor.velocity.inMetersPerSecond)
+      TrapezoidProfile.State(inputs.leftPosition.inMeters, inputs.leftVelocity.inMetersPerSecond)
   var rightSetpoint: TrapezoidProfile.State =
-      TrapezoidProfile.State(
-          telescopingRightArmSensor.position.inMeters,
-          telescopingRightArmSensor.velocity.inMetersPerSecond)
-
-  // PneumaticsModuleType new?
-  //  private val pneumaticBrake = // TODO delete pneumatic brakes
-  //      Solenoid(PneumaticsModuleType.CTREPCM, Constants.TelescopingClimber.SOLENOID_ID)
-  //  var isLocked: Boolean = true
-  //    set(value) {
-  //      pneumaticBrake.set(!value)
-  //      field = value
-  //    }
-  //  var brakeApplied = true
-  //    set(value) {
-  //      field = value
-  //      pneumaticBrake.set(!value)
-  //    }
-  init {
-    Logger.addSource(TelescopingClimberConstants.TAB, "Right Arm Motor Power") {
-      telescopingRightArm.motorOutputPercent
-    }
-    Logger.addSource(TelescopingClimberConstants.TAB, "Right Arm Output Current") {
-      telescopingRightArm.supplyCurrent
-    }
-    Logger.addSource(TelescopingClimberConstants.TAB, "Right Arm Motor Applied Voltage") {
-      telescopingRightArm.busVoltage
-    }
-    Logger.addSource(TelescopingClimberConstants.TAB, "Right Arm Motor Velocity") {
-      telescopingRightArmSensor.velocity.inInchesPerSecond
-    }
-    Logger.addSource(TelescopingClimberConstants.TAB, "Right Arm Current Position") {
-      telescopingRightArmSensor.position.inInches
-    }
-
-    Logger.addSource(TelescopingClimberConstants.TAB, "Left Arm Motor Power") {
-      telescopingLeftArm.motorOutputPercent
-    }
-    Logger.addSource(TelescopingClimberConstants.TAB, "Left Arm Output Current") {
-      telescopingLeftArm.supplyCurrent
-    }
-    Logger.addSource(TelescopingClimberConstants.TAB, "Left Arm Motor Applied Voltage") {
-      telescopingLeftArm.busVoltage
-    }
-    Logger.addSource(TelescopingClimberConstants.TAB, "Left Arm Motor Velocity") {
-      telescopingLeftArmSensor.velocity.inInchesPerSecond
-    }
-    Logger.addSource(TelescopingClimberConstants.TAB, "Left Arm Current Position") {
-      telescopingLeftArmSensor.position.inInches
-    }
-
-    //    Logger.addSource(TelescopingClimberConstants.TAB, "Right Pneumatics State") {
-    //      brakeApplied.toString()
-    //    }
-    //    Logger.addSource(TelescopingClimberConstants.TAB, "Left Pneumatics State") {
-    //      brakeApplied.toString()
-    //    }
-
-    telescopingConfiguration.slot0.kP = TelescopingClimberConstants.KP
-    telescopingConfiguration.slot0.kI = TelescopingClimberConstants.KI
-    telescopingConfiguration.slot0.kD = TelescopingClimberConstants.KD
-    telescopingConfiguration.slot0.kF = TelescopingClimberConstants.KFF
-
-    telescopingRightArm.configFactoryDefault()
-    telescopingRightArm.configAllSettings(telescopingConfiguration)
-    telescopingRightArm.setNeutralMode(NeutralMode.Brake)
-    telescopingRightArm.enableVoltageCompensation(true)
-    telescopingRightArm.inverted = true
-    telescopingRightArm.configForwardSoftLimitThreshold(
-        telescopingRightArmSensor.positionToRawUnits(
-            TelescopingClimberConstants.FORWARD_SOFT_LIMIT))
-    telescopingRightArm.configForwardSoftLimitEnable(false)
-    telescopingRightArm.configReverseSoftLimitThreshold(
-        telescopingRightArmSensor.positionToRawUnits(
-            TelescopingClimberConstants.REVERSE_SOFT_LIMIT))
-
-    telescopingLeftArm.configFactoryDefault()
-    telescopingLeftArm.configAllSettings(telescopingConfiguration)
-    telescopingLeftArm.setNeutralMode(NeutralMode.Brake)
-    telescopingLeftArm.enableVoltageCompensation(true)
-    telescopingLeftArm.inverted = true
-    telescopingLeftArm.configForwardSoftLimitThreshold(
-        telescopingLeftArmSensor.positionToRawUnits(TelescopingClimberConstants.FORWARD_SOFT_LIMIT))
-    telescopingLeftArm.configForwardSoftLimitEnable(false)
-    telescopingLeftArm.configReverseSoftLimitThreshold(
-        telescopingLeftArmSensor.positionToRawUnits(TelescopingClimberConstants.REVERSE_SOFT_LIMIT))
-  }
-
-  fun setOpenLoop(leftPower: Double, rightPower: Double, useSoftLimits: Boolean = true) {
-    if (useSoftLimits &&
-        ((telescopingLeftArmSensor.position >= TelescopingClimberConstants.FORWARD_SOFT_LIMIT &&
-            leftPower > 0.0) ||
-            (telescopingLeftArmSensor.position <= TelescopingClimberConstants.REVERSE_SOFT_LIMIT &&
-                leftPower < 0.0))) {
-      telescopingLeftArm.set(ControlMode.PercentOutput, 0.0)
-    } else {
-      telescopingLeftArm.set(ControlMode.PercentOutput, leftPower)
-    }
-
-    if (useSoftLimits &&
-        ((telescopingRightArmSensor.position >= TelescopingClimberConstants.FORWARD_SOFT_LIMIT &&
-            leftPower > 0.0) ||
-            (telescopingRightArmSensor.position <= TelescopingClimberConstants.REVERSE_SOFT_LIMIT &&
-                leftPower < 0.0))) {
-      telescopingRightArm.set(ControlMode.PercentOutput, 0.0)
-    } else {
-      telescopingRightArm.set(ControlMode.PercentOutput, rightPower)
-    }
-  }
+      TrapezoidProfile.State(inputs.rightPosition.inMeters, inputs.rightVelocity.inMetersPerSecond)
 
   fun setPosition(
     leftProfile: TrapezoidProfile,
@@ -214,40 +103,32 @@ class TelescopingClimber : SubsystemBase() {
     rightSetpoint = rightProfile.calculate(0.0)
 
     if (!isUnderLoad) {
-      telescopingLeftArm.set(
-          ControlMode.Position,
-          leftSetpoint.position,
-          DemandType.ArbitraryFeedForward,
+      io.setLeftPosition(
+          leftSetpoint.position.meters,
           (TelescopingClimberConstants.NO_LOAD_KS +
-              leftSetpoint.velocity * TelescopingClimberConstants.NO_LOAD_KV))
+                  leftSetpoint.velocity * TelescopingClimberConstants.NO_LOAD_KV).volts)
 
-      telescopingRightArm.set(
-          ControlMode.Position,
-          rightSetpoint.position,
-          DemandType.ArbitraryFeedForward,
+      io.setRightPosition(
+          rightSetpoint.position.meters,
           (TelescopingClimberConstants.NO_LOAD_KS +
-              rightSetpoint.velocity * TelescopingClimberConstants.NO_LOAD_KV))
+                  rightSetpoint.velocity * TelescopingClimberConstants.NO_LOAD_KV).volts)
     } else {
-      telescopingLeftArm.set(
-          ControlMode.Position,
-          leftSetpoint.position,
-          DemandType.ArbitraryFeedForward,
+      io.setLeftPosition(
+          leftSetpoint.position.meters,
           (TelescopingClimberConstants.LOAD_KS +
-              leftSetpoint.velocity * TelescopingClimberConstants.LOAD_KV))
+                  leftSetpoint.velocity * TelescopingClimberConstants.LOAD_KV).volts)
 
-      telescopingRightArm.set(
-          ControlMode.Position,
-          rightSetpoint.position,
-          DemandType.ArbitraryFeedForward,
+      io.setRightPosition(
+          rightSetpoint.position.meters,
           (TelescopingClimberConstants.LOAD_KS +
-              rightSetpoint.velocity * TelescopingClimberConstants.LOAD_KV))
+                  rightSetpoint.velocity * TelescopingClimberConstants.LOAD_KV).volts)
     }
   }
   fun zeroLeftEncoder() {
-    telescopingLeftArm.selectedSensorPosition = 0.0
+    io.zeroLeftEncoder()
   }
 
   fun zeroRightEncoder() {
-    telescopingRightArm.selectedSensorPosition = 0.0
+    io.zeroRightEncoder()
   }
 }

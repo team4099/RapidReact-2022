@@ -26,6 +26,8 @@ import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.config.constants.FeederConstants
 import com.team4099.robot2022.subsystems.LED
 import com.team4099.robot2022.subsystems.climber.TelescopingClimber
+import com.team4099.robot2022.subsystems.climber.TelescopingClimberIO
+import com.team4099.robot2022.subsystems.climber.TelescopingClimberIOReal
 import com.team4099.robot2022.subsystems.drivetrain.Drivetrain
 import com.team4099.robot2022.subsystems.drivetrain.DrivetrainIO
 import com.team4099.robot2022.subsystems.drivetrain.DrivetrainIOReal
@@ -57,13 +59,13 @@ object RobotContainer {
       intake = Intake(IntakeIOReal)
       shooter = Shooter(ShooterIOReal)
       feeder = Feeder(FeederIOReal)
-      telescopingClimber = TelescopingClimber()
+      telescopingClimber = TelescopingClimber(TelescopingClimberIOReal)
     } else {
       drivetrain = Drivetrain(object : DrivetrainIO {})
       intake = Intake(object : IntakeIO {})
       shooter = Shooter(object : ShooterIO {})
       feeder = Feeder(object : FeederIO {})
-      telescopingClimber = TelescopingClimber()
+      telescopingClimber = TelescopingClimber(object : TelescopingClimberIO {})
     }
   }
 

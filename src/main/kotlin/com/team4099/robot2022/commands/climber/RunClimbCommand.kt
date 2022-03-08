@@ -68,15 +68,15 @@ class RunClimbCommand(val telescopingClimber: TelescopingClimber, val pivotClimb
             telescopingClimber.constraints,
             TrapezoidProfile.State(telescopingClimber.desiredState.position.inMeters, 0.0),
             TrapezoidProfile.State(
-                telescopingClimber.telescopingLeftArmSensor.position.inMeters,
-                telescopingClimber.telescopingLeftArmSensor.velocity.inMetersPerSecond))
+                telescopingClimber.inputs.leftPosition.inMeters,
+                telescopingClimber.inputs.leftVelocity.inMetersPerSecond))
     val rightTelescopingProfile =
         TrapezoidProfile(
             telescopingClimber.constraints,
             TrapezoidProfile.State(telescopingClimber.desiredState.position.inMeters, 0.0),
             TrapezoidProfile.State(
-                telescopingClimber.telescopingRightArmSensor.position.inMeters,
-                telescopingClimber.telescopingRightArmSensor.velocity.inMetersPerSecond))
+                telescopingClimber.inputs.rightPosition.inMeters,
+                telescopingClimber.inputs.rightVelocity.inMetersPerSecond))
     telescopingClimber.setPosition(
         leftTelescopingProfile, rightTelescopingProfile, telescopingIsUnderLoad)
 

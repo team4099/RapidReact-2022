@@ -17,9 +17,9 @@ class TelescopingCharacterizationCommand(val telescopingClimber: TelescopingClim
     val telescopingGetter =
         {
           SysIdCommand.MechanismSysIdData(
-              telescopingClimber.telescopingLeftArmSensor.position.inMeters /
+              telescopingClimber.inputs.leftPosition.inMeters /
                   TelescopingClimberConstants.SPOOL_RADIUS.inMeters,
-              telescopingClimber.telescopingLeftArmSensor.velocity.inMetersPerSecond /
+              telescopingClimber.inputs.leftVelocity.inMetersPerSecond /
                   TelescopingClimberConstants.SPOOL_RADIUS.inMeters)
         }
     Logger.addEvent("Climber", "Started Telescoping Characterization")
