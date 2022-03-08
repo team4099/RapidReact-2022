@@ -56,17 +56,17 @@ class SwerveModule(val io: SwerveModuleIO) {
     io.updateInputs(inputs)
 
     if (steeringkP.hasChanged() || steeringkI.hasChanged() || steeringkD.hasChanged()) {
-      io.configureSteeringPID(steeringkP.get(), steeringkI.get(), steeringkD.get())
+      io.configureSteeringPID(steeringkP.value, steeringkI.value, steeringkD.value)
     }
 
     if (steeringMaxVel.hasChanged() || steeringMaxAccel.hasChanged()) {
       io.configureSteeringMotionMagic(
-          steeringMaxVel.get().radians.perSecond,
-          steeringMaxAccel.get().radians.perSecond.perSecond)
+          steeringMaxVel.value.radians.perSecond,
+          steeringMaxAccel.value.radians.perSecond.perSecond)
     }
 
     if (drivekP.hasChanged() || drivekI.hasChanged() || drivekD.hasChanged()) {
-      io.configureDrivePID(drivekP.get(), drivekI.get(), drivekD.get())
+      io.configureDrivePID(drivekP.value, drivekI.value, drivekD.value)
     }
 
     Logger.getInstance().processInputs(io.label, inputs)

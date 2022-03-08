@@ -32,10 +32,11 @@ class TunableNumber(dashboardKey: String, val defaultValue: Double) {
    *
    * @return The current value
    */
-  fun get(): Double {
-    return if (Constants.Tuning.TUNING_MODE) SmartDashboard.getNumber(key, defaultValue)
-    else defaultValue
-  }
+  val value: Double
+    get() {
+      return if (Constants.Tuning.TUNING_MODE) SmartDashboard.getNumber(key, defaultValue)
+      else defaultValue
+    }
 
   /**
    * Checks whether the number has changed since our last check
@@ -44,7 +45,7 @@ class TunableNumber(dashboardKey: String, val defaultValue: Double) {
    * otherwise
    */
   fun hasChanged(): Boolean {
-    val currentValue = get()
+    val currentValue = value
     if (currentValue != lastHasChangedValue) {
       lastHasChangedValue = currentValue
       return true

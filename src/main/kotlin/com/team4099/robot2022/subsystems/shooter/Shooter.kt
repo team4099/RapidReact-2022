@@ -44,7 +44,7 @@ class Shooter(val io: ShooterIO) : SubsystemBase() {
     isOnTarget =
         state != ShooterConstants.ShooterState.OFF &&
             filter.calculate(inputs.velocity.inRotationsPerMinute)
-                .around(state.targetVelocity.inRotationsPerMinute, shooterToleranceRPM.get())
+                .around(state.targetVelocity.inRotationsPerMinute, shooterToleranceRPM.value)
 
     Logger.getInstance().processInputs("Shooter", inputs)
     Logger.getInstance()
@@ -53,11 +53,11 @@ class Shooter(val io: ShooterIO) : SubsystemBase() {
     Logger.getInstance().recordOutput("Shooter/state", state.name)
 
     if (kP.hasChanged() || kI.hasChanged() || kD.hasChanged()) {
-      io.configurePID(kP.get(), kI.get(), kD.get())
+      io.configurePID(kP.value, kI.value, kD.value)
     }
 
     if (filterSize.hasChanged()) {
-      filter = MedianFilter(filterSize.get().toInt())
+      filter = MedianFilter(filterSize.value.toInt())
     }
   }
 }
