@@ -40,7 +40,7 @@ object Robot : LoggedRobot() {
     logger.recordMetadata("BuildDate", BUILD_DATE)
     logger.recordMetadata("GitSHA", GIT_SHA)
     logger.recordMetadata("GitBranch", GIT_BRANCH)
-    when(DIRTY) {
+    when (DIRTY) {
       0 -> logger.recordMetadata("GitDirty", "All changes committed")
       1 -> logger.recordMetadata("GitDirty", "Uncommitted changes")
       else -> logger.recordMetadata("GitDirty", "Unknown")
@@ -54,8 +54,7 @@ object Robot : LoggedRobot() {
       // if in replay mode get file path from command line and read log file
       val path = ByteLogReplay.promptForPath()
       logger.setReplaySource(ByteLogReplay(path))
-      logger
-          .addDataReceiver(ByteLogReceiver(ByteLogReceiver.addPathSuffix(path, "_sim")))
+      logger.addDataReceiver(ByteLogReceiver(ByteLogReceiver.addPathSuffix(path, "_sim")))
     }
     logger.start()
 
