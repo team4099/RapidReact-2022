@@ -10,13 +10,13 @@ class Intake(val io: IntakeIO) : SubsystemBase() {
 
   var rollerState = IntakeConstants.RollerState.IDLE
     set(state) {
-      io.setRollerState(state)
+      io.setRollerPower(state.speed)
       field = state
     }
 
   var armState = IntakeConstants.ArmState.IN
     set(state) {
-      io.setArmState(state)
+      io.setArmSolenoid(state.out)
       field = state
     }
 

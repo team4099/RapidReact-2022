@@ -59,6 +59,6 @@ interface IntakeIO {
 
   fun updateInputs(inputs: IntakeIOInputs) {}
 
-  fun setArmState(armState: IntakeConstants.ArmState) {}
-  fun setRollerState(rollerState: IntakeConstants.RollerState) {}
+  fun setArmSolenoid(solenoidValue: Boolean) {}
+  fun setRollerPower(percentOutput: Double) {}
 }
