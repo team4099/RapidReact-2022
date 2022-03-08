@@ -12,17 +12,45 @@ import com.team4099.robot2022.config.constants.ClimberConstants.telescopingToler
 import com.team4099.robot2022.config.constants.TelescopingClimberConstants
 import edu.wpi.first.math.trajectory.TrapezoidProfile
 import edu.wpi.first.wpilibj2.command.SubsystemBase
+import org.littletonrobotics.junction.Logger
 
 class TelescopingClimber(val io: TelescopingClimberIO) : SubsystemBase() {
   val inputs = TelescopingClimberIO.TelescopingClimberIOInputs()
 
   init {}
 
+  override fun periodic() {
+    io.updateInputs(inputs)
+
+    Logger.getInstance().processInputs("TelescopingClimber", inputs)
+    Logger.getInstance().recordOutput("TelescopingClimber/desiredState", desiredState.name)
+    Logger.getInstance().recordOutput("TelescopingClimber/currentState", currentState.name)
+    Logger.getInstance().recordOutput("TelescopingClimber/leftPositionSetpointMeters", leftSetpoint.position)
+    Logger.getInstance().recordOutput("TelescopingClimber/leftVelocitySetpointMetersPerSec", leftSetpoint.velocity)
+    Logger.getInstance().recordOutput("TelescopingClimber/rightPositionSetpointMeters", rightSetpoint.position)
+    Logger.getInstance().recordOutput("TelescopingClimber/rightVelocitySetpointMetersPerSec", rightSetpoint.velocity)
+
+    Logger.getInstance().recordOutput("TelescopingClimber/leftForwardLimitReached", leftForwardLimitReached)
+    Logger.getInstance().recordOutput("TelescopingClimber/leftReverseLimitReached", leftReverseLimitReached)
+    Logger.getInstance().recordOutput("TelescopingClimber/rightForwardLimitReached", rightForwardLimitReached)
+    Logger.getInstance().recordOutput("TelescopingClimber/rightReverseLimitReached", rightReverseLimitReached)
+  }
+
+  val leftForwardLimitReached: Boolean
+    get() = inputs.leftPosition > TelescopingClimberConstants.FORWARD_SOFT_LIMIT
+  val leftReverseLimitReached: Boolean
+    get() = inputs.leftPosition < TelescopingClimberConstants.REVERSE_SOFT_LIMIT
+
+  val rightForwardLimitReached: Boolean
+    get() = inputs.rightPosition > TelescopingClimberConstants.FORWARD_SOFT_LIMIT
+  val rightReverseLimitReached: Boolean
+    get() = inputs.rightPosition < TelescopingClimberConstants.REVERSE_SOFT_LIMIT
+
   fun setOpenLoop(leftPower: Double, rightPower: Double, useSoftLimits: Boolean = true) {
     if (useSoftLimits &&
-        ((inputs.leftPosition >= TelescopingClimberConstants.FORWARD_SOFT_LIMIT &&
+        ((leftForwardLimitReached &&
             leftPower > 0.0) ||
-            (inputs.leftPosition <= TelescopingClimberConstants.REVERSE_SOFT_LIMIT &&
+            (leftReverseLimitReached &&
                 leftPower < 0.0))) {
       io.setLeftOpenLoop(0.0)
     } else {
@@ -30,9 +58,9 @@ class TelescopingClimber(val io: TelescopingClimberIO) : SubsystemBase() {
     }
 
     if (useSoftLimits &&
-        ((inputs.rightPosition >= TelescopingClimberConstants.FORWARD_SOFT_LIMIT &&
+        ((rightForwardLimitReached &&
             rightPower > 0.0) ||
-            (inputs.rightPosition <= TelescopingClimberConstants.REVERSE_SOFT_LIMIT &&
+            (rightReverseLimitReached &&
                 rightPower < 0.0))) {
       io.setRightOpenLoop(0.0)
     } else {
