@@ -17,6 +17,7 @@ import com.team4099.robot2022.commands.intake.IntakeBallsCommand
 import com.team4099.robot2022.commands.intake.IntakeIdleCommand
 import com.team4099.robot2022.commands.intake.PrepareClimbCommand
 import com.team4099.robot2022.commands.intake.ReverseIntakeCommand
+import com.team4099.robot2022.commands.led.LedCommand
 import com.team4099.robot2022.commands.shooter.ShootCommand
 import com.team4099.robot2022.commands.shooter.ShooterIdleCommand
 import com.team4099.robot2022.commands.shooter.SpinUpFarCommand
@@ -89,7 +90,7 @@ object RobotContainer {
     feeder.defaultCommand = FeederIdleCommand(feeder)
     telescopingClimber.defaultCommand = TelescopingIdleCommand(telescopingClimber)
     //    PivotClimber.defaultCommand = PivotIdleCommand()
-    LED
+    LED.defaultCommand = LedCommand(intake, shooter)
   }
 
   fun zeroSensors() {
