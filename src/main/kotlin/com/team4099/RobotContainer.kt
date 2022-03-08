@@ -5,8 +5,8 @@ import com.team4099.robot2022.auto.AutonomousSelector
 import com.team4099.robot2022.commands.climber.OpenLoopClimbCommand
 import com.team4099.robot2022.commands.climber.OpenLoopExtendClimberCommand
 import com.team4099.robot2022.commands.climber.SpoolLeftDownCommand
-import com.team4099.robot2022.commands.climber.SpoolRightDownCommand
 import com.team4099.robot2022.commands.climber.SpoolLeftUpCommand
+import com.team4099.robot2022.commands.climber.SpoolRightDownCommand
 import com.team4099.robot2022.commands.climber.TelescopingIdleCommand
 import com.team4099.robot2022.commands.drivetrain.ResetGyroCommand
 import com.team4099.robot2022.commands.drivetrain.TeleopDriveCommand
@@ -126,9 +126,7 @@ object RobotContainer {
     ControlBoard.rightSpoolUp.whileActiveContinuous(SpoolRightDownCommand(telescopingClimber))
   }
 
-  fun mapTestControls() {
-
-  }
+  fun mapTestControls() {}
 
   fun getAutonomousCommand() =
       AutonomousSelector.getCommand(drivetrain, intake, feeder, shooter, telescopingClimber)

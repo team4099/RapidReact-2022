@@ -25,8 +25,11 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile
 import edu.wpi.first.wpilibj2.command.CommandBase
 import kotlin.math.PI
 
-class DrivePathCommand(val drivetrain: Drivetrain, private val trajectory: Trajectory, val resetPose: Boolean = false) :
-    CommandBase() {
+class DrivePathCommand(
+  val drivetrain: Drivetrain,
+  private val trajectory: Trajectory,
+  val resetPose: Boolean = false
+) : CommandBase() {
   private val xPID =
       PIDController(
           DrivetrainConstants.PID.AUTO_POS_KP,
@@ -43,8 +46,8 @@ class DrivePathCommand(val drivetrain: Drivetrain, private val trajectory: Traje
           DrivetrainConstants.PID.AUTO_THETA_PID_KI,
           DrivetrainConstants.PID.AUTO_THETA_PID_KD,
           TrapezoidProfile.Constraints(
-              DrivetrainConstants.MAX_AUTO_ANGULAR_VEL.inRadiansPerSecond,
-              DrivetrainConstants.MAX_AUTO_ANGULAR_ACCEL.inRadiansPerSecondPerSecond))
+              DrivetrainConstants.PID.MAX_AUTO_ANGULAR_VEL.inRadiansPerSecond,
+              DrivetrainConstants.PID.MAX_AUTO_ANGULAR_ACCEL.inRadiansPerSecondPerSecond))
 
   private var trajCurTime = 0.0.seconds
   private var trajStartTime = 0.0.seconds
@@ -112,7 +115,11 @@ class DrivePathCommand(val drivetrain: Drivetrain, private val trajectory: Traje
     val xFF = desiredState.linearVelocity * desiredState.curvature.cos
     val yFF = desiredState.linearVelocity * desiredState.curvature.sin
     val thetaFF =
-        thetaPID.calculate(-drivetrain.pose.theta.inRadians, TrapezoidProfile.State(desiredState.pose.theta.inRadians, desiredState.angularVelocity.inRadiansPerSecond))
+        thetaPID.calculate(
+                -drivetrain.pose.theta.inRadians,
+                TrapezoidProfile.State(
+                    desiredState.pose.theta.inRadians,
+                    desiredState.angularVelocity.inRadiansPerSecond))
             .radians
             .perSecond
 

@@ -72,7 +72,9 @@ class SwerveModule(val io: SwerveModuleIO) {
     Logger.getInstance().processInputs(io.label, inputs)
     Logger.getInstance()
         .recordOutput(
-            "${io.label}/driveSpeedSetpointMetersPerSecond", if (!shouldInvert) speedSetPoint.inMetersPerSecond else -speedSetPoint.inMetersPerSecond)
+            "${io.label}/driveSpeedSetpointMetersPerSecond",
+            if (!shouldInvert) speedSetPoint.inMetersPerSecond
+            else -speedSetPoint.inMetersPerSecond)
     Logger.getInstance()
         .recordOutput(
             "${io.label}/driveAccelSetpointMetersPerSecondSq",

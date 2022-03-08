@@ -7,27 +7,10 @@ import com.team4099.lib.units.LinearVelocity
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.base.seconds
 import com.team4099.lib.units.derived.angle
-import com.team4099.lib.units.derived.radians
 import com.team4099.lib.units.inMetersPerSecond
 import com.team4099.lib.units.inMetersPerSecondPerSecond
 import com.team4099.lib.units.perSecond
 import edu.wpi.first.math.trajectory.TrajectoryParameterizer
-
-fun trajectoryFromPathPlanner(pathPlannerTrajectory: PathPlannerTrajectory): Trajectory {
-  return Trajectory(
-      pathPlannerTrajectory.states.map { state ->
-        state as PathPlannerTrajectory.PathPlannerState
-        TrajectoryState(
-            state.timeSeconds.seconds,
-            Pose(
-                Translation(state.poseMeters.translation), state.holonomicRotation.angle),
-            state.poseMeters.rotation.angle,
-            state.velocityMetersPerSecond.meters.perSecond,
-            state.accelerationMetersPerSecondSq.meters.perSecond.perSecond,
-            state.angularVelocity.angle.perSecond)
-      //            state.angularAcceleration.angle.perSecond.perSecond)
-      })
-}
 
 fun trajectoryFromPath(
   startVelocity: LinearVelocity,
@@ -86,4 +69,16 @@ fun trajectoryFromPath(
   return Trajectory(states)
 }
 
-// map(list<states>
+fun trajectoryFromPathPlanner(pathPlannerTrajectory: PathPlannerTrajectory): Trajectory {
+  return Trajectory(
+      pathPlannerTrajectory.states.map { state ->
+        state as PathPlannerTrajectory.PathPlannerState
+        TrajectoryState(
+            state.timeSeconds.seconds,
+            Pose(Translation(state.poseMeters.translation), state.holonomicRotation.angle),
+            state.poseMeters.rotation.angle,
+            state.velocityMetersPerSecond.meters.perSecond,
+            state.accelerationMetersPerSecondSq.meters.perSecond.perSecond,
+            state.angularVelocity.angle.perSecond)
+      })
+}

@@ -33,7 +33,6 @@ object DrivetrainConstants {
   val SLOW_AUTO_VEL = 0.66.meters.perSecond
   val MAX_AUTO_ACCEL = 1.0.meters.perSecond.perSecond
 
-
   const val DRIVE_SENSOR_CPR = 2048
   const val STEERING_SENSOR_CPR = 2048
 
@@ -72,7 +71,6 @@ object DrivetrainConstants {
     const val DRIVE_KI = 0.0
     const val DRIVE_KD = 0.0
     const val DRIVE_KFF = 0.0
-
 
     val DRIVE_KS = 0.23677.volts
     val DRIVE_KV = 2.2678.volts / 1.0.meters.perSecond

@@ -34,9 +34,7 @@ object AutonomousSelector {
     autonomousModeChooser.addOption(
         "One Ball Fender Shot Then Taxi: Right",
         AutonomousMode.ONE_BALL_FENDER_SHOT_THEN_TAXI_RIGHT)
-    autonomousModeChooser.addOption(
-      "Two Ball: Left",
-      AutonomousMode.TWO_BALL_LEFT_START)
+    autonomousModeChooser.addOption("Two Ball: Left", AutonomousMode.TWO_BALL_LEFT_START)
     autonomousModeChooser.addOption("Test", AutonomousMode.TEST_AUTO_PATH)
     autonomousModeChooser.addOption(
         "Characterize Drivetrain", AutonomousMode.CHARACTERIZE_DRIVETRAIN)
@@ -56,7 +54,8 @@ object AutonomousSelector {
     val mode = autonomousModeChooser.selected
     when (mode) {
       AutonomousMode.TEST_AUTO_PATH -> return TestAutoPath(drivetrain)
-      AutonomousMode.TWO_BALL_LEFT_START -> return TwoBallLeftStartMode(drivetrain, intake, feeder, shooter)
+      AutonomousMode.TWO_BALL_LEFT_START ->
+          return TwoBallLeftStartMode(drivetrain, intake, feeder, shooter)
       AutonomousMode.CHARACTERIZE_DRIVETRAIN -> return DriveCharacterizeCommand(drivetrain)
       AutonomousMode.CHARACTERIZE_SHOOTER -> return ShooterCharacterizeCommand(shooter)
       AutonomousMode.CHARACTERIZE_CLIMBER_TELESCOPE ->

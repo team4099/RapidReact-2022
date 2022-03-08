@@ -15,6 +15,6 @@ data class TrajectoryState(
   val curvature: Angle,
   val linearVelocity: LinearVelocity,
   val linearAcceleration: LinearAcceleration,
-  val angularVelocity: AngularVelocity = 0.radians.perSecond,
+  val angularVelocity: AngularVelocity = 0.radians.perSecond
 //  val angularAcceleration: AngularAcceleration
 )

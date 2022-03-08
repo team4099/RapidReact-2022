@@ -11,15 +11,15 @@ object PathStore {
       TrajectoryConfig(
           DrivetrainConstants.SLOW_AUTO_VEL,
           DrivetrainConstants.MAX_AUTO_ACCEL,
-          DrivetrainConstants.MAX_AUTO_ANGULAR_VEL,
-          DrivetrainConstants.MAX_AUTO_ANGULAR_ACCEL)
+          DrivetrainConstants.PID.MAX_AUTO_ANGULAR_VEL,
+          DrivetrainConstants.PID.MAX_AUTO_ANGULAR_ACCEL)
 
   private val slowTrajectoryConfig =
       TrajectoryConfig(
           DrivetrainConstants.SLOW_AUTO_VEL,
           DrivetrainConstants.MAX_AUTO_ACCEL,
-          DrivetrainConstants.MAX_AUTO_ANGULAR_VEL,
-          DrivetrainConstants.MAX_AUTO_ANGULAR_ACCEL)
+          DrivetrainConstants.PID.MAX_AUTO_ANGULAR_VEL,
+          DrivetrainConstants.PID.MAX_AUTO_ANGULAR_ACCEL)
 
   val testAutoPath =
       PathPlanner.loadPath(

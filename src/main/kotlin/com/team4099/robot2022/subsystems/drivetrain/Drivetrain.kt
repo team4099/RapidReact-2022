@@ -112,8 +112,8 @@ class Drivetrain(val io: DrivetrainIO) : SubsystemBase() {
 
     Logger.getInstance().recordOutput("Pathfollow/targetPoseXMeters", targetPose.x.inMeters)
     Logger.getInstance().recordOutput("Pathfollow/targetPoseYMeters", targetPose.y.inMeters)
-    Logger.getInstance().recordOutput("Pathfollow/targetPoseThetaRadians", targetPose.theta.inRadians)
-
+    Logger.getInstance()
+        .recordOutput("Pathfollow/targetPoseThetaRadians", targetPose.theta.inRadians)
   }
 
   /**

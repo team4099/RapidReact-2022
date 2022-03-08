@@ -10,6 +10,8 @@ class TestAutoPath(val drivetrain: Drivetrain) : SequentialCommandGroup() {
   init {
     addRequirements(drivetrain)
 
-    addCommands(DrivePathCommand(drivetrain, trajectoryFromPathPlanner(PathStore.testAutoPath), resetPose = true))
+    addCommands(
+        DrivePathCommand(
+            drivetrain, trajectoryFromPathPlanner(PathStore.testAutoPath), resetPose = true))
   }
 }

@@ -1,12 +1,8 @@
 package com.team4099.robot2022.config.constants
 
-import com.team4099.lib.units.Value
 import com.team4099.lib.units.base.Length
-import com.team4099.lib.units.base.Second
-import com.team4099.lib.units.base.Time
 import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.meters
-import com.team4099.lib.units.base.seconds
 import com.team4099.lib.units.perSecond
 
 object TelescopingClimberConstants {
