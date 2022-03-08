@@ -2,10 +2,13 @@ package com.team4099.robot2022
 
 import com.team4099.robot2022.auto.AutonomousSelector
 import com.team4099.robot2022.config.constants.Constants
+import edu.wpi.first.networktables.NetworkTableInstance
+import edu.wpi.first.wpilibj.PowerDistribution
 import edu.wpi.first.wpilibj2.command.CommandScheduler
 import org.littletonrobotics.junction.LoggedRobot
 import org.littletonrobotics.junction.Logger
 import org.littletonrobotics.junction.inputs.LoggedNetworkTables
+import org.littletonrobotics.junction.inputs.LoggedSystemStats
 import org.littletonrobotics.junction.io.ByteLogReceiver
 import org.littletonrobotics.junction.io.ByteLogReplay
 import org.littletonrobotics.junction.io.LogSocketServer
@@ -50,6 +53,7 @@ object Robot : LoggedRobot() {
       // log to USB stick and network for real time data viewing on AdvantageScope
       logger.addDataReceiver(ByteLogReceiver("/media/sda1/"))
       logger.addDataReceiver(LogSocketServer(5800))
+      LoggedSystemStats.getInstance().setPowerDistributionConfig(1, PowerDistribution.ModuleType.kRev)
     } else {
       // if in replay mode get file path from command line and read log file
       val path = ByteLogReplay.promptForPath()
@@ -85,5 +89,10 @@ object Robot : LoggedRobot() {
 
   override fun robotPeriodic() {
     CommandScheduler.getInstance().run()
+
+    Logger.getInstance().recordOutput("ActiveCommands/Scheduler",
+      NetworkTableInstance.getDefault()
+        .getEntry("/LiveWindow/Ungrouped/Scheduler/Names")
+        .getStringArray(emptyArray()))
   }
 }
