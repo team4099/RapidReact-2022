@@ -25,7 +25,6 @@ import com.team4099.robot2022.commands.shooter.SpinUpNearCommand
 import com.team4099.robot2022.config.ControlBoard
 import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.config.constants.FeederConstants
-import com.team4099.robot2022.subsystems.LED
 import com.team4099.robot2022.subsystems.climber.TelescopingClimber
 import com.team4099.robot2022.subsystems.climber.TelescopingClimberIO
 import com.team4099.robot2022.subsystems.climber.TelescopingClimberIOReal
@@ -38,6 +37,9 @@ import com.team4099.robot2022.subsystems.feeder.FeederIOReal
 import com.team4099.robot2022.subsystems.intake.Intake
 import com.team4099.robot2022.subsystems.intake.IntakeIO
 import com.team4099.robot2022.subsystems.intake.IntakeIOReal
+import com.team4099.robot2022.subsystems.led.Led
+import com.team4099.robot2022.subsystems.led.LedIO
+import com.team4099.robot2022.subsystems.led.LedIOReal
 import com.team4099.robot2022.subsystems.shooter.Shooter
 import com.team4099.robot2022.subsystems.shooter.ShooterIO
 import com.team4099.robot2022.subsystems.shooter.ShooterIOReal
@@ -50,6 +52,7 @@ object RobotContainer {
   private val shooter: Shooter
   private val feeder: Feeder
   private val telescopingClimber: TelescopingClimber
+  private val led: Led
   private var compressor: Compressor? = null
 
   init {
@@ -61,12 +64,14 @@ object RobotContainer {
       shooter = Shooter(ShooterIOReal)
       feeder = Feeder(FeederIOReal)
       telescopingClimber = TelescopingClimber(TelescopingClimberIOReal)
+      led = Led(LedIOReal)
     } else {
       drivetrain = Drivetrain(object : DrivetrainIO {})
       intake = Intake(object : IntakeIO {})
       shooter = Shooter(object : ShooterIO {})
       feeder = Feeder(object : FeederIO {})
       telescopingClimber = TelescopingClimber(object : TelescopingClimberIO {})
+      led = Led(object : LedIO {})
     }
   }
 
@@ -90,7 +95,7 @@ object RobotContainer {
     feeder.defaultCommand = FeederIdleCommand(feeder)
     telescopingClimber.defaultCommand = TelescopingIdleCommand(telescopingClimber)
     //    PivotClimber.defaultCommand = PivotIdleCommand()
-    LED.defaultCommand = LedCommand(intake, shooter)
+    led.defaultCommand = LedCommand(led, intake, shooter)
   }
 
   fun zeroSensors() {

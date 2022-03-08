@@ -5,6 +5,9 @@ import edu.wpi.first.wpilibj.PWM
 /** REV Robotics Blinkin LED Driver. */
 class BlinkinLedDriver(channel: Int) {
   private val pwm: PWM
+  val getPWMOutput: Double
+    get() = pwm.speed
+
   fun setMode(mode: BlinkinLedMode) {
     pwm.speed = mode.value
   }
