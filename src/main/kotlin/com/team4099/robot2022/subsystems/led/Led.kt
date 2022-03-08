@@ -20,6 +20,7 @@ class Led(val io: LedIO) : SubsystemBase() {
   override fun periodic() {
     io.updateInputs(inputs)
 
+    Logger.getInstance().processInputs("LED", inputs)
     Logger.getInstance().recordOutput("LED/state", state.name)
     // when (Climber.telescopeState) {
     //  ClimberConstants.TelescopeState.OFF -> {
