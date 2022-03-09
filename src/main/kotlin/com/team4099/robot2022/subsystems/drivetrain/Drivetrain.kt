@@ -51,16 +51,16 @@ class Drivetrain(val io: DrivetrainIO) : SubsystemBase() {
 
   private val frontLeftWheelLocation =
       Translation(
-          -DrivetrainConstants.DRIVETRAIN_WIDTH / 2, DrivetrainConstants.DRIVETRAIN_LENGTH / 2)
+          DrivetrainConstants.DRIVETRAIN_LENGTH / 2, DrivetrainConstants.DRIVETRAIN_WIDTH / 2)
   private val frontRightWheelLocation =
       Translation(
-          DrivetrainConstants.DRIVETRAIN_WIDTH / 2, DrivetrainConstants.DRIVETRAIN_LENGTH / 2)
+          DrivetrainConstants.DRIVETRAIN_LENGTH / 2, -DrivetrainConstants.DRIVETRAIN_WIDTH / 2)
   private val backLeftWheelLocation =
       Translation(
-          -DrivetrainConstants.DRIVETRAIN_WIDTH / 2, -DrivetrainConstants.DRIVETRAIN_LENGTH / 2)
+          -DrivetrainConstants.DRIVETRAIN_LENGTH / 2, DrivetrainConstants.DRIVETRAIN_WIDTH / 2)
   private val backRightWheelLocation =
       Translation(
-          DrivetrainConstants.DRIVETRAIN_WIDTH / 2, -DrivetrainConstants.DRIVETRAIN_LENGTH / 2)
+          -DrivetrainConstants.DRIVETRAIN_LENGTH / 2, -DrivetrainConstants.DRIVETRAIN_WIDTH / 2)
 
   val swerveDriveKinematics =
       SwerveDriveKinematics(
