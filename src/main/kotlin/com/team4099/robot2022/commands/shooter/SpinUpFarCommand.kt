@@ -3,6 +3,7 @@ package com.team4099.robot2022.commands.shooter
 import com.team4099.robot2022.config.constants.ShooterConstants
 import com.team4099.robot2022.subsystems.shooter.Shooter
 import edu.wpi.first.wpilibj2.command.CommandBase
+import org.littletonrobotics.junction.Logger
 
 class SpinUpFarCommand(val shooter: Shooter) : CommandBase() {
   init {
@@ -16,5 +17,9 @@ class SpinUpFarCommand(val shooter: Shooter) : CommandBase() {
 
   override fun isFinished(): Boolean {
     return shooter.isOnTarget
+  }
+
+  override fun execute() {
+    Logger.getInstance().recordOutput("ActiveCommands/SpinUpFarCommand", true)
   }
 }

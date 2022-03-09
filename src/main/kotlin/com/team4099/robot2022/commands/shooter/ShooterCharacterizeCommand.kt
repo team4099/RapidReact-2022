@@ -1,6 +1,5 @@
 package com.team4099.robot2022.commands.shooter
 
-import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.derived.inRadians
 import com.team4099.lib.units.inRadiansPerSecond
 import com.team4099.robot2022.commands.general.SysIdCommand
@@ -20,7 +19,6 @@ class ShooterCharacterizeCommand(val shooter: Shooter) : SequentialCommandGroup(
           SysIdCommand.MechanismSysIdData(
               shooter.inputs.position.inRadians, shooter.inputs.velocity.inRadiansPerSecond)
         }
-    Logger.addEvent("Shooter", "Started ShooterCharacterizeCommand")
     addCommands(SysIdCommand(shooter, shooterSetter, shooterGetter))
   }
 }

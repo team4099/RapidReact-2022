@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem
 import java.util.function.BiConsumer
 import java.util.function.Consumer
 import java.util.function.Supplier
+import org.littletonrobotics.junction.Logger
 
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
@@ -109,6 +110,8 @@ class SysIdCommand : CommandBase {
       data += (subsystemData.posRad / (2 * Math.PI)).toString() + ","
       data += (subsystemData.velRadPerSec / (2 * Math.PI)).toString() + ","
     }
+
+    Logger.getInstance().recordOutput("ActiveCommands/SysIdCommand", true)
   }
 
   // Called once the command ends or is interrupted.

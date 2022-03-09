@@ -1,12 +1,11 @@
 package com.team4099.robot2022.commands.feeder
 
-import com.team4099.lib.logging.Logger
 import com.team4099.robot2022.config.constants.FeederConstants
 import com.team4099.robot2022.subsystems.feeder.Feeder
 import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj2.command.CommandBase
+import org.littletonrobotics.junction.Logger
 
-// not final
 class FeederSerialize(val feeder: Feeder) : CommandBase() {
   var currentTime = 0.0
   var lastBrokenTime = 0.0
@@ -16,9 +15,7 @@ class FeederSerialize(val feeder: Feeder) : CommandBase() {
     addRequirements(feeder)
   }
 
-  override fun initialize() {
-    Logger.addEvent(FeederConstants.TAB, "Beam break started")
-  }
+  override fun initialize() {}
 
   override fun execute() {
     currentTime = Timer.getFPGATimestamp()
@@ -36,5 +33,7 @@ class FeederSerialize(val feeder: Feeder) : CommandBase() {
               FeederConstants.FeederState.FORWARD_ALL
           else -> FeederConstants.FeederState.FORWARD_FLOOR
         }
+
+    Logger.getInstance().recordOutput("ActiveCommands/FeederSerialize", true)
   }
 }

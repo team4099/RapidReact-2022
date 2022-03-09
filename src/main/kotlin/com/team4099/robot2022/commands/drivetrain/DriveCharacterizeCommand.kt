@@ -1,6 +1,5 @@
 package com.team4099.robot2022.commands.drivetrain
 
-import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.base.inMeters
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.inRadians
@@ -31,7 +30,6 @@ class DriveCharacterizeCommand(val drivetrain: Drivetrain) : SequentialCommandGr
               drivetrain.inputs.gyroAngle.inRadians,
               drivetrain.inputs.gyroVelocity.inRadiansPerSecond)
         }
-    Logger.addEvent("Drivetrain", "Started DriveCharacterizeCommand")
     addCommands(SysIdCommand(drivetrain, drivetrainSetter, drivetrainGetter))
   }
 }

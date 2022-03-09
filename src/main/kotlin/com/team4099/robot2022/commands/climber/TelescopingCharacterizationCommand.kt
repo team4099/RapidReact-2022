@@ -1,6 +1,5 @@
 package com.team4099.robot2022.commands.climber
 
-import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.base.inMeters
 import com.team4099.lib.units.inMetersPerSecond
 import com.team4099.robot2022.commands.general.SysIdCommand
@@ -22,7 +21,6 @@ class TelescopingCharacterizationCommand(val telescopingClimber: TelescopingClim
               telescopingClimber.inputs.leftVelocity.inMetersPerSecond /
                   TelescopingClimberConstants.SPOOL_RADIUS.inMeters)
         }
-    Logger.addEvent("Climber", "Started Telescoping Characterization")
     addCommands(SysIdCommand(telescopingClimber, telescopingSetter, telescopingGetter))
   }
 }
