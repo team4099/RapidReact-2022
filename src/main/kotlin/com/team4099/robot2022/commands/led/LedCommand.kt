@@ -10,7 +10,9 @@ import com.team4099.robot2022.subsystems.shooter.Shooter
 import edu.wpi.first.wpilibj2.command.CommandBase
 
 class LedCommand(val led: Led, val intake: Intake, val shooter: Shooter) : CommandBase() {
-  init {}
+  init {
+    addRequirements(led)
+  }
 
   override fun execute() {
     led.state =

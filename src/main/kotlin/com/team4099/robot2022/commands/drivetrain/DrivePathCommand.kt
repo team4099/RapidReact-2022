@@ -125,9 +125,9 @@ class DrivePathCommand(
 
     // Calculate feedback velocities (based on position error).
     val xFeedback =
-        -xPID.calculate(drivetrain.pose.x.inMeters, desiredState.pose.x.inMeters).meters.perSecond
+        xPID.calculate(drivetrain.pose.x.inMeters, desiredState.pose.x.inMeters).meters.perSecond
     val yFeedback =
-        -yPID.calculate(drivetrain.pose.y.inMeters, desiredState.pose.y.inMeters).meters.perSecond
+        yPID.calculate(drivetrain.pose.y.inMeters, desiredState.pose.y.inMeters).meters.perSecond
 
     val xAccel = desiredState.linearAcceleration * desiredState.curvature.cos
     val yAccel = desiredState.linearAcceleration * desiredState.curvature.sin
@@ -136,7 +136,7 @@ class DrivePathCommand(
 
     drivetrain.set(
         thetaFF,
-        Pair(yFF + yFeedback, xFF + xFeedback),
+        Pair(-yFF - yFeedback, -xFF - xFeedback),
         true,
         0.radians.perSecond.perSecond,
         Pair(yAccel, xAccel))
