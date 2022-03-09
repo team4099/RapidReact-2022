@@ -106,9 +106,13 @@ class Drivetrain(val io: DrivetrainIO) : SubsystemBase() {
     Logger.getInstance().recordOutput("Drivetrain/backLeftAngleRadians", wheelAngles[2].inRadians)
     Logger.getInstance().recordOutput("Drivetrain/backRightAngleRadians", wheelAngles[3].inRadians)
 
-    Logger.getInstance().recordOutput("Odometry/pose", doubleArrayOf(pose.x.inMeters, pose.y.inMeters, pose.theta.inRadians))
-    Logger.getInstance().recordOutput("Odometry/targetPose", doubleArrayOf(targetPose.x.inMeters, targetPose.y.inMeters, targetPose.theta.inRadians))
-
+    Logger.getInstance()
+        .recordOutput(
+            "Odometry/pose", doubleArrayOf(pose.x.inMeters, pose.y.inMeters, pose.theta.inRadians))
+    Logger.getInstance()
+        .recordOutput(
+            "Odometry/targetPose",
+            doubleArrayOf(targetPose.x.inMeters, targetPose.y.inMeters, targetPose.theta.inRadians))
   }
 
   /**
