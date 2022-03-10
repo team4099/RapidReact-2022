@@ -63,6 +63,7 @@ object Robot : LoggedRobot() {
 
     RobotContainer.mapDefaultCommands()
     RobotContainer.zeroSensors()
+    RobotContainer.startCompressor()
   }
 
   override fun autonomousInit() {
