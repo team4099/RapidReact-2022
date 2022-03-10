@@ -78,6 +78,8 @@ object DrivetrainIOReal : DrivetrainIO {
   override fun updateInputs(inputs: DrivetrainIO.DrivetrainIOInputs) {
     inputs.gyroAngle = gyroAngle
     inputs.gyroVelocity = gyroRate
+
+    inputs.gyroConnected = gyro.isConnected
   }
 
   override fun zeroGyro(toAngle: Angle) {
