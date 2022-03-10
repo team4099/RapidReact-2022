@@ -81,6 +81,7 @@ class SwerveModule(val io: SwerveModuleIO) {
             accelerationSetPoint.inMetersPerSecondPerSecond)
     Logger.getInstance()
         .recordOutput("${io.label}/steeringSetpointDegrees", steeringSetPoint.inDegrees)
+    Logger.getInstance().recordOutput("${io.label}/steeringValueDegreesWithMod", inputs.steeringPosition.inDegrees.IEEErem(360.0))
   }
 
   /**
