@@ -10,6 +10,7 @@ import com.team4099.lib.units.perSecond
 import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.config.constants.DrivetrainConstants
 import edu.wpi.first.wpilibj.AnalogPotentiometer
+import edu.wpi.first.wpilibj.SerialPort
 import java.lang.Math.PI
 import kotlin.math.IEEErem
 
@@ -50,7 +51,11 @@ object DrivetrainIOReal : DrivetrainIO {
                 "Back Right Wheel")))
   }
 
-  private val gyro = AHRS()
+  private val gyro = AHRS(SerialPort.Port.kMXP)
+
+  init {
+    gyro.calibrate()
+  }
 
   var gyroOffset: Angle = 0.0.degrees
 
