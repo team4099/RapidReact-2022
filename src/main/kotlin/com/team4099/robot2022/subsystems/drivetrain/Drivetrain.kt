@@ -279,16 +279,16 @@ class Drivetrain(val io: DrivetrainIO) : SubsystemBase() {
         inputs.gyroAngle.inRotation2ds,
         SwerveModuleState(
             swerveModules[0].inputs.driveVelocity.inMetersPerSecond,
-            swerveModules[0].inputs.steeringPosition.inRotation2ds),
+            -swerveModules[0].inputs.steeringPosition.inRotation2ds),
         SwerveModuleState(
             swerveModules[1].inputs.driveVelocity.inMetersPerSecond,
-            swerveModules[1].inputs.steeringPosition.inRotation2ds),
+            -swerveModules[1].inputs.steeringPosition.inRotation2ds),
         SwerveModuleState(
             swerveModules[2].inputs.driveVelocity.inMetersPerSecond,
-            swerveModules[2].inputs.steeringPosition.inRotation2ds),
+            -swerveModules[2].inputs.steeringPosition.inRotation2ds),
         SwerveModuleState(
             swerveModules[3].inputs.driveVelocity.inMetersPerSecond,
-            swerveModules[3].inputs.steeringPosition.inRotation2ds))
+            -swerveModules[3].inputs.steeringPosition.inRotation2ds))
   }
 
   private fun hypot(a: LinearVelocity, b: LinearVelocity): LinearVelocity {
