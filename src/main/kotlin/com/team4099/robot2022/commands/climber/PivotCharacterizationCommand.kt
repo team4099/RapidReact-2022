@@ -1,6 +1,5 @@
 package com.team4099.robot2022.commands.climber
 
-import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.derived.inRadians
 import com.team4099.lib.units.inRadiansPerSecond
 import com.team4099.robot2022.commands.general.SysIdCommand
@@ -18,7 +17,6 @@ class PivotCharacterizationCommand(val pivotClimber: PivotClimber) : SequentialC
               pivotClimber.pivotLeftArmSensor.position.inRadians,
               pivotClimber.pivotLeftArmSensor.velocity.inRadiansPerSecond)
         }
-    Logger.addEvent("Climber", "Started Telescoping Characterization")
     addCommands(SysIdCommand(pivotClimber, pivotSetter, pivotGetter))
   }
 }

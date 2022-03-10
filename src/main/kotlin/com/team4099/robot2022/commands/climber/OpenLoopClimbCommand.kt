@@ -1,8 +1,8 @@
 package com.team4099.robot2022.commands.climber
 
-import com.team4099.lib.logging.Logger
 import com.team4099.robot2022.subsystems.climber.TelescopingClimber
 import edu.wpi.first.wpilibj2.command.CommandBase
+import org.littletonrobotics.junction.Logger
 
 class OpenLoopClimbCommand(val telescopingClimber: TelescopingClimber) : CommandBase() {
   init {
@@ -12,7 +12,7 @@ class OpenLoopClimbCommand(val telescopingClimber: TelescopingClimber) : Command
   override fun execute() {
     telescopingClimber.setOpenLoop(-1.0, -1.0)
 
-    Logger.addEvent("Climber", "Telescoping climber spooling down")
+    Logger.getInstance().recordOutput("ActiveCommands/OpenLoopClimbCommand", true)
   }
 
   override fun end(interrupted: Boolean) {
