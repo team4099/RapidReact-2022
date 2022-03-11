@@ -16,9 +16,6 @@ object Robot : LoggedRobot() {
 
   init {
     robotName = Constants.Tuning.type
-
-    RobotContainer
-    AutonomousSelector
   }
 
   override fun robotInit() {
@@ -61,6 +58,8 @@ object Robot : LoggedRobot() {
     }
     logger.start()
 
+    RobotContainer
+    AutonomousSelector
     RobotContainer.mapDefaultCommands()
     RobotContainer.zeroSensors()
     RobotContainer.startCompressor()
