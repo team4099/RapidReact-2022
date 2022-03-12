@@ -27,6 +27,12 @@ class IntakeBallsCommand(val intake: Intake) : CommandBase() {
   override fun execute() {
     Logger.getInstance().recordOutput("ActiveCommands/IntakeBallsCommand", true)
   }
+
+  override fun end(interrupted: Boolean) {
+    intake.rollerState = IntakeConstants.RollerState.IDLE
+    intake.armState = IntakeConstants.ArmState.IN
+  }
+
   override fun isFinished(): Boolean {
     return false
   }

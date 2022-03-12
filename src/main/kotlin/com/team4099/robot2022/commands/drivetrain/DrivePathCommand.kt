@@ -80,6 +80,9 @@ class DrivePathCommand(
       drivetrain.pose = trajectory.startingPose
     }
     trajStartTime = Clock.fpgaTime + trajectory.startTime
+    thetaPID.reset(drivetrain.pose.theta.inRadians)
+    xPID.reset()
+    yPID.reset()
   }
 
   override fun execute() {
@@ -87,7 +90,7 @@ class DrivePathCommand(
     val desiredState = trajectory.sample(trajCurTime)
     val xFF = desiredState.linearVelocity * desiredState.curvature.cos
     val yFF = desiredState.linearVelocity * desiredState.curvature.sin
-    val thetaFF =
+    val thetaFeedback =
         thetaPID.calculate(
                 drivetrain.pose.theta.inRadians,
                 TrapezoidProfile.State(
@@ -108,7 +111,7 @@ class DrivePathCommand(
     drivetrain.targetPose = desiredState.pose
 
     drivetrain.set(
-        -thetaFF,
+        -thetaFeedback,
         Pair(yFF + yFeedback, -xFF - xFeedback),
         true,
         0.radians.perSecond.perSecond,
@@ -116,12 +119,18 @@ class DrivePathCommand(
 
     Logger.getInstance().recordOutput("Pathfollow/xFFMetersPerSec", xFF.inMetersPerSecond)
     Logger.getInstance().recordOutput("Pathfollow/yFFMetersPerSec", yFF.inMetersPerSecond)
-    Logger.getInstance().recordOutput("Pathfollow/thetaFFDegreesPerSec", thetaFF.inDegreesPerSecond)
+    Logger.getInstance()
+        .recordOutput("Pathfollow/thetaFeedbackDegreesPerSec", thetaFeedback.inDegreesPerSecond)
 
     Logger.getInstance()
         .recordOutput("Pathfollow/xFeedbackMetersPerSec", xFeedback.inMetersPerSecond)
     Logger.getInstance()
         .recordOutput("Pathfollow/yFeedbackMetersPerSec", yFeedback.inMetersPerSecond)
+
+    Logger.getInstance()
+        .recordOutput("Pathfollow/thetaPIDPositionErrorRadians", thetaPID.positionError)
+    Logger.getInstance()
+        .recordOutput("Pathfollow/thetaPIDVelocityErrorRadians", thetaPID.velocityError)
 
     Logger.getInstance()
         .recordOutput(
@@ -138,6 +147,8 @@ class DrivePathCommand(
         .recordOutput(
             "Pathfollow/Desired Angular Velocity in Degrees",
             desiredState.angularVelocity.inDegreesPerSecond)
+
+    Logger.getInstance().recordOutput("ActiveCommands/DrivePathCommand", true)
 
     if (thetakP.hasChanged()) thetaPID.p = thetakP.value
     if (thetakI.hasChanged()) thetaPID.i = thetakI.value
@@ -177,6 +188,7 @@ class DrivePathCommand(
       // Execute one last time to end up in the final state of the trajectory
       // Since we weren't interrupted, we know curTime > endTime
       execute()
+      drivetrain.set(0.degrees.perSecond, Pair(0.meters.perSecond, 0.meters.perSecond))
     }
   }
 }

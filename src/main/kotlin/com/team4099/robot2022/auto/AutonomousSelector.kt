@@ -4,6 +4,7 @@ import com.team4099.lib.units.derived.Angle
 import com.team4099.lib.units.derived.degrees
 import com.team4099.robot2022.auto.mode.OneBallFenderShotThenTaxi
 import com.team4099.robot2022.auto.mode.TestAutoPath
+import com.team4099.robot2022.auto.mode.ThreeBallRightStart
 import com.team4099.robot2022.auto.mode.TwoBallLeftStartMode
 import com.team4099.robot2022.commands.climber.TelescopingCharacterizationCommand
 import com.team4099.robot2022.commands.drivetrain.DriveCharacterizeCommand
@@ -35,6 +36,7 @@ object AutonomousSelector {
         "One Ball Fender Shot Then Taxi: Right",
         AutonomousMode.ONE_BALL_FENDER_SHOT_THEN_TAXI_RIGHT)
     autonomousModeChooser.addOption("Two Ball: Left", AutonomousMode.TWO_BALL_LEFT_START)
+    autonomousModeChooser.addOption("Three Ball: Left Start", AutonomousMode.THREE_BALL_RIGHT_START)
     autonomousModeChooser.addOption("Test", AutonomousMode.TEST_AUTO_PATH)
     autonomousModeChooser.addOption(
         "Characterize Drivetrain", AutonomousMode.CHARACTERIZE_DRIVETRAIN)
@@ -56,6 +58,8 @@ object AutonomousSelector {
       AutonomousMode.TEST_AUTO_PATH -> return TestAutoPath(drivetrain)
       AutonomousMode.TWO_BALL_LEFT_START ->
           return TwoBallLeftStartMode(drivetrain, intake, feeder, shooter)
+      AutonomousMode.THREE_BALL_RIGHT_START ->
+          return ThreeBallRightStart(drivetrain, intake, feeder, shooter)
       AutonomousMode.CHARACTERIZE_DRIVETRAIN -> return DriveCharacterizeCommand(drivetrain)
       AutonomousMode.CHARACTERIZE_SHOOTER -> return ShooterCharacterizeCommand(shooter)
       AutonomousMode.CHARACTERIZE_CLIMBER_TELESCOPE ->
@@ -79,6 +83,7 @@ object AutonomousSelector {
     CHARACTERIZE_CLIMBER_PIVOT,
     ONE_BALL_FENDER_SHOT_THEN_TAXI_LEFT,
     ONE_BALL_FENDER_SHOT_THEN_TAXI_RIGHT,
-    TWO_BALL_LEFT_START
+    TWO_BALL_LEFT_START,
+    THREE_BALL_RIGHT_START
   }
 }

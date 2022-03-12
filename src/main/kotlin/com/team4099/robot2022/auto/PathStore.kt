@@ -23,13 +23,25 @@ object PathStore {
 
   val testAutoPath =
       PathPlanner.loadPath(
-          "defaultPath",
+          "strafeRight",
           DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
           DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond)
 
   val twoBallLeftStartPath =
       PathPlanner.loadPath(
           "2 Ball Left Start",
+          DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
+          DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond)
+
+  val threeBallRightStartPath =
+      PathPlanner.loadPath(
+          "3 Ball Right Start",
+          DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
+          DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond)
+
+  val threeAndFourBallLeftStartPath =
+      PathPlanner.loadPath(
+          "3 and 4 Ball Left Start",
           DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
           DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond)
 }
