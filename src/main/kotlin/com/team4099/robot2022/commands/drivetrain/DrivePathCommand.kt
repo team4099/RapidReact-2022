@@ -15,6 +15,8 @@ import com.team4099.lib.units.derived.radians
 import com.team4099.lib.units.derived.sin
 import com.team4099.lib.units.inDegreesPerSecond
 import com.team4099.lib.units.inDegreesPerSecondPerSecond
+import com.team4099.lib.units.inMetersPerSecond
+import com.team4099.lib.units.inMetersPerSecondPerSecond
 import com.team4099.lib.units.inRadiansPerSecond
 import com.team4099.lib.units.inRadiansPerSecondPerSecond
 import com.team4099.lib.units.perSecond
@@ -111,6 +113,22 @@ class DrivePathCommand(
         true,
         0.radians.perSecond.perSecond,
         Pair(yAccel, xAccel))
+
+    Logger.getInstance().recordOutput("Pathfollow/xFFMetersPerSec", xFF.inMetersPerSecond)
+    Logger.getInstance().recordOutput("Pathfollow/yFFMetersPerSec", yFF.inMetersPerSecond)
+    Logger.getInstance().recordOutput("Pathfollow/thetaFFDegreesPerSec", thetaFF.inDegreesPerSecond)
+
+    Logger.getInstance()
+        .recordOutput("Pathfollow/xFeedbackMetersPerSec", xFeedback.inMetersPerSecond)
+    Logger.getInstance()
+        .recordOutput("Pathfollow/yFeedbackMetersPerSec", yFeedback.inMetersPerSecond)
+
+    Logger.getInstance()
+        .recordOutput(
+            "Pathfollow/xAccelMetersPerSecondPerSecond", xAccel.inMetersPerSecondPerSecond)
+    Logger.getInstance()
+        .recordOutput(
+            "Pathfollow/yAccelMetersPerSecondPerSecond", yAccel.inMetersPerSecondPerSecond)
 
     Logger.getInstance().recordOutput("Pathfollow/Start Time", trajStartTime.inSeconds)
     Logger.getInstance().recordOutput("Pathfollow/Current Time", trajCurTime.inSeconds)
