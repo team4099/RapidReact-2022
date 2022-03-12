@@ -29,9 +29,9 @@ object DrivetrainConstants {
 
   const val GYRO_RATE_COEFFICIENT = 0.0 // TODO: Change this value
 
-  val MAX_AUTO_VEL = 3.meters.perSecond
+  val MAX_AUTO_VEL = 2.meters.perSecond
   val SLOW_AUTO_VEL = 0.66.meters.perSecond
-  val MAX_AUTO_ACCEL = 1.0.meters.perSecond.perSecond
+  val MAX_AUTO_ACCEL = 2.0.meters.perSecond.perSecond
 
   const val DRIVE_SENSOR_CPR = 2048
   const val STEERING_SENSOR_CPR = 2048
@@ -50,16 +50,16 @@ object DrivetrainConstants {
   val BACK_LEFT_MODULE_ZERO = 5.204072.radians
 
   object PID {
-    const val AUTO_POS_KP = 0.1
+    const val AUTO_POS_KP = 0.125
     const val AUTO_POS_KI = 0.0
     const val AUTO_POS_KD = 0.0 // 263.0 / 6
 
-    const val AUTO_THETA_PID_KP = 0.3
+    const val AUTO_THETA_PID_KP = 5.6
     const val AUTO_THETA_PID_KI = 0.0
     const val AUTO_THETA_PID_KD = 0.0
 
     val MAX_AUTO_ANGULAR_VEL = 90.0.degrees.perSecond
-    val MAX_AUTO_ANGULAR_ACCEL = 450.0.degrees.perSecond.perSecond
+    val MAX_AUTO_ANGULAR_ACCEL = 600.0.degrees.perSecond.perSecond
 
     const val STEERING_KP = 0.25
     const val STEERING_KI = 0.0

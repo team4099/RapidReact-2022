@@ -1,9 +1,10 @@
 package com.team4099.robot2022.subsystems.drivetrain
 
 import com.team4099.lib.units.derived.Angle
-import com.team4099.lib.units.derived.inRadians
+import com.team4099.lib.units.derived.degrees
+import com.team4099.lib.units.derived.inDegrees
 import com.team4099.lib.units.derived.radians
-import com.team4099.lib.units.inRadiansPerSecond
+import com.team4099.lib.units.inDegreesPerSecond
 import com.team4099.lib.units.perSecond
 import org.littletonrobotics.junction.LogTable
 import org.littletonrobotics.junction.inputs.LoggableInputs
@@ -17,15 +18,15 @@ interface DrivetrainIO {
     var gyroConnected = true
 
     override fun toLog(table: LogTable?) {
-      table?.put("gyroAngleRadians", gyroAngle.inRadians)
-      table?.put("gyroVelocityRadiansPerSecond", gyroVelocity.inRadiansPerSecond)
+      table?.put("gyroAngleDegrees", gyroAngle.inDegrees)
+      table?.put("gyroVelocityDegreesPerSecond", gyroVelocity.inDegreesPerSecond)
       table?.put("gyroConnected", gyroConnected)
     }
 
     override fun fromLog(table: LogTable?) {
-      table?.getDouble("gyroAngleRadians", gyroAngle.inRadians)?.let { gyroAngle = it.radians }
-      table?.getDouble("gyroVelocityRadiansPerSecond", gyroVelocity.inRadiansPerSecond)?.let {
-        gyroVelocity.inRadiansPerSecond
+      table?.getDouble("gyroAngleDegrees", gyroAngle.inDegrees)?.let { gyroAngle = it.degrees }
+      table?.getDouble("gyroVelocityDegreesPerSecond", gyroVelocity.inDegreesPerSecond)?.let {
+        gyroVelocity.inDegreesPerSecond
       }
       table?.getBoolean("gyroConnected", gyroConnected)?.let { gyroConnected = it }
     }

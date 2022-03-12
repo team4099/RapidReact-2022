@@ -9,6 +9,7 @@ import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.base.seconds
 import com.team4099.lib.units.derived.cos
 import com.team4099.lib.units.derived.degrees
+import com.team4099.lib.units.derived.inDegrees
 import com.team4099.lib.units.derived.inRadians
 import com.team4099.lib.units.derived.radians
 import com.team4099.lib.units.derived.sin
@@ -86,7 +87,7 @@ class DrivePathCommand(
     val yFF = desiredState.linearVelocity * desiredState.curvature.sin
     val thetaFF =
         thetaPID.calculate(
-                -drivetrain.pose.theta.inRadians,
+                drivetrain.pose.theta.inRadians,
                 TrapezoidProfile.State(
                     desiredState.pose.theta.inRadians,
                     desiredState.angularVelocity.inRadiansPerSecond))
@@ -105,14 +106,20 @@ class DrivePathCommand(
     drivetrain.targetPose = desiredState.pose
 
     drivetrain.set(
-        thetaFF,
-        Pair(-yFF - yFeedback, -xFF - xFeedback),
+        -thetaFF,
+        Pair(yFF + yFeedback, -xFF - xFeedback),
         true,
         0.radians.perSecond.perSecond,
         Pair(yAccel, xAccel))
 
     Logger.getInstance().recordOutput("Pathfollow/Start Time", trajStartTime.inSeconds)
     Logger.getInstance().recordOutput("Pathfollow/Current Time", trajCurTime.inSeconds)
+    Logger.getInstance()
+        .recordOutput("Pathfollow/Desired Angle in Degrees", desiredState.pose.theta.inDegrees)
+    Logger.getInstance()
+        .recordOutput(
+            "Pathfollow/Desired Angular Velocity in Degrees",
+            desiredState.angularVelocity.inDegreesPerSecond)
 
     if (thetakP.hasChanged()) thetaPID.p = thetakP.value
     if (thetakI.hasChanged()) thetaPID.i = thetakI.value

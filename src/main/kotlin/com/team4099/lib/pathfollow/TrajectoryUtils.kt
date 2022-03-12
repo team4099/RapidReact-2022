@@ -79,6 +79,6 @@ fun trajectoryFromPathPlanner(pathPlannerTrajectory: PathPlannerTrajectory): Tra
             state.poseMeters.rotation.angle,
             state.velocityMetersPerSecond.meters.perSecond,
             state.accelerationMetersPerSecondSq.meters.perSecond.perSecond,
-            state.angularVelocity.angle.perSecond)
+            angularVelocity = state.angularVelocity.angle.perSecond)
       })
 }

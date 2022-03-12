@@ -81,7 +81,7 @@ class SwerveModuleIOReal(
     driveFalcon.configAllSettings(driveConfiguration)
     driveFalcon.enableVoltageCompensation(true)
 
-    driveFalcon.setNeutralMode(NeutralMode.Coast)
+    driveFalcon.setNeutralMode(NeutralMode.Brake)
   }
 
   override fun updateInputs(inputs: SwerveModuleIO.SwerveModuleIOInputs) {
