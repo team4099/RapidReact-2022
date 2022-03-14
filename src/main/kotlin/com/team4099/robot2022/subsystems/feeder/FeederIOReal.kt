@@ -6,14 +6,15 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.team4099.lib.units.base.amps
 import com.team4099.lib.units.derived.volts
 import com.team4099.robot2022.config.constants.Constants
+import com.team4099.robot2022.config.constants.Constants.Universal.CANIVORE_NAME
 import edu.wpi.first.wpilibj.DigitalInput
 
 object FeederIOReal : FeederIO {
   // The motor that takes balls from the intake
-  private val floorMotor = TalonFX(Constants.Feeder.FLOOR_MOTOR_ID)
+  private val floorMotor = TalonFX(Constants.Feeder.FLOOR_MOTOR_ID, CANIVORE_NAME)
 
   // The motor that takes balls to the shooter
-  private val verticalMotor = TalonFX(Constants.Feeder.VERTICAL_MOTOR_ID)
+  private val verticalMotor = TalonFX(Constants.Feeder.VERTICAL_MOTOR_ID, CANIVORE_NAME)
 
   // The top Beam Break
   private val topBeamDIO = DigitalInput(Constants.Feeder.TOP_DIO_PIN)

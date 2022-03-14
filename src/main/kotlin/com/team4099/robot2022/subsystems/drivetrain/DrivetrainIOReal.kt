@@ -8,6 +8,7 @@ import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.inDegrees
 import com.team4099.lib.units.perSecond
 import com.team4099.robot2022.config.constants.Constants
+import com.team4099.robot2022.config.constants.Constants.Universal.CANIVORE_NAME
 import com.team4099.robot2022.config.constants.DrivetrainConstants
 import edu.wpi.first.wpilibj.AnalogPotentiometer
 import edu.wpi.first.wpilibj.SerialPort
@@ -19,32 +20,32 @@ object DrivetrainIOReal : DrivetrainIO {
     return listOf(
         SwerveModule(
             SwerveModuleIOReal(
-                TalonFX(Constants.Drivetrain.FRONT_LEFT_STEERING_ID),
-                TalonFX(Constants.Drivetrain.FRONT_LEFT_DRIVE_ID),
+                TalonFX(Constants.Drivetrain.FRONT_LEFT_STEERING_ID, CANIVORE_NAME),
+                TalonFX(Constants.Drivetrain.FRONT_LEFT_DRIVE_ID, CANIVORE_NAME),
                 AnalogPotentiometer(
                     Constants.Drivetrain.FRONT_LEFT_ANALOG_POTENTIOMETER, 2 * PI, 0.0),
                 DrivetrainConstants.FRONT_LEFT_MODULE_ZERO,
                 "Front Left Wheel")),
         SwerveModule(
             SwerveModuleIOReal(
-                TalonFX(Constants.Drivetrain.FRONT_RIGHT_STEERING_ID),
-                TalonFX(Constants.Drivetrain.FRONT_RIGHT_DRIVE_ID),
+                TalonFX(Constants.Drivetrain.FRONT_RIGHT_STEERING_ID, CANIVORE_NAME),
+                TalonFX(Constants.Drivetrain.FRONT_RIGHT_DRIVE_ID, CANIVORE_NAME),
                 AnalogPotentiometer(
                     Constants.Drivetrain.FRONT_RIGHT_ANALOG_POTENTIOMETER, 2 * PI, 0.0),
                 DrivetrainConstants.FRONT_RIGHT_MODULE_ZERO,
                 "Front Right Wheel")),
         SwerveModule(
             SwerveModuleIOReal(
-                TalonFX(Constants.Drivetrain.BACK_LEFT_STEERING_ID),
-                TalonFX(Constants.Drivetrain.BACK_LEFT_DRIVE_ID),
+                TalonFX(Constants.Drivetrain.BACK_LEFT_STEERING_ID, CANIVORE_NAME),
+                TalonFX(Constants.Drivetrain.BACK_LEFT_DRIVE_ID, CANIVORE_NAME),
                 AnalogPotentiometer(
                     Constants.Drivetrain.BACK_LEFT_ANALOG_POTENTIOMETER, 2 * PI, 0.0),
                 DrivetrainConstants.BACK_LEFT_MODULE_ZERO,
                 "Back Left Wheel")),
         SwerveModule(
             SwerveModuleIOReal(
-                TalonFX(Constants.Drivetrain.BACK_RIGHT_STEERING_ID),
-                TalonFX(Constants.Drivetrain.BACK_RIGHT_DRIVE_ID),
+                TalonFX(Constants.Drivetrain.BACK_RIGHT_STEERING_ID, CANIVORE_NAME),
+                TalonFX(Constants.Drivetrain.BACK_RIGHT_DRIVE_ID, CANIVORE_NAME),
                 AnalogPotentiometer(
                     Constants.Drivetrain.BACK_RIGHT_ANALOG_POTENTIOMETER, 2 * PI, 0.0),
                 DrivetrainConstants.BACK_RIGHT_MODULE_ZERO,

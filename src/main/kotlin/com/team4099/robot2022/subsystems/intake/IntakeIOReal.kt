@@ -7,6 +7,7 @@ import com.team4099.lib.units.base.amps
 import com.team4099.lib.units.ctreAngularMechanismSensor
 import com.team4099.lib.units.derived.volts
 import com.team4099.robot2022.config.constants.Constants
+import com.team4099.robot2022.config.constants.Constants.Universal.CANIVORE_NAME
 import com.team4099.robot2022.config.constants.IntakeConstants
 import edu.wpi.first.wpilibj.PneumaticsModuleType
 import edu.wpi.first.wpilibj.Solenoid
@@ -14,7 +15,7 @@ import edu.wpi.first.wpilibj.Solenoid
 object IntakeIOReal : IntakeIO {
   private val intakeConfiguration: TalonFXConfiguration = TalonFXConfiguration()
 
-  private val intakeTalon = TalonFX(Constants.Intake.INTAKE_MOTOR)
+  private val intakeTalon = TalonFX(Constants.Intake.INTAKE_MOTOR, CANIVORE_NAME)
   private val intakeSolenoid = Solenoid(PneumaticsModuleType.REVPH, Constants.Intake.ARM_SOLENOID)
 
   private val intakeSensor =

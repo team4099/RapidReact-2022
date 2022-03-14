@@ -11,11 +11,12 @@ import com.team4099.lib.units.derived.rotations
 import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.inRadiansPerSecond
 import com.team4099.lib.units.perMinute
+import com.team4099.robot2022.config.constants.Constants.Universal.CANIVORE_NAME
 import com.team4099.robot2022.config.constants.ShooterConstants
 
 object ShooterIOReal : ShooterIO {
-  private val leaderMotor = TalonFX(ShooterConstants.LEADER_MOTOR_ID)
-  private val followerMotor = TalonFX(ShooterConstants.FOLLOWER_MOTOR_ID)
+  private val leaderMotor = TalonFX(ShooterConstants.LEADER_MOTOR_ID, CANIVORE_NAME)
+  private val followerMotor = TalonFX(ShooterConstants.FOLLOWER_MOTOR_ID, CANIVORE_NAME)
 
   private val shooterSensor =
       ctreAngularMechanismSensor(

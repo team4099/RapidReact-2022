@@ -11,6 +11,7 @@ object Constants {
     const val EPSILON = 1E-9
 
     val SLOW_STATUS_FRAME_TIME = 255.milli.seconds
+    val CANIVORE_NAME = "kestrel_vore"
   }
 
   object Tuning {
