@@ -16,8 +16,10 @@ import com.team4099.robot2022.config.constants.Constants.Universal.CANIVORE_NAME
 import com.team4099.robot2022.config.constants.TelescopingClimberConstants
 
 object TelescopingClimberIOReal : TelescopingClimberIO {
-  private val telescopingRightArm: TalonFX = TalonFX(Constants.TelescopingClimber.R_ARM_ID, CANIVORE_NAME)
-  private val telescopingLeftArm: TalonFX = TalonFX(Constants.TelescopingClimber.L_ARM_ID, CANIVORE_NAME)
+  private val telescopingRightArm: TalonFX =
+      TalonFX(Constants.TelescopingClimber.R_ARM_ID, CANIVORE_NAME)
+  private val telescopingLeftArm: TalonFX =
+      TalonFX(Constants.TelescopingClimber.L_ARM_ID, CANIVORE_NAME)
 
   val telescopingRightArmSensor =
       ctreLinearMechanismSensor(
