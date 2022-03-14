@@ -46,7 +46,7 @@ object Robot : LoggedRobot() {
 
     if (isReal()) {
       // log to USB stick and network for real time data viewing on AdvantageScope
-      logger.addDataReceiver(ByteLogReceiver("/home/lvuser/logs/"))
+      logger.addDataReceiver(ByteLogReceiver("/media/sda1"))
       logger.addDataReceiver(LogSocketServer(5800))
       //      LoggedSystemStats.getInstance()
       //          .setPowerDistributionConfig(1, PowerDistribution.ModuleType.kRev)

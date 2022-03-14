@@ -50,15 +50,15 @@ object DrivetrainConstants {
   val BACK_LEFT_MODULE_ZERO = 5.204072.radians
 
   object PID {
-    const val AUTO_POS_KP = 0.125
+    const val AUTO_POS_KP = 2.0
     const val AUTO_POS_KI = 0.0
-    const val AUTO_POS_KD = 0.0 // 263.0 / 6
+    const val AUTO_POS_KD = 0.75
 
-    const val AUTO_THETA_PID_KP = 5.6
+    const val AUTO_THETA_PID_KP = 7.6
     const val AUTO_THETA_PID_KI = 0.0
     const val AUTO_THETA_PID_KD = 0.0
 
-    val MAX_AUTO_ANGULAR_VEL = 90.0.degrees.perSecond
+    val MAX_AUTO_ANGULAR_VEL = 270.0.degrees.perSecond
     val MAX_AUTO_ANGULAR_ACCEL = 600.0.degrees.perSecond.perSecond
 
     const val STEERING_KP = 0.25
