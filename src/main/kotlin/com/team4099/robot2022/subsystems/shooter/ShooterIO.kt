@@ -1,12 +1,16 @@
 package com.team4099.robot2022.subsystems.shooter
 
+import com.team4099.lib.units.AngularVelocity
 import com.team4099.lib.units.base.amps
 import com.team4099.lib.units.base.inAmperes
 import com.team4099.lib.units.derived.inRadians
 import com.team4099.lib.units.derived.inVolts
 import com.team4099.lib.units.derived.radians
+import com.team4099.lib.units.derived.rotations
 import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.inRadiansPerSecond
+import com.team4099.lib.units.inRotationsPerMinute
+import com.team4099.lib.units.perMinute
 import com.team4099.lib.units.perSecond
 import com.team4099.robot2022.config.constants.ShooterConstants
 import org.littletonrobotics.junction.LogTable
@@ -24,7 +28,7 @@ interface ShooterIO {
 
     override fun toLog(table: LogTable?) {
       table?.put("positionRad", position.inRadians)
-      table?.put("velocityRad", velocity.inRadiansPerSecond)
+      table?.put("velocityRPM", velocity.inRotationsPerMinute)
       table?.put("appliedVolts", appliedVoltage.inVolts)
       table?.put("statorCurrentAmps", statorCurrent.map { it.inAmperes }.toDoubleArray())
       table?.put("supplyCurrentAmps", supplyCurrent.map { it.inAmperes }.toDoubleArray())
@@ -33,8 +37,8 @@ interface ShooterIO {
 
     override fun fromLog(table: LogTable?) {
       table?.getDouble("positionRad", position.inRadians)?.let { position = it.radians }
-      table?.getDouble("velocityRad", velocity.inRadiansPerSecond)?.let {
-        velocity = it.radians.perSecond
+      table?.getDouble("velocityRPM", velocity.inRotationsPerMinute)?.let {
+        velocity = it.rotations.perMinute
       }
       table?.getDouble("appliedVolts", appliedVoltage.inVolts)?.let { appliedVoltage = it.volts }
       table?.getDoubleArray("statorCurrentAmps", statorCurrent.map { it.inAmperes }.toDoubleArray())
@@ -50,6 +54,9 @@ interface ShooterIO {
   fun updateInputs(inputs: ShooterIOInputs) {}
 
   fun setShooterState(shooterState: ShooterConstants.ShooterState) {}
+
+  fun setVelocity(velocity: AngularVelocity) {}
+
   fun setOpenLoop(power: Double) {}
 
   fun configurePID(kP: Double, kI: Double, kD: Double) {}

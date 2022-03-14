@@ -132,7 +132,7 @@ object ShooterIOReal : ShooterIO {
     inputs.appliedVoltage = leaderMotor.motorOutputVoltage.volts
   }
 
-  private fun setVelocity(velocity: AngularVelocity) {
+  override fun setVelocity(velocity: AngularVelocity) {
     if (velocity <= 600.rotations.perMinute) {
       setOpenLoop(0.0)
     } else {
@@ -144,10 +144,6 @@ object ShooterIOReal : ShooterIO {
               ShooterConstants.SHOOTER_KV_VOLTS_PER_RADIAN_PER_SECOND *
                   velocity.inRadiansPerSecond) / 12.0)
     }
-  }
-
-  override fun setShooterState(shooterState: ShooterConstants.ShooterState) {
-    setVelocity(shooterState.targetVelocity)
   }
 
   override fun setOpenLoop(power: Double) {

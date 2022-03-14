@@ -2,7 +2,10 @@ package com.team4099.robot2022.subsystems.shooter
 
 import com.team4099.lib.around
 import com.team4099.lib.logging.TunableNumber
+import com.team4099.lib.units.AngularVelocity
+import com.team4099.lib.units.derived.rotations
 import com.team4099.lib.units.inRotationsPerMinute
+import com.team4099.lib.units.perMinute
 import com.team4099.robot2022.config.constants.ShooterConstants
 import edu.wpi.first.math.filter.MedianFilter
 import edu.wpi.first.wpilibj2.command.SubsystemBase
@@ -12,9 +15,16 @@ class Shooter(val io: ShooterIO) : SubsystemBase() {
   val inputs = ShooterIO.ShooterIOInputs()
   private var filter = MedianFilter(ShooterConstants.FILTER_SIZE)
 
+  private var lastRecordedSpeeds = mutableListOf<AngularVelocity>()
+
   private val kP = TunableNumber("Shooter/kP", ShooterConstants.SHOOTER_KP)
   private val kI = TunableNumber("Shooter/kI", ShooterConstants.SHOOTER_KI)
   private val kD = TunableNumber("Shooter/kD", ShooterConstants.SHOOTER_KD)
+
+  private val nearSpeedRM =
+      TunableNumber(
+          "Shooter/targetRPM",
+          ShooterConstants.ShooterState.SPIN_UP_NEAR.targetVelocity.inRotationsPerMinute)
 
   private val filterSize =
       TunableNumber("Shooter/filterSize", ShooterConstants.FILTER_SIZE.toDouble())
@@ -24,8 +34,14 @@ class Shooter(val io: ShooterIO) : SubsystemBase() {
 
   var state = ShooterConstants.ShooterState.OFF
     set(state) {
-      io.setShooterState(state)
+//      targetVelocity = state.targetVelocity
       field = state
+    }
+
+  var targetVelocity = 0.0.rotations.perMinute
+    set(value) {
+      io.setVelocity(value)
+      field = value
     }
 
   var isOnTarget = false
@@ -41,14 +57,27 @@ class Shooter(val io: ShooterIO) : SubsystemBase() {
   override fun periodic() {
     io.updateInputs(inputs)
 
+    lastRecordedSpeeds.add(inputs.velocity)
+
+    if (lastRecordedSpeeds.size > filterSize.value) {
+      lastRecordedSpeeds.removeAt(0)
+    }
+
+//    isOnTarget =
+//        targetVelocity != 0.0.rotations.perMinute &&
+//            filter.calculate(inputs.velocity.inRotationsPerMinute)
+//                .around(targetVelocity.inRotationsPerMinute, shooterToleranceRPM.value)
+
     isOnTarget =
-        state != ShooterConstants.ShooterState.OFF &&
-            filter.calculate(inputs.velocity.inRotationsPerMinute)
-                .around(state.targetVelocity.inRotationsPerMinute, shooterToleranceRPM.value)
+        targetVelocity != 0.0.rotations.perMinute &&
+            lastRecordedSpeeds.all {
+              it.inRotationsPerMinute
+                  .around(targetVelocity.inRotationsPerMinute, shooterToleranceRPM.value)
+            }
 
     Logger.getInstance().processInputs("Shooter", inputs)
     Logger.getInstance()
-        .recordOutput("Shooter/setpointRPM", state.targetVelocity.inRotationsPerMinute)
+        .recordOutput("Shooter/setpointRPM", targetVelocity.inRotationsPerMinute)
     Logger.getInstance().recordOutput("Shooter/isOnTarget", isOnTarget)
     Logger.getInstance().recordOutput("Shooter/state", state.name)
 
@@ -58,6 +87,10 @@ class Shooter(val io: ShooterIO) : SubsystemBase() {
 
     if (filterSize.hasChanged()) {
       filter = MedianFilter(filterSize.value.toInt())
+    }
+
+    if (nearSpeedRM.hasChanged()) {
+      targetVelocity = nearSpeedRM.value.rotations.perMinute
     }
   }
 }
