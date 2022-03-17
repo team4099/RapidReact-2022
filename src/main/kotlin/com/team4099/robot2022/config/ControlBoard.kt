@@ -22,6 +22,8 @@ object ControlBoard {
   val turn: Double
     get() = driver.rightXAxis
 
+  val robotOriented = Trigger { driver.leftShoulderButton }
+
   val resetGyro = Trigger { driver.startButton && driver.selectButton }
 
   // buttons not final
