@@ -34,7 +34,7 @@ class Shooter(val io: ShooterIO) : SubsystemBase() {
 
   var state = ShooterConstants.ShooterState.OFF
     set(state) {
-//      targetVelocity = state.targetVelocity
+      //      targetVelocity = state.targetVelocity
       field = state
     }
 
@@ -63,10 +63,10 @@ class Shooter(val io: ShooterIO) : SubsystemBase() {
       lastRecordedSpeeds.removeAt(0)
     }
 
-//    isOnTarget =
-//        targetVelocity != 0.0.rotations.perMinute &&
-//            filter.calculate(inputs.velocity.inRotationsPerMinute)
-//                .around(targetVelocity.inRotationsPerMinute, shooterToleranceRPM.value)
+    //    isOnTarget =
+    //        targetVelocity != 0.0.rotations.perMinute &&
+    //            filter.calculate(inputs.velocity.inRotationsPerMinute)
+    //                .around(targetVelocity.inRotationsPerMinute, shooterToleranceRPM.value)
 
     isOnTarget =
         targetVelocity != 0.0.rotations.perMinute &&
@@ -76,8 +76,7 @@ class Shooter(val io: ShooterIO) : SubsystemBase() {
             }
 
     Logger.getInstance().processInputs("Shooter", inputs)
-    Logger.getInstance()
-        .recordOutput("Shooter/setpointRPM", targetVelocity.inRotationsPerMinute)
+    Logger.getInstance().recordOutput("Shooter/setpointRPM", targetVelocity.inRotationsPerMinute)
     Logger.getInstance().recordOutput("Shooter/isOnTarget", isOnTarget)
     Logger.getInstance().recordOutput("Shooter/state", state.name)
 
