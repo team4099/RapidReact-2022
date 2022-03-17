@@ -8,28 +8,20 @@ class PivotClimber(val io: PivotClimberIO) : SubsystemBase() {
 
   val inputs = PivotClimberIO.PivotClimberIOInputs()
 
-  var leftClimbState = PivotClimberConstants.ExtendState.IN
+  var pivotClimbState = PivotClimberConstants.ExtendState.IN
     set(state) {
-      io.setLeftPivotSolenoid(state.extendPosition)
-      field = state
-    }
-
-  var rightClimbState = PivotClimberConstants.ExtendState.IN
-    set(state) {
-      io.setRightPivotSolenoid(state.extendPosition)
+      io.setPivotSolenoid(state.extendPosition)
       field = state
     }
 
   init {
     // necessary because the setter is not called on initialization
-    leftClimbState = leftClimbState
-    rightClimbState = rightClimbState
+    pivotClimbState = pivotClimbState
   }
 
   override fun periodic() {
     io.updateInputs(inputs)
     Logger.getInstance().processInputs("Pivot Climber", inputs)
-    Logger.getInstance().recordOutput("Climber/LeftSolenoidPosition", leftClimbState.name)
-    Logger.getInstance().recordOutput("Climber/RightSolenoidPosition", rightClimbState.name)
+    Logger.getInstance().recordOutput("Climber/PivotClimberSolenoidPosition", pivotClimbState.name)
   }
 }

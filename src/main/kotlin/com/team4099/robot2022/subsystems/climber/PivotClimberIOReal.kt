@@ -6,23 +6,15 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType
 import edu.wpi.first.wpilibj.Solenoid
 
 object PivotClimberIOReal : PivotClimberIO {
-  private val leftPivotSolenoid =
-      Solenoid(PneumaticsModuleType.REVPH, Constants.PivotClimber.LEFT_SOLENOID)
-  private val rightPivotSolenoid =
-      Solenoid(PneumaticsModuleType.REVPH, Constants.PivotClimber.RIGHT_SOLENOID)
-
+  private val pivotSolenoid =
+      Solenoid(PneumaticsModuleType.REVPH, Constants.PivotClimber.PIVOT_SOLENOID)
   init {}
 
-  override fun setLeftPivotSolenoid(solenoidValue: Boolean) {
-    leftPivotSolenoid.set(solenoidValue)
+  override fun setPivotSolenoid(solenoidValue: Boolean) {
+    pivotSolenoid.set(solenoidValue)
   }
-
-  override fun setRightPivotSolenoid(solenoidValue: Boolean) {
-    rightPivotSolenoid.set(solenoidValue)
-  }
-
   override fun updateInputs(inputs: PivotClimberIO.PivotClimberIOInputs) {
-    inputs.leftExtended =
-        leftPivotSolenoid.get() == PivotClimberConstants.ExtendState.IN.extendPosition
+    inputs.pivotExtended =
+        pivotSolenoid.get() == PivotClimberConstants.ExtendState.IN.extendPosition
   }
 }

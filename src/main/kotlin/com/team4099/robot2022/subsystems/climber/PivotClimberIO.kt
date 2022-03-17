@@ -5,22 +5,17 @@ import org.littletonrobotics.junction.inputs.LoggableInputs
 
 interface PivotClimberIO {
   class PivotClimberIOInputs : LoggableInputs {
-    var leftExtended = false
-    var rightExtended = false
-
+    var pivotExtended = false
     override fun toLog(table: LogTable?) {
-      table?.put("leftPivotExtended", leftExtended)
-      table?.put("rightPivotExtended", rightExtended)
+      table?.put("pivotExtended", pivotExtended)
     }
 
     override fun fromLog(table: LogTable?) {
-      table?.getBoolean("leftPivotExtended", leftExtended)?.let { leftExtended = it }
-      table?.getBoolean("rightPivotExtended", rightExtended)?.let { rightExtended = it }
+      table?.getBoolean("pivotExtended", pivotExtended)?.let { pivotExtended = it }
     }
   }
 
   fun updateInputs(inputs: PivotClimberIOInputs) {}
 
-  fun setLeftPivotSolenoid(solenoidValue: Boolean) {}
-  fun setRightPivotSolenoid(solenoidValue: Boolean) {}
+  fun setPivotSolenoid(solenoidValue: Boolean) {}
 }
