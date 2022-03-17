@@ -9,6 +9,7 @@ import com.team4099.robot2022.auto.mode.TwoBallLeftStartMode
 import com.team4099.robot2022.commands.climber.TelescopingCharacterizationCommand
 import com.team4099.robot2022.commands.drivetrain.DriveCharacterizeCommand
 import com.team4099.robot2022.commands.shooter.ShooterCharacterizeCommand
+import com.team4099.robot2022.subsystems.climber.PivotClimber
 import com.team4099.robot2022.subsystems.climber.TelescopingClimber
 import com.team4099.robot2022.subsystems.drivetrain.Drivetrain
 import com.team4099.robot2022.subsystems.feeder.Feeder
@@ -51,7 +52,8 @@ object AutonomousSelector {
     intake: Intake,
     feeder: Feeder,
     shooter: Shooter,
-    telescopingClimber: TelescopingClimber
+    telescopingClimber: TelescopingClimber,
+    pivotClimber: PivotClimber
   ): CommandBase {
     val mode = autonomousModeChooser.selected
     when (mode) {

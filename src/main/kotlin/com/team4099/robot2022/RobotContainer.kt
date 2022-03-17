@@ -25,6 +25,9 @@ import com.team4099.robot2022.commands.shooter.SpinUpNearCommand
 import com.team4099.robot2022.config.ControlBoard
 import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.config.constants.FeederConstants
+import com.team4099.robot2022.subsystems.climber.PivotClimber
+import com.team4099.robot2022.subsystems.climber.PivotClimberIO
+import com.team4099.robot2022.subsystems.climber.PivotClimberIOReal
 import com.team4099.robot2022.subsystems.climber.TelescopingClimber
 import com.team4099.robot2022.subsystems.climber.TelescopingClimberIO
 import com.team4099.robot2022.subsystems.climber.TelescopingClimberIOReal
@@ -52,6 +55,7 @@ object RobotContainer {
   private val shooter: Shooter
   private val feeder: Feeder
   private val telescopingClimber: TelescopingClimber
+  private val pivotClimber: PivotClimber
   private val led: Led
   private var compressor: Compressor? = null
 
@@ -64,6 +68,7 @@ object RobotContainer {
       shooter = Shooter(ShooterIOReal)
       feeder = Feeder(FeederIOReal)
       telescopingClimber = TelescopingClimber(TelescopingClimberIOReal)
+      pivotClimber = PivotClimber(PivotClimberIOReal)
       led = Led(LedIOReal)
     } else {
       drivetrain = Drivetrain(object : DrivetrainIO {})
@@ -71,6 +76,7 @@ object RobotContainer {
       shooter = Shooter(object : ShooterIO {})
       feeder = Feeder(object : FeederIO {})
       telescopingClimber = TelescopingClimber(object : TelescopingClimberIO {})
+      pivotClimber = PivotClimber(object : PivotClimberIO {})
       led = Led(object : LedIO {})
     }
   }
@@ -134,5 +140,6 @@ object RobotContainer {
   fun mapTestControls() {}
 
   fun getAutonomousCommand() =
-      AutonomousSelector.getCommand(drivetrain, intake, feeder, shooter, telescopingClimber)
+      AutonomousSelector.getCommand(
+          drivetrain, intake, feeder, shooter, telescopingClimber, pivotClimber)
 }

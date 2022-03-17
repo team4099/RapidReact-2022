@@ -88,5 +88,8 @@ object Constants {
   object PivotClimber {
     const val L_ARM_ID = 43
     const val R_ARM_ID = 44
+
+    const val LEFT_SOLENOID = 9 // TODO make this real value
+    const val RIGHT_SOLENOID = 10 // TODO make this real value
   }
 }

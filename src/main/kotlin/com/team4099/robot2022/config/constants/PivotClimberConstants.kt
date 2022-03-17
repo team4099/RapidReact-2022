@@ -27,6 +27,11 @@ object PivotClimberConstants {
     IN(0.degrees)
   }
 
+  enum class ExtendState(val extendPosition: Boolean) {
+    IN(true),
+    OUT(false)
+  }
+
   const val GEAR_RATIO = (15.0 / 36.0) * (1.0 / 125.0)
 
   const val SMART_CURRENT_LIMIT = 40

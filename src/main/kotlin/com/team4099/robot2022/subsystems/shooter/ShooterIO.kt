@@ -8,7 +8,6 @@ import com.team4099.lib.units.derived.inVolts
 import com.team4099.lib.units.derived.radians
 import com.team4099.lib.units.derived.rotations
 import com.team4099.lib.units.derived.volts
-import com.team4099.lib.units.inRadiansPerSecond
 import com.team4099.lib.units.inRotationsPerMinute
 import com.team4099.lib.units.perMinute
 import com.team4099.lib.units.perSecond

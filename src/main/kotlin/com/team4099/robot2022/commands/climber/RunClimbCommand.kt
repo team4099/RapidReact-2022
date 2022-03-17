@@ -1,9 +1,7 @@
 package com.team4099.robot2022.commands.climberPivotClimber
 
 import com.team4099.lib.units.base.inMeters
-import com.team4099.lib.units.derived.inRadians
 import com.team4099.lib.units.inMetersPerSecond
-import com.team4099.lib.units.inRadiansPerSecond
 import com.team4099.robot2022.subsystems.climber.PivotClimber
 import com.team4099.robot2022.subsystems.climber.TelescopingClimber
 import edu.wpi.first.math.trajectory.TrapezoidProfile
@@ -80,26 +78,26 @@ class RunClimbCommand(val telescopingClimber: TelescopingClimber, val pivotClimb
     telescopingClimber.setPosition(
         leftTelescopingProfile, rightTelescopingProfile, telescopingIsUnderLoad)
 
-    val leftPivotProfile =
-        TrapezoidProfile(
-            pivotClimber.constraints,
-            TrapezoidProfile.State(pivotClimber.desiredState.angle.inRadians, 0.0),
-            TrapezoidProfile.State(
-                pivotClimber.pivotLeftArmSensor.position.inRadians,
-                pivotClimber.pivotLeftArmSensor.velocity.inRadiansPerSecond))
-    val rightPivotProfile =
-        TrapezoidProfile(
-            pivotClimber.constraints,
-            TrapezoidProfile.State(pivotClimber.desiredState.angle.inRadians, 0.0),
-            TrapezoidProfile.State(
-                pivotClimber.pivotRightArmSensor.position.inRadians,
-                pivotClimber.pivotRightArmSensor.velocity.inRadiansPerSecond))
-    pivotClimber.setAngle(leftPivotProfile, rightPivotProfile, pivotIsUnderLoad)
+    //    val leftPivotProfile =
+    //        TrapezoidProfile(
+    //            pivotClimber.constraints,
+    //            TrapezoidProfile.State(pivotClimber.desiredState.angle.inRadians, 0.0),
+    //            TrapezoidProfile.State(
+    //                pivotClimber.pivotLeftArmSensor.position.inRadians,
+    //                pivotClimber.pivotLeftArmSensor.velocity.inRadiansPerSecond))
+    //    val rightPivotProfile =
+    //        TrapezoidProfile(
+    //            pivotClimber.constraints,
+    //            TrapezoidProfile.State(pivotClimber.desiredState.angle.inRadians, 0.0),
+    //            TrapezoidProfile.State(
+    //                pivotClimber.pivotRightArmSensor.position.inRadians,
+    //                pivotClimber.pivotRightArmSensor.velocity.inRadiansPerSecond))
+    //    pivotClimber.setAngle(leftPivotProfile, rightPivotProfile, pivotIsUnderLoad)
   }
 
   override fun isFinished(): Boolean {
     return telescopingClimber.currentState.correspondingDesiredState ==
-        telescopingClimber.desiredState &&
-        pivotClimber.currentState.correspondingDesiredState == pivotClimber.desiredState
+        telescopingClimber.desiredState // &&
+    //        pivotClimber.currentState.correspondingDesiredState == pivotClimber.desiredState
   }
 }
