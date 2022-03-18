@@ -95,5 +95,7 @@ object Robot : LoggedRobot() {
             NetworkTableInstance.getDefault()
                 .getEntry("/LiveWindow/Ungrouped/Scheduler/Names")
                 .getStringArray(emptyArray()))
+
+    RobotContainer.logCompressor()
   }
 }

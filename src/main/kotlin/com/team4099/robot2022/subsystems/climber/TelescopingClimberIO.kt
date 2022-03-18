@@ -3,7 +3,9 @@ package com.team4099.robot2022.subsystems.climber
 import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.base.amps
 import com.team4099.lib.units.base.inAmperes
+import com.team4099.lib.units.base.inInches
 import com.team4099.lib.units.base.inMeters
+import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.ElectricalPotential
 import com.team4099.lib.units.derived.inVolts
@@ -34,8 +36,8 @@ interface TelescopingClimberIO {
     var rightTemperatureCelcius = 0.0
 
     override fun toLog(table: LogTable?) {
-      table?.put("leftPositionMeters", leftPosition.inMeters)
-      table?.put("rightPositionMeters", rightPosition.inMeters)
+      table?.put("leftPositionInches", leftPosition.inInches)
+      table?.put("rightPositionInches", rightPosition.inInches)
       table?.put("leftVelocityMetersPerSec", leftVelocity.inMetersPerSecond)
       table?.put("rightVelocityMetersPerSec", rightVelocity.inMetersPerSecond)
       table?.put("leftStatorCurrentAmps", leftStatorCurrent.inAmperes)
@@ -49,11 +51,11 @@ interface TelescopingClimberIO {
     }
 
     override fun fromLog(table: LogTable?) {
-      table?.getDouble("leftPositionMeters", leftPosition.inMeters)?.let {
-        leftPosition = it.meters
+      table?.getDouble("leftPositionInches", leftPosition.inInches)?.let {
+        leftPosition = it.inches
       }
-      table?.getDouble("rightPositionMeters", rightPosition.inMeters)?.let {
-        rightPosition = it.meters
+      table?.getDouble("rightPositionInches", rightPosition.inInches)?.let {
+        rightPosition = it.inches
       }
       table?.getDouble("leftVelocityMetersPerSec", leftVelocity.inMetersPerSecond)?.let {
         leftVelocity = it.meters.perSecond

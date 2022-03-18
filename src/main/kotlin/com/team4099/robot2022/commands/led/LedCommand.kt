@@ -17,7 +17,8 @@ class LedCommand(val led: Led, val intake: Intake, val shooter: Shooter) : Comma
   override fun execute() {
     led.state =
         when (shooter.state) {
-          ShooterConstants.ShooterState.SPIN_UP_NEAR, ShooterConstants.ShooterState.SPIN_UP_LOWER -> {
+          ShooterConstants.ShooterState.SPIN_UP_NEAR,
+          ShooterConstants.ShooterState.SPIN_UP_LOWER -> {
             if (shooter.isOnTarget) {
               LEDConstants.LEDState.READY_SHOOT
             } else {

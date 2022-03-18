@@ -49,11 +49,15 @@ class TelescopingClimber(val io: TelescopingClimberIO) : SubsystemBase() {
     get() = inputs.leftPosition > TelescopingClimberConstants.FORWARD_SOFT_LIMIT
   val leftReverseLimitReached: Boolean
     get() = inputs.leftPosition < TelescopingClimberConstants.REVERSE_SOFT_LIMIT
+  val leftForwardThresholdLimitReached: Boolean
+    get() = inputs.leftPosition > TelescopingClimberConstants.FORWARD_SOFT_LIMIT - TelescopingClimberConstants.SLOW_TELESCOPING_THRESHOLD
 
   val rightForwardLimitReached: Boolean
     get() = inputs.rightPosition > TelescopingClimberConstants.FORWARD_SOFT_LIMIT
   val rightReverseLimitReached: Boolean
     get() = inputs.rightPosition < TelescopingClimberConstants.REVERSE_SOFT_LIMIT
+  val rightForwardThresholdLimitReached: Boolean
+    get() = inputs.rightPosition > TelescopingClimberConstants.FORWARD_SOFT_LIMIT - TelescopingClimberConstants.SLOW_TELESCOPING_THRESHOLD
 
   fun setOpenLoop(leftPower: Double, rightPower: Double, useSoftLimits: Boolean = true) {
     if (useSoftLimits &&
@@ -61,7 +65,7 @@ class TelescopingClimber(val io: TelescopingClimberIO) : SubsystemBase() {
             (leftReverseLimitReached && leftPower < 0.0))) {
       io.setLeftOpenLoop(0.0)
     } else {
-      io.setLeftOpenLoop(leftPower)
+        io.setLeftOpenLoop(leftPower)
     }
 
     if (useSoftLimits &&

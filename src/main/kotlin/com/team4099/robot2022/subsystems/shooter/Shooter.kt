@@ -60,7 +60,7 @@ class Shooter(val io: ShooterIO) : SubsystemBase() {
     lastRecordedSpeeds.add(inputs.velocity)
 
     if (lastRecordedSpeeds.size > filterSize.value) {
-        lastRecordedSpeeds.removeAt(0)
+      lastRecordedSpeeds.removeAt(0)
     }
 
     //    isOnTarget =
@@ -89,8 +89,8 @@ class Shooter(val io: ShooterIO) : SubsystemBase() {
       lastRecordedSpeeds = mutableListOf()
     }
 
-//    if (nearSpeedRM.hasChanged()) {
-//      targetVelocity = nearSpeedRM.value.rotations.perMinute
-//    }
+    //    if (nearSpeedRM.hasChanged()) {
+    //      targetVelocity = nearSpeedRM.value.rotations.perMinute
+    //    }
   }
 }

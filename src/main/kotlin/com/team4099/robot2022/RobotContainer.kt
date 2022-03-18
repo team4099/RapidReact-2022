@@ -7,6 +7,7 @@ import com.team4099.robot2022.commands.climber.OpenLoopExtendClimberCommand
 import com.team4099.robot2022.commands.climber.SpoolLeftDownCommand
 import com.team4099.robot2022.commands.climber.SpoolLeftUpCommand
 import com.team4099.robot2022.commands.climber.SpoolRightDownCommand
+import com.team4099.robot2022.commands.climber.SpoolRightUpCommand
 import com.team4099.robot2022.commands.climber.TelescopingIdleCommand
 import com.team4099.robot2022.commands.drivetrain.ResetGyroCommand
 import com.team4099.robot2022.commands.drivetrain.TeleopDriveCommand
@@ -45,6 +46,7 @@ import com.team4099.robot2022.subsystems.shooter.ShooterIO
 import com.team4099.robot2022.subsystems.shooter.ShooterIOReal
 import edu.wpi.first.wpilibj.Compressor
 import edu.wpi.first.wpilibj.PneumaticsModuleType
+import org.littletonrobotics.junction.Logger
 
 object RobotContainer {
   private val drivetrain: Drivetrain
@@ -113,8 +115,7 @@ object RobotContainer {
 
     ControlBoard.runIntake
         .whileActiveContinuous(IntakeBallsCommand(intake).alongWith(FeederSerialize(feeder)))
-    ControlBoard.runFeederIn
-      .whileActiveOnce(FeederSerialize(feeder))
+    ControlBoard.runFeederIn.whileActiveOnce(FeederSerialize(feeder))
     ControlBoard.prepareClimb.whileActiveContinuous(PrepareClimbCommand(intake))
     ControlBoard.outTake
         .whileActiveContinuous(
@@ -131,11 +132,16 @@ object RobotContainer {
     ControlBoard.leftSpoolDown.whileActiveContinuous(SpoolLeftDownCommand(telescopingClimber))
     ControlBoard.rightSpoolDown.whileActiveContinuous(SpoolRightDownCommand(telescopingClimber))
     ControlBoard.leftSpoolUp.whileActiveContinuous(SpoolLeftUpCommand(telescopingClimber))
-    ControlBoard.rightSpoolUp.whileActiveContinuous(SpoolRightDownCommand(telescopingClimber))
+    ControlBoard.rightSpoolUp.whileActiveContinuous(SpoolRightUpCommand(telescopingClimber))
   }
 
   fun mapTestControls() {}
 
   fun getAutonomousCommand() =
       AutonomousSelector.getCommand(drivetrain, intake, feeder, shooter, telescopingClimber)
+
+  fun logCompressor() {
+    Logger.getInstance().recordOutput("Compressor/pressurePSI", compressor?.pressure)
+    Logger.getInstance().recordOutput("Compressor/isRunning", compressor?.enabled())
+  }
 }

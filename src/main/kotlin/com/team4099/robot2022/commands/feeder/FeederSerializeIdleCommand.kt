@@ -6,9 +6,7 @@ import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj2.command.CommandBase
 import org.littletonrobotics.junction.Logger
 
-class FeederSerializeIdleCommand(
-  val feeder: Feeder
-): CommandBase(){
+class FeederSerializeIdleCommand(val feeder: Feeder) : CommandBase() {
   var currentTime = 0.0
   var lastBrokenTime = 0.0
   var lastUnbrokenTime = 0.0
@@ -27,14 +25,15 @@ class FeederSerializeIdleCommand(
       lastUnbrokenTime = currentTime
     }
     feeder.state =
-      when {
-  //          (lastUnbrokenTime - lastBrokenTime < FeederConstants.BEAM_BREAK_BACKWARDS_TIME) ->
-  //              FeederConstants.FeederState.BACKWARD_VERTICAL
-        feeder.inputs.topBeamBroken -> FeederConstants.FeederState.NEUTRAL
-        (currentTime - lastBrokenTime < FeederConstants.BEAM_BREAK_BROKEN_TIME) ->
-          FeederConstants.FeederState.FORWARD_ALL
-        else -> FeederConstants.FeederState.NEUTRAL
-      }
+        when {
+          //          (lastUnbrokenTime - lastBrokenTime <
+          // FeederConstants.BEAM_BREAK_BACKWARDS_TIME) ->
+          //              FeederConstants.FeederState.BACKWARD_VERTICAL
+          feeder.inputs.topBeamBroken -> FeederConstants.FeederState.NEUTRAL
+          (currentTime - lastBrokenTime < FeederConstants.BEAM_BREAK_BROKEN_TIME) ->
+              FeederConstants.FeederState.FORWARD_ALL
+          else -> FeederConstants.FeederState.NEUTRAL
+        }
 
     Logger.getInstance().recordOutput("ActiveCommands/FeederSerialize", true)
   }

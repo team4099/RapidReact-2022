@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration
 import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.base.amps
+import com.team4099.lib.units.base.inInches
 import com.team4099.lib.units.ctreLinearMechanismSensor
 import com.team4099.lib.units.derived.ElectricalPotential
 import com.team4099.lib.units.derived.inVolts
@@ -26,13 +27,13 @@ object TelescopingClimberIOReal : TelescopingClimberIO {
           telescopingRightArm,
           TelescopingClimberConstants.SENSOR_CPR,
           TelescopingClimberConstants.GEAR_RATIO,
-          TelescopingClimberConstants.SPOOL_RADIUS * 2)
+          TelescopingClimberConstants.RIGHT_SPOOL_RADIUS * 2)
   val telescopingLeftArmSensor =
       ctreLinearMechanismSensor(
           telescopingLeftArm,
           TelescopingClimberConstants.SENSOR_CPR,
           TelescopingClimberConstants.GEAR_RATIO,
-          TelescopingClimberConstants.SPOOL_RADIUS * 2)
+          TelescopingClimberConstants.LEFT_SPOOL_RADIUS * 2)
 
   private val telescopingConfiguration: TalonFXConfiguration = TalonFXConfiguration()
 

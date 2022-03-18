@@ -26,8 +26,9 @@ class FeederSerialize(val feeder: Feeder) : CommandBase() {
     }
     feeder.state =
         when {
-//          (lastUnbrokenTime - lastBrokenTime < FeederConstants.BEAM_BREAK_BACKWARDS_TIME) ->
-//              FeederConstants.FeederState.BACKWARD_VERTICAL
+          //          (lastUnbrokenTime - lastBrokenTime <
+          // FeederConstants.BEAM_BREAK_BACKWARDS_TIME) ->
+          //              FeederConstants.FeederState.BACKWARD_VERTICAL
           feeder.inputs.topBeamBroken -> FeederConstants.FeederState.NEUTRAL
           (currentTime - lastBrokenTime < FeederConstants.BEAM_BREAK_BROKEN_TIME) ->
               FeederConstants.FeederState.FORWARD_ALL
