@@ -37,7 +37,7 @@ object FeederIOReal : FeederIO {
     verticalMotor.enableVoltageCompensation(true)
 
     floorMotor.setNeutralMode(NeutralMode.Coast)
-    verticalMotor.setNeutralMode(NeutralMode.Coast)
+    verticalMotor.setNeutralMode(NeutralMode.Brake)
 
     floorMotor.inverted = true
 

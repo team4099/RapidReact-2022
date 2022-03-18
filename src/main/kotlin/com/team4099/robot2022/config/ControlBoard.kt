@@ -22,7 +22,8 @@ object ControlBoard {
   val turn: Double
     get() = driver.rightXAxis
 
-  val robotOriented = Trigger { driver.leftShoulderButton }
+  val robotOriented: Boolean
+    get() = driver.leftShoulderButton
 
   val resetGyro = Trigger { driver.startButton && driver.selectButton }
 
@@ -35,7 +36,7 @@ object ControlBoard {
 
   // Shooter triggers
   val startShooter = Trigger { operator.xButton }
-  val startShooterFar = Trigger { operator.yButton }
+  val startShooterLower = Trigger { operator.yButton }
   val outTake = Trigger { operator.bButton }
   //  val alignRobot = Trigger { operator.yButton }
 

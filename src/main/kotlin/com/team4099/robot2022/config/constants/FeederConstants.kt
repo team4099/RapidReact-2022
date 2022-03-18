@@ -6,7 +6,7 @@ object FeederConstants {
   const val TAB = "Feeder"
 
   // temp values
-  const val BEAM_BREAK_BROKEN_TIME = 0.05
+  const val BEAM_BREAK_BROKEN_TIME = 0.03
   const val BEAM_BREAK_BACKWARDS_TIME = 0.05
 
   // not final

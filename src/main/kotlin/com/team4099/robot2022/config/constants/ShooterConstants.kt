@@ -14,14 +14,14 @@ object ShooterConstants {
 
   const val SHOOTER_KP = 0.075 // TODO: tune
   const val SHOOTER_KI = 0.0
-  const val SHOOTER_KD = 2.0
-  val SHOOTER_KS_VOLTS = 0.73157
+  const val SHOOTER_KD = 7.0
+  val SHOOTER_KS_VOLTS = 0.7
   val SHOOTER_KV_VOLTS_PER_RADIAN_PER_SECOND = 0.018
 
   const val SHOOTER_SENSOR_CPR = 2048
   const val SHOOTER_SENSOR_GEAR_RATIO = 1.0
 
-  const val FILTER_SIZE = 100
+  const val FILTER_SIZE = 10
 
   //  val FOLLOWER_STATUS_FRAME_PERIOD = 255.milli.seconds
 
@@ -36,7 +36,7 @@ object ShooterConstants {
   enum class ShooterState(val targetVelocity: AngularVelocity) {
     OFF(0.0.rotations.perMinute),
     IDLE(500.0.rotations.perMinute), // TODO: Fix with a better idle value
-    SPIN_UP_NEAR(900.0.rotations.perMinute), // TODO change back to 1750 rpm
-    SPIN_UP_FAR(2000.0.rotations.perMinute)
+    SPIN_UP_NEAR(1750.0.rotations.perMinute),
+    SPIN_UP_LOWER(1100.0.rotations.perMinute)
   }
 }

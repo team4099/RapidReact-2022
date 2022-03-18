@@ -5,13 +5,13 @@ import com.team4099.robot2022.subsystems.shooter.Shooter
 import edu.wpi.first.wpilibj2.command.CommandBase
 import org.littletonrobotics.junction.Logger
 
-class SpinUpFarCommand(val shooter: Shooter) : CommandBase() {
+class SpinUpLowerHub(val shooter: Shooter) : CommandBase() {
   init {
     addRequirements(shooter)
   }
 
   override fun initialize() {
-    shooter.state = ShooterConstants.ShooterState.SPIN_UP_FAR
+    shooter.state = ShooterConstants.ShooterState.SPIN_UP_LOWER
     //    Shooter.setOpenLoop(0.35)
   }
 

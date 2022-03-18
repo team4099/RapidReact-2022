@@ -11,8 +11,8 @@ import com.team4099.robot2022.commands.climber.TelescopingIdleCommand
 import com.team4099.robot2022.commands.drivetrain.ResetGyroCommand
 import com.team4099.robot2022.commands.drivetrain.TeleopDriveCommand
 import com.team4099.robot2022.commands.feeder.FeederCommand
-import com.team4099.robot2022.commands.feeder.FeederIdleCommand
 import com.team4099.robot2022.commands.feeder.FeederSerialize
+import com.team4099.robot2022.commands.feeder.FeederSerializeIdleCommand
 import com.team4099.robot2022.commands.intake.IntakeBallsCommand
 import com.team4099.robot2022.commands.intake.IntakeIdleCommand
 import com.team4099.robot2022.commands.intake.PrepareClimbCommand
@@ -20,7 +20,7 @@ import com.team4099.robot2022.commands.intake.ReverseIntakeCommand
 import com.team4099.robot2022.commands.led.LedCommand
 import com.team4099.robot2022.commands.shooter.ShootCommand
 import com.team4099.robot2022.commands.shooter.ShooterIdleCommand
-import com.team4099.robot2022.commands.shooter.SpinUpFarCommand
+import com.team4099.robot2022.commands.shooter.SpinUpLowerHub
 import com.team4099.robot2022.commands.shooter.SpinUpNearCommand
 import com.team4099.robot2022.config.ControlBoard
 import com.team4099.robot2022.config.constants.Constants
@@ -89,11 +89,11 @@ object RobotContainer {
             { ControlBoard.strafe.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
             { ControlBoard.forward.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
             { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) },
-            ControlBoard.robotOriented.get(),
+            { ControlBoard.robotOriented },
             drivetrain)
     intake.defaultCommand = IntakeIdleCommand(intake)
     shooter.defaultCommand = ShooterIdleCommand(shooter)
-    feeder.defaultCommand = FeederIdleCommand(feeder)
+    feeder.defaultCommand = FeederSerializeIdleCommand(feeder)
     telescopingClimber.defaultCommand = TelescopingIdleCommand(telescopingClimber)
     //    PivotClimber.defaultCommand = PivotIdleCommand()
     led.defaultCommand = LedCommand(led, intake, shooter)
@@ -108,11 +108,13 @@ object RobotContainer {
 
     ControlBoard.startShooter
         .whileActiveOnce(SpinUpNearCommand(shooter).andThen(ShootCommand(shooter, feeder)))
-    ControlBoard.startShooterFar
-        .whileActiveOnce(SpinUpFarCommand(shooter).andThen(ShootCommand(shooter, feeder)))
+    ControlBoard.startShooterLower
+        .whileActiveOnce(SpinUpLowerHub(shooter).andThen(ShootCommand(shooter, feeder)))
 
     ControlBoard.runIntake
         .whileActiveContinuous(IntakeBallsCommand(intake).alongWith(FeederSerialize(feeder)))
+    ControlBoard.runFeederIn
+      .whileActiveOnce(FeederSerialize(feeder))
     ControlBoard.prepareClimb.whileActiveContinuous(PrepareClimbCommand(intake))
     ControlBoard.outTake
         .whileActiveContinuous(
