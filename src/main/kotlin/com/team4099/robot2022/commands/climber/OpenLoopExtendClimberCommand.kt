@@ -10,7 +10,8 @@ class OpenLoopExtendClimberCommand(val telescopingClimber: TelescopingClimber) :
   }
 
   override fun execute() {
-    if (telescopingClimber.leftForwardThresholdLimitReached || telescopingClimber.rightForwardThresholdLimitReached) {
+    if (telescopingClimber.leftForwardThresholdLimitReached ||
+        telescopingClimber.rightForwardThresholdLimitReached) {
       telescopingClimber.setOpenLoop(0.6, 0.6)
     } else {
       telescopingClimber.setOpenLoop(1.0, 1.0)

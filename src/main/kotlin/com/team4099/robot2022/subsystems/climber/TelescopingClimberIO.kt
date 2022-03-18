@@ -4,7 +4,6 @@ import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.base.amps
 import com.team4099.lib.units.base.inAmperes
 import com.team4099.lib.units.base.inInches
-import com.team4099.lib.units.base.inMeters
 import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.ElectricalPotential

@@ -7,7 +7,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration
 import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.base.amps
-import com.team4099.lib.units.base.inInches
 import com.team4099.lib.units.ctreLinearMechanismSensor
 import com.team4099.lib.units.derived.ElectricalPotential
 import com.team4099.lib.units.derived.inVolts
