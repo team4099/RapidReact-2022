@@ -3,6 +3,7 @@ package com.team4099.robot2022.subsystems.shooter
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.DemandType
 import com.ctre.phoenix.motorcontrol.InvertType
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.team4099.lib.units.AngularVelocity
 import com.team4099.lib.units.base.amps
@@ -36,6 +37,19 @@ object ShooterIOReal : ShooterIO {
     followerMotor.enableVoltageCompensation(true)
     leaderMotor.configVoltageCompSaturation(12.0)
     followerMotor.configVoltageCompSaturation(12.0)
+
+    leaderMotor.configSupplyCurrentLimit(
+        SupplyCurrentLimitConfiguration(
+            true,
+            ShooterConstants.SUPPLY_CURRENT_LIMIT,
+            ShooterConstants.SUPPLY_CURRENT_LIMIT,
+            1000.0))
+    followerMotor.configSupplyCurrentLimit(
+        SupplyCurrentLimitConfiguration(
+            true,
+            ShooterConstants.SUPPLY_CURRENT_LIMIT,
+            ShooterConstants.SUPPLY_CURRENT_LIMIT,
+            1000.0))
 
     leaderMotor.config_kP(0, ShooterConstants.SHOOTER_KP)
     leaderMotor.config_kI(0, ShooterConstants.SHOOTER_KI)

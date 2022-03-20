@@ -1,6 +1,7 @@
 package com.team4099.robot2022.subsystems.intake
 
 import com.ctre.phoenix.motorcontrol.ControlMode
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration
 import com.team4099.lib.units.base.amps
@@ -25,7 +26,10 @@ object IntakeIOReal : IntakeIO {
   init {
     intakeTalon.configFactoryDefault()
 
-    intakeConfiguration.supplyCurrLimit.currentLimit = IntakeConstants.SUPPLY_CURRENT_LIMIT
+    //    intakeConfiguration.supplyCurrLimit.currentLimit = IntakeConstants.SUPPLY_CURRENT_LIMIT
+    intakeConfiguration.supplyCurrLimit =
+        SupplyCurrentLimitConfiguration(
+            true, IntakeConstants.SUPPLY_CURRENT_LIMIT, IntakeConstants.SUPPLY_CURRENT_LIMIT, 200.0)
 
     intakeTalon.configAllSettings(intakeConfiguration)
     intakeTalon.configOpenloopRamp(IntakeConstants.RAMP_TIME)

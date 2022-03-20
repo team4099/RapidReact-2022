@@ -101,6 +101,9 @@ class SwerveModuleIOReal(
 
     inputs.driveTempCelcius = driveFalcon.temperature
     inputs.steeringTempCelcius = steeringFalcon.temperature
+
+    inputs.potentiometerOutputRaw = potentiometer.get()
+    inputs.potentiometerOutputRadians = potentiometer.get().radians
   }
 
   override fun setSteeringSetpoint(angle: Angle) {
@@ -165,5 +168,13 @@ class SwerveModuleIOReal(
   ) {
     steeringConfiguration.motionCruiseVelocity = steeringSensor.velocityToRawUnits(maxVel)
     steeringConfiguration.motionAcceleration = steeringSensor.accelerationToRawUnits(maxAccel)
+  }
+
+  override fun setBrakeMode(brake: Boolean) {
+    if (brake) {
+      driveFalcon.setNeutralMode(NeutralMode.Brake)
+    } else {
+      driveFalcon.setNeutralMode(NeutralMode.Coast)
+    }
   }
 }

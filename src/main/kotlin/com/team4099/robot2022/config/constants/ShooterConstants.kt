@@ -21,6 +21,8 @@ object ShooterConstants {
   const val SHOOTER_SENSOR_CPR = 2048
   const val SHOOTER_SENSOR_GEAR_RATIO = 1.0
 
+  const val SUPPLY_CURRENT_LIMIT = 60.0
+
   const val FILTER_SIZE = 10
 
   //  val FOLLOWER_STATUS_FRAME_PERIOD = 255.milli.seconds
@@ -36,7 +38,7 @@ object ShooterConstants {
   enum class ShooterState(val targetVelocity: AngularVelocity) {
     OFF(0.0.rotations.perMinute),
     IDLE(500.0.rotations.perMinute), // TODO: Fix with a better idle value
-    SPIN_UP_NEAR(1750.0.rotations.perMinute),
+    SPIN_UP_NEAR(1850.0.rotations.perMinute),
     SPIN_UP_LOWER(1100.0.rotations.perMinute)
   }
 }

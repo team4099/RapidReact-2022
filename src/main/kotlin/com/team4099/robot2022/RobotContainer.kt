@@ -105,6 +105,14 @@ object RobotContainer {
     drivetrain.zeroSensors()
   }
 
+  fun setDriveCoastMode() {
+    drivetrain.swerveModules.forEach { it.setDriveBrakeMode(false) }
+  }
+
+  fun setDriveBrakeMode() {
+    drivetrain.swerveModules.forEach { it.setDriveBrakeMode(true) }
+  }
+
   fun mapTeleopControls() {
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand(drivetrain))
 
