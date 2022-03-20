@@ -8,7 +8,7 @@ object IntakeConstants {
   const val GEAR_RATIO = (12.0 / 36.0)
 
   enum class RollerState(val speed: Double) {
-    IDLE(0.0), //change to -0.1
+    IDLE(0.0), // change to -0.1
     IN(0.86),
     OUT(-1.0)
   }
