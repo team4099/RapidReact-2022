@@ -76,6 +76,7 @@ class SwerveModuleIOReal(
     driveConfiguration.slot0.kD = DrivetrainConstants.PID.DRIVE_KD
     driveConfiguration.slot0.kF = DrivetrainConstants.PID.DRIVE_KFF
     driveConfiguration.supplyCurrLimit.currentLimit = DrivetrainConstants.DRIVE_SUPPLY_CURRENT_LIMIT
+    driveConfiguration.supplyCurrLimit.enable = true
     driveConfiguration.voltageCompSaturation = 12.0
 
     driveFalcon.configAllSettings(driveConfiguration)
