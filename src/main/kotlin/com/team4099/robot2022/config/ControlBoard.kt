@@ -40,6 +40,7 @@ object ControlBoard {
   val startShooter = Trigger { operator.xButton }
   val startShooterLower = Trigger { operator.yButton }
   val outTake = Trigger { operator.bButton }
+  val shooterUnjam = Trigger { operator.dPadLeft }
   //  val alignRobot = Trigger { operator.yButton }
 
   val extendTelescoping = Trigger { operator.rightShoulderButton }

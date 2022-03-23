@@ -22,6 +22,7 @@ import com.team4099.robot2022.commands.intake.ReverseIntakeCommand
 import com.team4099.robot2022.commands.led.LedCommand
 import com.team4099.robot2022.commands.shooter.ShootCommand
 import com.team4099.robot2022.commands.shooter.ShooterIdleCommand
+import com.team4099.robot2022.commands.shooter.ShooterUnjamCommand
 import com.team4099.robot2022.commands.shooter.SpinUpLowerHub
 import com.team4099.robot2022.commands.shooter.SpinUpNearCommand
 import com.team4099.robot2022.config.ControlBoard
@@ -121,6 +122,7 @@ object RobotContainer {
         .whileActiveOnce(SpinUpNearCommand(shooter).andThen(ShootCommand(shooter, feeder)))
     ControlBoard.startShooterLower
         .whileActiveOnce(SpinUpLowerHub(shooter).andThen(ShootCommand(shooter, feeder)))
+    ControlBoard.shooterUnjam.whileActiveOnce(ShooterUnjamCommand(shooter))
 
     ControlBoard.runIntake
         .whileActiveContinuous(IntakeBallsCommand(intake).alongWith(FeederSerialize(feeder)))
