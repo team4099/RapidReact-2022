@@ -26,13 +26,13 @@ object TelescopingClimberIOReal : TelescopingClimberIO {
           telescopingRightArm,
           TelescopingClimberConstants.SENSOR_CPR,
           TelescopingClimberConstants.GEAR_RATIO,
-          TelescopingClimberConstants.SPOOL_RADIUS * 2)
+          TelescopingClimberConstants.RIGHT_SPOOL_RADIUS * 2)
   val telescopingLeftArmSensor =
       ctreLinearMechanismSensor(
           telescopingLeftArm,
           TelescopingClimberConstants.SENSOR_CPR,
           TelescopingClimberConstants.GEAR_RATIO,
-          TelescopingClimberConstants.SPOOL_RADIUS * 2)
+          TelescopingClimberConstants.LEFT_SPOOL_RADIUS * 2)
 
   private val telescopingConfiguration: TalonFXConfiguration = TalonFXConfiguration()
 

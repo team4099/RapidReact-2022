@@ -1,6 +1,7 @@
 package com.team4099.robot2022
 
 import com.team4099.robot2022.auto.AutonomousSelector
+import com.team4099.robot2022.auto.PathStore
 import com.team4099.robot2022.config.constants.Constants
 import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj2.command.CommandScheduler
@@ -60,6 +61,7 @@ object Robot : LoggedRobot() {
 
     RobotContainer
     AutonomousSelector
+    PathStore
     RobotContainer.mapDefaultCommands()
     RobotContainer.zeroSensors()
     RobotContainer.startCompressor()
@@ -67,6 +69,7 @@ object Robot : LoggedRobot() {
 
   override fun autonomousInit() {
     // autonomousCommand.schedule()
+    RobotContainer.setDriveBrakeMode()
     RobotContainer.getAutonomousCommand().schedule()
   }
 
@@ -78,6 +81,7 @@ object Robot : LoggedRobot() {
   override fun teleopInit() {
     RobotContainer.mapTeleopControls()
     RobotContainer.getAutonomousCommand().cancel()
+    RobotContainer.setDriveCoastMode()
     // autonomousCommand.cancel()
   }
 
@@ -95,5 +99,7 @@ object Robot : LoggedRobot() {
             NetworkTableInstance.getDefault()
                 .getEntry("/LiveWindow/Ungrouped/Scheduler/Names")
                 .getStringArray(emptyArray()))
+
+    RobotContainer.logCompressor()
   }
 }

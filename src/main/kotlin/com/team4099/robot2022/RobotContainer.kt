@@ -7,12 +7,14 @@ import com.team4099.robot2022.commands.climber.OpenLoopExtendClimberCommand
 import com.team4099.robot2022.commands.climber.SpoolLeftDownCommand
 import com.team4099.robot2022.commands.climber.SpoolLeftUpCommand
 import com.team4099.robot2022.commands.climber.SpoolRightDownCommand
+import com.team4099.robot2022.commands.climber.SpoolRightUpCommand
 import com.team4099.robot2022.commands.climber.TelescopingIdleCommand
 import com.team4099.robot2022.commands.drivetrain.ResetGyroCommand
 import com.team4099.robot2022.commands.drivetrain.TeleopDriveCommand
 import com.team4099.robot2022.commands.feeder.FeederCommand
-import com.team4099.robot2022.commands.feeder.FeederIdleCommand
 import com.team4099.robot2022.commands.feeder.FeederSerialize
+import com.team4099.robot2022.commands.feeder.FeederSerializeIdleCommand
+import com.team4099.robot2022.commands.feeder.ResetBallCountCommand
 import com.team4099.robot2022.commands.intake.IntakeBallsCommand
 import com.team4099.robot2022.commands.intake.IntakeIdleCommand
 import com.team4099.robot2022.commands.intake.PrepareClimbCommand
@@ -20,7 +22,7 @@ import com.team4099.robot2022.commands.intake.ReverseIntakeCommand
 import com.team4099.robot2022.commands.led.LedCommand
 import com.team4099.robot2022.commands.shooter.ShootCommand
 import com.team4099.robot2022.commands.shooter.ShooterIdleCommand
-import com.team4099.robot2022.commands.shooter.SpinUpFarCommand
+import com.team4099.robot2022.commands.shooter.SpinUpLowerHub
 import com.team4099.robot2022.commands.shooter.SpinUpNearCommand
 import com.team4099.robot2022.config.ControlBoard
 import com.team4099.robot2022.config.constants.Constants
@@ -48,6 +50,7 @@ import com.team4099.robot2022.subsystems.shooter.ShooterIO
 import com.team4099.robot2022.subsystems.shooter.ShooterIOReal
 import edu.wpi.first.wpilibj.Compressor
 import edu.wpi.first.wpilibj.PneumaticsModuleType
+import org.littletonrobotics.junction.Logger
 
 object RobotContainer {
   private val drivetrain: Drivetrain
@@ -95,10 +98,11 @@ object RobotContainer {
             { ControlBoard.strafe.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
             { ControlBoard.forward.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
             { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) },
+            { ControlBoard.robotOriented },
             drivetrain)
     intake.defaultCommand = IntakeIdleCommand(intake)
     shooter.defaultCommand = ShooterIdleCommand(shooter)
-    feeder.defaultCommand = FeederIdleCommand(feeder)
+    feeder.defaultCommand = FeederSerializeIdleCommand(feeder)
     telescopingClimber.defaultCommand = TelescopingIdleCommand(telescopingClimber)
     //    PivotClimber.defaultCommand = PivotIdleCommand()
     led.defaultCommand = LedCommand(led, intake, shooter)
@@ -108,16 +112,26 @@ object RobotContainer {
     drivetrain.zeroSensors()
   }
 
+  fun setDriveCoastMode() {
+    drivetrain.swerveModules.forEach { it.setDriveBrakeMode(false) }
+  }
+
+  fun setDriveBrakeMode() {
+    drivetrain.swerveModules.forEach { it.setDriveBrakeMode(true) }
+  }
+
   fun mapTeleopControls() {
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand(drivetrain))
 
     ControlBoard.startShooter
         .whileActiveOnce(SpinUpNearCommand(shooter).andThen(ShootCommand(shooter, feeder)))
-    ControlBoard.startShooterFar
-        .whileActiveOnce(SpinUpFarCommand(shooter).andThen(ShootCommand(shooter, feeder)))
+    ControlBoard.startShooterLower
+        .whileActiveOnce(SpinUpLowerHub(shooter).andThen(ShootCommand(shooter, feeder)))
 
     ControlBoard.runIntake
         .whileActiveContinuous(IntakeBallsCommand(intake).alongWith(FeederSerialize(feeder)))
+    ControlBoard.runFeederIn.whileActiveOnce(FeederSerialize(feeder))
+    ControlBoard.resetBallCount.whileActiveOnce(ResetBallCountCommand(feeder))
     ControlBoard.prepareClimb.whileActiveContinuous(PrepareClimbCommand(intake))
     ControlBoard.outTake
         .whileActiveContinuous(
@@ -134,7 +148,7 @@ object RobotContainer {
     ControlBoard.leftSpoolDown.whileActiveContinuous(SpoolLeftDownCommand(telescopingClimber))
     ControlBoard.rightSpoolDown.whileActiveContinuous(SpoolRightDownCommand(telescopingClimber))
     ControlBoard.leftSpoolUp.whileActiveContinuous(SpoolLeftUpCommand(telescopingClimber))
-    ControlBoard.rightSpoolUp.whileActiveContinuous(SpoolRightDownCommand(telescopingClimber))
+    ControlBoard.rightSpoolUp.whileActiveContinuous(SpoolRightUpCommand(telescopingClimber))
   }
 
   fun mapTestControls() {}
@@ -142,4 +156,9 @@ object RobotContainer {
   fun getAutonomousCommand() =
       AutonomousSelector.getCommand(
           drivetrain, intake, feeder, shooter, telescopingClimber, pivotClimber)
+
+  fun logCompressor() {
+    Logger.getInstance().recordOutput("Compressor/pressurePSI", compressor?.pressure)
+    Logger.getInstance().recordOutput("Compressor/isRunning", compressor?.enabled())
+  }
 }

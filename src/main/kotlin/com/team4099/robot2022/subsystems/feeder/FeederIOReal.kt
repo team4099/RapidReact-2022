@@ -2,11 +2,13 @@ package com.team4099.robot2022.subsystems.feeder
 
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.NeutralMode
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.team4099.lib.units.base.amps
 import com.team4099.lib.units.derived.volts
 import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.config.constants.Constants.Universal.CANIVORE_NAME
+import com.team4099.robot2022.config.constants.FeederConstants
 import edu.wpi.first.wpilibj.DigitalInput
 
 object FeederIOReal : FeederIO {
@@ -31,13 +33,25 @@ object FeederIOReal : FeederIO {
   init {
     floorMotor.configFactoryDefault()
     verticalMotor.configFactoryDefault()
+    floorMotor.configSupplyCurrentLimit(
+        SupplyCurrentLimitConfiguration(
+            true,
+            FeederConstants.FLOOR_SUPPLY_CURRENT_LIMIT,
+            FeederConstants.FLOOR_SUPPLY_CURRENT_LIMIT,
+            200.0))
+    verticalMotor.configSupplyCurrentLimit(
+        SupplyCurrentLimitConfiguration(
+            true,
+            FeederConstants.VERTICAL_SUPPLY_CURRENT_LIMIT,
+            FeederConstants.VERTICAL_SUPPLY_CURRENT_LIMIT,
+            200.0))
 
     // temp values
     floorMotor.enableVoltageCompensation(true)
     verticalMotor.enableVoltageCompensation(true)
 
     floorMotor.setNeutralMode(NeutralMode.Coast)
-    verticalMotor.setNeutralMode(NeutralMode.Coast)
+    verticalMotor.setNeutralMode(NeutralMode.Brake)
 
     floorMotor.inverted = true
 

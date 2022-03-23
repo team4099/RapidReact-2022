@@ -35,6 +35,7 @@ class Shooter(val io: ShooterIO) : SubsystemBase() {
   var state = ShooterConstants.ShooterState.OFF
     set(state) {
       //      targetVelocity = state.targetVelocity
+      targetVelocity = state.targetVelocity
       field = state
     }
 
@@ -86,10 +87,11 @@ class Shooter(val io: ShooterIO) : SubsystemBase() {
 
     if (filterSize.hasChanged()) {
       filter = MedianFilter(filterSize.value.toInt())
+      lastRecordedSpeeds = mutableListOf()
     }
 
-    if (nearSpeedRM.hasChanged()) {
-      targetVelocity = nearSpeedRM.value.rotations.perMinute
-    }
+    //    if (nearSpeedRM.hasChanged()) {
+    //      targetVelocity = nearSpeedRM.value.rotations.perMinute
+    //    }
   }
 }

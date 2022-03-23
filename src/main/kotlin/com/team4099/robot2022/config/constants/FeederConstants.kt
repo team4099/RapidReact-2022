@@ -5,8 +5,11 @@ object FeederConstants {
   const val FEEDER_POWER = 1.0
   const val TAB = "Feeder"
 
+  const val FLOOR_SUPPLY_CURRENT_LIMIT = 25.0
+  const val VERTICAL_SUPPLY_CURRENT_LIMIT = 30.0
+
   // temp values
-  const val BEAM_BREAK_BROKEN_TIME = 0.05
+  const val BEAM_BREAK_BROKEN_TIME = 0.03
   const val BEAM_BREAK_BACKWARDS_TIME = 0.05
 
   // not final

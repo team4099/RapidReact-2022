@@ -22,18 +22,23 @@ object ControlBoard {
   val turn: Double
     get() = driver.rightXAxis
 
+  val robotOriented: Boolean
+    get() = driver.leftShoulderButton
+
   val resetGyro = Trigger { driver.startButton && driver.selectButton }
 
   // buttons not final
   val runFeederIn = Trigger { operator.dPadUp }
   val runFeederOut = Trigger { operator.dPadDown }
 
+  val resetBallCount = Trigger { operator.startButton && operator.selectButton }
+
   val runIntake = Trigger { operator.aButton }
   val prepareClimb = Trigger { operator.startButton }
 
   // Shooter triggers
   val startShooter = Trigger { operator.xButton }
-  val startShooterFar = Trigger { operator.yButton }
+  val startShooterLower = Trigger { operator.yButton }
   val outTake = Trigger { operator.bButton }
   //  val alignRobot = Trigger { operator.yButton }
 

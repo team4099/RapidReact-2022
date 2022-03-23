@@ -16,7 +16,7 @@ object Constants {
 
   object Tuning {
 
-    val TUNING_MODE = true
+    val TUNING_MODE = false
 
     enum class RobotType {
       REAL,
@@ -48,8 +48,8 @@ object Constants {
     const val FRONT_LEFT_STEERING_ID = 21
     const val FRONT_LEFT_ANALOG_POTENTIOMETER = 0
 
-    const val FRONT_RIGHT_DRIVE_ID = 12
-    const val FRONT_RIGHT_STEERING_ID = 22
+    const val FRONT_RIGHT_DRIVE_ID = 15
+    const val FRONT_RIGHT_STEERING_ID = 25
     const val FRONT_RIGHT_ANALOG_POTENTIOMETER = 1
 
     const val BACK_RIGHT_DRIVE_ID = 13
