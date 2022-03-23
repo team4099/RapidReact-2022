@@ -163,4 +163,8 @@ class SwerveModule(val io: SwerveModuleIO) {
   fun zeroDrive() {
     io.zeroDrive()
   }
+
+  fun setDriveBrakeMode(brake: Boolean) {
+    io.setBrakeMode(brake)
+  }
 }

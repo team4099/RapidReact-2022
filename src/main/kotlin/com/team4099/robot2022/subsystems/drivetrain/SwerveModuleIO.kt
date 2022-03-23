@@ -39,6 +39,9 @@ interface SwerveModuleIO {
     var driveTempCelcius = 0.0
     var steeringTempCelcius = 0.0
 
+    var potentiometerOutputRaw = 0.0
+    var potentiometerOutputRadians = 0.0.radians
+
     override fun toLog(table: LogTable?) {
       table?.put("driveAppliedVoltage", driveAppliedVoltage.inVolts)
       table?.put("steeringAppliedVoltage", steeringAppliedVoltage.inVolts)
@@ -52,6 +55,8 @@ interface SwerveModuleIO {
       table?.put("steeringVelocityRadiansPerSecond", steeringVelocity.inRadiansPerSecond)
       table?.put("driveTempCelcius", driveTempCelcius)
       table?.put("steeringTempCelcius", steeringTempCelcius)
+      table?.put("potentiometerOutputRaw", potentiometerOutputRaw)
+      table?.put("potentiometerOutputRadians", potentiometerOutputRadians.inRadians)
     }
 
     override fun fromLog(table: LogTable?) {
@@ -86,6 +91,12 @@ interface SwerveModuleIO {
           ?.let { steeringVelocity = it.radians.perSecond }
       table?.getDouble("driveTempCelcius", driveTempCelcius)?.let { driveTempCelcius = it }
       table?.getDouble("steeringTempCelcius", steeringTempCelcius)?.let { steeringTempCelcius = it }
+      table?.getDouble("potentiometerOutputRaw", potentiometerOutputRaw)?.let {
+        potentiometerOutputRaw = it
+      }
+      table?.getDouble("potentiometerOutputRaw", potentiometerOutputRadians.inRadians)?.let {
+        potentiometerOutputRadians = it.radians
+      }
     }
   }
 
@@ -100,6 +111,8 @@ interface SwerveModuleIO {
   fun resetModuleZero() {}
   fun zeroSteering() {}
   fun zeroDrive() {}
+
+  fun setBrakeMode(brake: Boolean) {}
 
   fun configureDrivePID(kP: Double, kI: Double, kD: Double) {}
   fun configureSteeringPID(kP: Double, kI: Double, kD: Double) {}

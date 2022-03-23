@@ -76,6 +76,7 @@ class SwerveModuleIOReal(
     driveConfiguration.slot0.kD = DrivetrainConstants.PID.DRIVE_KD
     driveConfiguration.slot0.kF = DrivetrainConstants.PID.DRIVE_KFF
     driveConfiguration.supplyCurrLimit.currentLimit = DrivetrainConstants.DRIVE_SUPPLY_CURRENT_LIMIT
+    driveConfiguration.supplyCurrLimit.enable = true
     driveConfiguration.voltageCompSaturation = 12.0
 
     driveFalcon.configAllSettings(driveConfiguration)
@@ -101,6 +102,9 @@ class SwerveModuleIOReal(
 
     inputs.driveTempCelcius = driveFalcon.temperature
     inputs.steeringTempCelcius = steeringFalcon.temperature
+
+    inputs.potentiometerOutputRaw = potentiometer.get()
+    inputs.potentiometerOutputRadians = potentiometer.get().radians
   }
 
   override fun setSteeringSetpoint(angle: Angle) {
@@ -165,5 +169,13 @@ class SwerveModuleIOReal(
   ) {
     steeringConfiguration.motionCruiseVelocity = steeringSensor.velocityToRawUnits(maxVel)
     steeringConfiguration.motionAcceleration = steeringSensor.accelerationToRawUnits(maxAccel)
+  }
+
+  override fun setBrakeMode(brake: Boolean) {
+    if (brake) {
+      driveFalcon.setNeutralMode(NeutralMode.Brake)
+    } else {
+      driveFalcon.setNeutralMode(NeutralMode.Coast)
+    }
   }
 }
