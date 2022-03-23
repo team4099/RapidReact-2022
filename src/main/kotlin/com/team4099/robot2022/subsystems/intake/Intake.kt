@@ -22,12 +22,10 @@ class Intake(val io: IntakeIO) : SubsystemBase() {
     }
 
   val hasBall: Boolean
-    get(){
+    get() {
       return inputs.rollerStatorCurrent >= LEDConstants.INTAKE_CURRENT_THRESHOLD &&
-        rollerState == IntakeConstants.RollerState.IN
+          rollerState == IntakeConstants.RollerState.IN
     }
-
-
 
   init {
     // necessary because the setter is not called on initialization
