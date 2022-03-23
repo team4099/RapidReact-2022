@@ -14,6 +14,7 @@ import com.team4099.robot2022.commands.drivetrain.TeleopDriveCommand
 import com.team4099.robot2022.commands.feeder.FeederCommand
 import com.team4099.robot2022.commands.feeder.FeederSerialize
 import com.team4099.robot2022.commands.feeder.FeederSerializeIdleCommand
+import com.team4099.robot2022.commands.feeder.ResetBallCountCommand
 import com.team4099.robot2022.commands.intake.IntakeBallsCommand
 import com.team4099.robot2022.commands.intake.IntakeIdleCommand
 import com.team4099.robot2022.commands.intake.PrepareClimbCommand
@@ -116,6 +117,7 @@ object RobotContainer {
     ControlBoard.runIntake
         .whileActiveContinuous(IntakeBallsCommand(intake).alongWith(FeederSerialize(feeder)))
     ControlBoard.runFeederIn.whileActiveOnce(FeederSerialize(feeder))
+    ControlBoard.resetBallCount.whileActiveOnce(ResetBallCountCommand(feeder))
     ControlBoard.prepareClimb.whileActiveContinuous(PrepareClimbCommand(intake))
     ControlBoard.outTake
         .whileActiveContinuous(

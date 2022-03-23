@@ -31,6 +31,8 @@ object ControlBoard {
   val runFeederIn = Trigger { operator.dPadUp }
   val runFeederOut = Trigger { operator.dPadDown }
 
+  val resetBallCount = Trigger { operator.startButton && operator.selectButton }
+
   val runIntake = Trigger { operator.aButton }
   val prepareClimb = Trigger { operator.startButton }
 
