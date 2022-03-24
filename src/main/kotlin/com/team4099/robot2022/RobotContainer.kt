@@ -20,7 +20,6 @@ import com.team4099.robot2022.commands.feeder.FeederSerializeIdleCommand
 import com.team4099.robot2022.commands.feeder.ResetBallCountCommand
 import com.team4099.robot2022.commands.intake.IntakeBallsCommand
 import com.team4099.robot2022.commands.intake.IntakeIdleCommand
-import com.team4099.robot2022.commands.intake.PrepareClimbCommand
 import com.team4099.robot2022.commands.intake.ReverseIntakeCommand
 import com.team4099.robot2022.commands.led.LedCommand
 import com.team4099.robot2022.commands.shooter.ShootCommand
@@ -147,8 +146,7 @@ object RobotContainer {
             ReverseIntakeCommand(intake).alongWith(
                 FeederCommand(feeder, FeederConstants.FeederState.BACKWARD_FLOOR)))
 
-    ControlBoard.extendTelescoping
-        .whileActiveOnce(ExtendTelescopingArmCommand(telescopingClimber))
+    ControlBoard.extendTelescoping.whileActiveOnce(ExtendTelescopingArmCommand(telescopingClimber))
     ControlBoard.retractTelescoping.whileActiveContinuous(OpenLoopClimbCommand(telescopingClimber))
     ControlBoard.extendPivot.whileActiveOnce(ExtendPivotArmCommand(pivotClimber))
     ControlBoard.retractPivot.whileActiveOnce(RetractPivotArmCommand(pivotClimber))
