@@ -16,10 +16,10 @@ object TelescopingClimberConstants {
   const val KD = 0.0
   const val KFF = 0.0
 
-  val NO_LOAD_KS = 0.0.volts
-  val NO_LOAD_KG = 0.0.volts
-  val NO_LOAD_KV = 0.0.volts / 1.0.meters.perSecond
-  val NO_LOAD_KA = 0.0.volts / 1.0.meters.perSecond.perSecond
+  val NO_LOAD_KS = 1.824.volts
+  val NO_LOAD_KG = (-1.8496).volts
+  val NO_LOAD_KV = 13.762.volts / 1.0.meters.perSecond
+  val NO_LOAD_KA = 0.64434.volts / 1.0.meters.perSecond.perSecond
 
   val LOAD_KS = 0.0.volts
   val LOAD_KG = 0.88.volts
