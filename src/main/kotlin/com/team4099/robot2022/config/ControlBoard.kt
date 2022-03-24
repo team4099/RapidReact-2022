@@ -34,21 +34,16 @@ object ControlBoard {
   val resetBallCount = Trigger { operator.startButton && operator.selectButton }
 
   val runIntake = Trigger { operator.aButton }
-  val prepareClimb = Trigger { operator.startButton }
 
   // Shooter triggers
   val startShooter = Trigger { operator.xButton }
   val startShooterLower = Trigger { operator.yButton }
   val outTake = Trigger { operator.bButton }
-  val shooterUnjam = Trigger { operator.dPadLeft }
+  val shooterUnjam = Trigger { operator.selectButton }
   //  val alignRobot = Trigger { operator.yButton }
 
   val extendTelescoping = Trigger { operator.dPadUp }
   val retractTelescoping = Trigger { operator.dPadDown }
-  val rotateOutPivot: Double
-    get() = operator.rightTriggerAxis
-  val rotateInPivot: Double
-    get() = operator.leftTriggerAxis
 
   val extendPivot = Trigger { operator.dPadRight }
   val retractPivot = Trigger { operator.dPadLeft }

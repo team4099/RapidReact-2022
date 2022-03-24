@@ -1,6 +1,7 @@
 package com.team4099.robot2022.subsystems.climber
 
 import com.team4099.lib.units.base.Length
+import com.team4099.lib.units.base.inInches
 import com.team4099.lib.units.base.inMeters
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.inVolts
@@ -42,11 +43,11 @@ class TelescopingClimber(val io: TelescopingClimberIO) : SubsystemBase() {
     Logger.getInstance().recordOutput("TelescopingClimber/desiredState", desiredState.name)
     Logger.getInstance().recordOutput("TelescopingClimber/currentState", currentState.name)
     Logger.getInstance()
-        .recordOutput("TelescopingClimber/leftPositionSetpointMeters", leftSetpoint.position)
+        .recordOutput("TelescopingClimber/leftPositionSetpointInches", leftSetpoint.position.meters.inInches)
     Logger.getInstance()
         .recordOutput("TelescopingClimber/leftVelocitySetpointMetersPerSec", leftSetpoint.velocity)
     Logger.getInstance()
-        .recordOutput("TelescopingClimber/rightPositionSetpointMeters", rightSetpoint.position)
+        .recordOutput("TelescopingClimber/rightPositionSetpointInches", rightSetpoint.position.meters.inInches)
     Logger.getInstance()
         .recordOutput(
             "TelescopingClimber/rightVelocitySetpointMetersPerSec", rightSetpoint.velocity)
@@ -146,36 +147,40 @@ class TelescopingClimber(val io: TelescopingClimberIO) : SubsystemBase() {
     rightSetpoint: TrapezoidProfile.State,
     isUnderLoad: Boolean
   ) {
+
+    val leftAccel = ((leftSetpoint.velocity - this.leftSetpoint.velocity) / (0.02)).meters.perSecond.perSecond
+    val rightAccel = ((rightSetpoint.velocity - this.rightSetpoint.velocity) / (0.02)).meters.perSecond.perSecond
+
     this.leftSetpoint = leftSetpoint
     this.rightSetpoint = rightSetpoint
 
     if (!isUnderLoad) {
       io.setLeftPosition(
-          leftSetpoint.position.meters, noLoadFeedForward.calculate(leftSetpoint.velocity).volts)
+          leftSetpoint.position.meters, noLoadFeedForward.calculate(leftSetpoint.velocity, leftAccel.inMetersPerSecondPerSecond).volts)
 
       Logger.getInstance()
           .recordOutput(
               "TelescopingClimber/leftFeedForwardVolts",
-              noLoadFeedForward.calculate(leftSetpoint.velocity))
+              noLoadFeedForward.calculate(leftSetpoint.velocity, leftAccel.inMetersPerSecondPerSecond))
       io.setRightPosition(
-          rightSetpoint.position.meters, noLoadFeedForward.calculate(rightSetpoint.velocity).volts)
+          rightSetpoint.position.meters, noLoadFeedForward.calculate(rightSetpoint.velocity, rightAccel.inMetersPerSecondPerSecond).volts)
       Logger.getInstance()
           .recordOutput(
               "TelescopingClimber/rightFeedForwardVolts",
-              noLoadFeedForward.calculate(rightSetpoint.velocity))
+              noLoadFeedForward.calculate(rightSetpoint.velocity, rightAccel.inMetersPerSecondPerSecond))
     } else {
       io.setLeftPosition(
-          leftSetpoint.position.meters, loadedFeedForward.calculate(leftSetpoint.velocity).volts)
+          leftSetpoint.position.meters, loadedFeedForward.calculate(leftSetpoint.velocity, leftAccel.inMetersPerSecondPerSecond).volts)
       Logger.getInstance()
           .recordOutput(
               "TelescopingClimber/leftFeedForwardVolts",
-              loadedFeedForward.calculate(leftSetpoint.velocity))
+              loadedFeedForward.calculate(leftSetpoint.velocity, leftAccel.inMetersPerSecondPerSecond))
       io.setRightPosition(
-          rightSetpoint.position.meters, loadedFeedForward.calculate(rightSetpoint.velocity).volts)
+          rightSetpoint.position.meters, loadedFeedForward.calculate(rightSetpoint.velocity, rightAccel.inMetersPerSecondPerSecond).volts)
       Logger.getInstance()
           .recordOutput(
               "TelescopingClimber/rightFeedForwardVolts",
-              loadedFeedForward.calculate(rightSetpoint.velocity))
+              loadedFeedForward.calculate(rightSetpoint.velocity, rightAccel.inMetersPerSecondPerSecond))
     }
   }
 

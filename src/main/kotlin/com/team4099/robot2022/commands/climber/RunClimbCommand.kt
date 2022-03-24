@@ -61,22 +61,22 @@ class RunClimbCommand(val telescopingClimber: TelescopingClimber, val pivotClimb
     //    }
   }
   override fun execute() {
-    val leftTelescopingProfile =
-        TrapezoidProfile(
-            telescopingClimber.constraints,
-            TrapezoidProfile.State(telescopingClimber.desiredState.position.inMeters, 0.0),
-            TrapezoidProfile.State(
-                telescopingClimber.inputs.leftPosition.inMeters,
-                telescopingClimber.inputs.leftVelocity.inMetersPerSecond))
-    val rightTelescopingProfile =
-        TrapezoidProfile(
-            telescopingClimber.constraints,
-            TrapezoidProfile.State(telescopingClimber.desiredState.position.inMeters, 0.0),
-            TrapezoidProfile.State(
-                telescopingClimber.inputs.rightPosition.inMeters,
-                telescopingClimber.inputs.rightVelocity.inMetersPerSecond))
-    telescopingClimber.setPosition(
-        leftTelescopingProfile, rightTelescopingProfile, telescopingIsUnderLoad)
+//    val leftTelescopingProfile =
+//        TrapezoidProfile(
+//            telescopingClimber.constraints,
+//            TrapezoidProfile.State(telescopingClimber.desiredState.position.inMeters, 0.0),
+//            TrapezoidProfile.State(
+//                telescopingClimber.inputs.leftPosition.inMeters,
+//                telescopingClimber.inputs.leftVelocity.inMetersPerSecond))
+//    val rightTelescopingProfile =
+//        TrapezoidProfile(
+//            telescopingClimber.constraints,
+//            TrapezoidProfile.State(telescopingClimber.desiredState.position.inMeters, 0.0),
+//            TrapezoidProfile.State(
+//                telescopingClimber.inputs.rightPosition.inMeters,
+//                telescopingClimber.inputs.rightVelocity.inMetersPerSecond))
+//    telescopingClimber.setPosition(
+//        leftTelescopingProfile, rightTelescopingProfile, telescopingIsUnderLoad)
 
     //    val leftPivotProfile =
     //        TrapezoidProfile(

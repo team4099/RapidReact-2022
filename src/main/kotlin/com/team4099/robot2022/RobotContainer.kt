@@ -142,14 +142,13 @@ object RobotContainer {
         .whileActiveContinuous(IntakeBallsCommand(intake).alongWith(FeederSerialize(feeder)))
     ControlBoard.runFeederIn.whileActiveOnce(FeederSerialize(feeder))
     ControlBoard.resetBallCount.whileActiveOnce(ResetBallCountCommand(feeder))
-    ControlBoard.prepareClimb.whileActiveContinuous(PrepareClimbCommand(intake))
     ControlBoard.outTake
         .whileActiveContinuous(
             ReverseIntakeCommand(intake).alongWith(
                 FeederCommand(feeder, FeederConstants.FeederState.BACKWARD_FLOOR)))
 
     ControlBoard.extendTelescoping
-        .whileActiveContinuous(ExtendTelescopingArmCommand(telescopingClimber))
+        .whileActiveOnce(ExtendTelescopingArmCommand(telescopingClimber))
     ControlBoard.retractTelescoping.whileActiveContinuous(OpenLoopClimbCommand(telescopingClimber))
     ControlBoard.extendPivot.whileActiveOnce(ExtendPivotArmCommand(pivotClimber))
     ControlBoard.retractPivot.whileActiveOnce(RetractPivotArmCommand(pivotClimber))
