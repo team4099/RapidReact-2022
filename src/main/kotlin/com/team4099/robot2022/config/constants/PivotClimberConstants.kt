@@ -28,8 +28,8 @@ object PivotClimberConstants {
   }
 
   enum class ExtendState(val extendPosition: Boolean) {
-    IN(true),
-    OUT(false)
+    IN(false),
+    OUT(true)
   }
 
   const val GEAR_RATIO = (15.0 / 36.0) * (1.0 / 125.0)

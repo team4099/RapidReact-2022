@@ -6,6 +6,7 @@ import com.team4099.robot2022.commands.climber.ExtendPivotArmCommand
 import com.team4099.robot2022.commands.climber.OpenLoopClimbCommand
 import com.team4099.robot2022.commands.climber.OpenLoopExtendClimberCommand
 import com.team4099.robot2022.commands.climber.PivotArmIdleCommand
+import com.team4099.robot2022.commands.climber.RetractPivotArmCommand
 import com.team4099.robot2022.commands.climber.SpoolLeftDownCommand
 import com.team4099.robot2022.commands.climber.SpoolLeftUpCommand
 import com.team4099.robot2022.commands.climber.SpoolRightDownCommand
@@ -53,6 +54,7 @@ import com.team4099.robot2022.subsystems.shooter.ShooterIOReal
 import edu.wpi.first.wpilibj.Compressor
 import edu.wpi.first.wpilibj.PneumaticsModuleType
 import org.littletonrobotics.junction.Logger
+import pabeles.concurrency.ConcurrencyOps
 
 object RobotContainer {
   private val drivetrain: Drivetrain
@@ -144,7 +146,8 @@ object RobotContainer {
     ControlBoard.extendTelescoping
         .whileActiveContinuous(OpenLoopExtendClimberCommand(telescopingClimber))
     ControlBoard.retractTelescoping.whileActiveContinuous(OpenLoopClimbCommand(telescopingClimber))
-    ControlBoard.extendPivot.whileActiveContinuous(ExtendPivotArmCommand(pivotClimber))
+    ControlBoard.extendPivot.whileActiveOnce(ExtendPivotArmCommand(pivotClimber))
+    ControlBoard.retractPivot.whileActiveOnce(RetractPivotArmCommand(pivotClimber))
 
     // ControlBoard.advanceAndClimb.whileActiveOnce(AdvanceClimberCommand().andThen(RunClimbCommand()))
     //    ControlBoard.climbWithoutAdvance.whileActiveOnce(RunClimbCommand())
