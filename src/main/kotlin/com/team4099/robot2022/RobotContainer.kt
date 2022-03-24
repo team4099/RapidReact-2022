@@ -54,7 +54,6 @@ import com.team4099.robot2022.subsystems.shooter.ShooterIOReal
 import edu.wpi.first.wpilibj.Compressor
 import edu.wpi.first.wpilibj.PneumaticsModuleType
 import org.littletonrobotics.junction.Logger
-import pabeles.concurrency.ConcurrencyOps
 
 object RobotContainer {
   private val drivetrain: Drivetrain
@@ -94,6 +93,10 @@ object RobotContainer {
 
   fun stopCompressor() {
     compressor?.disable()
+  }
+
+  fun zeroSteering() {
+    drivetrain.zeroSteering()
   }
 
   fun mapDefaultCommands() {
