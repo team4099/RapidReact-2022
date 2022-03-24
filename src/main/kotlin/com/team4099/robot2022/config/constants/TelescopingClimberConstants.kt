@@ -16,8 +16,8 @@ object TelescopingClimberConstants {
   const val KD = 0.0
   const val KFF = 0.0
 
-  val NO_LOAD_KS = 1.824.volts
-  val NO_LOAD_KG = (-1.8496).volts
+  val NO_LOAD_KS = 0.0.volts // 1.824.volts
+  val NO_LOAD_KG = 0.0.volts // (-1.8496).volts
   val NO_LOAD_KV = 13.762.volts / 1.0.meters.perSecond
   val NO_LOAD_KA = 0.64434.volts / 1.0.meters.perSecond.perSecond
 
@@ -35,10 +35,22 @@ object TelescopingClimberConstants {
   const val BOTTOM_SAFETY_THRESHOLD = 0
   const val TOP_SAFETY_THRESHOLD = 0
 
-  enum class TelescopingArmPosition(val length: Length) {
-    LOW(0.meters),
-    HIGH(1.000.meters) // extended, value estimated for now
+  enum class DesiredTelescopeStates(val position: Length) {
+    START(0.0.inches),
+    MAX_RETRACT(2.inches),
+    MAX_EXTENSION(27.inches),
+    DUMMY(-Double.NEGATIVE_INFINITY.inches)
   }
+
+  enum class ActualTelescopeStates(val correspondingDesiredState: DesiredTelescopeStates) {
+    START(DesiredTelescopeStates.START),
+    BETWEEN_START_AND_MAX_RETRACT(DesiredTelescopeStates.DUMMY),
+    MAX_RETRACT(DesiredTelescopeStates.MAX_RETRACT),
+    BETWEEN_MAX_RETRACT_AND_MAX_EXTENSION(DesiredTelescopeStates.DUMMY),
+    MAX_EXTENSION(DesiredTelescopeStates.MAX_EXTENSION),
+  }
+
+  val telescopingTolerance = 1.inches
 
   val FORWARD_SOFT_LIMIT = 27.inches // old one was 24 inches
   val SLOW_TELESCOPING_THRESHOLD = 5.inches

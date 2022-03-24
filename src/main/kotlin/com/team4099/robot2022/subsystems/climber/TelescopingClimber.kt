@@ -8,10 +8,10 @@ import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.inMetersPerSecond
 import com.team4099.lib.units.inMetersPerSecondPerSecond
 import com.team4099.lib.units.perSecond
-import com.team4099.robot2022.config.constants.ClimberConstants.ActualTelescopeStates
-import com.team4099.robot2022.config.constants.ClimberConstants.DesiredTelescopeStates
-import com.team4099.robot2022.config.constants.ClimberConstants.telescopingTolerance
 import com.team4099.robot2022.config.constants.TelescopingClimberConstants
+import com.team4099.robot2022.config.constants.TelescopingClimberConstants.ActualTelescopeStates
+import com.team4099.robot2022.config.constants.TelescopingClimberConstants.DesiredTelescopeStates
+import com.team4099.robot2022.config.constants.TelescopingClimberConstants.telescopingTolerance
 import edu.wpi.first.math.controller.ElevatorFeedforward
 import edu.wpi.first.math.trajectory.TrapezoidProfile
 import edu.wpi.first.wpilibj2.command.SubsystemBase
@@ -112,32 +112,20 @@ class TelescopingClimber(val io: TelescopingClimberIO) : SubsystemBase() {
   val currentState: ActualTelescopeStates
     get() {
       return when (currentPosition) {
-        in Double.NEGATIVE_INFINITY.meters..DesiredTelescopeStates.START.position -
-                telescopingTolerance -> ActualTelescopeStates.BELOW_START
-        in DesiredTelescopeStates.START.position -
-            telescopingTolerance..DesiredTelescopeStates.START.position + telescopingTolerance ->
-            ActualTelescopeStates.START
-        in DesiredTelescopeStates.START.position +
-            telescopingTolerance..DesiredTelescopeStates.MAX_RETRACT.position -
-                telescopingTolerance -> ActualTelescopeStates.BETWEEN_START_AND_MAX_RETRACT
-        in DesiredTelescopeStates.MAX_RETRACT.position -
-            telescopingTolerance..DesiredTelescopeStates.MAX_RETRACT.position +
-                telescopingTolerance -> ActualTelescopeStates.MAX_RETRACT
-        in DesiredTelescopeStates.MAX_RETRACT.position +
-            telescopingTolerance..DesiredTelescopeStates.RELEASE_HOOK.position -
-                telescopingTolerance -> ActualTelescopeStates.BETWEEN_MAX_RETRACT_AND_RELEASE_HOOK
-        in DesiredTelescopeStates.RELEASE_HOOK.position -
-            telescopingTolerance..DesiredTelescopeStates.RELEASE_HOOK.position +
-                telescopingTolerance -> ActualTelescopeStates.RELEASE_HOOK
-        in DesiredTelescopeStates.RELEASE_HOOK.position +
-            telescopingTolerance..DesiredTelescopeStates.MAX_EXTENSION.position -
-                telescopingTolerance -> ActualTelescopeStates.BETWEEN_RELEASE_HOOK_AND_MAX_EXTENSION
-        in DesiredTelescopeStates.MAX_EXTENSION.position -
-            telescopingTolerance..DesiredTelescopeStates.MAX_EXTENSION.position +
-                telescopingTolerance -> ActualTelescopeStates.MAX_EXTENSION
-        in DesiredTelescopeStates.MAX_EXTENSION.position +
-            telescopingTolerance..Double.POSITIVE_INFINITY.meters ->
-            ActualTelescopeStates.ABOVE_MAX_EXTENSION
+        in -Double.NEGATIVE_INFINITY.meters..(DesiredTelescopeStates.START.position +
+                telescopingTolerance) -> ActualTelescopeStates.START
+        in (DesiredTelescopeStates.START.position +
+            telescopingTolerance)..(DesiredTelescopeStates.MAX_RETRACT.position -
+                telescopingTolerance) -> ActualTelescopeStates.BETWEEN_START_AND_MAX_RETRACT
+        in (DesiredTelescopeStates.MAX_RETRACT.position -
+            telescopingTolerance)..(DesiredTelescopeStates.MAX_RETRACT.position +
+                telescopingTolerance) -> ActualTelescopeStates.MAX_RETRACT
+        in (DesiredTelescopeStates.MAX_RETRACT.position +
+            telescopingTolerance)..(DesiredTelescopeStates.MAX_EXTENSION.position -
+                telescopingTolerance) -> ActualTelescopeStates.BETWEEN_MAX_RETRACT_AND_MAX_EXTENSION
+        in (DesiredTelescopeStates.MAX_EXTENSION.position -
+            telescopingTolerance)..Double.POSITIVE_INFINITY.meters ->
+            ActualTelescopeStates.MAX_EXTENSION
         else -> {
           ActualTelescopeStates.START
         }
@@ -154,27 +142,41 @@ class TelescopingClimber(val io: TelescopingClimberIO) : SubsystemBase() {
       TrapezoidProfile.State(inputs.rightPosition.inMeters, inputs.rightVelocity.inMetersPerSecond)
 
   fun setPosition(
-    leftProfile: TrapezoidProfile,
-    rightProfile: TrapezoidProfile,
+    leftSetpoint: TrapezoidProfile.State,
+    rightSetpoint: TrapezoidProfile.State,
     isUnderLoad: Boolean
   ) {
-    leftSetpoint = leftProfile.calculate(0.0)
-    rightSetpoint = rightProfile.calculate(0.0)
+    this.leftSetpoint = leftSetpoint
+    this.rightSetpoint = rightSetpoint
 
     if (!isUnderLoad) {
       io.setLeftPosition(
           leftSetpoint.position.meters, noLoadFeedForward.calculate(leftSetpoint.velocity).volts)
 
+      Logger.getInstance().recordOutput("TelescopingClimber/leftFeedForwardVolts", noLoadFeedForward.calculate(leftSetpoint.velocity))
       io.setRightPosition(
           rightSetpoint.position.meters, noLoadFeedForward.calculate(rightSetpoint.velocity).volts)
+      Logger.getInstance().recordOutput("TelescopingClimber/rightFeedForwardVolts", noLoadFeedForward.calculate(rightSetpoint.velocity))
     } else {
       io.setLeftPosition(
           leftSetpoint.position.meters, loadedFeedForward.calculate(leftSetpoint.velocity).volts)
-
+      Logger.getInstance().recordOutput("TelescopingClimber/leftFeedForwardVolts", loadedFeedForward.calculate(leftSetpoint.velocity))
       io.setRightPosition(
           rightSetpoint.position.meters, loadedFeedForward.calculate(rightSetpoint.velocity).volts)
+      Logger.getInstance().recordOutput("TelescopingClimber/rightFeedForwardVolts", loadedFeedForward.calculate(rightSetpoint.velocity))
     }
   }
+
+  fun holdPosition(loaded: Boolean = true) {
+    if (loaded) {
+      io.setLeftPosition(inputs.leftPosition, loadedFeedForward.calculate(0.0).volts)
+      io.setRightPosition(inputs.rightPosition, loadedFeedForward.calculate(0.0).volts)
+    } else {
+      io.setLeftPosition(inputs.leftPosition, noLoadFeedForward.calculate(0.0).volts)
+      io.setRightPosition(inputs.rightPosition, noLoadFeedForward.calculate(0.0).volts)
+    }
+  }
+
   fun zeroLeftEncoder() {
     io.zeroLeftEncoder()
   }

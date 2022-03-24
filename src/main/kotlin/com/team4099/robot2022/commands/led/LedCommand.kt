@@ -3,14 +3,22 @@ package com.team4099.robot2022.commands.led
 import com.team4099.robot2022.Robot
 import com.team4099.robot2022.config.constants.LEDConstants
 import com.team4099.robot2022.config.constants.ShooterConstants
+import com.team4099.robot2022.subsystems.climber.PivotClimber
+import com.team4099.robot2022.subsystems.climber.TelescopingClimber
 import com.team4099.robot2022.subsystems.feeder.Feeder
 import com.team4099.robot2022.subsystems.intake.Intake
 import com.team4099.robot2022.subsystems.led.Led
 import com.team4099.robot2022.subsystems.shooter.Shooter
 import edu.wpi.first.wpilibj2.command.CommandBase
 
-class LedCommand(val led: Led, val intake: Intake, val shooter: Shooter, val feeder: Feeder) :
-    CommandBase() {
+class LedCommand(
+  val led: Led,
+  val intake: Intake,
+  val shooter: Shooter,
+  val feeder: Feeder,
+  val telescopingClimber: TelescopingClimber,
+  val pivotClimber: PivotClimber
+) : CommandBase() {
   init {
     addRequirements(led)
   }

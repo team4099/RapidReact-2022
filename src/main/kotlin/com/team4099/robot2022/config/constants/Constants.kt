@@ -86,7 +86,7 @@ object Constants {
   }
 
   object PivotClimber {
-    const val IN_PORT = 9
-    const val OUT_PORT = 10
+    const val IN_PORT = 10
+    const val OUT_PORT = 9
   }
 }

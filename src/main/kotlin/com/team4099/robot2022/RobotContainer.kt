@@ -3,6 +3,7 @@ package com.team4099.robot2022
 import com.team4099.lib.smoothDeadband
 import com.team4099.robot2022.auto.AutonomousSelector
 import com.team4099.robot2022.commands.climber.ExtendPivotArmCommand
+import com.team4099.robot2022.commands.climber.ExtendTelescopingArmCommand
 import com.team4099.robot2022.commands.climber.OpenLoopClimbCommand
 import com.team4099.robot2022.commands.climber.OpenLoopExtendClimberCommand
 import com.team4099.robot2022.commands.climber.PivotArmIdleCommand
@@ -114,7 +115,7 @@ object RobotContainer {
     telescopingClimber.defaultCommand = TelescopingIdleCommand(telescopingClimber)
     pivotClimber.defaultCommand = PivotArmIdleCommand(pivotClimber)
     //    PivotClimber.defaultCommand = PivotIdleCommand()
-    led.defaultCommand = LedCommand(led, intake, shooter, feeder)
+    led.defaultCommand = LedCommand(led, intake, shooter, feeder, telescopingClimber, pivotClimber)
   }
 
   fun zeroSensors() {
@@ -149,7 +150,7 @@ object RobotContainer {
                 FeederCommand(feeder, FeederConstants.FeederState.BACKWARD_FLOOR)))
 
     ControlBoard.extendTelescoping
-        .whileActiveContinuous(OpenLoopExtendClimberCommand(telescopingClimber))
+        .whileActiveContinuous(ExtendTelescopingArmCommand(telescopingClimber))
     ControlBoard.retractTelescoping.whileActiveContinuous(OpenLoopClimbCommand(telescopingClimber))
     ControlBoard.extendPivot.whileActiveOnce(ExtendPivotArmCommand(pivotClimber))
     ControlBoard.retractPivot.whileActiveOnce(RetractPivotArmCommand(pivotClimber))
