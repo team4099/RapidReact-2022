@@ -3,6 +3,8 @@ package com.team4099.robot2022.config.constants
 import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.meters
+import com.team4099.lib.units.derived.div
+import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.perSecond
 
 object TelescopingClimberConstants {
@@ -14,13 +16,15 @@ object TelescopingClimberConstants {
   const val KD = 0.0
   const val KFF = 0.0
 
-  val NO_LOAD_KS = 0.0
-  val NO_LOAD_KV = 0.0
-  val NO_LOAD_KA = 0.0
+  val NO_LOAD_KS = 0.0.volts
+  val NO_LOAD_KG = 0.0.volts
+  val NO_LOAD_KV = 0.0.volts / 1.0.meters.perSecond
+  val NO_LOAD_KA = 0.0.volts / 1.0.meters.perSecond.perSecond
 
-  val LOAD_KS = 0.0
-  val LOAD_KV = 0.0
-  val LOAD_KA = 0.0
+  val LOAD_KS = 0.0.volts
+  val LOAD_KG = 0.88.volts
+  val LOAD_KV = 2.83.volts / 1.0.meters.perSecond
+  val LOAD_KA = 0.11.volts / 1.0.meters.perSecond.perSecond
 
   val SPOOL_RADIUS = 0.5.inches
   val LEFT_SPOOL_RADIUS = 0.5.inches
