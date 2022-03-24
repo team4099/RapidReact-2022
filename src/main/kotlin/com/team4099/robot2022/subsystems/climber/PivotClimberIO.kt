@@ -1,5 +1,6 @@
 package com.team4099.robot2022.subsystems.climber
 
+import edu.wpi.first.wpilibj.DoubleSolenoid
 import org.littletonrobotics.junction.LogTable
 import org.littletonrobotics.junction.inputs.LoggableInputs
 
@@ -17,5 +18,5 @@ interface PivotClimberIO {
 
   fun updateInputs(inputs: PivotClimberIOInputs) {}
 
-  fun setPivotSolenoid(solenoidValue: Boolean) {}
+  fun setPivotSolenoid(solenoidValue: DoubleSolenoid.Value) {}
 }
