@@ -2,8 +2,11 @@ package com.team4099.robot2022
 
 import com.team4099.lib.smoothDeadband
 import com.team4099.robot2022.auto.AutonomousSelector
+import com.team4099.robot2022.commands.climber.ExtendPivotArmCommand
 import com.team4099.robot2022.commands.climber.OpenLoopClimbCommand
 import com.team4099.robot2022.commands.climber.OpenLoopExtendClimberCommand
+import com.team4099.robot2022.commands.climber.PivotArmIdleCommand
+import com.team4099.robot2022.commands.climber.RetractPivotArmCommand
 import com.team4099.robot2022.commands.climber.SpoolLeftDownCommand
 import com.team4099.robot2022.commands.climber.SpoolLeftUpCommand
 import com.team4099.robot2022.commands.climber.SpoolRightDownCommand
@@ -28,6 +31,9 @@ import com.team4099.robot2022.commands.shooter.SpinUpNearCommand
 import com.team4099.robot2022.config.ControlBoard
 import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.config.constants.FeederConstants
+import com.team4099.robot2022.subsystems.climber.PivotClimber
+import com.team4099.robot2022.subsystems.climber.PivotClimberIO
+import com.team4099.robot2022.subsystems.climber.PivotClimberIOReal
 import com.team4099.robot2022.subsystems.climber.TelescopingClimber
 import com.team4099.robot2022.subsystems.climber.TelescopingClimberIO
 import com.team4099.robot2022.subsystems.climber.TelescopingClimberIOReal
@@ -56,6 +62,7 @@ object RobotContainer {
   private val shooter: Shooter
   private val feeder: Feeder
   private val telescopingClimber: TelescopingClimber
+  private val pivotClimber: PivotClimber
   private val led: Led
   private var compressor: Compressor? = null
 
@@ -68,6 +75,7 @@ object RobotContainer {
       shooter = Shooter(ShooterIOReal)
       feeder = Feeder(FeederIOReal)
       telescopingClimber = TelescopingClimber(TelescopingClimberIOReal)
+      pivotClimber = PivotClimber(PivotClimberIOReal)
       led = Led(LedIOReal)
     } else {
       drivetrain = Drivetrain(object : DrivetrainIO {})
@@ -75,6 +83,7 @@ object RobotContainer {
       shooter = Shooter(object : ShooterIO {})
       feeder = Feeder(object : FeederIO {})
       telescopingClimber = TelescopingClimber(object : TelescopingClimberIO {})
+      pivotClimber = PivotClimber(object : PivotClimberIO {})
       led = Led(object : LedIO {})
     }
   }
@@ -85,6 +94,10 @@ object RobotContainer {
 
   fun stopCompressor() {
     compressor?.disable()
+  }
+
+  fun zeroSteering() {
+    drivetrain.zeroSteering()
   }
 
   fun mapDefaultCommands() {
@@ -99,8 +112,9 @@ object RobotContainer {
     shooter.defaultCommand = ShooterIdleCommand(shooter)
     feeder.defaultCommand = FeederSerializeIdleCommand(feeder)
     telescopingClimber.defaultCommand = TelescopingIdleCommand(telescopingClimber)
+    pivotClimber.defaultCommand = PivotArmIdleCommand(pivotClimber)
     //    PivotClimber.defaultCommand = PivotIdleCommand()
-    led.defaultCommand = LedCommand(led, intake, shooter)
+    led.defaultCommand = LedCommand(led, intake, shooter, feeder)
   }
 
   fun zeroSensors() {
@@ -137,6 +151,8 @@ object RobotContainer {
     ControlBoard.extendTelescoping
         .whileActiveContinuous(OpenLoopExtendClimberCommand(telescopingClimber))
     ControlBoard.retractTelescoping.whileActiveContinuous(OpenLoopClimbCommand(telescopingClimber))
+    ControlBoard.extendPivot.whileActiveOnce(ExtendPivotArmCommand(pivotClimber))
+    ControlBoard.retractPivot.whileActiveOnce(RetractPivotArmCommand(pivotClimber))
 
     // ControlBoard.advanceAndClimb.whileActiveOnce(AdvanceClimberCommand().andThen(RunClimbCommand()))
     //    ControlBoard.climbWithoutAdvance.whileActiveOnce(RunClimbCommand())
@@ -150,7 +166,8 @@ object RobotContainer {
   fun mapTestControls() {}
 
   fun getAutonomousCommand() =
-      AutonomousSelector.getCommand(drivetrain, intake, feeder, shooter, telescopingClimber)
+      AutonomousSelector.getCommand(
+          drivetrain, intake, feeder, shooter, telescopingClimber, pivotClimber)
 
   fun logCompressor() {
     Logger.getInstance().recordOutput("Compressor/pressurePSI", compressor?.pressure)

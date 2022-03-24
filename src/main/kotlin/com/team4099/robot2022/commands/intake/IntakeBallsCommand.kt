@@ -1,5 +1,6 @@
 package com.team4099.robot2022.commands.intake
 
+import com.team4099.lib.hal.Clock
 import com.team4099.robot2022.config.constants.IntakeConstants
 import com.team4099.robot2022.subsystems.intake.Intake
 import edu.wpi.first.wpilibj2.command.CommandBase
@@ -22,6 +23,7 @@ class IntakeBallsCommand(val intake: Intake) : CommandBase() {
 
     intake.rollerState = IntakeConstants.RollerState.IN
     intake.armState = IntakeConstants.ArmState.OUT
+    intake.extendTime = Clock.fpgaTime
   }
 
   override fun execute() {

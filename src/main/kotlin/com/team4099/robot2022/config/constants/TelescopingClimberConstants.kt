@@ -36,9 +36,9 @@ object TelescopingClimberConstants {
     HIGH(1.000.meters) // extended, value estimated for now
   }
 
-  val FORWARD_SOFT_LIMIT = 24.inches
+  val FORWARD_SOFT_LIMIT = 27.inches // old one was 24 inches
   val SLOW_TELESCOPING_THRESHOLD = 5.inches
-  val REVERSE_SOFT_LIMIT = 2.inches
+  val REVERSE_SOFT_LIMIT = 0.inches
 
   const val TAB = "Telescoping Climber"
 }

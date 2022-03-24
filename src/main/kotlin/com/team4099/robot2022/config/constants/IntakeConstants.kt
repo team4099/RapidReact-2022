@@ -1,7 +1,7 @@
 package com.team4099.robot2022.config.constants
 
 object IntakeConstants {
-  val RAMP_TIME = 1.0 // Change
+  val RAMP_TIME = 0.5
   const val TAB = "Intake"
   const val SUPPLY_CURRENT_LIMIT = 25.0
   const val SENSOR_CPR = 2048

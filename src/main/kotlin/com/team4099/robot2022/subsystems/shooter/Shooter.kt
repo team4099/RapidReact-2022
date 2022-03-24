@@ -34,6 +34,7 @@ class Shooter(val io: ShooterIO) : SubsystemBase() {
 
   var state = ShooterConstants.ShooterState.OFF
     set(state) {
+      //      targetVelocity = state.targetVelocity
       targetVelocity = state.targetVelocity
       field = state
     }

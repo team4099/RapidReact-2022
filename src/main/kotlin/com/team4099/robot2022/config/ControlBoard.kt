@@ -28,8 +28,8 @@ object ControlBoard {
   val resetGyro = Trigger { driver.startButton && driver.selectButton }
 
   // buttons not final
-  val runFeederIn = Trigger { operator.dPadUp }
-  val runFeederOut = Trigger { operator.dPadDown }
+  val runFeederIn = Trigger { operator.rightTriggerAxis > 0.5 }
+  val runFeederOut = Trigger { operator.leftTriggerAxis > 0.5 }
 
   val resetBallCount = Trigger { operator.startButton && operator.selectButton }
 
@@ -43,12 +43,15 @@ object ControlBoard {
   val shooterUnjam = Trigger { operator.dPadLeft }
   //  val alignRobot = Trigger { operator.yButton }
 
-  val extendTelescoping = Trigger { operator.rightShoulderButton }
-  val retractTelescoping = Trigger { operator.leftShoulderButton }
+  val extendTelescoping = Trigger { operator.dPadUp }
+  val retractTelescoping = Trigger { operator.dPadDown }
   val rotateOutPivot: Double
     get() = operator.rightTriggerAxis
   val rotateInPivot: Double
     get() = operator.leftTriggerAxis
+
+  val extendPivot = Trigger { operator.dPadRight }
+  val retractPivot = Trigger { operator.dPadLeft }
 
   val advanceAndClimb = Trigger { operator.startButton }
   val climbWithoutAdvance = Trigger { operator.selectButton }

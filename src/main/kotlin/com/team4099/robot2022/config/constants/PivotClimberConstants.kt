@@ -4,6 +4,7 @@ import com.team4099.lib.units.derived.Angle
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.radians
 import com.team4099.lib.units.perSecond
+import edu.wpi.first.wpilibj.DoubleSolenoid
 
 object PivotClimberConstants {
   const val KP = 0.0
@@ -25,6 +26,11 @@ object PivotClimberConstants {
   enum class PivotArmPosition(val angle: Angle) {
     OUT(0.degrees),
     IN(0.degrees)
+  }
+
+  enum class ExtendState(val extendPosition: DoubleSolenoid.Value) {
+    IN(DoubleSolenoid.Value.kReverse),
+    OUT(DoubleSolenoid.Value.kForward)
   }
 
   const val GEAR_RATIO = (15.0 / 36.0) * (1.0 / 125.0)
