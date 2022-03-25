@@ -10,7 +10,10 @@ object LEDConstants {
     // Solid Orange
     IDLE(BlinkinLedDriver.BlinkinLedMode.SOLID_ORANGE),
 
-    // Solid Red
+    // Blinking Gold
+    AUTO(BlinkinLedDriver.BlinkinLedMode.FIXED_STROBE_GOLD),
+
+    // Solid Gold
     STANDING_ZERO(BlinkinLedDriver.BlinkinLedMode.SOLID_GOLD),
 
     // Solid Yellow
@@ -22,11 +25,17 @@ object LEDConstants {
     // Blinking Red
     INTAKING(BlinkinLedDriver.BlinkinLedMode.SOLID_BLUE),
 
-    // Blinking Yellow
-    CLIMBER_READY(BlinkinLedDriver.BlinkinLedMode.FIXED_BEATS_OCEAN),
+    // Changing Green
+    CLIMBER_READY(BlinkinLedDriver.BlinkinLedMode.FIXED_BEATS_FOREST),
 
-    // Blinking Green
-    CLIMBING(BlinkinLedDriver.BlinkinLedMode.FIXED_BEATS_LAVA),
+    // Changing Mix
+    CLIMBING(BlinkinLedDriver.BlinkinLedMode.FIXED_BEATS_PARTY),
+
+    // Changing Red
+    CLIMB_FINISHED_RED_ALLIANCE(BlinkinLedDriver.BlinkinLedMode.FIXED_BEATS_LAVA),
+
+    // Changing Blue
+    CLIMB_FINISHED_BLUE_ALLIANCE(BlinkinLedDriver.BlinkinLedMode.FIXED_BEATS_OCEAN),
 
     // TODO
     SPINNING_UP(BlinkinLedDriver.BlinkinLedMode.SOLID_BLACK),

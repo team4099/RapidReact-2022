@@ -157,7 +157,8 @@ object RobotContainer {
             RetractPivotArmCommand(pivotClimber).andThen(
                 ExtendTelescopingArmCommand(telescopingClimber).andThen(
                     ClimbSequenceCommand(telescopingClimber, pivotClimber).andThen(
-                        ClimbSequenceCommand(telescopingClimber, pivotClimber)))))
+                        ClimbSequenceCommand(telescopingClimber, pivotClimber).andThen(
+                            RetractTelescopingArmCommand(telescopingClimber))))))
 
     // ControlBoard.advanceAndClimb.whileActiveOnce(AdvanceClimberCommand().andThen(RunClimbCommand()))
     //    ControlBoard.climbWithoutAdvance.whileActiveOnce(RunClimbCommand())
