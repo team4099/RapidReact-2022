@@ -103,5 +103,7 @@ object Robot : LoggedRobot() {
                 .getStringArray(emptyArray()))
 
     RobotContainer.logCompressor()
+    RobotContainer.logDriverController()
+    RobotContainer.logOperatorController()
   }
 }

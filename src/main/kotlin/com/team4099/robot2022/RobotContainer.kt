@@ -4,7 +4,6 @@ import com.team4099.lib.smoothDeadband
 import com.team4099.robot2022.auto.AutonomousSelector
 import com.team4099.robot2022.commands.climber.ExtendPivotArmCommand
 import com.team4099.robot2022.commands.climber.ExtendTelescopingArmCommand
-import com.team4099.robot2022.commands.climber.OpenLoopClimbCommand
 import com.team4099.robot2022.commands.climber.PivotArmIdleCommand
 import com.team4099.robot2022.commands.climber.RetractPivotArmCommand
 import com.team4099.robot2022.commands.climber.RetractTelescopingArmCommand
@@ -147,9 +146,9 @@ object RobotContainer {
             ReverseIntakeCommand(intake).alongWith(
                 FeederCommand(feeder, FeederConstants.FeederState.BACKWARD_FLOOR)))
 
-    ControlBoard.extendTelescoping
-        .whileActiveOnce(ExtendTelescopingArmCommand(telescopingClimber))
-    ControlBoard.retractTelescoping.whileActiveOnce(RetractTelescopingArmCommand(telescopingClimber))
+    ControlBoard.extendTelescoping.whileActiveOnce(ExtendTelescopingArmCommand(telescopingClimber))
+    ControlBoard.retractTelescoping
+        .whileActiveOnce(RetractTelescopingArmCommand(telescopingClimber))
     ControlBoard.extendPivot.whileActiveOnce(ExtendPivotArmCommand(pivotClimber))
     ControlBoard.retractPivot.whileActiveOnce(RetractPivotArmCommand(pivotClimber))
 
@@ -172,4 +171,7 @@ object RobotContainer {
     Logger.getInstance().recordOutput("Compressor/pressurePSI", compressor?.pressure)
     Logger.getInstance().recordOutput("Compressor/isRunning", compressor?.enabled())
   }
+
+  fun logOperatorController() = ControlBoard.logOperatorController()
+  fun logDriverController() = ControlBoard.logDriverController()
 }

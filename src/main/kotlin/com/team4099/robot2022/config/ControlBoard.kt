@@ -3,6 +3,7 @@ package com.team4099.robot2022.config
 import com.team4099.lib.joystick.XboxOneGamepad
 import com.team4099.robot2022.config.constants.Constants
 import edu.wpi.first.wpilibj2.command.button.Trigger
+import org.littletonrobotics.junction.Logger
 
 /**
  * Maps buttons on the driver and operator controllers to specific actions with meaningful variable
@@ -56,4 +57,35 @@ object ControlBoard {
 
   val leftSpoolUp = Trigger { technician.leftTriggerAxis > 0.5 }
   val rightSpoolUp = Trigger { technician.rightTriggerAxis > 0.5 }
+
+  fun logDriverController() {
+    Logger.getInstance().recordOutput("DriverController/leftXAxis", driver.leftXAxis)
+    Logger.getInstance().recordOutput("DriverController/rightXAxis", driver.rightXAxis)
+    Logger.getInstance().recordOutput("DriverController/leftYAxis", driver.leftYAxis)
+    Logger.getInstance()
+        .recordOutput("DriverController/leftShoulderButton", driver.leftShoulderButton)
+    Logger.getInstance().recordOutput("DriverController/startButton", driver.startButton)
+    Logger.getInstance().recordOutput("DriverController/selectButton", driver.selectButton)
+  }
+
+  fun logOperatorController() {
+    Logger.getInstance()
+        .recordOutput("OperatorController/rightTriggerAxis", operator.rightTriggerAxis)
+    Logger.getInstance()
+        .recordOutput("OperatorController/leftTriggerAxis", operator.leftTriggerAxis)
+    Logger.getInstance().recordOutput("OperatorController/startButton", operator.startButton)
+    Logger.getInstance().recordOutput("OperatorController/selectButton", operator.selectButton)
+    Logger.getInstance().recordOutput("OperatorController/aButton", operator.aButton)
+    Logger.getInstance().recordOutput("OperatorController/bButton", operator.bButton)
+    Logger.getInstance().recordOutput("OperatorController/xButton", operator.xButton)
+    Logger.getInstance().recordOutput("OperatorController/yButton", operator.yButton)
+    Logger.getInstance().recordOutput("OperatorController/dPadDown", operator.dPadDown)
+    Logger.getInstance().recordOutput("OperatorController/dPadRight", operator.dPadRight)
+    Logger.getInstance().recordOutput("OperatorController/dPadUp", operator.dPadUp)
+    Logger.getInstance().recordOutput("OperatorController/dPadLeft", operator.dPadLeft)
+    Logger.getInstance()
+        .recordOutput("OperatorController/rightShoulderButton", operator.rightShoulderButton)
+    Logger.getInstance()
+        .recordOutput("OperatorController/leftShoulderButton", operator.leftShoulderButton)
+  }
 }
