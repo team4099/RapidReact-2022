@@ -16,7 +16,7 @@ object Constants {
 
   object Tuning {
 
-    val TUNING_MODE = false
+    val TUNING_MODE = true
 
     enum class RobotType {
       REAL,
@@ -86,7 +86,7 @@ object Constants {
   }
 
   object PivotClimber {
-    const val IN_PORT = 10
-    const val OUT_PORT = 9
+    const val IN_PORT = 11
+    const val OUT_PORT = 12
   }
 }

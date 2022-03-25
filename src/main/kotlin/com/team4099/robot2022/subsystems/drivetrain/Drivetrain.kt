@@ -241,28 +241,37 @@ class Drivetrain(val io: DrivetrainIO) : SubsystemBase() {
           driveVector.second
         }
 
-    val a = vX + angularVelocity * DrivetrainConstants.DRIVETRAIN_LENGTH / 2
-    val b = vX - angularVelocity * DrivetrainConstants.DRIVETRAIN_LENGTH / 2
-    val c = vY + angularVelocity * DrivetrainConstants.DRIVETRAIN_WIDTH / 2
-    val d = vY - angularVelocity * DrivetrainConstants.DRIVETRAIN_WIDTH / 2
+    if (vX == 0.0.meters.perSecond &&
+        vY == 0.0.meters.perSecond &&
+        angularVelocity == 0.0.degrees.perSecond) {
+      wheelSpeeds[0] = 0.0.meters.perSecond
+      wheelSpeeds[1] = 0.0.meters.perSecond
+      wheelSpeeds[2] = 0.0.meters.perSecond
+      wheelSpeeds[3] = 0.0.meters.perSecond
+    } else {
+      val a = vX + angularVelocity * DrivetrainConstants.DRIVETRAIN_LENGTH / 2
+      val b = vX - angularVelocity * DrivetrainConstants.DRIVETRAIN_LENGTH / 2
+      val c = vY + angularVelocity * DrivetrainConstants.DRIVETRAIN_WIDTH / 2
+      val d = vY - angularVelocity * DrivetrainConstants.DRIVETRAIN_WIDTH / 2
 
-    wheelSpeeds[0] = hypot(b, d)
-    wheelSpeeds[1] = hypot(b, c)
-    wheelSpeeds[2] = hypot(a, d)
-    wheelSpeeds[3] = hypot(a, c)
+      wheelSpeeds[0] = hypot(b, d)
+      wheelSpeeds[1] = hypot(b, c)
+      wheelSpeeds[2] = hypot(a, d)
+      wheelSpeeds[3] = hypot(a, c)
 
-    val maxWheelSpeed = wheelSpeeds.maxOrNull()
-    if (maxWheelSpeed != null && maxWheelSpeed > DrivetrainConstants.DRIVE_SETPOINT_MAX) {
-      for (i in 0 until DrivetrainConstants.WHEEL_COUNT) {
-        wheelSpeeds[i] =
-            wheelSpeeds[i] / maxWheelSpeed.inMetersPerSecond *
-                DrivetrainConstants.DRIVE_SETPOINT_MAX.inMetersPerSecond
+      val maxWheelSpeed = wheelSpeeds.maxOrNull()
+      if (maxWheelSpeed != null && maxWheelSpeed > DrivetrainConstants.DRIVE_SETPOINT_MAX) {
+        for (i in 0 until DrivetrainConstants.WHEEL_COUNT) {
+          wheelSpeeds[i] =
+              wheelSpeeds[i] / maxWheelSpeed.inMetersPerSecond *
+                  DrivetrainConstants.DRIVE_SETPOINT_MAX.inMetersPerSecond
+        }
       }
+      wheelAngles[0] = atan2(b, d)
+      wheelAngles[1] = atan2(b, c)
+      wheelAngles[2] = atan2(a, d)
+      wheelAngles[3] = atan2(a, c)
     }
-    wheelAngles[0] = atan2(b, d)
-    wheelAngles[1] = atan2(b, c)
-    wheelAngles[2] = atan2(a, d)
-    wheelAngles[3] = atan2(a, c)
 
     swerveModules[0].setOpenLoop(
         wheelAngles[0], wheelSpeeds[0] / DrivetrainConstants.DRIVE_SETPOINT_MAX)

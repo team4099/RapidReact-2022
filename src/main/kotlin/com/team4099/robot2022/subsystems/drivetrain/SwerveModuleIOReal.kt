@@ -108,7 +108,7 @@ class SwerveModuleIOReal(
   }
 
   override fun setSteeringSetpoint(angle: Angle) {
-    steeringFalcon.set(ControlMode.MotionMagic, steeringSensor.positionToRawUnits(angle))
+    steeringFalcon.set(ControlMode.Position, steeringSensor.positionToRawUnits(angle))
   }
 
   override fun setClosedLoop(
@@ -152,15 +152,15 @@ class SwerveModuleIOReal(
   }
 
   override fun configureDrivePID(kP: Double, kI: Double, kD: Double) {
-    driveConfiguration.slot0.kP = kP
-    driveConfiguration.slot0.kI = kI
-    driveConfiguration.slot0.kD = kD
+    driveFalcon.config_kP(0, kP)
+    driveFalcon.config_kI(0, kI)
+    driveFalcon.config_kD(0, kD)
   }
 
   override fun configureSteeringPID(kP: Double, kI: Double, kD: Double) {
-    steeringConfiguration.slot0.kP = kP
-    steeringConfiguration.slot0.kI = kI
-    steeringConfiguration.slot0.kD = kD
+    steeringFalcon.config_kP(0, kP)
+    steeringFalcon.config_kI(0, kI)
+    steeringFalcon.config_kD(0, kD)
   }
 
   override fun configureSteeringMotionMagic(
