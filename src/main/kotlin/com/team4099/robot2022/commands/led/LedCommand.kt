@@ -29,7 +29,7 @@ class LedCommand(
         when (telescopingClimber.currentState) {
           TelescopingClimberConstants.ActualTelescopeStates.START -> {
             when (shooter.state) {
-              ShooterConstants.ShooterState.SPIN_UP_NEAR,
+              ShooterConstants.ShooterState.SPIN_UP_UPPER,
               ShooterConstants.ShooterState.SPIN_UP_LOWER -> {
                 if (shooter.isOnTarget) {
                   LEDConstants.LEDState.READY_SHOOT
