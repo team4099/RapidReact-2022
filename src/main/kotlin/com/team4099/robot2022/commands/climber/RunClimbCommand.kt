@@ -1,10 +1,7 @@
 package com.team4099.robot2022.commands.climberPivotClimber
 
-import com.team4099.lib.units.base.inMeters
-import com.team4099.lib.units.inMetersPerSecond
 import com.team4099.robot2022.subsystems.climber.PivotClimber
 import com.team4099.robot2022.subsystems.climber.TelescopingClimber
-import edu.wpi.first.math.trajectory.TrapezoidProfile
 import edu.wpi.first.wpilibj2.command.CommandBase
 
 class RunClimbCommand(val telescopingClimber: TelescopingClimber, val pivotClimber: PivotClimber) :
@@ -61,22 +58,22 @@ class RunClimbCommand(val telescopingClimber: TelescopingClimber, val pivotClimb
     //    }
   }
   override fun execute() {
-//    val leftTelescopingProfile =
-//        TrapezoidProfile(
-//            telescopingClimber.constraints,
-//            TrapezoidProfile.State(telescopingClimber.desiredState.position.inMeters, 0.0),
-//            TrapezoidProfile.State(
-//                telescopingClimber.inputs.leftPosition.inMeters,
-//                telescopingClimber.inputs.leftVelocity.inMetersPerSecond))
-//    val rightTelescopingProfile =
-//        TrapezoidProfile(
-//            telescopingClimber.constraints,
-//            TrapezoidProfile.State(telescopingClimber.desiredState.position.inMeters, 0.0),
-//            TrapezoidProfile.State(
-//                telescopingClimber.inputs.rightPosition.inMeters,
-//                telescopingClimber.inputs.rightVelocity.inMetersPerSecond))
-//    telescopingClimber.setPosition(
-//        leftTelescopingProfile, rightTelescopingProfile, telescopingIsUnderLoad)
+    //    val leftTelescopingProfile =
+    //        TrapezoidProfile(
+    //            telescopingClimber.constraints,
+    //            TrapezoidProfile.State(telescopingClimber.desiredState.position.inMeters, 0.0),
+    //            TrapezoidProfile.State(
+    //                telescopingClimber.inputs.leftPosition.inMeters,
+    //                telescopingClimber.inputs.leftVelocity.inMetersPerSecond))
+    //    val rightTelescopingProfile =
+    //        TrapezoidProfile(
+    //            telescopingClimber.constraints,
+    //            TrapezoidProfile.State(telescopingClimber.desiredState.position.inMeters, 0.0),
+    //            TrapezoidProfile.State(
+    //                telescopingClimber.inputs.rightPosition.inMeters,
+    //                telescopingClimber.inputs.rightVelocity.inMetersPerSecond))
+    //    telescopingClimber.setPosition(
+    //        leftTelescopingProfile, rightTelescopingProfile, telescopingIsUnderLoad)
 
     //    val leftPivotProfile =
     //        TrapezoidProfile(

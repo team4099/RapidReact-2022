@@ -4,7 +4,7 @@ import com.team4099.lib.units.derived.Angle
 import com.team4099.robot2022.commands.drivetrain.OpenLoopReverseCommand
 import com.team4099.robot2022.commands.drivetrain.ResetGyroCommand
 import com.team4099.robot2022.commands.shooter.ShootCommand
-import com.team4099.robot2022.commands.shooter.SpinUpNearCommand
+import com.team4099.robot2022.commands.shooter.SpinUpUpperHub
 import com.team4099.robot2022.subsystems.drivetrain.Drivetrain
 import com.team4099.robot2022.subsystems.feeder.Feeder
 import com.team4099.robot2022.subsystems.shooter.Shooter
@@ -22,7 +22,7 @@ class OneBallFenderShotThenTaxi(
     addCommands(
         ResetGyroCommand(drivetrain, startingAngle),
         ParallelDeadlineGroup(
-            WaitCommand(5.0), SpinUpNearCommand(shooter).andThen(ShootCommand(shooter, feeder))),
+            WaitCommand(5.0), SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder))),
         OpenLoopReverseCommand(drivetrain).withTimeout(6.0))
   }
 }

@@ -23,10 +23,10 @@ object LEDConstants {
     INTAKING(BlinkinLedDriver.BlinkinLedMode.SOLID_BLUE),
 
     // Blinking Yellow
-    CHANGING_ONE(BlinkinLedDriver.BlinkinLedMode.SOLID_YELLOW),
+    CLIMBER_READY(BlinkinLedDriver.BlinkinLedMode.FIXED_BEATS_OCEAN),
 
     // Blinking Green
-    CHANGING_TWO(BlinkinLedDriver.BlinkinLedMode.SOLID_GREEN),
+    CLIMBING(BlinkinLedDriver.BlinkinLedMode.FIXED_BEATS_LAVA),
 
     // TODO
     SPINNING_UP(BlinkinLedDriver.BlinkinLedMode.SOLID_BLACK),

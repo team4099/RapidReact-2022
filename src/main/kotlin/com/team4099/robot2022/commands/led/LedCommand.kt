@@ -3,6 +3,7 @@ package com.team4099.robot2022.commands.led
 import com.team4099.robot2022.Robot
 import com.team4099.robot2022.config.constants.LEDConstants
 import com.team4099.robot2022.config.constants.ShooterConstants
+import com.team4099.robot2022.config.constants.TelescopingClimberConstants
 import com.team4099.robot2022.subsystems.climber.PivotClimber
 import com.team4099.robot2022.subsystems.climber.TelescopingClimber
 import com.team4099.robot2022.subsystems.feeder.Feeder
@@ -25,28 +26,42 @@ class LedCommand(
 
   override fun execute() {
     led.state =
-        when (shooter.state) {
-          ShooterConstants.ShooterState.SPIN_UP_NEAR,
-          ShooterConstants.ShooterState.SPIN_UP_LOWER -> {
-            if (shooter.isOnTarget) {
-              LEDConstants.LEDState.READY_SHOOT
-            } else {
-              LEDConstants.LEDState.SPINNING_UP
-            }
-          }
-          else -> {
-            if (Robot.isDisabled) {
-              LEDConstants.LEDState.IDLE
-            } else if (intake.hasBall) {
-              LEDConstants.LEDState.INTAKING
-            } else {
-              when (feeder.ballCount) {
-                0 -> LEDConstants.LEDState.STANDING_ZERO
-                1 -> LEDConstants.LEDState.STANDING_ONE
-                2 -> LEDConstants.LEDState.STANDING_TWO
-                else -> LEDConstants.LEDState.IDLE
+        when (telescopingClimber.currentState) {
+          TelescopingClimberConstants.ActualTelescopeStates.START -> {
+            when (shooter.state) {
+              ShooterConstants.ShooterState.SPIN_UP_UPPER,
+              ShooterConstants.ShooterState.SPIN_UP_LOWER -> {
+                if (shooter.isOnTarget) {
+                  LEDConstants.LEDState.READY_SHOOT
+                } else {
+                  LEDConstants.LEDState.SPINNING_UP
+                }
+              }
+              else -> {
+                if (Robot.isDisabled) {
+                  LEDConstants.LEDState.IDLE
+                } else if (intake.hasBall) {
+                  LEDConstants.LEDState.INTAKING
+                } else {
+                  when (feeder.ballCount) {
+                    0 -> LEDConstants.LEDState.STANDING_ZERO
+                    1 -> LEDConstants.LEDState.STANDING_ONE
+                    2 -> LEDConstants.LEDState.STANDING_TWO
+                    else -> LEDConstants.LEDState.IDLE
+                  }
+                }
               }
             }
+          }
+          TelescopingClimberConstants.ActualTelescopeStates.BETWEEN_START_AND_MAX_RETRACT,
+          TelescopingClimberConstants.ActualTelescopeStates
+              .BETWEEN_MAX_RETRACT_AND_MAX_EXTENSION -> {
+            LEDConstants.LEDState.CLIMBING
+          }
+          TelescopingClimberConstants.ActualTelescopeStates.MAX_RETRACT,
+          TelescopingClimberConstants.ActualTelescopeStates.MAX_EXTENSION -> {
+            // TODO: use brainpower to organize all possible states that indicate climbing
+            LEDConstants.LEDState.CLIMBER_READY
           }
         }
   }

@@ -24,7 +24,7 @@ class Shooter(val io: ShooterIO) : SubsystemBase() {
   private val nearSpeedRM =
       TunableNumber(
           "Shooter/targetRPM",
-          ShooterConstants.ShooterState.SPIN_UP_NEAR.targetVelocity.inRotationsPerMinute)
+          ShooterConstants.ShooterState.SPIN_UP_UPPER.targetVelocity.inRotationsPerMinute)
 
   private val filterSize =
       TunableNumber("Shooter/filterSize", ShooterConstants.FILTER_SIZE.toDouble())

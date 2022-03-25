@@ -21,14 +21,13 @@ import com.team4099.robot2022.commands.feeder.FeederSerializeIdleCommand
 import com.team4099.robot2022.commands.feeder.ResetBallCountCommand
 import com.team4099.robot2022.commands.intake.IntakeBallsCommand
 import com.team4099.robot2022.commands.intake.IntakeIdleCommand
-import com.team4099.robot2022.commands.intake.PrepareClimbCommand
 import com.team4099.robot2022.commands.intake.ReverseIntakeCommand
 import com.team4099.robot2022.commands.led.LedCommand
 import com.team4099.robot2022.commands.shooter.ShootCommand
 import com.team4099.robot2022.commands.shooter.ShooterIdleCommand
 import com.team4099.robot2022.commands.shooter.ShooterUnjamCommand
 import com.team4099.robot2022.commands.shooter.SpinUpLowerHub
-import com.team4099.robot2022.commands.shooter.SpinUpNearCommand
+import com.team4099.robot2022.commands.shooter.SpinUpUpperHub
 import com.team4099.robot2022.config.ControlBoard
 import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.config.constants.FeederConstants
@@ -134,7 +133,7 @@ object RobotContainer {
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand(drivetrain))
 
     ControlBoard.startShooter
-        .whileActiveOnce(SpinUpNearCommand(shooter).andThen(ShootCommand(shooter, feeder)))
+        .whileActiveOnce(SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder)))
     ControlBoard.startShooterLower
         .whileActiveOnce(SpinUpLowerHub(shooter).andThen(ShootCommand(shooter, feeder)))
     ControlBoard.shooterUnjam.whileActiveOnce(ShooterUnjamCommand(shooter))
