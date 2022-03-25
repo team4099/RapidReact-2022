@@ -8,11 +8,13 @@ class PivotClimber(val io: PivotClimberIO) : SubsystemBase() {
 
   val inputs = PivotClimberIO.PivotClimberIOInputs()
 
-  var pivotClimbState = PivotClimberConstants.ExtendState.IN
+  var pivotClimbState = PivotClimberConstants.DesiredPivotStates.IN
     set(state) {
       io.setPivotSolenoid(state.extendPosition)
       field = state
     }
+
+  val desiredState = PivotClimberConstants.DesiredPivotStates.IN
 
   init {
     // necessary because the setter is not called on initialization

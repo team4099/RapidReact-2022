@@ -18,6 +18,6 @@ object PivotClimberIOReal : PivotClimberIO {
   }
   override fun updateInputs(inputs: PivotClimberIO.PivotClimberIOInputs) {
     inputs.pivotExtended =
-        pivotSolenoid.get() == PivotClimberConstants.ExtendState.OUT.extendPosition
+        pivotSolenoid.get() == PivotClimberConstants.DesiredPivotStates.OUT.extendPosition
   }
 }

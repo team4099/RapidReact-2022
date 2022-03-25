@@ -2,6 +2,7 @@ package com.team4099.robot2022
 
 import com.team4099.lib.smoothDeadband
 import com.team4099.robot2022.auto.AutonomousSelector
+import com.team4099.robot2022.commands.climber.ClimbSequenceCommand
 import com.team4099.robot2022.commands.climber.ExtendPivotArmCommand
 import com.team4099.robot2022.commands.climber.ExtendTelescopingArmCommand
 import com.team4099.robot2022.commands.climber.PivotArmIdleCommand
@@ -151,6 +152,12 @@ object RobotContainer {
         .whileActiveOnce(RetractTelescopingArmCommand(telescopingClimber))
     ControlBoard.extendPivot.whileActiveOnce(ExtendPivotArmCommand(pivotClimber))
     ControlBoard.retractPivot.whileActiveOnce(RetractPivotArmCommand(pivotClimber))
+    ControlBoard.startClimbSequence
+        .whileActiveContinuous(
+            RetractPivotArmCommand(pivotClimber).andThen(
+                ExtendTelescopingArmCommand(telescopingClimber).andThen(
+                    ClimbSequenceCommand(telescopingClimber, pivotClimber).andThen(
+                        ClimbSequenceCommand(telescopingClimber, pivotClimber)))))
 
     // ControlBoard.advanceAndClimb.whileActiveOnce(AdvanceClimberCommand().andThen(RunClimbCommand()))
     //    ControlBoard.climbWithoutAdvance.whileActiveOnce(RunClimbCommand())

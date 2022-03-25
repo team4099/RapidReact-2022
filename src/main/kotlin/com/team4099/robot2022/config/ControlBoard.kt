@@ -49,7 +49,7 @@ object ControlBoard {
   val extendPivot = Trigger { operator.dPadRight }
   val retractPivot = Trigger { operator.dPadLeft }
 
-  val advanceAndClimb = Trigger { operator.startButton }
+  val startClimbSequence = Trigger { operator.startButton }
   val climbWithoutAdvance = Trigger { operator.selectButton }
 
   val leftSpoolDown = Trigger { technician.leftShoulderButton }
