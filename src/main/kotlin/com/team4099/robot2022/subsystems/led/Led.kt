@@ -22,11 +22,5 @@ class Led(val io: LedIO) : SubsystemBase() {
 
     Logger.getInstance().processInputs("LED", inputs)
     Logger.getInstance().recordOutput("LED/state", state.name)
-    // when (Climber.telescopeState) {
-    //  ClimberConstants.TelescopeState.OFF -> {
-    //    insert current code
-    //  }
-    //  else ->
-    // }
   }
 }

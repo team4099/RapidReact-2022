@@ -10,6 +10,7 @@ import com.team4099.robot2022.subsystems.feeder.Feeder
 import com.team4099.robot2022.subsystems.intake.Intake
 import com.team4099.robot2022.subsystems.led.Led
 import com.team4099.robot2022.subsystems.shooter.Shooter
+import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj2.command.CommandBase
 
 class LedCommand(
@@ -20,8 +21,11 @@ class LedCommand(
   val telescopingClimber: TelescopingClimber,
   val pivotClimber: PivotClimber
 ) : CommandBase() {
+  private var climbDone: Boolean
+
   init {
     addRequirements(led)
+    climbDone = false
   }
 
   override fun execute() {
@@ -40,6 +44,8 @@ class LedCommand(
               else -> {
                 if (Robot.isDisabled) {
                   LEDConstants.LEDState.IDLE
+                } else if (Robot.isAutonomous) {
+                  LEDConstants.LEDState.AUTO
                 } else if (intake.hasBall) {
                   LEDConstants.LEDState.INTAKING
                 } else {
@@ -58,15 +64,28 @@ class LedCommand(
               .BETWEEN_MAX_RETRACT_AND_MAX_EXTENSION -> {
             LEDConstants.LEDState.CLIMBING
           }
-          TelescopingClimberConstants.ActualTelescopeStates.MAX_RETRACT,
+          TelescopingClimberConstants.ActualTelescopeStates.MAX_RETRACT -> {
+            if (climbDone) {
+              if (DriverStation.getAlliance() == DriverStation.Alliance.Red) {
+                LEDConstants.LEDState.CLIMB_FINISHED_RED_ALLIANCE
+              } else {
+                LEDConstants.LEDState.CLIMB_FINISHED_BLUE_ALLIANCE
+              }
+            } else {
+              LEDConstants.LEDState.CLIMBER_READY
+            }
+          }
           TelescopingClimberConstants.ActualTelescopeStates.MAX_EXTENSION -> {
-            // TODO: use brainpower to organize all possible states that indicate climbing
             LEDConstants.LEDState.CLIMBER_READY
           }
         }
   }
 
   override fun isFinished(): Boolean {
-    return false
+    return climbDone
+  }
+
+  fun climberFinished() {
+    climbDone = true
   }
 }
