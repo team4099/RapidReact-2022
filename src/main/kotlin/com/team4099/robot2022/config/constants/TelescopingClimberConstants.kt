@@ -11,7 +11,7 @@ object TelescopingClimberConstants {
   const val SENSOR_CPR = 2048
   const val GEAR_RATIO = (8.0 / 54.0) * (28.0 / 44.0)
 
-  const val KP = 0.05
+  const val KP = 0.3
   const val KI = 0.0
   const val KD = 0.0
   const val KFF = 0.0
