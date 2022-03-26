@@ -16,18 +16,26 @@ class Feeder(val io: FeederIO) : SubsystemBase() {
     }
 
   var ballCount: Int = 1
+
+  private var oneBallCheck: Boolean = false
   private var bottomPrevStage: Boolean = inputs.bottomBeamBroken
   private var topPrevStage: Boolean = inputs.bottomBeamBroken
 
   override fun periodic() {
     io.updateInputs(inputs)
 
-    if (!inputs.topBeamBroken && !inputs.bottomBeamBroken) {
+    if (bottomPrevStage != inputs.bottomBeamBroken &&
+        state == FeederConstants.FeederState.FORWARD_ALL) {
+      oneBallCheck = true
+    }
+
+    if (!inputs.topBeamBroken && !inputs.bottomBeamBroken && !oneBallCheck) {
       ballCount = 0
-    } else if (inputs.topBeamBroken && !inputs.bottomBeamBroken) {
-      ballCount = 1
     } else if (inputs.topBeamBroken && inputs.bottomBeamBroken) {
       ballCount = 2
+      oneBallCheck = false
+    } else if ((inputs.topBeamBroken && !inputs.bottomBeamBroken) || oneBallCheck) {
+      ballCount = 1
     }
 
     if ((inputs.bottomBeamBroken != bottomPrevStage) && inputs.bottomBeamBroken) {
@@ -57,6 +65,7 @@ class Feeder(val io: FeederIO) : SubsystemBase() {
     Logger.getInstance().recordOutput("Feeder/bottomPrevStage", bottomPrevStage)
     Logger.getInstance().recordOutput("Feeder/topPrevStage", topPrevStage)
     Logger.getInstance().recordOutput("Feeder/state", state.name)
+    Logger.getInstance().recordOutput("Feeder/oneBallCheck", oneBallCheck)
   }
 
   init {
