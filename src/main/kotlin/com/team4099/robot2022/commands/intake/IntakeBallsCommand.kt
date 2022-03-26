@@ -23,7 +23,7 @@ class IntakeBallsCommand(val intake: Intake) : CommandBase() {
 
     intake.rollerState = IntakeConstants.RollerState.IN
     intake.armState = IntakeConstants.ArmState.OUT
-    intake.extendTime = Clock.fpgaTime
+//    intake.extendTime = Clock.fpgaTime
   }
 
   override fun execute() {

@@ -26,14 +26,24 @@ class Intake(val io: IntakeIO) : SubsystemBase() {
       field = state
     }
 
-  val hasBall: Boolean
+  val intakingBall: Boolean
     get() {
       return inputs.rollerStatorCurrent >= LEDConstants.INTAKE_CURRENT_THRESHOLD &&
           rollerState == IntakeConstants.RollerState.IN &&
-          ((Clock.fpgaTime - extendTime).inSeconds >= IntakeConstants.RAMP_TIME)
+          (Clock.fpgaTime - extendTime) >= IntakeConstants.INTAKING_WAIT_BEFORE_DETECT_CURRENT_SPIKE
+    }
+
+  val outtakingBall: Boolean
+    get() {
+      return inputs.rollerStatorCurrent >= LEDConstants.OUTAKE_CURRENT_THRESHOLD &&
+        rollerState == IntakeConstants.RollerState.OUT &&
+        (Clock.fpgaTime - extendTime) >= IntakeConstants.INTAKING_WAIT_BEFORE_DETECT_CURRENT_SPIKE
     }
 
   var extendTime = Clock.fpgaTime
+
+  var lastIntakeSpikeTime = Clock.fpgaTime
+  var keepIntakingLEDState: Boolean = false
 
   init {
     // necessary because the setter is not called on initialization
@@ -43,8 +53,19 @@ class Intake(val io: IntakeIO) : SubsystemBase() {
 
   override fun periodic() {
     io.updateInputs(inputs)
+
+    if (intakingBall || outtakingBall){
+      lastIntakeSpikeTime = Clock.fpgaTime
+    }
+
+    keepIntakingLEDState = Clock.fpgaTime - lastIntakeSpikeTime <= IntakeConstants.WAIT_FOR_STATE_TO_CHANGE
+
     Logger.getInstance().processInputs("Intake", inputs)
     Logger.getInstance().recordOutput("Intake/rollerState", rollerState.name)
     Logger.getInstance().recordOutput("Intake/armState", armState.name)
+    Logger.getInstance().recordOutput("Intake/intakingBall", intakingBall)
+    Logger.getInstance().recordOutput("Intake/outtakingBall", outtakingBall)
+    Logger.getInstance().recordOutput("Intake/intakingLEDState", keepIntakingLEDState)
+    Logger.getInstance().recordOutput("Intake/extendTime", extendTime.inSeconds)
   }
 }
