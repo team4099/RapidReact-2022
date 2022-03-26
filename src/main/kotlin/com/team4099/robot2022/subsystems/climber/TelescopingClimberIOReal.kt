@@ -127,4 +127,14 @@ object TelescopingClimberIOReal : TelescopingClimberIO {
         DemandType.ArbitraryFeedForward,
         feedforward.inVolts / 12.0)
   }
-}
+
+  override fun configPID(kP: Double, kI: Double, kD: Double) {
+    telescopingLeftArm.config_kP(0, kP)
+    telescopingLeftArm.config_kI(0, kI)
+    telescopingLeftArm.config_kD(0, kD)
+
+    telescopingRightArm.config_kP(0, kP)
+    telescopingRightArm.config_kI(0, kI)
+    telescopingRightArm.config_kD(0, kD)
+  }
+  }

@@ -19,11 +19,13 @@ class ExtendTelescopingArmCommand(val telescopingClimber: TelescopingClimber) : 
 
   init {
     addRequirements(telescopingClimber)
-    telescopingClimber.desiredState =
-        TelescopingClimberConstants.DesiredTelescopeStates.MAX_EXTENSION
+
   }
 
   override fun initialize() {
+    telescopingClimber.desiredState =
+      TelescopingClimberConstants.DesiredTelescopeStates.MAX_EXTENSION
+    telescopingClimber.activelyHold = false
     leftTelescopingProfile =
         TrapezoidProfile(
             telescopingClimber.constraints,

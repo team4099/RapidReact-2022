@@ -4,7 +4,8 @@ import com.team4099.lib.drivers.BlinkinLedDriver
 import com.team4099.lib.units.base.amps
 
 object LEDConstants {
-  val INTAKE_CURRENT_THRESHOLD = 20.amps
+  val INTAKE_CURRENT_THRESHOLD = 15.amps
+  val OUTAKE_CURRENT_THRESHOLD = 20.amps
 
   enum class LEDState(val blinkinMode: BlinkinLedDriver.BlinkinLedMode) {
     // Solid Orange (never used)

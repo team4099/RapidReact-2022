@@ -99,4 +99,6 @@ interface TelescopingClimberIO {
 
   fun zeroLeftEncoder() {}
   fun zeroRightEncoder() {}
+
+  fun configPID(kP: Double, kI: Double, kD: Double) {}
 }

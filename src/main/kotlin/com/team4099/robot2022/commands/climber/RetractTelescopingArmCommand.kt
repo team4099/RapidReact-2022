@@ -18,10 +18,12 @@ class RetractTelescopingArmCommand(val telescopingClimber: TelescopingClimber) :
 
   init {
     addRequirements(telescopingClimber)
-    telescopingClimber.desiredState = TelescopingClimberConstants.DesiredTelescopeStates.MAX_RETRACT
   }
 
   override fun initialize() {
+    telescopingClimber.desiredState = TelescopingClimberConstants.DesiredTelescopeStates.MAX_RETRACT
+    telescopingClimber.activelyHold = true
+
     leftTelescopingProfile =
         TrapezoidProfile(
             telescopingClimber.constraints,

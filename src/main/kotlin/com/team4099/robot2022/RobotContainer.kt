@@ -153,15 +153,15 @@ object RobotContainer {
     ControlBoard.extendPivot.whileActiveOnce(ExtendPivotArmCommand(pivotClimber))
     ControlBoard.retractPivot.whileActiveOnce(RetractPivotArmCommand(pivotClimber))
     ControlBoard.startClimbSequence
-        .whileActiveContinuous(
+        .whileActiveOnce(
             RetractPivotArmCommand(pivotClimber).andThen(
                 ExtendTelescopingArmCommand(telescopingClimber).andThen(
                     ClimbSequenceCommand(telescopingClimber, pivotClimber).andThen(
                         ClimbSequenceCommand(telescopingClimber, pivotClimber).andThen(
                             RetractTelescopingArmCommand(telescopingClimber))))))
 
-    // ControlBoard.advanceAndClimb.whileActiveOnce(AdvanceClimberCommand().andThen(RunClimbCommand()))
-    //    ControlBoard.climbWithoutAdvance.whileActiveOnce(RunClimbCommand())
+//     ControlBoard.advanceAndClimb.whileActiveOnce(AdvanceClimberCommand().andThen(RunClimbCommand()))
+//        ControlBoard.climbWithoutAdvance.whileActiveOnce(RunClimbCommand())
 
     ControlBoard.leftSpoolDown.whileActiveContinuous(SpoolLeftDownCommand(telescopingClimber))
     ControlBoard.rightSpoolDown.whileActiveContinuous(SpoolRightDownCommand(telescopingClimber))

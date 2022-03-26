@@ -11,7 +11,7 @@ object TelescopingClimberConstants {
   const val SENSOR_CPR = 2048
   const val GEAR_RATIO = (8.0 / 54.0) * (28.0 / 44.0)
 
-  const val KP = 0.3
+  const val KP = 0.15
   const val KI = 0.0
   const val KD = 0.0
   const val KFF = 0.0
@@ -29,7 +29,7 @@ object TelescopingClimberConstants {
   val SPOOL_RADIUS = 0.5.inches
   val LEFT_SPOOL_RADIUS = 0.5125.inches
   val RIGHT_SPOOL_RADIUS = 0.5.inches
-  val MAX_VELOCITY = 25.inches.perSecond
+  val MAX_VELOCITY = 35.inches.perSecond
   val MAX_ACCELERATION = 50.inches.perSecond.perSecond
 
   const val BOTTOM_SAFETY_THRESHOLD = 0
@@ -37,7 +37,7 @@ object TelescopingClimberConstants {
 
   enum class DesiredTelescopeStates(val position: Length) {
     START(0.0.inches),
-    MAX_RETRACT(2.inches),
+    MAX_RETRACT(1.inches),
     MAX_EXTENSION(26.inches),
     DUMMY(-Double.NEGATIVE_INFINITY.inches)
   }

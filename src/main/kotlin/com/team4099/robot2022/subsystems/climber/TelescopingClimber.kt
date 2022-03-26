@@ -1,5 +1,6 @@
 package com.team4099.robot2022.subsystems.climber
 
+import com.team4099.lib.logging.TunableNumber
 import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.base.inInches
 import com.team4099.lib.units.base.inMeters
@@ -9,6 +10,7 @@ import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.inMetersPerSecond
 import com.team4099.lib.units.inMetersPerSecondPerSecond
 import com.team4099.lib.units.perSecond
+import com.team4099.robot2022.config.constants.ShooterConstants
 import com.team4099.robot2022.config.constants.TelescopingClimberConstants
 import com.team4099.robot2022.config.constants.TelescopingClimberConstants.ActualTelescopeStates
 import com.team4099.robot2022.config.constants.TelescopingClimberConstants.DesiredTelescopeStates
@@ -33,6 +35,12 @@ class TelescopingClimber(val io: TelescopingClimberIO) : SubsystemBase() {
           TelescopingClimberConstants.NO_LOAD_KG.inVolts,
           (1.meters.perSecond * TelescopingClimberConstants.NO_LOAD_KV).inVolts,
           (1.meters.perSecond.perSecond * TelescopingClimberConstants.NO_LOAD_KA).inVolts)
+
+  var activelyHold = false
+
+  private val kP = TunableNumber("TelescopingClimber/kP", TelescopingClimberConstants.KP)
+  private val kI = TunableNumber("TelescopingClimber/kI", TelescopingClimberConstants.KI)
+  private val kD = TunableNumber("TelescopingClimber/kD", TelescopingClimberConstants.KD)
 
   init {}
 
@@ -63,6 +71,10 @@ class TelescopingClimber(val io: TelescopingClimberIO) : SubsystemBase() {
         .recordOutput("TelescopingClimber/rightForwardLimitReached", rightForwardLimitReached)
     Logger.getInstance()
         .recordOutput("TelescopingClimber/rightReverseLimitReached", rightReverseLimitReached)
+
+    if (kP.hasChanged() || kI.hasChanged() || kD.hasChanged()){
+      io.configPID(kP.value, kI.value, kD.value)
+    }
   }
 
   val leftForwardLimitReached: Boolean
@@ -116,7 +128,7 @@ class TelescopingClimber(val io: TelescopingClimberIO) : SubsystemBase() {
   val currentState: ActualTelescopeStates
     get() {
       return when (currentPosition) {
-        in -Double.NEGATIVE_INFINITY.meters..(DesiredTelescopeStates.START.position +
+        in Double.NEGATIVE_INFINITY.meters..(DesiredTelescopeStates.START.position +
                 telescopingTolerance) -> ActualTelescopeStates.START
         in (DesiredTelescopeStates.START.position +
             telescopingTolerance)..(DesiredTelescopeStates.MAX_RETRACT.position -
