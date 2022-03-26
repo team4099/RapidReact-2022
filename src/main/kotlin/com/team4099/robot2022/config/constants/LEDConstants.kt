@@ -7,7 +7,7 @@ object LEDConstants {
   val INTAKE_CURRENT_THRESHOLD = 20.amps
 
   enum class LEDState(val blinkinMode: BlinkinLedDriver.BlinkinLedMode) {
-    // Solid Orange
+    // Solid Orange (never used)
     IDLE(BlinkinLedDriver.BlinkinLedMode.SOLID_ORANGE),
 
     // Blinking Gold
@@ -16,14 +16,16 @@ object LEDConstants {
     // Solid Gold
     STANDING_ZERO(BlinkinLedDriver.BlinkinLedMode.SOLID_GOLD),
 
-    // Solid Yellow
+    // Solid Purple
     STANDING_ONE(BlinkinLedDriver.BlinkinLedMode.SOLID_VIOLET),
 
     // Solid Green
     STANDING_TWO(BlinkinLedDriver.BlinkinLedMode.SOLID_GREEN),
 
-    // Blinking Red
+    // Solid Blue
     INTAKING(BlinkinLedDriver.BlinkinLedMode.SOLID_BLUE),
+
+    // Solid Red
     OUTTAKING(BlinkinLedDriver.BlinkinLedMode.SOLID_DARK_RED),
 
     // Changing Green
@@ -38,10 +40,10 @@ object LEDConstants {
     // Changing Blue
     CLIMB_FINISHED_BLUE_ALLIANCE(BlinkinLedDriver.BlinkinLedMode.FIXED_BEATS_OCEAN),
 
-    // TODO
-    SPINNING_UP(BlinkinLedDriver.BlinkinLedMode.SOLID_BLACK),
+    // Speeding Blue
+    BLUE_SHOOT(BlinkinLedDriver.BlinkinLedMode.FIXED_CHASE_BLUE),
 
-    // TODO
-    READY_SHOOT(BlinkinLedDriver.BlinkinLedMode.SOLID_GREEN)
+    // Speeding Red
+    RED_SHOOT(BlinkinLedDriver.BlinkinLedMode.FIXED_CHASE_RED)
   }
 }

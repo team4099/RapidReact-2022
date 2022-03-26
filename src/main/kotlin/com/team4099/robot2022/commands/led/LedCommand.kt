@@ -36,16 +36,14 @@ class LedCommand(
             when (shooter.state) {
               ShooterConstants.ShooterState.SPIN_UP_UPPER,
               ShooterConstants.ShooterState.SPIN_UP_LOWER -> {
-                if (shooter.isOnTarget) {
-                  LEDConstants.LEDState.READY_SHOOT
+                if (DriverStation.getAlliance() == DriverStation.Alliance.Red) {
+                  LEDConstants.LEDState.RED_SHOOT
                 } else {
-                  LEDConstants.LEDState.SPINNING_UP
+                  LEDConstants.LEDState.BLUE_SHOOT
                 }
               }
               else -> {
-                if (Robot.isDisabled) {
-                  LEDConstants.LEDState.IDLE
-                } else if (Robot.isAutonomous) {
+                if (Robot.isAutonomous) {
                   LEDConstants.LEDState.AUTO
                 } else if (intake.hasBall) {
                   when (intake.rollerState) {
@@ -87,7 +85,7 @@ class LedCommand(
   }
 
   override fun isFinished(): Boolean {
-    return climbDone
+    return false
   }
 
   fun climberFinished() {
