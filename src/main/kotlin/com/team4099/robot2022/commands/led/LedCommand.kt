@@ -1,6 +1,7 @@
 package com.team4099.robot2022.commands.led
 
 import com.team4099.robot2022.Robot
+import com.team4099.robot2022.config.constants.IntakeConstants
 import com.team4099.robot2022.config.constants.LEDConstants
 import com.team4099.robot2022.config.constants.ShooterConstants
 import com.team4099.robot2022.config.constants.TelescopingClimberConstants
@@ -47,7 +48,11 @@ class LedCommand(
                 } else if (Robot.isAutonomous) {
                   LEDConstants.LEDState.AUTO
                 } else if (intake.hasBall) {
-                  LEDConstants.LEDState.INTAKING
+                   when (intake.rollerState){
+                     IntakeConstants.RollerState.OUT -> LEDConstants.LEDState.OUTTAKING
+                     IntakeConstants.RollerState.IN -> LEDConstants.LEDState.INTAKING
+                     else -> LEDConstants.LEDState.IDLE
+                   }
                 } else {
                   when (feeder.ballCount) {
                     0 -> LEDConstants.LEDState.STANDING_ZERO
