@@ -24,7 +24,6 @@ object LEDConstants {
 
     // Blinking Red
     INTAKING(BlinkinLedDriver.BlinkinLedMode.SOLID_BLUE),
-
     OUTTAKING(BlinkinLedDriver.BlinkinLedMode.SOLID_DARK_RED),
 
     // Changing Green

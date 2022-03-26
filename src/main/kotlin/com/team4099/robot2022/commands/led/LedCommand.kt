@@ -48,11 +48,11 @@ class LedCommand(
                 } else if (Robot.isAutonomous) {
                   LEDConstants.LEDState.AUTO
                 } else if (intake.hasBall) {
-                   when (intake.rollerState){
-                     IntakeConstants.RollerState.OUT -> LEDConstants.LEDState.OUTTAKING
-                     IntakeConstants.RollerState.IN -> LEDConstants.LEDState.INTAKING
-                     else -> LEDConstants.LEDState.IDLE
-                   }
+                  when (intake.rollerState) {
+                    IntakeConstants.RollerState.OUT -> LEDConstants.LEDState.OUTTAKING
+                    IntakeConstants.RollerState.IN -> LEDConstants.LEDState.INTAKING
+                    else -> LEDConstants.LEDState.IDLE
+                  }
                 } else {
                   when (feeder.ballCount) {
                     0 -> LEDConstants.LEDState.STANDING_ZERO
