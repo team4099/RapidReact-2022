@@ -146,7 +146,7 @@ class SwerveModule(val io: SwerveModuleIO) {
           speed
         }
     steeringSetPoint = inputs.steeringPosition + steeringDifference
-    io.setOpenLoop(steering, outputPower)
+    io.setOpenLoop(steeringSetPoint, outputPower)
   }
 
   /** Creates event of the current potentiometer value as needs to be manually readjusted. */
