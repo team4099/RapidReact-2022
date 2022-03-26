@@ -147,7 +147,7 @@ object ShooterIOReal : ShooterIO {
   }
 
   override fun setVelocity(velocity: AngularVelocity) {
-    if (velocity <= 600.rotations.perMinute) {
+    if (velocity.absoluteValue <= 600.rotations.perMinute) {
       setOpenLoop(0.0)
     } else {
       leaderMotor.set(

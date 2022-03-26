@@ -14,6 +14,9 @@ class Intake(val io: IntakeIO) : SubsystemBase() {
   var rollerState = IntakeConstants.RollerState.IDLE
     set(state) {
       io.setRollerPower(state.speed)
+      if(state == IntakeConstants.RollerState.IN) {
+        extendTime = Clock.fpgaTime
+      }
       field = state
     }
 

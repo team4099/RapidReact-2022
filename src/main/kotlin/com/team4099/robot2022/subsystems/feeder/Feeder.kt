@@ -22,9 +22,9 @@ class Feeder(val io: FeederIO) : SubsystemBase() {
   override fun periodic() {
     io.updateInputs(inputs)
 
-    if ((inputs.bottomBeamBroken != bottomPrevStage) && !inputs.bottomBeamBroken) {
+    if ((inputs.bottomBeamBroken != bottomPrevStage) && inputs.bottomBeamBroken) {
       // in floor if correct ball is intaken
-      if (inputs.floorAppliedVoltage > 0.volts) {
+      if (inputs.floorAppliedVoltage >= 0.volts) {
         ballCount++
         // in floor if incorrect ball is outtaken
       } else if (inputs.floorAppliedVoltage < 0.volts) {

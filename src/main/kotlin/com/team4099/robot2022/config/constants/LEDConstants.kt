@@ -17,7 +17,7 @@ object LEDConstants {
     STANDING_ZERO(BlinkinLedDriver.BlinkinLedMode.SOLID_GOLD),
 
     // Solid Yellow
-    STANDING_ONE(BlinkinLedDriver.BlinkinLedMode.SOLID_YELLOW),
+    STANDING_ONE(BlinkinLedDriver.BlinkinLedMode.SOLID_VIOLET),
 
     // Solid Green
     STANDING_TWO(BlinkinLedDriver.BlinkinLedMode.SOLID_GREEN),
