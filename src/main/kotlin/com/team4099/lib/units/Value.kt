@@ -2,7 +2,8 @@ package com.team4099.lib.units
 
 import kotlin.math.absoluteValue
 
-inline class Value<T : UnitKey>(internal val value: Double) : Comparable<Value<T>> {
+@JvmInline
+value class Value<T : UnitKey>(internal val value: Double) : Comparable<Value<T>> {
   val absoluteValue: Value<T>
     get() = Value(value.absoluteValue)
 
@@ -18,7 +19,7 @@ inline class Value<T : UnitKey>(internal val value: Double) : Comparable<Value<T
   operator fun div(k: Double): Value<T> = Value(value / k)
   operator fun div(k: Number): Value<T> = this / k.toDouble()
   operator fun div(o: Value<T>): Double = value / o.value
-  // TODO create div function that returns a fraction
+  operator fun <K : UnitKey> div(o: Value<K>): Value<Fraction<T, K>> = Value(value / o.value)
 
   override operator fun compareTo(other: Value<T>): Int = value.compareTo(other.value)
 }
