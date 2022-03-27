@@ -14,7 +14,8 @@ class TelescopingIdleCommand(val telescopingClimber: TelescopingClimber) : Comma
     if (telescopingClimber.currentState ==
         TelescopingClimberConstants.ActualTelescopeStates.START ||
         telescopingClimber.currentState ==
-            TelescopingClimberConstants.ActualTelescopeStates.MAX_EXTENSION || !telescopingClimber.activelyHold) {
+            TelescopingClimberConstants.ActualTelescopeStates.MAX_EXTENSION ||
+        !telescopingClimber.activelyHold) {
       telescopingClimber.setOpenLoop(0.0, 0.0)
     } else {
       telescopingClimber.holdPosition(loaded = true)

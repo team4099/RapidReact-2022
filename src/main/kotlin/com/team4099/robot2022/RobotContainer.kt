@@ -23,6 +23,7 @@ import com.team4099.robot2022.commands.intake.IntakeBallsCommand
 import com.team4099.robot2022.commands.intake.IntakeIdleCommand
 import com.team4099.robot2022.commands.intake.ReverseIntakeCommand
 import com.team4099.robot2022.commands.led.LedCommand
+import com.team4099.robot2022.commands.orchestra.OrchestraCommand
 import com.team4099.robot2022.commands.shooter.ShootCommand
 import com.team4099.robot2022.commands.shooter.ShooterIdleCommand
 import com.team4099.robot2022.commands.shooter.ShooterUnjamCommand
@@ -49,6 +50,9 @@ import com.team4099.robot2022.subsystems.intake.IntakeIOReal
 import com.team4099.robot2022.subsystems.led.Led
 import com.team4099.robot2022.subsystems.led.LedIO
 import com.team4099.robot2022.subsystems.led.LedIOReal
+import com.team4099.robot2022.subsystems.orchestra.Orchestra
+import com.team4099.robot2022.subsystems.orchestra.OrchestraIO
+import com.team4099.robot2022.subsystems.orchestra.OrchestraIOReal
 import com.team4099.robot2022.subsystems.shooter.Shooter
 import com.team4099.robot2022.subsystems.shooter.ShooterIO
 import com.team4099.robot2022.subsystems.shooter.ShooterIOReal
@@ -64,6 +68,7 @@ object RobotContainer {
   private val telescopingClimber: TelescopingClimber
   private val pivotClimber: PivotClimber
   private val led: Led
+  private val orchestra: Orchestra
   private var compressor: Compressor? = null
 
   init {
@@ -77,6 +82,7 @@ object RobotContainer {
       telescopingClimber = TelescopingClimber(TelescopingClimberIOReal)
       pivotClimber = PivotClimber(PivotClimberIOReal)
       led = Led(LedIOReal)
+      orchestra = Orchestra(OrchestraIOReal)
     } else {
       drivetrain = Drivetrain(object : DrivetrainIO {})
       intake = Intake(object : IntakeIO {})
@@ -85,6 +91,7 @@ object RobotContainer {
       telescopingClimber = TelescopingClimber(object : TelescopingClimberIO {})
       pivotClimber = PivotClimber(object : PivotClimberIO {})
       led = Led(object : LedIO {})
+      orchestra = Orchestra(object : OrchestraIO {})
     }
   }
 
@@ -115,6 +122,7 @@ object RobotContainer {
     pivotClimber.defaultCommand = PivotArmIdleCommand(pivotClimber)
     //    PivotClimber.defaultCommand = PivotIdleCommand()
     led.defaultCommand = LedCommand(led, intake, shooter, feeder, telescopingClimber, pivotClimber)
+    orchestra.defaultCommand = OrchestraCommand(orchestra)
   }
 
   fun zeroSensors() {
@@ -160,8 +168,9 @@ object RobotContainer {
                         ClimbSequenceCommand(telescopingClimber, pivotClimber).andThen(
                             RetractTelescopingArmCommand(telescopingClimber))))))
 
-//     ControlBoard.advanceAndClimb.whileActiveOnce(AdvanceClimberCommand().andThen(RunClimbCommand()))
-//        ControlBoard.climbWithoutAdvance.whileActiveOnce(RunClimbCommand())
+    //
+    // ControlBoard.advanceAndClimb.whileActiveOnce(AdvanceClimberCommand().andThen(RunClimbCommand()))
+    //        ControlBoard.climbWithoutAdvance.whileActiveOnce(RunClimbCommand())
 
     ControlBoard.leftSpoolDown.whileActiveContinuous(SpoolLeftDownCommand(telescopingClimber))
     ControlBoard.rightSpoolDown.whileActiveContinuous(SpoolRightDownCommand(telescopingClimber))

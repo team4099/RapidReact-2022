@@ -10,6 +10,7 @@ import com.team4099.lib.units.derived.volts
 import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.config.constants.Constants.Universal.CANIVORE_NAME
 import com.team4099.robot2022.config.constants.IntakeConstants
+import com.team4099.robot2022.subsystems.orchestra.OrchestraIOReal
 import edu.wpi.first.wpilibj.PneumaticsModuleType
 import edu.wpi.first.wpilibj.Solenoid
 
@@ -73,6 +74,7 @@ object IntakeIOReal : IntakeIO {
     //    intakeTalon.setStatusFramePeriod(
     //        StatusFrameEnhanced.Status_15_FirmwareApiStatus,
     //        Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
+    OrchestraIOReal.addInstrument(intakeTalon)
   }
 
   override fun setRollerPower(percentOutput: Double) {

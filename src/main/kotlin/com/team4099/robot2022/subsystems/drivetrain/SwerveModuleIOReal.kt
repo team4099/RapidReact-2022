@@ -18,6 +18,7 @@ import com.team4099.lib.units.derived.inVolts
 import com.team4099.lib.units.derived.radians
 import com.team4099.lib.units.derived.volts
 import com.team4099.robot2022.config.constants.DrivetrainConstants
+import com.team4099.robot2022.subsystems.orchestra.OrchestraIOReal
 import edu.wpi.first.wpilibj.AnalogPotentiometer
 import kotlin.math.sign
 
@@ -83,6 +84,8 @@ class SwerveModuleIOReal(
     driveFalcon.enableVoltageCompensation(true)
 
     driveFalcon.setNeutralMode(NeutralMode.Brake)
+    OrchestraIOReal.addInstrument(driveFalcon)
+    OrchestraIOReal.addInstrument(steeringFalcon)
   }
 
   override fun updateInputs(inputs: SwerveModuleIO.SwerveModuleIOInputs) {

@@ -14,6 +14,7 @@ import com.team4099.lib.units.derived.volts
 import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.config.constants.Constants.Universal.CANIVORE_NAME
 import com.team4099.robot2022.config.constants.TelescopingClimberConstants
+import com.team4099.robot2022.subsystems.orchestra.OrchestraIOReal
 
 object TelescopingClimberIOReal : TelescopingClimberIO {
   private val telescopingRightArm: TalonFX =
@@ -74,6 +75,9 @@ object TelescopingClimberIOReal : TelescopingClimberIO {
     telescopingLeftArm.configForwardSoftLimitEnable(false)
     telescopingLeftArm.configReverseSoftLimitThreshold(
         telescopingLeftArmSensor.positionToRawUnits(TelescopingClimberConstants.REVERSE_SOFT_LIMIT))
+
+    OrchestraIOReal.addInstrument(telescopingLeftArm)
+    OrchestraIOReal.addInstrument(telescopingRightArm)
   }
 
   override fun updateInputs(inputs: TelescopingClimberIO.TelescopingClimberIOInputs) {
@@ -137,4 +141,4 @@ object TelescopingClimberIOReal : TelescopingClimberIO {
     telescopingRightArm.config_kI(0, kI)
     telescopingRightArm.config_kD(0, kD)
   }
-  }
+}

@@ -10,7 +10,6 @@ import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.inMetersPerSecond
 import com.team4099.lib.units.inMetersPerSecondPerSecond
 import com.team4099.lib.units.perSecond
-import com.team4099.robot2022.config.constants.ShooterConstants
 import com.team4099.robot2022.config.constants.TelescopingClimberConstants
 import com.team4099.robot2022.config.constants.TelescopingClimberConstants.ActualTelescopeStates
 import com.team4099.robot2022.config.constants.TelescopingClimberConstants.DesiredTelescopeStates
@@ -72,7 +71,7 @@ class TelescopingClimber(val io: TelescopingClimberIO) : SubsystemBase() {
     Logger.getInstance()
         .recordOutput("TelescopingClimber/rightReverseLimitReached", rightReverseLimitReached)
 
-    if (kP.hasChanged() || kI.hasChanged() || kD.hasChanged()){
+    if (kP.hasChanged() || kI.hasChanged() || kD.hasChanged()) {
       io.configPID(kP.value, kI.value, kD.value)
     }
   }
