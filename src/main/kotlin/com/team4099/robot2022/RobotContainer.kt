@@ -182,7 +182,7 @@ object RobotContainer {
 
   fun getAutonomousCommand() =
       AutonomousSelector.getCommand(
-          drivetrain, intake, feeder, shooter, telescopingClimber, pivotClimber)
+          drivetrain, intake, feeder, shooter, telescopingClimber, pivotClimber, orchestra)
 
   fun logCompressor() {
     Logger.getInstance().recordOutput("Compressor/pressurePSI", compressor?.pressure)

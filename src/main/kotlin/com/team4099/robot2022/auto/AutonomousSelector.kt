@@ -11,12 +11,14 @@ import com.team4099.robot2022.auto.mode.ThreeBallRightStart
 import com.team4099.robot2022.auto.mode.TwoBallLeftStartMode
 import com.team4099.robot2022.commands.climber.TelescopingCharacterizationCommand
 import com.team4099.robot2022.commands.drivetrain.DriveCharacterizeCommand
+import com.team4099.robot2022.commands.orchestra.OrchestraCommand
 import com.team4099.robot2022.commands.shooter.ShooterCharacterizeCommand
 import com.team4099.robot2022.subsystems.climber.PivotClimber
 import com.team4099.robot2022.subsystems.climber.TelescopingClimber
 import com.team4099.robot2022.subsystems.drivetrain.Drivetrain
 import com.team4099.robot2022.subsystems.feeder.Feeder
 import com.team4099.robot2022.subsystems.intake.Intake
+import com.team4099.robot2022.subsystems.orchestra.Orchestra
 import com.team4099.robot2022.subsystems.shooter.Shooter
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
@@ -50,6 +52,7 @@ object AutonomousSelector {
     autonomousModeChooser.addOption(
         "Characterize Telescoping Arms", AutonomousMode.CHARACTERIZE_CLIMBER_TELESCOPE)
     autonomousModeChooser.addOption("Characterize Shooter", AutonomousMode.CHARACTERIZE_SHOOTER)
+    autonomousModeChooser.addOption("Test Orchestra", AutonomousMode.TEST_MUSIC)
     autoTab.add("Mode", autonomousModeChooser)
     waitBeforeCommandSlider =
         autoTab.add("Wait Time before Running Auto", 0)
@@ -66,7 +69,8 @@ object AutonomousSelector {
     feeder: Feeder,
     shooter: Shooter,
     telescopingClimber: TelescopingClimber,
-    pivotClimber: PivotClimber
+    pivotClimber: PivotClimber,
+    orchestra: Orchestra
   ): CommandBase {
     val mode = autonomousModeChooser.selected
     when (mode) {
@@ -95,6 +99,7 @@ object AutonomousSelector {
       AutonomousMode.ONE_BALL_FENDER_SHOT_THEN_TAXI_RIGHT ->
           return WaitCommand(waitBeforeCommandSlider.inSeconds).andThen(
               OneBallFenderShotThenTaxi(drivetrain, feeder, shooter, 66.degrees))
+      AutonomousMode.TEST_MUSIC -> return OrchestraCommand(orchestra)
       else -> println("ERROR: unexpected auto mode: $mode")
     }
     return InstantCommand()
@@ -109,6 +114,7 @@ object AutonomousSelector {
     ONE_BALL_FENDER_SHOT_THEN_TAXI_LEFT,
     ONE_BALL_FENDER_SHOT_THEN_TAXI_RIGHT,
     TWO_BALL_LEFT_START,
-    THREE_BALL_RIGHT_START
+    THREE_BALL_RIGHT_START,
+    TEST_MUSIC
   }
 }
