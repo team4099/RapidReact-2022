@@ -18,6 +18,7 @@ import com.team4099.robot2022.subsystems.drivetrain.Drivetrain
 import com.team4099.robot2022.subsystems.feeder.Feeder
 import com.team4099.robot2022.subsystems.intake.Intake
 import com.team4099.robot2022.subsystems.shooter.Shooter
+import edu.wpi.first.networktables.NetworkTableEntry
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
@@ -26,17 +27,17 @@ import edu.wpi.first.wpilibj2.command.InstantCommand
 import edu.wpi.first.wpilibj2.command.WaitCommand
 
 object AutonomousSelector {
-  private var orientationChooser: SendableChooser<Angle> = SendableChooser()
+//  private var orientationChooser: SendableChooser<Angle> = SendableChooser()
   private var autonomousModeChooser: SendableChooser<AutonomousMode> = SendableChooser()
-  private var waitBeforeCommandSlider: Time = 0.0.seconds
+  private var waitBeforeCommandSlider: NetworkTableEntry
 
   init {
     val autoTab = Shuffleboard.getTab("Auto settings")
-    orientationChooser.setDefaultOption("Forward", 0.degrees)
-    orientationChooser.addOption("Backwards", 180.degrees)
-    orientationChooser.addOption("Left", 90.degrees)
-    orientationChooser.addOption("Right", 270.degrees)
-    autoTab.add("Starting Orientation", orientationChooser)
+//    orientationChooser.setDefaultOption("Forward", 0.degrees)
+//    orientationChooser.addOption("Backwards", 180.degrees)
+//    orientationChooser.addOption("Left", 90.degrees)
+//    orientationChooser.addOption("Right", 270.degrees)
+//    autoTab.add("Starting Orientation", orientationChooser)
     autonomousModeChooser.addOption(
       "One Ball Fender Shot Then Taxi: Left", AutonomousMode.ONE_BALL_FENDER_SHOT_THEN_TAXI_LEFT
     )
@@ -54,15 +55,16 @@ object AutonomousSelector {
       "Characterize Telescoping Arms", AutonomousMode.CHARACTERIZE_CLIMBER_TELESCOPE
     )
     autonomousModeChooser.addOption("Characterize Shooter", AutonomousMode.CHARACTERIZE_SHOOTER)
-    autoTab.add("Mode", autonomousModeChooser)
+    autoTab.add("Mode", autonomousModeChooser).withSize(5,2).withPosition(3,0)
     waitBeforeCommandSlider =
       autoTab
-        .add("Wait Time before Running Auto", 0)
-        .withWidget(BuiltInWidgets.kNumberSlider)
-        .withProperties(mapOf("min" to 0, "max" to 15))
+        .add("Wait Time before Running Auto", 0).withSize(3,2).withPosition(0,0)
+        .withWidget(BuiltInWidgets.kTextView)
         .entry
-        .getDouble(0.0)
-        .seconds
+  }
+
+  fun getWaitTime(): Time {
+    return waitBeforeCommandSlider.getDouble(0.0).seconds
   }
 
   fun getCommand(
@@ -73,32 +75,35 @@ object AutonomousSelector {
     telescopingClimber: TelescopingClimber,
     pivotClimber: PivotClimber
   ): CommandBase {
+
+
     val mode = autonomousModeChooser.selected
+    println("${getWaitTime().inSeconds} wait command")
     when (mode) {
       AutonomousMode.TEST_AUTO_PATH ->
-        return WaitCommand(waitBeforeCommandSlider.inSeconds).andThen(TestAutoPath(drivetrain))
+        return WaitCommand(getWaitTime().inSeconds).andThen(TestAutoPath(drivetrain))
       AutonomousMode.TWO_BALL_LEFT_START ->
-        return WaitCommand(waitBeforeCommandSlider.inSeconds)
+        return WaitCommand(getWaitTime().inSeconds)
           .andThen(TwoBallLeftStartMode(drivetrain, intake, feeder, shooter))
       AutonomousMode.THREE_BALL_RIGHT_START ->
-        return WaitCommand(waitBeforeCommandSlider.inSeconds)
+        return WaitCommand(getWaitTime().inSeconds)
           .andThen(ThreeBallRightStart(drivetrain, intake, feeder, shooter))
       AutonomousMode.CHARACTERIZE_DRIVETRAIN ->
-        return WaitCommand(waitBeforeCommandSlider.inSeconds)
+        return WaitCommand(getWaitTime().inSeconds)
           .andThen(DriveCharacterizeCommand(drivetrain))
       AutonomousMode.CHARACTERIZE_SHOOTER ->
-        return WaitCommand(waitBeforeCommandSlider.inSeconds)
+        return WaitCommand(getWaitTime().inSeconds)
           .andThen(ShooterCharacterizeCommand(shooter))
       AutonomousMode.CHARACTERIZE_CLIMBER_TELESCOPE ->
-        return WaitCommand(waitBeforeCommandSlider.inSeconds)
+        return WaitCommand(getWaitTime().inSeconds)
           .andThen(TelescopingCharacterizationCommand(telescopingClimber))
       //      AutonomousMode.CHARACTERIZE_CLIMBER_PIVOT -> return
       // PivotCharacterizationCommand(pivotClimber)
       AutonomousMode.ONE_BALL_FENDER_SHOT_THEN_TAXI_LEFT ->
-        return WaitCommand(waitBeforeCommandSlider.inSeconds)
+        return WaitCommand(getWaitTime().inSeconds)
           .andThen(OneBallFenderShotThenTaxi(drivetrain, feeder, shooter, -24.degrees))
       AutonomousMode.ONE_BALL_FENDER_SHOT_THEN_TAXI_RIGHT ->
-        return WaitCommand(waitBeforeCommandSlider.inSeconds)
+        return WaitCommand(getWaitTime().inSeconds)
           .andThen(OneBallFenderShotThenTaxi(drivetrain, feeder, shooter, 66.degrees))
       else -> println("ERROR: unexpected auto mode: $mode")
     }
