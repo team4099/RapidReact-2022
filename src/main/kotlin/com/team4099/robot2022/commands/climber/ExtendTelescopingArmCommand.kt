@@ -19,7 +19,6 @@ class ExtendTelescopingArmCommand(val telescopingClimber: TelescopingClimber) : 
 
   init {
     addRequirements(telescopingClimber)
-
   }
 
   override fun initialize() {
@@ -27,29 +26,34 @@ class ExtendTelescopingArmCommand(val telescopingClimber: TelescopingClimber) : 
       TelescopingClimberConstants.DesiredTelescopeStates.MAX_EXTENSION
     telescopingClimber.activelyHold = false
     leftTelescopingProfile =
-        TrapezoidProfile(
-            telescopingClimber.constraints,
-            TrapezoidProfile.State(telescopingClimber.desiredState.position.inMeters, 0.0),
-            TrapezoidProfile.State(
-                telescopingClimber.inputs.leftPosition.inMeters,
-                telescopingClimber.inputs.leftVelocity.inMetersPerSecond))
+      TrapezoidProfile(
+        telescopingClimber.constraints,
+        TrapezoidProfile.State(telescopingClimber.desiredState.position.inMeters, 0.0),
+        TrapezoidProfile.State(
+          telescopingClimber.inputs.leftPosition.inMeters,
+          telescopingClimber.inputs.leftVelocity.inMetersPerSecond
+        )
+      )
 
     rightTelescopingProfile =
-        TrapezoidProfile(
-            telescopingClimber.constraints,
-            TrapezoidProfile.State(telescopingClimber.desiredState.position.inMeters, 0.0),
-            TrapezoidProfile.State(
-                telescopingClimber.inputs.rightPosition.inMeters,
-                telescopingClimber.inputs.rightVelocity.inMetersPerSecond))
+      TrapezoidProfile(
+        telescopingClimber.constraints,
+        TrapezoidProfile.State(telescopingClimber.desiredState.position.inMeters, 0.0),
+        TrapezoidProfile.State(
+          telescopingClimber.inputs.rightPosition.inMeters,
+          telescopingClimber.inputs.rightVelocity.inMetersPerSecond
+        )
+      )
 
     startTime = Clock.fpgaTime
   }
 
   override fun execute() {
     telescopingClimber.setPosition(
-        leftTelescopingProfile.calculate((Clock.fpgaTime - startTime).inSeconds),
-        rightTelescopingProfile.calculate((Clock.fpgaTime - startTime).inSeconds),
-        isUnderLoad = false)
+      leftTelescopingProfile.calculate((Clock.fpgaTime - startTime).inSeconds),
+      rightTelescopingProfile.calculate((Clock.fpgaTime - startTime).inSeconds),
+      isUnderLoad = false
+    )
 
     Logger.getInstance().recordOutput("ActiveCommands/ExtendTelescopingArmCommand", true)
   }
@@ -58,6 +62,6 @@ class ExtendTelescopingArmCommand(val telescopingClimber: TelescopingClimber) : 
     //    return telescopingClimber.currentState.correspondingDesiredState ==
     //        telescopingClimber.desiredState
     return leftTelescopingProfile.isFinished((Clock.fpgaTime - startTime).inSeconds) &&
-        rightTelescopingProfile.isFinished((Clock.fpgaTime - startTime).inSeconds)
+      rightTelescopingProfile.isFinished((Clock.fpgaTime - startTime).inSeconds)
   }
 }

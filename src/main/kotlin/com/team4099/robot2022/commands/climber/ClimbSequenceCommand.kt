@@ -11,11 +11,12 @@ class ClimbSequenceCommand(
 ) : SequentialCommandGroup() {
   init {
     addCommands(
-        RetractTelescopingArmCommand(telescopingClimber),
-        ExtendPivotArmCommand(pivotClimber),
-        WaitCommand(0.5),
-        ExtendTelescopingArmCommand(telescopingClimber),
-        RetractPivotArmCommand(pivotClimber),
-        WaitCommand(1.0))
+      RetractTelescopingArmCommand(telescopingClimber),
+      ExtendPivotArmCommand(pivotClimber),
+      WaitCommand(0.5),
+      ExtendTelescopingArmCommand(telescopingClimber),
+      RetractPivotArmCommand(pivotClimber),
+      WaitCommand(1.0)
+    )
   }
 }

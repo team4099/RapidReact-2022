@@ -27,12 +27,18 @@ class ThreeBallRightStart(
 
   init {
     addCommands(
-        SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(1.0)),
-        ResetPoseCommand(drivetrain, trajectory.startingPose),
-        ParallelCommandGroup(
-            WaitCommand(2.0).andThen(
-                (IntakeBallsCommand(intake).alongWith(FeederSerialize(feeder))).withTimeout(5.0)),
-            DrivePathCommand(drivetrain, trajectory, resetPose = false)),
-        SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(3.0)))
+      SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(1.0)),
+      ResetPoseCommand(drivetrain, trajectory.startingPose),
+      ParallelCommandGroup(
+        WaitCommand(2.0)
+          .andThen(
+            (IntakeBallsCommand(intake).alongWith(FeederSerialize(feeder))).withTimeout(
+              5.0
+            )
+          ),
+        DrivePathCommand(drivetrain, trajectory, resetPose = false)
+      ),
+      SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(3.0))
+    )
   }
 }

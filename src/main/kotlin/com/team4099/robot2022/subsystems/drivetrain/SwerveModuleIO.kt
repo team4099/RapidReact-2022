@@ -88,7 +88,7 @@ interface SwerveModuleIO {
         driveVelocity = it.meters.perSecond
       }
       table?.getDouble("steeringVelocityRadiansPerSecond", steeringVelocity.inRadiansPerSecond)
-          ?.let { steeringVelocity = it.radians.perSecond }
+        ?.let { steeringVelocity = it.radians.perSecond }
       table?.getDouble("driveTempCelcius", driveTempCelcius)?.let { driveTempCelcius = it }
       table?.getDouble("steeringTempCelcius", steeringTempCelcius)?.let { steeringTempCelcius = it }
       table?.getDouble("potentiometerOutputRaw", potentiometerOutputRaw)?.let {

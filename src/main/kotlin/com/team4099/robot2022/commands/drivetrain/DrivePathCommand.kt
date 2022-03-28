@@ -26,8 +26,8 @@ import edu.wpi.first.math.controller.PIDController
 import edu.wpi.first.math.controller.ProfiledPIDController
 import edu.wpi.first.math.trajectory.TrapezoidProfile
 import edu.wpi.first.wpilibj2.command.CommandBase
-import kotlin.math.PI
 import org.littletonrobotics.junction.Logger
+import kotlin.math.PI
 
 class DrivePathCommand(
   val drivetrain: Drivetrain,
@@ -47,12 +47,14 @@ class DrivePathCommand(
   val thetakD = TunableNumber("Pathfollow/thetakD", DrivetrainConstants.PID.AUTO_THETA_PID_KD)
 
   val thetaMaxVel =
-      TunableNumber(
-          "Pathfollow/thetaMaxVel", DrivetrainConstants.PID.MAX_AUTO_ANGULAR_VEL.inDegreesPerSecond)
+    TunableNumber(
+      "Pathfollow/thetaMaxVel", DrivetrainConstants.PID.MAX_AUTO_ANGULAR_VEL.inDegreesPerSecond
+    )
   val thetaMaxAccel =
-      TunableNumber(
-          "Pathfollow/thetaMaxAccel",
-          DrivetrainConstants.PID.MAX_AUTO_ANGULAR_ACCEL.inDegreesPerSecondPerSecond)
+    TunableNumber(
+      "Pathfollow/thetaMaxAccel",
+      DrivetrainConstants.PID.MAX_AUTO_ANGULAR_ACCEL.inDegreesPerSecondPerSecond
+    )
 
   val poskP = TunableNumber("Pathfollow/poskP", DrivetrainConstants.PID.AUTO_POS_KP)
   val poskI = TunableNumber("Pathfollow/poskI", DrivetrainConstants.PID.AUTO_POS_KI)
@@ -64,13 +66,15 @@ class DrivePathCommand(
     xPID = PIDController(poskP.value, poskD.value, poskI.value)
     yPID = PIDController(poskP.value, poskD.value, poskI.value)
     thetaPID =
-        ProfiledPIDController(
-            thetakP.value,
-            thetakI.value,
-            thetakD.value,
-            TrapezoidProfile.Constraints(
-                thetaMaxVel.value.degrees.perSecond.inRadiansPerSecond,
-                thetaMaxAccel.value.degrees.perSecond.perSecond.inRadiansPerSecondPerSecond))
+      ProfiledPIDController(
+        thetakP.value,
+        thetakI.value,
+        thetakD.value,
+        TrapezoidProfile.Constraints(
+          thetaMaxVel.value.degrees.perSecond.inRadiansPerSecond,
+          thetaMaxAccel.value.degrees.perSecond.perSecond.inRadiansPerSecondPerSecond
+        )
+      )
 
     thetaPID.enableContinuousInput(-PI, PI)
   }
@@ -91,19 +95,21 @@ class DrivePathCommand(
     val xFF = desiredState.linearVelocity * desiredState.curvature.cos
     val yFF = desiredState.linearVelocity * desiredState.curvature.sin
     val thetaFeedback =
-        thetaPID.calculate(
-                drivetrain.pose.theta.inRadians,
-                TrapezoidProfile.State(
-                    desiredState.pose.theta.inRadians,
-                    desiredState.angularVelocity.inRadiansPerSecond))
-            .radians
-            .perSecond
+      thetaPID.calculate(
+        drivetrain.pose.theta.inRadians,
+        TrapezoidProfile.State(
+          desiredState.pose.theta.inRadians,
+          desiredState.angularVelocity.inRadiansPerSecond
+        )
+      )
+        .radians
+        .perSecond
 
     // Calculate feedback velocities (based on position error).
     val xFeedback =
-        xPID.calculate(drivetrain.pose.x.inMeters, desiredState.pose.x.inMeters).meters.perSecond
+      xPID.calculate(drivetrain.pose.x.inMeters, desiredState.pose.x.inMeters).meters.perSecond
     val yFeedback =
-        yPID.calculate(drivetrain.pose.y.inMeters, desiredState.pose.y.inMeters).meters.perSecond
+      yPID.calculate(drivetrain.pose.y.inMeters, desiredState.pose.y.inMeters).meters.perSecond
 
     val xAccel = desiredState.linearAcceleration * desiredState.curvature.cos
     val yAccel = desiredState.linearAcceleration * desiredState.curvature.sin
@@ -111,42 +117,46 @@ class DrivePathCommand(
     drivetrain.targetPose = desiredState.pose
 
     drivetrain.set(
-        -thetaFeedback,
-        Pair(yFF + yFeedback, -xFF - xFeedback),
-        true,
-        0.radians.perSecond.perSecond,
-        Pair(yAccel, xAccel))
+      -thetaFeedback,
+      Pair(yFF + yFeedback, -xFF - xFeedback),
+      true,
+      0.radians.perSecond.perSecond,
+      Pair(yAccel, xAccel)
+    )
 
     Logger.getInstance().recordOutput("Pathfollow/xFFMetersPerSec", xFF.inMetersPerSecond)
     Logger.getInstance().recordOutput("Pathfollow/yFFMetersPerSec", yFF.inMetersPerSecond)
     Logger.getInstance()
-        .recordOutput("Pathfollow/thetaFeedbackDegreesPerSec", thetaFeedback.inDegreesPerSecond)
+      .recordOutput("Pathfollow/thetaFeedbackDegreesPerSec", thetaFeedback.inDegreesPerSecond)
 
     Logger.getInstance()
-        .recordOutput("Pathfollow/xFeedbackMetersPerSec", xFeedback.inMetersPerSecond)
+      .recordOutput("Pathfollow/xFeedbackMetersPerSec", xFeedback.inMetersPerSecond)
     Logger.getInstance()
-        .recordOutput("Pathfollow/yFeedbackMetersPerSec", yFeedback.inMetersPerSecond)
+      .recordOutput("Pathfollow/yFeedbackMetersPerSec", yFeedback.inMetersPerSecond)
 
     Logger.getInstance()
-        .recordOutput("Pathfollow/thetaPIDPositionErrorRadians", thetaPID.positionError)
+      .recordOutput("Pathfollow/thetaPIDPositionErrorRadians", thetaPID.positionError)
     Logger.getInstance()
-        .recordOutput("Pathfollow/thetaPIDVelocityErrorRadians", thetaPID.velocityError)
+      .recordOutput("Pathfollow/thetaPIDVelocityErrorRadians", thetaPID.velocityError)
 
     Logger.getInstance()
-        .recordOutput(
-            "Pathfollow/xAccelMetersPerSecondPerSecond", xAccel.inMetersPerSecondPerSecond)
+      .recordOutput(
+        "Pathfollow/xAccelMetersPerSecondPerSecond", xAccel.inMetersPerSecondPerSecond
+      )
     Logger.getInstance()
-        .recordOutput(
-            "Pathfollow/yAccelMetersPerSecondPerSecond", yAccel.inMetersPerSecondPerSecond)
+      .recordOutput(
+        "Pathfollow/yAccelMetersPerSecondPerSecond", yAccel.inMetersPerSecondPerSecond
+      )
 
     Logger.getInstance().recordOutput("Pathfollow/Start Time", trajStartTime.inSeconds)
     Logger.getInstance().recordOutput("Pathfollow/Current Time", trajCurTime.inSeconds)
     Logger.getInstance()
-        .recordOutput("Pathfollow/Desired Angle in Degrees", desiredState.pose.theta.inDegrees)
+      .recordOutput("Pathfollow/Desired Angle in Degrees", desiredState.pose.theta.inDegrees)
     Logger.getInstance()
-        .recordOutput(
-            "Pathfollow/Desired Angular Velocity in Degrees",
-            desiredState.angularVelocity.inDegreesPerSecond)
+      .recordOutput(
+        "Pathfollow/Desired Angular Velocity in Degrees",
+        desiredState.angularVelocity.inDegreesPerSecond
+      )
 
     Logger.getInstance().recordOutput("ActiveCommands/DrivePathCommand", true)
 
@@ -169,9 +179,11 @@ class DrivePathCommand(
 
     if (thetaMaxAccel.hasChanged() || thetaMaxVel.hasChanged()) {
       thetaPID.setConstraints(
-          TrapezoidProfile.Constraints(
-              thetaMaxVel.value.degrees.perSecond.inRadiansPerSecond,
-              thetaMaxAccel.value.degrees.perSecond.perSecond.inRadiansPerSecondPerSecond))
+        TrapezoidProfile.Constraints(
+          thetaMaxVel.value.degrees.perSecond.inRadiansPerSecond,
+          thetaMaxAccel.value.degrees.perSecond.perSecond.inRadiansPerSecondPerSecond
+        )
+      )
     }
   }
 

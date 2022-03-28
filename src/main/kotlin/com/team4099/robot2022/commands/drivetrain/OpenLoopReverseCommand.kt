@@ -13,7 +13,8 @@ class OpenLoopReverseCommand(val drivetrain: Drivetrain) : CommandBase() {
 
   override fun execute() {
     drivetrain.setOpenLoop(
-        0.degrees.perSecond, Pair(0.0.feet.perSecond, 2.5.feet.perSecond), fieldOriented = false)
+      0.degrees.perSecond, Pair(0.0.feet.perSecond, 2.5.feet.perSecond), fieldOriented = false
+    )
   }
 
   override fun isFinished(): Boolean {

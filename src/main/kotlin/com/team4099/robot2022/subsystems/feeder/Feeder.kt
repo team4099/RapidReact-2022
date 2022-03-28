@@ -25,7 +25,8 @@ class Feeder(val io: FeederIO) : SubsystemBase() {
     io.updateInputs(inputs)
 
     if (bottomPrevStage != inputs.bottomBeamBroken &&
-        state == FeederConstants.FeederState.FORWARD_ALL) {
+      state == FeederConstants.FeederState.FORWARD_ALL
+    ) {
       oneBallCheck = true
     }
 

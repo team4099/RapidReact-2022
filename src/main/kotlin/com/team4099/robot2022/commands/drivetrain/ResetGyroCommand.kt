@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase
 import org.littletonrobotics.junction.Logger
 
 class ResetGyroCommand(val drivetrain: Drivetrain, val toAngle: Angle = 0.0.degrees) :
-    CommandBase() {
+  CommandBase() {
   init {
     addRequirements(drivetrain)
   }

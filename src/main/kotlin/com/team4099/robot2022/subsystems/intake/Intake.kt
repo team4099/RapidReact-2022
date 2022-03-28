@@ -29,8 +29,8 @@ class Intake(val io: IntakeIO) : SubsystemBase() {
   val intakingBall: Boolean
     get() {
       return inputs.rollerStatorCurrent >= LEDConstants.INTAKE_CURRENT_THRESHOLD &&
-          rollerState == IntakeConstants.RollerState.IN &&
-          (Clock.fpgaTime - extendTime) >= IntakeConstants.INTAKING_WAIT_BEFORE_DETECT_CURRENT_SPIKE
+        rollerState == IntakeConstants.RollerState.IN &&
+        (Clock.fpgaTime - extendTime) >= IntakeConstants.INTAKING_WAIT_BEFORE_DETECT_CURRENT_SPIKE
     }
 
   val outtakingBall: Boolean
@@ -54,11 +54,12 @@ class Intake(val io: IntakeIO) : SubsystemBase() {
   override fun periodic() {
     io.updateInputs(inputs)
 
-    if (intakingBall || outtakingBall){
+    if (intakingBall || outtakingBall) {
       lastIntakeSpikeTime = Clock.fpgaTime
     }
 
-    keepIntakingLEDState = Clock.fpgaTime - lastIntakeSpikeTime <= IntakeConstants.WAIT_FOR_STATE_TO_CHANGE
+    keepIntakingLEDState =
+      Clock.fpgaTime - lastIntakeSpikeTime <= IntakeConstants.WAIT_FOR_STATE_TO_CHANGE
 
     Logger.getInstance().processInputs("Intake", inputs)
     Logger.getInstance().recordOutput("Intake/rollerState", rollerState.name)

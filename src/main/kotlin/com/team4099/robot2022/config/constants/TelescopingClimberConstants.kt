@@ -3,7 +3,6 @@ package com.team4099.robot2022.config.constants
 import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.meters
-import com.team4099.lib.units.derived.div
 import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.perSecond
 

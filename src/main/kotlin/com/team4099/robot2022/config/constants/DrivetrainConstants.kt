@@ -5,7 +5,6 @@ import com.team4099.lib.units.base.inMeters
 import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.degrees
-import com.team4099.lib.units.derived.div
 import com.team4099.lib.units.derived.radians
 import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.inMetersPerSecond
@@ -20,8 +19,9 @@ object DrivetrainConstants {
 
   val DRIVE_SETPOINT_MAX = 15.feet.perSecond
   val TURN_SETPOINT_MAX =
-      (DRIVE_SETPOINT_MAX.inMetersPerSecond / DRIVETRAIN_LENGTH.inMeters / 2 * sqrt(2.0)).radians
-          .perSecond // 648
+    (DRIVE_SETPOINT_MAX.inMetersPerSecond / DRIVETRAIN_LENGTH.inMeters / 2 * sqrt(2.0))
+      .radians
+      .perSecond // 648
 
   // cruise velocity and accel for steering motor
   val STEERING_VEL_MAX = 1393.2.degrees.perSecond

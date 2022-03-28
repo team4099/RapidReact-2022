@@ -96,11 +96,12 @@ object Robot : LoggedRobot() {
     CommandScheduler.getInstance().run()
 
     Logger.getInstance()
-        .recordOutput(
-            "ActiveCommands/Scheduler",
-            NetworkTableInstance.getDefault()
-                .getEntry("/LiveWindow/Ungrouped/Scheduler/Names")
-                .getStringArray(emptyArray()))
+      .recordOutput(
+        "ActiveCommands/Scheduler",
+        NetworkTableInstance.getDefault()
+          .getEntry("/LiveWindow/Ungrouped/Scheduler/Names")
+          .getStringArray(emptyArray())
+      )
 
     RobotContainer.logCompressor()
     RobotContainer.logDriverController()

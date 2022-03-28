@@ -29,16 +29,18 @@ class SwerveModuleIOReal(
   override val label: String
 ) : SwerveModuleIO {
   private val steeringSensor =
-      ctreAngularMechanismSensor(
-          steeringFalcon,
-          DrivetrainConstants.STEERING_SENSOR_CPR,
-          DrivetrainConstants.STEERING_SENSOR_GEAR_RATIO)
+    ctreAngularMechanismSensor(
+      steeringFalcon,
+      DrivetrainConstants.STEERING_SENSOR_CPR,
+      DrivetrainConstants.STEERING_SENSOR_GEAR_RATIO
+    )
   private val driveSensor =
-      ctreLinearMechanismSensor(
-          driveFalcon,
-          DrivetrainConstants.DRIVE_SENSOR_CPR,
-          DrivetrainConstants.DRIVE_SENSOR_GEAR_RATIO,
-          DrivetrainConstants.WHEEL_DIAMETER)
+    ctreLinearMechanismSensor(
+      driveFalcon,
+      DrivetrainConstants.DRIVE_SENSOR_CPR,
+      DrivetrainConstants.DRIVE_SENSOR_GEAR_RATIO,
+      DrivetrainConstants.WHEEL_DIAMETER
+    )
 
   // motor params
   private val steeringConfiguration: TalonFXConfiguration = TalonFXConfiguration()
@@ -56,20 +58,21 @@ class SwerveModuleIOReal(
     steeringConfiguration.slot0.kD = DrivetrainConstants.PID.STEERING_KD
     steeringConfiguration.slot0.kF = DrivetrainConstants.PID.STEERING_KFF
     steeringConfiguration.motionCruiseVelocity =
-        steeringSensor.velocityToRawUnits(DrivetrainConstants.STEERING_VEL_MAX)
+      steeringSensor.velocityToRawUnits(DrivetrainConstants.STEERING_VEL_MAX)
     steeringConfiguration.motionAcceleration =
-        steeringSensor.accelerationToRawUnits(DrivetrainConstants.STEERING_ACCEL_MAX)
+      steeringSensor.accelerationToRawUnits(DrivetrainConstants.STEERING_ACCEL_MAX)
     steeringConfiguration.peakOutputForward = 1.0
     steeringConfiguration.peakOutputReverse = -1.0
     steeringConfiguration.supplyCurrLimit.currentLimit =
-        DrivetrainConstants.STEERING_SUPPLY_CURRENT_LIMIT
+      DrivetrainConstants.STEERING_SUPPLY_CURRENT_LIMIT
     steeringConfiguration.supplyCurrLimit.enable = true
 
     steeringFalcon.setNeutralMode(NeutralMode.Coast)
     steeringFalcon.inverted = false
     steeringFalcon.configAllSettings(steeringConfiguration)
     steeringFalcon.configAllowableClosedloopError(
-        0, steeringSensor.positionToRawUnits(DrivetrainConstants.ALLOWED_STEERING_ANGLE_ERROR))
+      0, steeringSensor.positionToRawUnits(DrivetrainConstants.ALLOWED_STEERING_ANGLE_ERROR)
+    )
 
     driveConfiguration.slot0.kP = DrivetrainConstants.PID.DRIVE_KP
     driveConfiguration.slot0.kI = DrivetrainConstants.PID.DRIVE_KI
@@ -117,15 +120,16 @@ class SwerveModuleIOReal(
     acceleration: LinearAcceleration
   ) {
     val feedforward =
-        DrivetrainConstants.PID.DRIVE_KS * sign(speed.value) +
-            speed * DrivetrainConstants.PID.DRIVE_KV +
-            acceleration * DrivetrainConstants.PID.DRIVE_KA
+      DrivetrainConstants.PID.DRIVE_KS * sign(speed.value) +
+        speed * DrivetrainConstants.PID.DRIVE_KV +
+        acceleration * DrivetrainConstants.PID.DRIVE_KA
 
     driveFalcon.set(
-        ControlMode.Velocity,
-        driveSensor.velocityToRawUnits(speed),
-        DemandType.ArbitraryFeedForward,
-        feedforward.inVolts / 12.0)
+      ControlMode.Velocity,
+      driveSensor.velocityToRawUnits(speed),
+      DemandType.ArbitraryFeedForward,
+      feedforward.inVolts / 12.0
+    )
     setSteeringSetpoint(steering)
   }
 
@@ -140,11 +144,14 @@ class SwerveModuleIOReal(
 
   override fun zeroSteering() {
     steeringFalcon.selectedSensorPosition =
-        steeringSensor.positionToRawUnits(
-            -(potentiometer.get().radians) + zeroOffset.inRadians.radians)
+      steeringSensor.positionToRawUnits(
+        -(potentiometer.get().radians) + zeroOffset.inRadians.radians
+      )
     println(
-        "Loading Zero for Module $label (${steeringSensor.positionToRawUnits(
-        -(potentiometer.get().radians) + zeroOffset.inRadians.radians)})")
+      "Loading Zero for Module $label (${steeringSensor.positionToRawUnits(
+        -(potentiometer.get().radians) + zeroOffset.inRadians.radians
+      )})"
+    )
   }
 
   override fun zeroDrive() {

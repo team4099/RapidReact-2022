@@ -4,7 +4,7 @@ plugins {
 	id "idea"
 	id "org.jetbrains.kotlin.jvm" version "1.6.10"
 	id "edu.wpi.first.GradleRIO" version "2022.4.1"
-	id "com.diffplug.spotless" version "5.1.0"
+	id "com.diffplug.spotless" version "6.3.0"
 	id "com.peterabeles.gversion" version "1.10"
 }
 
@@ -122,7 +122,7 @@ spotless {
 			exclude "**/BuildConstants.kt", "**/build/**"
 		}
 		ktfmt()
-		ktlint().userData(['max_line_length': '100', 'insert_final_newline': 'true', 'indent_size': '2', 'continuation_indent_size': '2'])
+		ktlint().userData(['max_line_length': '120', 'insert_final_newline': 'true', 'indent_size': '2', 'continuation_indent_size': '2'])
 	}
 }
 

@@ -1,7 +1,6 @@
 package com.team4099.robot2022.config.constants
 
 import com.team4099.lib.units.base.seconds
-import com.team4099.lib.units.derived.div
 import com.team4099.lib.units.milli
 import edu.wpi.first.wpilibj.RobotBase
 

@@ -41,9 +41,9 @@ interface ShooterIO {
       }
       table?.getDouble("appliedVolts", appliedVoltage.inVolts)?.let { appliedVoltage = it.volts }
       table?.getDoubleArray("statorCurrentAmps", statorCurrent.map { it.inAmperes }.toDoubleArray())
-          ?.let { statorCurrent = it.map { it.amps }.toMutableList() }
+        ?.let { statorCurrent = it.map { it.amps }.toMutableList() }
       table?.getDoubleArray("supplyCurrentAmps", supplyCurrent.map { it.inAmperes }.toDoubleArray())
-          ?.let { supplyCurrent = it.map { it.amps }.toMutableList() }
+        ?.let { supplyCurrent = it.map { it.amps }.toMutableList() }
       table?.getDoubleArray("tempCelcius", tempCelcius.toDoubleArray())?.let {
         tempCelcius = it.toMutableList()
       }

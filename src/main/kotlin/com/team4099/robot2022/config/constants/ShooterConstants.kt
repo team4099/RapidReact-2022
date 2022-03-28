@@ -3,7 +3,6 @@ package com.team4099.robot2022.config.constants
 import com.team4099.lib.units.AngularVelocity
 import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.derived.degrees
-import com.team4099.lib.units.derived.div
 import com.team4099.lib.units.derived.rotations
 import com.team4099.lib.units.perMinute
 

@@ -63,16 +63,16 @@ object ControlBoard {
     Logger.getInstance().recordOutput("DriverController/rightXAxis", driver.rightXAxis)
     Logger.getInstance().recordOutput("DriverController/leftYAxis", driver.leftYAxis)
     Logger.getInstance()
-        .recordOutput("DriverController/leftShoulderButton", driver.leftShoulderButton)
+      .recordOutput("DriverController/leftShoulderButton", driver.leftShoulderButton)
     Logger.getInstance().recordOutput("DriverController/startButton", driver.startButton)
     Logger.getInstance().recordOutput("DriverController/selectButton", driver.selectButton)
   }
 
   fun logOperatorController() {
     Logger.getInstance()
-        .recordOutput("OperatorController/rightTriggerAxis", operator.rightTriggerAxis)
+      .recordOutput("OperatorController/rightTriggerAxis", operator.rightTriggerAxis)
     Logger.getInstance()
-        .recordOutput("OperatorController/leftTriggerAxis", operator.leftTriggerAxis)
+      .recordOutput("OperatorController/leftTriggerAxis", operator.leftTriggerAxis)
     Logger.getInstance().recordOutput("OperatorController/startButton", operator.startButton)
     Logger.getInstance().recordOutput("OperatorController/selectButton", operator.selectButton)
     Logger.getInstance().recordOutput("OperatorController/aButton", operator.aButton)
@@ -84,8 +84,8 @@ object ControlBoard {
     Logger.getInstance().recordOutput("OperatorController/dPadUp", operator.dPadUp)
     Logger.getInstance().recordOutput("OperatorController/dPadLeft", operator.dPadLeft)
     Logger.getInstance()
-        .recordOutput("OperatorController/rightShoulderButton", operator.rightShoulderButton)
+      .recordOutput("OperatorController/rightShoulderButton", operator.rightShoulderButton)
     Logger.getInstance()
-        .recordOutput("OperatorController/leftShoulderButton", operator.leftShoulderButton)
+      .recordOutput("OperatorController/leftShoulderButton", operator.leftShoulderButton)
   }
 }

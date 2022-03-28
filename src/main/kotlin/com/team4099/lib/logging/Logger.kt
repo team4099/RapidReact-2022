@@ -27,11 +27,11 @@ object Logger {
   private lateinit var file: Path
   private lateinit var eventsFile: Path
   private var loggingLocation: String =
-      when {
-        RobotBase.isSimulation() -> "./logs"
-        File("/media/sda1/").exists() -> "/media/sda1/logs/"
-        else -> "/home/lvuser/logs/"
-      }
+    when {
+      RobotBase.isSimulation() -> "./logs"
+      File("/media/sda1/").exists() -> "/media/sda1/logs/"
+      else -> "/home/lvuser/logs/"
+    }
 
   private var values: String = ""
     get() {
@@ -61,23 +61,25 @@ object Logger {
       createLogDirectory()
 
       file =
-          if (DriverStation.isFMSAttached()) {
-            Paths.get(
-                "$loggingLocation${DriverStation.getEventName()}_" +
-                    "${DriverStation.getMatchType()}" +
-                    "${DriverStation.getMatchNumber()}.csv")
-          } else {
-            Paths.get("${loggingLocation}test.csv")
-          }
+        if (DriverStation.isFMSAttached()) {
+          Paths.get(
+            "$loggingLocation${DriverStation.getEventName()}_" +
+              "${DriverStation.getMatchType()}" +
+              "${DriverStation.getMatchNumber()}.csv"
+          )
+        } else {
+          Paths.get("${loggingLocation}test.csv")
+        }
       eventsFile =
-          if (DriverStation.isFMSAttached()) {
-            Paths.get(
-                "$loggingLocation${DriverStation.getEventName()}_" +
-                    "${DriverStation.getMatchType()}" +
-                    "${DriverStation.getMatchNumber()}Events.csv")
-          } else {
-            Paths.get("${loggingLocation}testEvents.csv")
-          }
+        if (DriverStation.isFMSAttached()) {
+          Paths.get(
+            "$loggingLocation${DriverStation.getEventName()}_" +
+              "${DriverStation.getMatchType()}" +
+              "${DriverStation.getMatchNumber()}Events.csv"
+          )
+        } else {
+          Paths.get("${loggingLocation}testEvents.csv")
+        }
 
       if (Files.exists(file)) Files.delete(file)
       Files.createFile(file)
@@ -114,30 +116,31 @@ object Logger {
       shuffleboardEntry = Shuffleboard.getTab(tab).add(name, supplier())
       if (setter != null) {
         // Listen for changes to the entry if it is configurable
-        shuffleboardEntry.entry
-            .addListener(
-                {
-                  val newValue = it.getEntry().value
+        shuffleboardEntry.entry.addListener(
+          {
+            val newValue = it.getEntry().value
 
-                  try {
-                    // Unchecked cast since we don't know the type of this
-                    // source due to type erasure
-                    @Suppress("UNCHECKED_CAST")
-                    setter(newValue.value as T)
-                  } catch (e: ClassCastException) {
-                    addEvent(
-                        "Logger",
-                        "Could not change value for $tab/$name due to invalid type cast ${
-                          e.message
-                        }.",
-                        Severity.ERROR)
-                  }
-                },
-                EntryListenerFlags.kUpdate)
+            try {
+              // Unchecked cast since we don't know the type of this
+              // source due to type erasure
+              @Suppress("UNCHECKED_CAST") setter(newValue.value as T)
+            } catch (e: ClassCastException) {
+              addEvent(
+                "Logger",
+                "Could not change value for $tab/$name due to invalid type cast ${
+                e.message
+                }.",
+                Severity.ERROR
+              )
+            }
+          },
+          EntryListenerFlags.kUpdate
+        )
       }
     } catch (e: IllegalArgumentException) {
       addEvent(
-          "Logger", "Could not add $tab/$name to Shuffleboard due to invalid type", Severity.WARN)
+        "Logger", "Could not add $tab/$name to Shuffleboard due to invalid type", Severity.WARN
+      )
     }
     dataSources.add(LogSource(tab, name, supplier, shuffleboardEntry, followSupplier))
   }
@@ -198,7 +201,7 @@ object Logger {
     val log = "$severity,${Instant.now()},${DriverStation.getMatchTime()}," + "($source),$event"
     events.add(log)
     val consoleString =
-        "[$severity][${Instant.now()}][${DriverStation.getMatchTime()}] " + "($source): $event"
+      "[$severity][${Instant.now()}][${DriverStation.getMatchTime()}] " + "($source): $event"
     when (severity) {
       Severity.INFO -> println(consoleString)
       Severity.DEBUG -> println(consoleString)

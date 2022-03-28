@@ -17,15 +17,20 @@ data class Twist(val dx: LinearVelocity, val dy: LinearVelocity, val dtheta: Ang
     theta: AngularVelocity
   ) : this(translationSpeeds.first, translationSpeeds.second, theta)
 
-  constructor(twist: Twist2d, timestep: Time) : this(
-      (twist.dx / timestep.inSeconds).meters.perSecond,
-      (twist.dy / timestep.inSeconds).meters.perSecond,
-      (twist.dtheta / timestep.inSeconds).radians.perSecond)
+  constructor(
+    twist: Twist2d,
+    timestep: Time
+  ) : this(
+    (twist.dx / timestep.inSeconds).meters.perSecond,
+    (twist.dy / timestep.inSeconds).meters.perSecond,
+    (twist.dtheta / timestep.inSeconds).radians.perSecond
+  )
 
   fun toTwist2d(timestep: Time): Twist2d {
     return Twist2d(
-        dx.inMetersPerSecond * timestep.inSeconds,
-        dy.inMetersPerSecond * timestep.inSeconds,
-        dtheta.inRadiansPerSecond * timestep.inSeconds)
+      dx.inMetersPerSecond * timestep.inSeconds,
+      dy.inMetersPerSecond * timestep.inSeconds,
+      dtheta.inRadiansPerSecond * timestep.inSeconds
+    )
   }
 }
