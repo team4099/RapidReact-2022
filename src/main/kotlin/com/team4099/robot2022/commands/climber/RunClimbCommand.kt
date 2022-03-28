@@ -5,7 +5,7 @@ import com.team4099.robot2022.subsystems.climber.TelescopingClimber
 import edu.wpi.first.wpilibj2.command.CommandBase
 
 class RunClimbCommand(val telescopingClimber: TelescopingClimber, val pivotClimber: PivotClimber) :
-    CommandBase() {
+  CommandBase() {
   init {
     addRequirements(telescopingClimber, pivotClimber)
   }
@@ -94,7 +94,7 @@ class RunClimbCommand(val telescopingClimber: TelescopingClimber, val pivotClimb
 
   override fun isFinished(): Boolean {
     return telescopingClimber.currentState.correspondingDesiredState ==
-        telescopingClimber.desiredState // &&
+      telescopingClimber.desiredState // &&
     //        pivotClimber.currentState.correspondingDesiredState == pivotClimber.desiredState
   }
 }

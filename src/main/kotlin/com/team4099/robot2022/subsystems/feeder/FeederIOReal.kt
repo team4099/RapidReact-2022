@@ -35,17 +35,21 @@ object FeederIOReal : FeederIO {
     floorMotor.configFactoryDefault()
     verticalMotor.configFactoryDefault()
     floorMotor.configSupplyCurrentLimit(
-        SupplyCurrentLimitConfiguration(
-            true,
-            FeederConstants.FLOOR_SUPPLY_CURRENT_LIMIT,
-            FeederConstants.FLOOR_SUPPLY_CURRENT_LIMIT,
-            200.0))
+      SupplyCurrentLimitConfiguration(
+        true,
+        FeederConstants.FLOOR_SUPPLY_CURRENT_LIMIT,
+        FeederConstants.FLOOR_SUPPLY_CURRENT_LIMIT,
+        200.0
+      )
+    )
     verticalMotor.configSupplyCurrentLimit(
-        SupplyCurrentLimitConfiguration(
-            true,
-            FeederConstants.VERTICAL_SUPPLY_CURRENT_LIMIT,
-            FeederConstants.VERTICAL_SUPPLY_CURRENT_LIMIT,
-            200.0))
+      SupplyCurrentLimitConfiguration(
+        true,
+        FeederConstants.VERTICAL_SUPPLY_CURRENT_LIMIT,
+        FeederConstants.VERTICAL_SUPPLY_CURRENT_LIMIT,
+        200.0
+      )
+    )
 
     // temp values
     floorMotor.enableVoltageCompensation(true)

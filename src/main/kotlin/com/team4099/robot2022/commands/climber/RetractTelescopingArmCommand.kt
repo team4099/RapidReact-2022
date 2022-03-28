@@ -25,29 +25,34 @@ class RetractTelescopingArmCommand(val telescopingClimber: TelescopingClimber) :
     telescopingClimber.activelyHold = true
 
     leftTelescopingProfile =
-        TrapezoidProfile(
-            telescopingClimber.constraints,
-            TrapezoidProfile.State(telescopingClimber.desiredState.position.inMeters, 0.0),
-            TrapezoidProfile.State(
-                telescopingClimber.inputs.leftPosition.inMeters,
-                telescopingClimber.inputs.leftVelocity.inMetersPerSecond))
+      TrapezoidProfile(
+        telescopingClimber.constraints,
+        TrapezoidProfile.State(telescopingClimber.desiredState.position.inMeters, 0.0),
+        TrapezoidProfile.State(
+          telescopingClimber.inputs.leftPosition.inMeters,
+          telescopingClimber.inputs.leftVelocity.inMetersPerSecond
+        )
+      )
 
     rightTelescopingProfile =
-        TrapezoidProfile(
-            telescopingClimber.constraints,
-            TrapezoidProfile.State(telescopingClimber.desiredState.position.inMeters, 0.0),
-            TrapezoidProfile.State(
-                telescopingClimber.inputs.rightPosition.inMeters,
-                telescopingClimber.inputs.rightVelocity.inMetersPerSecond))
+      TrapezoidProfile(
+        telescopingClimber.constraints,
+        TrapezoidProfile.State(telescopingClimber.desiredState.position.inMeters, 0.0),
+        TrapezoidProfile.State(
+          telescopingClimber.inputs.rightPosition.inMeters,
+          telescopingClimber.inputs.rightVelocity.inMetersPerSecond
+        )
+      )
 
     startTime = Clock.fpgaTime
   }
 
   override fun execute() {
     telescopingClimber.setPosition(
-        leftTelescopingProfile.calculate((Clock.fpgaTime - startTime).inSeconds),
-        rightTelescopingProfile.calculate((Clock.fpgaTime - startTime).inSeconds),
-        isUnderLoad = true)
+      leftTelescopingProfile.calculate((Clock.fpgaTime - startTime).inSeconds),
+      rightTelescopingProfile.calculate((Clock.fpgaTime - startTime).inSeconds),
+      isUnderLoad = true
+    )
 
     Logger.getInstance().recordOutput("ActiveCommands/RetractTelescopingArmCommand", true)
   }
@@ -56,6 +61,6 @@ class RetractTelescopingArmCommand(val telescopingClimber: TelescopingClimber) :
     //    return telescopingClimber.currentState.correspondingDesiredState ==
     //        telescopingClimber.desiredState
     return leftTelescopingProfile.isFinished((Clock.fpgaTime - startTime).inSeconds) &&
-        rightTelescopingProfile.isFinished((Clock.fpgaTime - startTime).inSeconds)
+      rightTelescopingProfile.isFinished((Clock.fpgaTime - startTime).inSeconds)
   }
 }

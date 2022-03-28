@@ -20,9 +20,11 @@ class OneBallFenderShotThenTaxi(
 ) : SequentialCommandGroup() {
   init {
     addCommands(
-        ResetGyroCommand(drivetrain, startingAngle),
-        ParallelDeadlineGroup(
-            WaitCommand(5.0), SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder))),
-        OpenLoopReverseCommand(drivetrain).withTimeout(6.0))
+      ResetGyroCommand(drivetrain, startingAngle),
+      ParallelDeadlineGroup(
+        WaitCommand(5.0), SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder))
+      ),
+      OpenLoopReverseCommand(drivetrain).withTimeout(6.0)
+    )
   }
 }

@@ -22,15 +22,17 @@ class Shooter(val io: ShooterIO) : SubsystemBase() {
   private val kD = TunableNumber("Shooter/kD", ShooterConstants.SHOOTER_KD)
 
   private val nearSpeedRM =
-      TunableNumber(
-          "Shooter/targetRPM",
-          ShooterConstants.ShooterState.SPIN_UP_UPPER.targetVelocity.inRotationsPerMinute)
+    TunableNumber(
+      "Shooter/targetRPM",
+      ShooterConstants.ShooterState.SPIN_UP_UPPER.targetVelocity.inRotationsPerMinute
+    )
 
   private val filterSize =
-      TunableNumber("Shooter/filterSize", ShooterConstants.FILTER_SIZE.toDouble())
+    TunableNumber("Shooter/filterSize", ShooterConstants.FILTER_SIZE.toDouble())
   private val shooterToleranceRPM =
-      TunableNumber(
-          "Shooter/toleranceRPM", ShooterConstants.TARGET_VELOCITY_THRESHOLD.inRotationsPerMinute)
+    TunableNumber(
+      "Shooter/toleranceRPM", ShooterConstants.TARGET_VELOCITY_THRESHOLD.inRotationsPerMinute
+    )
 
   var state = ShooterConstants.ShooterState.OFF
     set(state) {
@@ -70,11 +72,12 @@ class Shooter(val io: ShooterIO) : SubsystemBase() {
     //                .around(targetVelocity.inRotationsPerMinute, shooterToleranceRPM.value)
 
     isOnTarget =
-        targetVelocity != 0.0.rotations.perMinute &&
-            lastRecordedSpeeds.all {
-              it.inRotationsPerMinute
-                  .around(targetVelocity.inRotationsPerMinute, shooterToleranceRPM.value)
-            }
+      targetVelocity != 0.0.rotations.perMinute &&
+      lastRecordedSpeeds.all {
+        it.inRotationsPerMinute.around(
+          targetVelocity.inRotationsPerMinute, shooterToleranceRPM.value
+        )
+      }
 
     Logger.getInstance().processInputs("Shooter", inputs)
     Logger.getInstance().recordOutput("Shooter/setpointRPM", targetVelocity.inRotationsPerMinute)

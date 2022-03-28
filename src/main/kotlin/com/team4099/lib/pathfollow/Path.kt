@@ -60,28 +60,38 @@ class Path constructor(val startingPose: Pose, val endingPose: Pose) {
 
     // Make the starting curvature directly towards the first point
     val startHeading =
-        atan2(
-                ((waypoints.firstOrNull() ?: endingPose.translation).y - startingPose.y).inMeters,
-                ((waypoints.firstOrNull() ?: endingPose.translation).x - startingPose.x).inMeters)
-            .radians
+      atan2(
+        ((waypoints.firstOrNull() ?: endingPose.translation).y - startingPose.y).inMeters,
+        ((waypoints.firstOrNull() ?: endingPose.translation).x - startingPose.x).inMeters
+      )
+        .radians
 
     val endHeading =
-        ((atan2(
-                ((waypoints.lastOrNull() ?: startingPose.translation).y - endingPose.y).inMeters,
-                ((waypoints.lastOrNull() ?: startingPose.translation).x - endingPose.x).inMeters) +
-                PI) % (2 * PI)).radians
+      (
+        (
+          atan2(
+            ((waypoints.lastOrNull() ?: startingPose.translation).y - endingPose.y).inMeters,
+            ((waypoints.lastOrNull() ?: startingPose.translation).x - endingPose.x).inMeters
+          ) +
+            PI
+          ) % (2 * PI)
+        )
+        .radians
 
     val controlVectors =
-        SplineHelper.getCubicControlVectorsFromWaypoints(
-            startingPose.copy(theta = startHeading).pose2d,
-            waypointTranslation2ds,
-            endingPose.copy(theta = endHeading).pose2d)
+      SplineHelper.getCubicControlVectorsFromWaypoints(
+        startingPose.copy(theta = startHeading).pose2d,
+        waypointTranslation2ds,
+        endingPose.copy(theta = endHeading).pose2d
+      )
 
     // Create a list of splines
     val splines =
-        listOf(
-            *SplineHelper.getCubicSplinesFromControlVectors(
-                controlVectors.first(), waypointTranslation2ds, controlVectors.last()))
+      listOf(
+        *SplineHelper.getCubicSplinesFromControlVectors(
+          controlVectors.first(), waypointTranslation2ds, controlVectors.last()
+        )
+      )
 
     // Create the vector of spline points.
     splinePoints = mutableListOf()

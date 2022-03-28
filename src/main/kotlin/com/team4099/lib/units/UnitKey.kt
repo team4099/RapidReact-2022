@@ -9,7 +9,7 @@ class Product<A : UnitKey, B : UnitKey> : UnitKey
 class Fraction<N : UnitKey, D : UnitKey> : UnitKey
 
 operator fun <T : UnitKey, K : UnitKey> Value<Fraction<K, T>>.times(o: Value<T>): Value<K> =
-    Value(value * o.value)
+  Value(value * o.value)
 
 typealias Inverse<K> = Fraction<Unitless, K>
 

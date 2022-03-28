@@ -29,15 +29,15 @@ class Intake(val io: IntakeIO) : SubsystemBase() {
   val intakingBall: Boolean
     get() {
       return inputs.rollerStatorCurrent >= LEDConstants.INTAKE_CURRENT_THRESHOLD &&
-          rollerState == IntakeConstants.RollerState.IN &&
-          (Clock.fpgaTime - extendTime) >= IntakeConstants.INTAKING_WAIT_BEFORE_DETECT_CURRENT_SPIKE
+        rollerState == IntakeConstants.RollerState.IN &&
+        (Clock.fpgaTime - extendTime) >= IntakeConstants.INTAKING_WAIT_BEFORE_DETECT_CURRENT_SPIKE
     }
 
   val outtakingBall: Boolean
     get() {
       return inputs.rollerStatorCurrent >= LEDConstants.OUTAKE_CURRENT_THRESHOLD &&
-          rollerState == IntakeConstants.RollerState.OUT &&
-          (Clock.fpgaTime - extendTime) >= IntakeConstants.INTAKING_WAIT_BEFORE_DETECT_CURRENT_SPIKE
+        rollerState == IntakeConstants.RollerState.OUT &&
+        (Clock.fpgaTime - extendTime) >= IntakeConstants.INTAKING_WAIT_BEFORE_DETECT_CURRENT_SPIKE
     }
 
   var extendTime = Clock.fpgaTime
@@ -59,7 +59,7 @@ class Intake(val io: IntakeIO) : SubsystemBase() {
     }
 
     keepIntakingLEDState =
-        Clock.fpgaTime - lastIntakeSpikeTime <= IntakeConstants.WAIT_FOR_STATE_TO_CHANGE
+      Clock.fpgaTime - lastIntakeSpikeTime <= IntakeConstants.WAIT_FOR_STATE_TO_CHANGE
 
     Logger.getInstance().processInputs("Intake", inputs)
     Logger.getInstance().recordOutput("Intake/rollerState", rollerState.name)

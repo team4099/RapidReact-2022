@@ -20,10 +20,11 @@ object ShooterIOReal : ShooterIO {
   private val followerMotor = TalonFX(ShooterConstants.FOLLOWER_MOTOR_ID, CANIVORE_NAME)
 
   private val shooterSensor =
-      ctreAngularMechanismSensor(
-          leaderMotor,
-          ShooterConstants.SHOOTER_SENSOR_CPR,
-          ShooterConstants.SHOOTER_SENSOR_GEAR_RATIO)
+    ctreAngularMechanismSensor(
+      leaderMotor,
+      ShooterConstants.SHOOTER_SENSOR_CPR,
+      ShooterConstants.SHOOTER_SENSOR_GEAR_RATIO
+    )
 
   init {
     leaderMotor.configFactoryDefault()
@@ -39,17 +40,21 @@ object ShooterIOReal : ShooterIO {
     followerMotor.configVoltageCompSaturation(12.0)
 
     leaderMotor.configSupplyCurrentLimit(
-        SupplyCurrentLimitConfiguration(
-            true,
-            ShooterConstants.SUPPLY_CURRENT_LIMIT,
-            ShooterConstants.SUPPLY_CURRENT_LIMIT,
-            1000.0))
+      SupplyCurrentLimitConfiguration(
+        true,
+        ShooterConstants.SUPPLY_CURRENT_LIMIT,
+        ShooterConstants.SUPPLY_CURRENT_LIMIT,
+        1000.0
+      )
+    )
     followerMotor.configSupplyCurrentLimit(
-        SupplyCurrentLimitConfiguration(
-            true,
-            ShooterConstants.SUPPLY_CURRENT_LIMIT,
-            ShooterConstants.SUPPLY_CURRENT_LIMIT,
-            1000.0))
+      SupplyCurrentLimitConfiguration(
+        true,
+        ShooterConstants.SUPPLY_CURRENT_LIMIT,
+        ShooterConstants.SUPPLY_CURRENT_LIMIT,
+        1000.0
+      )
+    )
 
     leaderMotor.config_kP(0, ShooterConstants.SHOOTER_KP)
     leaderMotor.config_kI(0, ShooterConstants.SHOOTER_KI)
@@ -151,12 +156,15 @@ object ShooterIOReal : ShooterIO {
       setOpenLoop(0.0)
     } else {
       leaderMotor.set(
-          ControlMode.Velocity,
-          shooterSensor.velocityToRawUnits(velocity),
-          DemandType.ArbitraryFeedForward,
-          (ShooterConstants.SHOOTER_KS_VOLTS +
-              ShooterConstants.SHOOTER_KV_VOLTS_PER_RADIAN_PER_SECOND *
-                  velocity.inRadiansPerSecond) / 12.0)
+        ControlMode.Velocity,
+        shooterSensor.velocityToRawUnits(velocity),
+        DemandType.ArbitraryFeedForward,
+        (
+          ShooterConstants.SHOOTER_KS_VOLTS +
+            ShooterConstants.SHOOTER_KV_VOLTS_PER_RADIAN_PER_SECOND *
+            velocity.inRadiansPerSecond
+          ) / 12.0
+      )
     }
   }
 

@@ -16,9 +16,9 @@ import com.team4099.lib.units.inRadiansPerSecond
 import com.team4099.lib.units.inRadiansPerSecondPerSecond
 import com.team4099.lib.units.perSecond
 import com.team4099.robot2022.config.constants.DrivetrainConstants
+import org.littletonrobotics.junction.Logger
 import kotlin.math.IEEErem
 import kotlin.math.withSign
-import org.littletonrobotics.junction.Logger
 
 class SwerveModule(val io: SwerveModuleIO) {
   val inputs = SwerveModuleIO.SwerveModuleIOInputs()
@@ -31,20 +31,22 @@ class SwerveModule(val io: SwerveModuleIO) {
   private var shouldInvert = false
 
   private val steeringkP =
-      TunableNumber("Drivetrain/moduleSteeringkP", DrivetrainConstants.PID.STEERING_KP)
+    TunableNumber("Drivetrain/moduleSteeringkP", DrivetrainConstants.PID.STEERING_KP)
   private val steeringkI =
-      TunableNumber("Drivetrain/moduleSteeringkI", DrivetrainConstants.PID.STEERING_KI)
+    TunableNumber("Drivetrain/moduleSteeringkI", DrivetrainConstants.PID.STEERING_KI)
   private val steeringkD =
-      TunableNumber("Drivetrain/moduleSteeringkD", DrivetrainConstants.PID.STEERING_KD)
+    TunableNumber("Drivetrain/moduleSteeringkD", DrivetrainConstants.PID.STEERING_KD)
 
   private val steeringMaxVel =
-      TunableNumber(
-          "Drivetrain/moduleSteeringMaxVelRadPerSec",
-          DrivetrainConstants.STEERING_VEL_MAX.inRadiansPerSecond)
+    TunableNumber(
+      "Drivetrain/moduleSteeringMaxVelRadPerSec",
+      DrivetrainConstants.STEERING_VEL_MAX.inRadiansPerSecond
+    )
   private val steeringMaxAccel =
-      TunableNumber(
-          "Drivetrain/moduleSteeringMaxAccelRadPerSecSq",
-          DrivetrainConstants.STEERING_ACCEL_MAX.inRadiansPerSecondPerSecond)
+    TunableNumber(
+      "Drivetrain/moduleSteeringMaxAccelRadPerSecSq",
+      DrivetrainConstants.STEERING_ACCEL_MAX.inRadiansPerSecondPerSecond
+    )
 
   private val drivekP = TunableNumber("Drivetrain/moduleDrivekP", DrivetrainConstants.PID.DRIVE_KP)
   private val drivekI = TunableNumber("Drivetrain/moduleDrivekI", DrivetrainConstants.PID.DRIVE_KI)
@@ -61,8 +63,9 @@ class SwerveModule(val io: SwerveModuleIO) {
 
     if (steeringMaxVel.hasChanged() || steeringMaxAccel.hasChanged()) {
       io.configureSteeringMotionMagic(
-          steeringMaxVel.value.radians.perSecond,
-          steeringMaxAccel.value.radians.perSecond.perSecond)
+        steeringMaxVel.value.radians.perSecond,
+        steeringMaxAccel.value.radians.perSecond.perSecond
+      )
     }
 
     if (drivekP.hasChanged() || drivekI.hasChanged() || drivekD.hasChanged()) {
@@ -71,20 +74,23 @@ class SwerveModule(val io: SwerveModuleIO) {
 
     Logger.getInstance().processInputs(io.label, inputs)
     Logger.getInstance()
-        .recordOutput(
-            "${io.label}/driveSpeedSetpointMetersPerSecond",
-            if (!shouldInvert) speedSetPoint.inMetersPerSecond
-            else -speedSetPoint.inMetersPerSecond)
+      .recordOutput(
+        "${io.label}/driveSpeedSetpointMetersPerSecond",
+        if (!shouldInvert) speedSetPoint.inMetersPerSecond
+        else -speedSetPoint.inMetersPerSecond
+      )
     Logger.getInstance()
-        .recordOutput(
-            "${io.label}/driveAccelSetpointMetersPerSecondSq",
-            accelerationSetPoint.inMetersPerSecondPerSecond)
+      .recordOutput(
+        "${io.label}/driveAccelSetpointMetersPerSecondSq",
+        accelerationSetPoint.inMetersPerSecondPerSecond
+      )
     Logger.getInstance()
-        .recordOutput("${io.label}/steeringSetpointDegrees", steeringSetPoint.inDegrees)
+      .recordOutput("${io.label}/steeringSetpointDegrees", steeringSetPoint.inDegrees)
     Logger.getInstance()
-        .recordOutput(
-            "${io.label}/steeringValueDegreesWithMod",
-            inputs.steeringPosition.inDegrees.IEEErem(360.0))
+      .recordOutput(
+        "${io.label}/steeringValueDegreesWithMod",
+        inputs.steeringPosition.inDegrees.IEEErem(360.0)
+      )
   }
 
   /**
@@ -105,7 +111,7 @@ class SwerveModule(val io: SwerveModuleIO) {
       return
     }
     var steeringDifference =
-        (steering - inputs.steeringPosition).inRadians.IEEErem(2 * Math.PI).radians
+      (steering - inputs.steeringPosition).inRadians.IEEErem(2 * Math.PI).radians
 
     shouldInvert = steeringDifference.absoluteValue > (Math.PI / 2).radians && optimize
     if (shouldInvert) {
@@ -113,17 +119,17 @@ class SwerveModule(val io: SwerveModuleIO) {
     }
 
     speedSetPoint =
-        if (shouldInvert) {
-          speed * -1
-        } else {
-          speed
-        }
+      if (shouldInvert) {
+        speed * -1
+      } else {
+        speed
+      }
     accelerationSetPoint =
-        if (shouldInvert) {
-          acceleration * -1
-        } else {
-          acceleration
-        }
+      if (shouldInvert) {
+        acceleration * -1
+      } else {
+        acceleration
+      }
     steeringSetPoint = inputs.steeringPosition + steeringDifference
     //    driveFalcon.set(speedSetPoint / DrivetrainConstants.DRIVE_SETPOINT_MAX)
 
@@ -132,7 +138,7 @@ class SwerveModule(val io: SwerveModuleIO) {
 
   fun setOpenLoop(steering: Angle, speed: Double, optimize: Boolean = true) {
     var steeringDifference =
-        (steering - inputs.steeringPosition).inRadians.IEEErem(2 * Math.PI).radians
+      (steering - inputs.steeringPosition).inRadians.IEEErem(2 * Math.PI).radians
 
     shouldInvert = steeringDifference.absoluteValue > (Math.PI / 2).radians && optimize
     if (shouldInvert) {
@@ -140,11 +146,11 @@ class SwerveModule(val io: SwerveModuleIO) {
     }
 
     val outputPower =
-        if (shouldInvert) {
-          speed * -1
-        } else {
-          speed
-        }
+      if (shouldInvert) {
+        speed * -1
+      } else {
+        speed
+      }
     steeringSetPoint = inputs.steeringPosition + steeringDifference
     io.setOpenLoop(steeringSetPoint, outputPower)
   }

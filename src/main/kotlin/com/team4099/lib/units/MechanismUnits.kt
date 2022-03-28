@@ -54,7 +54,7 @@ class LinearMechanismSensor(
 
   override fun accelerationToRawUnits(acceleration: Value<Acceleration<Meter>>): Double {
     val linearUnscaledVelocity =
-        velocity.inMetersPerSecond * timescale.velocity.inSeconds * timescale.acceleration.inSeconds
+      velocity.inMetersPerSecond * timescale.velocity.inSeconds * timescale.acceleration.inSeconds
     return linearUnscaledVelocity / diameter.inMeters / ratio / PI
   }
 }
@@ -74,12 +74,14 @@ class AngularMechanismSensor(
   override fun positionToRawUnits(position: Value<Radian>): Double = position.inRotations / ratio
 
   override fun velocityToRawUnits(velocity: Value<Velocity<Radian>>): Double =
-      (velocity.inRotationsPerSecond * timescale.velocity.inSeconds) / ratio
+    (velocity.inRotationsPerSecond * timescale.velocity.inSeconds) / ratio
 
   override fun accelerationToRawUnits(acceleration: Value<Acceleration<Radian>>): Double =
-      (acceleration.inRotationsPerSecondPerSecond *
-          timescale.velocity.inSeconds *
-          timescale.acceleration.inSeconds) / ratio
+    (
+      acceleration.inRotationsPerSecondPerSecond *
+        timescale.velocity.inSeconds *
+        timescale.acceleration.inSeconds
+      ) / ratio
 }
 
 fun ctreAngularMechanismSensor(
@@ -88,10 +90,11 @@ fun ctreAngularMechanismSensor(
   ratio: Double
 ): AngularMechanismSensor {
   return AngularMechanismSensor(
-      ratio / sensorCpr,
-      Timescale.CTRE,
-      { controller.selectedSensorVelocity.toDouble() },
-      { controller.selectedSensorPosition.toDouble() })
+    ratio / sensorCpr,
+    Timescale.CTRE,
+    { controller.selectedSensorVelocity.toDouble() },
+    { controller.selectedSensorPosition.toDouble() }
+  )
 }
 
 fun ctreLinearMechanismSensor(
@@ -101,18 +104,20 @@ fun ctreLinearMechanismSensor(
   diameter: Length
 ): LinearMechanismSensor {
   return LinearMechanismSensor(
-      diameter,
-      ratio / sensorCpr,
-      Timescale.CTRE,
-      { controller.selectedSensorVelocity.toDouble() },
-      { controller.selectedSensorPosition.toDouble() })
+    diameter,
+    ratio / sensorCpr,
+    Timescale.CTRE,
+    { controller.selectedSensorVelocity.toDouble() },
+    { controller.selectedSensorPosition.toDouble() }
+  )
 }
 
 fun sparkMaxAngularMechanismSensor(controller: CANSparkMax, ratio: Double): AngularMechanismSensor {
   val encoder = controller.encoder
 
   return AngularMechanismSensor(
-      ratio, Timescale.REV_NEO, { encoder.velocity }, { encoder.position })
+    ratio, Timescale.REV_NEO, { encoder.velocity }, { encoder.position }
+  )
 }
 
 fun sparkMaxLinearMechanismSensor(
@@ -123,5 +128,6 @@ fun sparkMaxLinearMechanismSensor(
   val encoder = controller.encoder
 
   return LinearMechanismSensor(
-      diameter, ratio, Timescale.REV_NEO, { encoder.velocity }, { encoder.position })
+    diameter, ratio, Timescale.REV_NEO, { encoder.velocity }, { encoder.position }
+  )
 }

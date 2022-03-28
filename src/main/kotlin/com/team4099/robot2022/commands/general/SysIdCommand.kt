@@ -4,10 +4,10 @@ import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import edu.wpi.first.wpilibj2.command.CommandBase
 import edu.wpi.first.wpilibj2.command.Subsystem
+import org.littletonrobotics.junction.Logger
 import java.util.function.BiConsumer
 import java.util.function.Consumer
 import java.util.function.Supplier
-import org.littletonrobotics.junction.Logger
 
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
@@ -60,11 +60,11 @@ class SysIdCommand : CommandBase {
     // Check if running the correct test
     val test = SmartDashboard.getString("SysIdTest", "Drivetrain")
     val correctTest: Boolean =
-        if (isDriveTrain) {
-          test == "Drivetrain" || test == "Drivetrain (Angular)"
-        } else {
-          test == "Arm" || test == "Elevator" || test == "Simple"
-        }
+      if (isDriveTrain) {
+        test == "Drivetrain" || test == "Drivetrain (Angular)"
+      } else {
+        test == "Arm" || test == "Elevator" || test == "Simple"
+      }
     SmartDashboard.putBoolean("SysIdWrongMech", !correctTest)
 
     // Wrong test, prevent movement
@@ -82,11 +82,11 @@ class SysIdCommand : CommandBase {
     val voltageCommand = SmartDashboard.getNumber("SysIdVoltageCommand", 0.0)
     val rotate = SmartDashboard.getBoolean("SysIdRotate", false)
     val baseVoltage: Double =
-        when (testType) {
-          "Quasistatic" -> voltageCommand * (timestamp - startTime)
-          "Dynamic" -> voltageCommand
-          else -> 0.0
-        }
+      when (testType) {
+        "Quasistatic" -> voltageCommand * (timestamp - startTime)
+        "Dynamic" -> voltageCommand
+        else -> 0.0
+      }
     val primaryVoltage = baseVoltage * if (rotate) -1 else 1
 
     // Set output and get new data

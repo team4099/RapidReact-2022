@@ -23,17 +23,19 @@ class TelescopingClimber(val io: TelescopingClimberIO) : SubsystemBase() {
   val inputs = TelescopingClimberIO.TelescopingClimberIOInputs()
 
   val loadedFeedForward: ElevatorFeedforward =
-      ElevatorFeedforward(
-          TelescopingClimberConstants.LOAD_KS.inVolts,
-          TelescopingClimberConstants.LOAD_KG.inVolts,
-          (1.meters.perSecond * TelescopingClimberConstants.LOAD_KV).inVolts,
-          (1.meters.perSecond.perSecond * TelescopingClimberConstants.LOAD_KA).inVolts)
+    ElevatorFeedforward(
+      TelescopingClimberConstants.LOAD_KS.inVolts,
+      TelescopingClimberConstants.LOAD_KG.inVolts,
+      (1.meters.perSecond * TelescopingClimberConstants.LOAD_KV).inVolts,
+      (1.meters.perSecond.perSecond * TelescopingClimberConstants.LOAD_KA).inVolts
+    )
   val noLoadFeedForward: ElevatorFeedforward =
-      ElevatorFeedforward(
-          TelescopingClimberConstants.NO_LOAD_KS.inVolts,
-          TelescopingClimberConstants.NO_LOAD_KG.inVolts,
-          (1.meters.perSecond * TelescopingClimberConstants.NO_LOAD_KV).inVolts,
-          (1.meters.perSecond.perSecond * TelescopingClimberConstants.NO_LOAD_KA).inVolts)
+    ElevatorFeedforward(
+      TelescopingClimberConstants.NO_LOAD_KS.inVolts,
+      TelescopingClimberConstants.NO_LOAD_KG.inVolts,
+      (1.meters.perSecond * TelescopingClimberConstants.NO_LOAD_KV).inVolts,
+      (1.meters.perSecond.perSecond * TelescopingClimberConstants.NO_LOAD_KA).inVolts
+    )
 
   var activelyHold = false
 
@@ -50,26 +52,29 @@ class TelescopingClimber(val io: TelescopingClimberIO) : SubsystemBase() {
     Logger.getInstance().recordOutput("TelescopingClimber/desiredState", desiredState.name)
     Logger.getInstance().recordOutput("TelescopingClimber/currentState", currentState.name)
     Logger.getInstance()
-        .recordOutput(
-            "TelescopingClimber/leftPositionSetpointInches", leftSetpoint.position.meters.inInches)
+      .recordOutput(
+        "TelescopingClimber/leftPositionSetpointInches", leftSetpoint.position.meters.inInches
+      )
     Logger.getInstance()
-        .recordOutput("TelescopingClimber/leftVelocitySetpointMetersPerSec", leftSetpoint.velocity)
+      .recordOutput("TelescopingClimber/leftVelocitySetpointMetersPerSec", leftSetpoint.velocity)
     Logger.getInstance()
-        .recordOutput(
-            "TelescopingClimber/rightPositionSetpointInches",
-            rightSetpoint.position.meters.inInches)
+      .recordOutput(
+        "TelescopingClimber/rightPositionSetpointInches",
+        rightSetpoint.position.meters.inInches
+      )
     Logger.getInstance()
-        .recordOutput(
-            "TelescopingClimber/rightVelocitySetpointMetersPerSec", rightSetpoint.velocity)
+      .recordOutput(
+        "TelescopingClimber/rightVelocitySetpointMetersPerSec", rightSetpoint.velocity
+      )
 
     Logger.getInstance()
-        .recordOutput("TelescopingClimber/leftForwardLimitReached", leftForwardLimitReached)
+      .recordOutput("TelescopingClimber/leftForwardLimitReached", leftForwardLimitReached)
     Logger.getInstance()
-        .recordOutput("TelescopingClimber/leftReverseLimitReached", leftReverseLimitReached)
+      .recordOutput("TelescopingClimber/leftReverseLimitReached", leftReverseLimitReached)
     Logger.getInstance()
-        .recordOutput("TelescopingClimber/rightForwardLimitReached", rightForwardLimitReached)
+      .recordOutput("TelescopingClimber/rightForwardLimitReached", rightForwardLimitReached)
     Logger.getInstance()
-        .recordOutput("TelescopingClimber/rightReverseLimitReached", rightReverseLimitReached)
+      .recordOutput("TelescopingClimber/rightReverseLimitReached", rightReverseLimitReached)
 
     if (kP.hasChanged() || kI.hasChanged() || kD.hasChanged()) {
       io.configPID(kP.value, kI.value, kD.value)
@@ -82,9 +87,9 @@ class TelescopingClimber(val io: TelescopingClimberIO) : SubsystemBase() {
     get() = inputs.leftPosition < TelescopingClimberConstants.REVERSE_SOFT_LIMIT
   val leftForwardThresholdLimitReached: Boolean
     get() =
-        inputs.leftPosition >
-            TelescopingClimberConstants.FORWARD_SOFT_LIMIT -
-                TelescopingClimberConstants.SLOW_TELESCOPING_THRESHOLD
+      inputs.leftPosition >
+        TelescopingClimberConstants.FORWARD_SOFT_LIMIT -
+        TelescopingClimberConstants.SLOW_TELESCOPING_THRESHOLD
 
   val rightForwardLimitReached: Boolean
     get() = inputs.rightPosition > TelescopingClimberConstants.FORWARD_SOFT_LIMIT
@@ -92,22 +97,28 @@ class TelescopingClimber(val io: TelescopingClimberIO) : SubsystemBase() {
     get() = inputs.rightPosition < TelescopingClimberConstants.REVERSE_SOFT_LIMIT
   val rightForwardThresholdLimitReached: Boolean
     get() =
-        inputs.rightPosition >
-            TelescopingClimberConstants.FORWARD_SOFT_LIMIT -
-                TelescopingClimberConstants.SLOW_TELESCOPING_THRESHOLD
+      inputs.rightPosition >
+        TelescopingClimberConstants.FORWARD_SOFT_LIMIT -
+        TelescopingClimberConstants.SLOW_TELESCOPING_THRESHOLD
 
   fun setOpenLoop(leftPower: Double, rightPower: Double, useSoftLimits: Boolean = true) {
     if (useSoftLimits &&
-        ((leftForwardLimitReached && leftPower > 0.0) ||
-            (leftReverseLimitReached && leftPower < 0.0))) {
+      (
+        (leftForwardLimitReached && leftPower > 0.0) ||
+          (leftReverseLimitReached && leftPower < 0.0)
+        )
+    ) {
       io.setLeftOpenLoop(0.0)
     } else {
       io.setLeftOpenLoop(leftPower)
     }
 
     if (useSoftLimits &&
-        ((rightForwardLimitReached && rightPower > 0.0) ||
-            (rightReverseLimitReached && rightPower < 0.0))) {
+      (
+        (rightForwardLimitReached && rightPower > 0.0) ||
+          (rightReverseLimitReached && rightPower < 0.0)
+        )
+    ) {
       io.setRightOpenLoop(0.0)
     } else {
       io.setRightOpenLoop(rightPower)
@@ -127,20 +138,33 @@ class TelescopingClimber(val io: TelescopingClimberIO) : SubsystemBase() {
   val currentState: ActualTelescopeStates
     get() {
       return when (currentPosition) {
-        in Double.NEGATIVE_INFINITY.meters..(DesiredTelescopeStates.START.position +
-                telescopingTolerance) -> ActualTelescopeStates.START
-        in (DesiredTelescopeStates.START.position +
-            telescopingTolerance)..(DesiredTelescopeStates.MAX_RETRACT.position -
-                telescopingTolerance) -> ActualTelescopeStates.BETWEEN_START_AND_MAX_RETRACT
-        in (DesiredTelescopeStates.MAX_RETRACT.position -
-            telescopingTolerance)..(DesiredTelescopeStates.MAX_RETRACT.position +
-                telescopingTolerance) -> ActualTelescopeStates.MAX_RETRACT
-        in (DesiredTelescopeStates.MAX_RETRACT.position +
-            telescopingTolerance)..(DesiredTelescopeStates.MAX_EXTENSION.position -
-                telescopingTolerance) -> ActualTelescopeStates.BETWEEN_MAX_RETRACT_AND_MAX_EXTENSION
-        in (DesiredTelescopeStates.MAX_EXTENSION.position -
-            telescopingTolerance)..Double.POSITIVE_INFINITY.meters ->
-            ActualTelescopeStates.MAX_EXTENSION
+        in Double.NEGATIVE_INFINITY.meters..(
+          DesiredTelescopeStates.START.position +
+            telescopingTolerance
+          ) -> ActualTelescopeStates.START
+        in (DesiredTelescopeStates.START.position + telescopingTolerance)..(
+          DesiredTelescopeStates
+            .MAX_RETRACT
+            .position - telescopingTolerance
+          ) ->
+          ActualTelescopeStates.BETWEEN_START_AND_MAX_RETRACT
+        in (
+          DesiredTelescopeStates.MAX_RETRACT.position -
+            telescopingTolerance
+          )..(
+          DesiredTelescopeStates.MAX_RETRACT.position +
+            telescopingTolerance
+          ) -> ActualTelescopeStates.MAX_RETRACT
+        in (
+          DesiredTelescopeStates.MAX_RETRACT.position +
+            telescopingTolerance
+          )..(
+          DesiredTelescopeStates.MAX_EXTENSION.position -
+            telescopingTolerance
+          ) -> ActualTelescopeStates.BETWEEN_MAX_RETRACT_AND_MAX_EXTENSION
+        in (DesiredTelescopeStates.MAX_EXTENSION.position - telescopingTolerance)..Double
+          .POSITIVE_INFINITY
+          .meters -> ActualTelescopeStates.MAX_EXTENSION
         else -> {
           ActualTelescopeStates.START
         }
@@ -148,13 +172,14 @@ class TelescopingClimber(val io: TelescopingClimberIO) : SubsystemBase() {
     }
 
   var constraints: TrapezoidProfile.Constraints =
-      TrapezoidProfile.Constraints(
-          TelescopingClimberConstants.MAX_VELOCITY.inMetersPerSecond,
-          TelescopingClimberConstants.MAX_ACCELERATION.inMetersPerSecondPerSecond)
+    TrapezoidProfile.Constraints(
+      TelescopingClimberConstants.MAX_VELOCITY.inMetersPerSecond,
+      TelescopingClimberConstants.MAX_ACCELERATION.inMetersPerSecondPerSecond
+    )
   var leftSetpoint: TrapezoidProfile.State =
-      TrapezoidProfile.State(inputs.leftPosition.inMeters, inputs.leftVelocity.inMetersPerSecond)
+    TrapezoidProfile.State(inputs.leftPosition.inMeters, inputs.leftVelocity.inMetersPerSecond)
   var rightSetpoint: TrapezoidProfile.State =
-      TrapezoidProfile.State(inputs.rightPosition.inMeters, inputs.rightVelocity.inMetersPerSecond)
+    TrapezoidProfile.State(inputs.rightPosition.inMeters, inputs.rightVelocity.inMetersPerSecond)
 
   fun setPosition(
     leftSetpoint: TrapezoidProfile.State,
@@ -163,52 +188,64 @@ class TelescopingClimber(val io: TelescopingClimberIO) : SubsystemBase() {
   ) {
 
     val leftAccel =
-        ((leftSetpoint.velocity - this.leftSetpoint.velocity) / (0.02)).meters.perSecond.perSecond
+      ((leftSetpoint.velocity - this.leftSetpoint.velocity) / (0.02)).meters.perSecond.perSecond
     val rightAccel =
-        ((rightSetpoint.velocity - this.rightSetpoint.velocity) / (0.02)).meters.perSecond.perSecond
+      ((rightSetpoint.velocity - this.rightSetpoint.velocity) / (0.02)).meters.perSecond.perSecond
 
     this.leftSetpoint = leftSetpoint
     this.rightSetpoint = rightSetpoint
 
     if (!isUnderLoad) {
       io.setLeftPosition(
-          leftSetpoint.position.meters,
-          noLoadFeedForward.calculate(leftSetpoint.velocity, leftAccel.inMetersPerSecondPerSecond)
-              .volts)
+        leftSetpoint.position.meters,
+        noLoadFeedForward.calculate(leftSetpoint.velocity, leftAccel.inMetersPerSecondPerSecond)
+          .volts
+      )
 
       Logger.getInstance()
-          .recordOutput(
-              "TelescopingClimber/leftFeedForwardVolts",
-              noLoadFeedForward.calculate(
-                  leftSetpoint.velocity, leftAccel.inMetersPerSecondPerSecond))
+        .recordOutput(
+          "TelescopingClimber/leftFeedForwardVolts",
+          noLoadFeedForward.calculate(
+            leftSetpoint.velocity, leftAccel.inMetersPerSecondPerSecond
+          )
+        )
       io.setRightPosition(
-          rightSetpoint.position.meters,
-          noLoadFeedForward.calculate(rightSetpoint.velocity, rightAccel.inMetersPerSecondPerSecond)
-              .volts)
+        rightSetpoint.position.meters,
+        noLoadFeedForward.calculate(rightSetpoint.velocity, rightAccel.inMetersPerSecondPerSecond)
+          .volts
+      )
       Logger.getInstance()
-          .recordOutput(
-              "TelescopingClimber/rightFeedForwardVolts",
-              noLoadFeedForward.calculate(
-                  rightSetpoint.velocity, rightAccel.inMetersPerSecondPerSecond))
+        .recordOutput(
+          "TelescopingClimber/rightFeedForwardVolts",
+          noLoadFeedForward.calculate(
+            rightSetpoint.velocity, rightAccel.inMetersPerSecondPerSecond
+          )
+        )
     } else {
       io.setLeftPosition(
-          leftSetpoint.position.meters,
-          loadedFeedForward.calculate(leftSetpoint.velocity, leftAccel.inMetersPerSecondPerSecond)
-              .volts)
+        leftSetpoint.position.meters,
+        loadedFeedForward.calculate(leftSetpoint.velocity, leftAccel.inMetersPerSecondPerSecond)
+          .volts
+      )
       Logger.getInstance()
-          .recordOutput(
-              "TelescopingClimber/leftFeedForwardVolts",
-              loadedFeedForward.calculate(
-                  leftSetpoint.velocity, leftAccel.inMetersPerSecondPerSecond))
+        .recordOutput(
+          "TelescopingClimber/leftFeedForwardVolts",
+          loadedFeedForward.calculate(
+            leftSetpoint.velocity, leftAccel.inMetersPerSecondPerSecond
+          )
+        )
       io.setRightPosition(
-          rightSetpoint.position.meters,
-          loadedFeedForward.calculate(rightSetpoint.velocity, rightAccel.inMetersPerSecondPerSecond)
-              .volts)
+        rightSetpoint.position.meters,
+        loadedFeedForward.calculate(rightSetpoint.velocity, rightAccel.inMetersPerSecondPerSecond)
+          .volts
+      )
       Logger.getInstance()
-          .recordOutput(
-              "TelescopingClimber/rightFeedForwardVolts",
-              loadedFeedForward.calculate(
-                  rightSetpoint.velocity, rightAccel.inMetersPerSecondPerSecond))
+        .recordOutput(
+          "TelescopingClimber/rightFeedForwardVolts",
+          loadedFeedForward.calculate(
+            rightSetpoint.velocity, rightAccel.inMetersPerSecondPerSecond
+          )
+        )
     }
   }
 

@@ -25,10 +25,12 @@ class TwoBallLeftStartMode(
 
   init {
     addCommands(
-        ResetPoseCommand(drivetrain, trajectory.startingPose),
-        ParallelCommandGroup(
-            IntakeBallsCommand(intake).withTimeout(1.5),
-            DrivePathCommand(drivetrain, trajectory, resetPose = false)),
-        SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(3.0)))
+      ResetPoseCommand(drivetrain, trajectory.startingPose),
+      ParallelCommandGroup(
+        IntakeBallsCommand(intake).withTimeout(1.5),
+        DrivePathCommand(drivetrain, trajectory, resetPose = false)
+      ),
+      SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(3.0))
+    )
   }
 }

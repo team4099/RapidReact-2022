@@ -21,16 +21,18 @@ object IntakeIOReal : IntakeIO {
   private val intakeSolenoid = Solenoid(PneumaticsModuleType.REVPH, Constants.Intake.ARM_SOLENOID)
 
   private val intakeSensor =
-      ctreAngularMechanismSensor(
-          intakeTalon, IntakeConstants.SENSOR_CPR, IntakeConstants.GEAR_RATIO)
+    ctreAngularMechanismSensor(
+      intakeTalon, IntakeConstants.SENSOR_CPR, IntakeConstants.GEAR_RATIO
+    )
 
   init {
     intakeTalon.configFactoryDefault()
 
     //    intakeConfiguration.supplyCurrLimit.currentLimit = IntakeConstants.SUPPLY_CURRENT_LIMIT
     intakeConfiguration.supplyCurrLimit =
-        SupplyCurrentLimitConfiguration(
-            true, IntakeConstants.SUPPLY_CURRENT_LIMIT, IntakeConstants.SUPPLY_CURRENT_LIMIT, 200.0)
+      SupplyCurrentLimitConfiguration(
+        true, IntakeConstants.SUPPLY_CURRENT_LIMIT, IntakeConstants.SUPPLY_CURRENT_LIMIT, 200.0
+      )
 
     intakeTalon.configAllSettings(intakeConfiguration)
     intakeTalon.configOpenloopRamp(IntakeConstants.RAMP_TIME)

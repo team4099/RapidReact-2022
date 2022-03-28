@@ -24,18 +24,21 @@ class FourBallLeftStart(
 
   val twoBallTrajectory = trajectoryFromPathPlanner(PathStore.twoBallLeftStartPath)
   val threeAndFourBallTrajectory =
-      trajectoryFromPathPlanner(PathStore.threeAndFourBallLeftStartPath)
+    trajectoryFromPathPlanner(PathStore.threeAndFourBallLeftStartPath)
 
   init {
     addCommands(
-        ResetPoseCommand(drivetrain, twoBallTrajectory.startingPose),
-        ParallelCommandGroup(
-            IntakeBallsCommand(intake).withTimeout(1.5),
-            DrivePathCommand(drivetrain, twoBallTrajectory, resetPose = false)),
-        SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(3.0)),
-        ParallelCommandGroup(
-            WaitCommand(2.0).andThen(IntakeBallsCommand(intake).withTimeout(2.0)),
-            DrivePathCommand(drivetrain, threeAndFourBallTrajectory, resetPose = false)),
-        SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(3.0)))
+      ResetPoseCommand(drivetrain, twoBallTrajectory.startingPose),
+      ParallelCommandGroup(
+        IntakeBallsCommand(intake).withTimeout(1.5),
+        DrivePathCommand(drivetrain, twoBallTrajectory, resetPose = false)
+      ),
+      SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(3.0)),
+      ParallelCommandGroup(
+        WaitCommand(2.0).andThen(IntakeBallsCommand(intake).withTimeout(2.0)),
+        DrivePathCommand(drivetrain, threeAndFourBallTrajectory, resetPose = false)
+      ),
+      SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(3.0))
+    )
   }
 }

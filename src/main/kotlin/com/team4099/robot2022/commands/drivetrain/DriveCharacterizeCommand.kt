@@ -12,24 +12,23 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 
 class DriveCharacterizeCommand(val drivetrain: Drivetrain) : SequentialCommandGroup() {
   init {
-    val drivetrainSetter =
-        { leftPower: Double, rightPower: Double ->
-          drivetrain.swerveModules.forEach { it.setOpenLoop(0.degrees, leftPower / 12) }
-        }
-    val drivetrainGetter =
-        {
-          SysIdCommand.DriveTrainSysIdData(
-              drivetrain.swerveModules[0].inputs.drivePosition.inMeters /
-                  (DrivetrainConstants.WHEEL_DIAMETER.inMeters / 2),
-              drivetrain.swerveModules[1].inputs.drivePosition.inMeters /
-                  (DrivetrainConstants.WHEEL_DIAMETER.inMeters / 2),
-              drivetrain.swerveModules[0].inputs.driveVelocity.inMetersPerSecond /
-                  (DrivetrainConstants.WHEEL_DIAMETER.inMeters / 2),
-              drivetrain.swerveModules[1].inputs.driveVelocity.inMetersPerSecond /
-                  (DrivetrainConstants.WHEEL_DIAMETER.inMeters / 2),
-              drivetrain.inputs.gyroAngle.inRadians,
-              drivetrain.inputs.gyroVelocity.inRadiansPerSecond)
-        }
+    val drivetrainSetter = { leftPower: Double, rightPower: Double ->
+      drivetrain.swerveModules.forEach { it.setOpenLoop(0.degrees, leftPower / 12) }
+    }
+    val drivetrainGetter = {
+      SysIdCommand.DriveTrainSysIdData(
+        drivetrain.swerveModules[0].inputs.drivePosition.inMeters /
+          (DrivetrainConstants.WHEEL_DIAMETER.inMeters / 2),
+        drivetrain.swerveModules[1].inputs.drivePosition.inMeters /
+          (DrivetrainConstants.WHEEL_DIAMETER.inMeters / 2),
+        drivetrain.swerveModules[0].inputs.driveVelocity.inMetersPerSecond /
+          (DrivetrainConstants.WHEEL_DIAMETER.inMeters / 2),
+        drivetrain.swerveModules[1].inputs.driveVelocity.inMetersPerSecond /
+          (DrivetrainConstants.WHEEL_DIAMETER.inMeters / 2),
+        drivetrain.inputs.gyroAngle.inRadians,
+        drivetrain.inputs.gyroVelocity.inRadiansPerSecond
+      )
+    }
     addCommands(SysIdCommand(drivetrain, drivetrainSetter, drivetrainGetter))
   }
 }

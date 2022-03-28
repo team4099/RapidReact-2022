@@ -18,22 +18,24 @@ import com.team4099.robot2022.subsystems.orchestra.OrchestraIOReal
 
 object TelescopingClimberIOReal : TelescopingClimberIO {
   private val telescopingRightArm: TalonFX =
-      TalonFX(Constants.TelescopingClimber.R_ARM_ID, CANIVORE_NAME)
+    TalonFX(Constants.TelescopingClimber.R_ARM_ID, CANIVORE_NAME)
   private val telescopingLeftArm: TalonFX =
-      TalonFX(Constants.TelescopingClimber.L_ARM_ID, CANIVORE_NAME)
+    TalonFX(Constants.TelescopingClimber.L_ARM_ID, CANIVORE_NAME)
 
   val telescopingRightArmSensor =
-      ctreLinearMechanismSensor(
-          telescopingRightArm,
-          TelescopingClimberConstants.SENSOR_CPR,
-          TelescopingClimberConstants.GEAR_RATIO,
-          TelescopingClimberConstants.RIGHT_SPOOL_RADIUS * 2)
+    ctreLinearMechanismSensor(
+      telescopingRightArm,
+      TelescopingClimberConstants.SENSOR_CPR,
+      TelescopingClimberConstants.GEAR_RATIO,
+      TelescopingClimberConstants.RIGHT_SPOOL_RADIUS * 2
+    )
   val telescopingLeftArmSensor =
-      ctreLinearMechanismSensor(
-          telescopingLeftArm,
-          TelescopingClimberConstants.SENSOR_CPR,
-          TelescopingClimberConstants.GEAR_RATIO,
-          TelescopingClimberConstants.LEFT_SPOOL_RADIUS * 2)
+    ctreLinearMechanismSensor(
+      telescopingLeftArm,
+      TelescopingClimberConstants.SENSOR_CPR,
+      TelescopingClimberConstants.GEAR_RATIO,
+      TelescopingClimberConstants.LEFT_SPOOL_RADIUS * 2
+    )
 
   private val telescopingConfiguration: TalonFXConfiguration = TalonFXConfiguration()
 
@@ -58,12 +60,16 @@ object TelescopingClimberIOReal : TelescopingClimberIO {
     telescopingRightArm.enableVoltageCompensation(true)
     telescopingRightArm.inverted = true
     telescopingRightArm.configForwardSoftLimitThreshold(
-        telescopingRightArmSensor.positionToRawUnits(
-            TelescopingClimberConstants.FORWARD_SOFT_LIMIT))
+      telescopingRightArmSensor.positionToRawUnits(
+        TelescopingClimberConstants.FORWARD_SOFT_LIMIT
+      )
+    )
     telescopingRightArm.configForwardSoftLimitEnable(false)
     telescopingRightArm.configReverseSoftLimitThreshold(
-        telescopingRightArmSensor.positionToRawUnits(
-            TelescopingClimberConstants.REVERSE_SOFT_LIMIT))
+      telescopingRightArmSensor.positionToRawUnits(
+        TelescopingClimberConstants.REVERSE_SOFT_LIMIT
+      )
+    )
 
     telescopingLeftArm.configFactoryDefault()
     telescopingLeftArm.configAllSettings(telescopingConfiguration)
@@ -71,10 +77,12 @@ object TelescopingClimberIOReal : TelescopingClimberIO {
     telescopingLeftArm.enableVoltageCompensation(true)
     telescopingLeftArm.inverted = true
     telescopingLeftArm.configForwardSoftLimitThreshold(
-        telescopingLeftArmSensor.positionToRawUnits(TelescopingClimberConstants.FORWARD_SOFT_LIMIT))
+      telescopingLeftArmSensor.positionToRawUnits(TelescopingClimberConstants.FORWARD_SOFT_LIMIT)
+    )
     telescopingLeftArm.configForwardSoftLimitEnable(false)
     telescopingLeftArm.configReverseSoftLimitThreshold(
-        telescopingLeftArmSensor.positionToRawUnits(TelescopingClimberConstants.REVERSE_SOFT_LIMIT))
+      telescopingLeftArmSensor.positionToRawUnits(TelescopingClimberConstants.REVERSE_SOFT_LIMIT)
+    )
 
     OrchestraIOReal.addInstrument(telescopingLeftArm)
     OrchestraIOReal.addInstrument(telescopingRightArm)
@@ -118,18 +126,20 @@ object TelescopingClimberIOReal : TelescopingClimberIO {
 
   override fun setLeftPosition(height: Length, feedforward: ElectricalPotential) {
     telescopingLeftArm.set(
-        ControlMode.Position,
-        telescopingLeftArmSensor.positionToRawUnits(height),
-        DemandType.ArbitraryFeedForward,
-        feedforward.inVolts / 12.0)
+      ControlMode.Position,
+      telescopingLeftArmSensor.positionToRawUnits(height),
+      DemandType.ArbitraryFeedForward,
+      feedforward.inVolts / 12.0
+    )
   }
 
   override fun setRightPosition(height: Length, feedforward: ElectricalPotential) {
     telescopingRightArm.set(
-        ControlMode.Position,
-        telescopingRightArmSensor.positionToRawUnits(height),
-        DemandType.ArbitraryFeedForward,
-        feedforward.inVolts / 12.0)
+      ControlMode.Position,
+      telescopingRightArmSensor.positionToRawUnits(height),
+      DemandType.ArbitraryFeedForward,
+      feedforward.inVolts / 12.0
+    )
   }
 
   override fun configPID(kP: Double, kI: Double, kD: Double) {

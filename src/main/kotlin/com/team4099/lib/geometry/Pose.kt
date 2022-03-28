@@ -16,8 +16,9 @@ import edu.wpi.first.math.geometry.Translation2d
 data class Pose(val x: Length, val y: Length, val theta: Angle) {
   constructor(translation: Translation, theta: Angle) : this(translation.x, translation.y, theta)
 
-  constructor(pose: Pose2d) : this(
-      pose.translation.x.meters, pose.translation.y.meters, pose.rotation.radians.radians)
+  constructor(
+    pose: Pose2d
+  ) : this(pose.translation.x.meters, pose.translation.y.meters, pose.rotation.radians.radians)
 
   val translation = Translation(x, y)
 
@@ -58,8 +59,10 @@ data class Pose(val x: Length, val y: Length, val theta: Angle) {
 
   fun transformBy(x: Length, y: Length, theta: Angle): Pose {
     return Pose(
-        pose2d.transformBy(
-            Transform2d(Translation2d(x.inMeters, y.inMeters), Rotation2d(theta.inRadians))))
+      pose2d.transformBy(
+        Transform2d(Translation2d(x.inMeters, y.inMeters), Rotation2d(theta.inRadians))
+      )
+    )
   }
 }
 

@@ -38,42 +38,49 @@ class Drivetrain(val io: DrivetrainIO) : SubsystemBase() {
   }
 
   private val wheelSpeeds =
-      mutableListOf(0.feet.perSecond, 0.feet.perSecond, 0.feet.perSecond, 0.feet.perSecond)
+    mutableListOf(0.feet.perSecond, 0.feet.perSecond, 0.feet.perSecond, 0.feet.perSecond)
 
   private val wheelAngles = mutableListOf(0.radians, 0.radians, 0.radians, 0.radians)
 
   private val wheelAccelerations =
-      mutableListOf(
-          0.feet.perSecond.perSecond,
-          0.feet.perSecond.perSecond,
-          0.feet.perSecond.perSecond,
-          0.feet.perSecond.perSecond)
+    mutableListOf(
+      0.feet.perSecond.perSecond,
+      0.feet.perSecond.perSecond,
+      0.feet.perSecond.perSecond,
+      0.feet.perSecond.perSecond
+    )
 
   private val frontLeftWheelLocation =
-      Translation(
-          DrivetrainConstants.DRIVETRAIN_LENGTH / 2, DrivetrainConstants.DRIVETRAIN_WIDTH / 2)
+    Translation(
+      DrivetrainConstants.DRIVETRAIN_LENGTH / 2, DrivetrainConstants.DRIVETRAIN_WIDTH / 2
+    )
   private val frontRightWheelLocation =
-      Translation(
-          DrivetrainConstants.DRIVETRAIN_LENGTH / 2, -DrivetrainConstants.DRIVETRAIN_WIDTH / 2)
+    Translation(
+      DrivetrainConstants.DRIVETRAIN_LENGTH / 2, -DrivetrainConstants.DRIVETRAIN_WIDTH / 2
+    )
   private val backLeftWheelLocation =
-      Translation(
-          -DrivetrainConstants.DRIVETRAIN_LENGTH / 2, DrivetrainConstants.DRIVETRAIN_WIDTH / 2)
+    Translation(
+      -DrivetrainConstants.DRIVETRAIN_LENGTH / 2, DrivetrainConstants.DRIVETRAIN_WIDTH / 2
+    )
   private val backRightWheelLocation =
-      Translation(
-          -DrivetrainConstants.DRIVETRAIN_LENGTH / 2, -DrivetrainConstants.DRIVETRAIN_WIDTH / 2)
+    Translation(
+      -DrivetrainConstants.DRIVETRAIN_LENGTH / 2, -DrivetrainConstants.DRIVETRAIN_WIDTH / 2
+    )
 
   val swerveDriveKinematics =
-      SwerveDriveKinematics(
-          frontLeftWheelLocation.translation2d,
-          frontRightWheelLocation.translation2d,
-          backLeftWheelLocation.translation2d,
-          backRightWheelLocation.translation2d)
+    SwerveDriveKinematics(
+      frontLeftWheelLocation.translation2d,
+      frontRightWheelLocation.translation2d,
+      backLeftWheelLocation.translation2d,
+      backRightWheelLocation.translation2d
+    )
 
   private val swerveDriveOdometry =
-      SwerveDriveOdometry(
-          swerveDriveKinematics,
-          inputs.gyroAngle.inRotation2ds,
-          Pose(0.meters, 0.meters, 0.degrees).pose2d)
+    SwerveDriveOdometry(
+      swerveDriveKinematics,
+      inputs.gyroAngle.inRotation2ds,
+      Pose(0.meters, 0.meters, 0.degrees).pose2d
+    )
 
   var pose: Pose
     get() = Pose(swerveDriveOdometry.poseMeters)
@@ -92,13 +99,13 @@ class Drivetrain(val io: DrivetrainIO) : SubsystemBase() {
     Logger.getInstance().processInputs("Drivetrain", inputs)
 
     Logger.getInstance()
-        .recordOutput("Drivetrain/frontLeftSpeedMetersPerSecond", wheelSpeeds[0].inMetersPerSecond)
+      .recordOutput("Drivetrain/frontLeftSpeedMetersPerSecond", wheelSpeeds[0].inMetersPerSecond)
     Logger.getInstance()
-        .recordOutput("Drivetrain/frontRightSpeedMetersPerSecond", wheelSpeeds[1].inMetersPerSecond)
+      .recordOutput("Drivetrain/frontRightSpeedMetersPerSecond", wheelSpeeds[1].inMetersPerSecond)
     Logger.getInstance()
-        .recordOutput("Drivetrain/backLeftSpeedMetersPerSecond", wheelSpeeds[2].inMetersPerSecond)
+      .recordOutput("Drivetrain/backLeftSpeedMetersPerSecond", wheelSpeeds[2].inMetersPerSecond)
     Logger.getInstance()
-        .recordOutput("Drivetrain/backRightSpeedMetersPerSecond", wheelSpeeds[3].inMetersPerSecond)
+      .recordOutput("Drivetrain/backRightSpeedMetersPerSecond", wheelSpeeds[3].inMetersPerSecond)
 
     // Wheel angles
     Logger.getInstance().recordOutput("Drivetrain/frontLeftAngleRadians", wheelAngles[0].inRadians)
@@ -107,12 +114,14 @@ class Drivetrain(val io: DrivetrainIO) : SubsystemBase() {
     Logger.getInstance().recordOutput("Drivetrain/backRightAngleRadians", wheelAngles[3].inRadians)
 
     Logger.getInstance()
-        .recordOutput(
-            "Odometry/pose", doubleArrayOf(pose.x.inMeters, pose.y.inMeters, pose.theta.inRadians))
+      .recordOutput(
+        "Odometry/pose", doubleArrayOf(pose.x.inMeters, pose.y.inMeters, pose.theta.inRadians)
+      )
     Logger.getInstance()
-        .recordOutput(
-            "Odometry/targetPose",
-            doubleArrayOf(targetPose.x.inMeters, targetPose.y.inMeters, targetPose.theta.inRadians))
+      .recordOutput(
+        "Odometry/targetPose",
+        doubleArrayOf(targetPose.x.inMeters, targetPose.y.inMeters, targetPose.theta.inRadians)
+      )
   }
 
   /**
@@ -133,38 +142,38 @@ class Drivetrain(val io: DrivetrainIO) : SubsystemBase() {
     fieldOriented: Boolean = true,
     angularAcceleration: AngularAcceleration = 0.0.radians.perSecond.perSecond,
     driveAcceleration: Pair<LinearAcceleration, LinearAcceleration> =
-        Pair(0.0.meters.perSecond.perSecond, 0.0.meters.perSecond.perSecond)
+      Pair(0.0.meters.perSecond.perSecond, 0.0.meters.perSecond.perSecond)
   ) {
 
     // Logger.addEvent("Drivetrain", "setting with $driveVector and $angularVelocity")
     //    Logger.addEvent("Drivetrain", "gyro angle: ${(-gyroAngle).inDegrees}")
     val vX =
-        if (fieldOriented) {
-          driveVector.first * (-inputs.gyroAngle).cos - driveVector.second * (-inputs.gyroAngle).sin
-        } else {
-          driveVector.first
-        }
+      if (fieldOriented) {
+        driveVector.first * (-inputs.gyroAngle).cos - driveVector.second * (-inputs.gyroAngle).sin
+      } else {
+        driveVector.first
+      }
     val vY =
-        if (fieldOriented) {
-          driveVector.second * (-inputs.gyroAngle).cos + driveVector.first * (-inputs.gyroAngle).sin
-        } else {
-          driveVector.second
-        }
+      if (fieldOriented) {
+        driveVector.second * (-inputs.gyroAngle).cos + driveVector.first * (-inputs.gyroAngle).sin
+      } else {
+        driveVector.second
+      }
 
     val aY =
-        if (fieldOriented) {
-          driveAcceleration.second * (-inputs.gyroAngle).cos +
-              driveAcceleration.first * (-inputs.gyroAngle).sin
-        } else {
-          driveAcceleration.second
-        }
+      if (fieldOriented) {
+        driveAcceleration.second * (-inputs.gyroAngle).cos +
+          driveAcceleration.first * (-inputs.gyroAngle).sin
+      } else {
+        driveAcceleration.second
+      }
     val aX =
-        if (fieldOriented) {
-          driveAcceleration.first * (-inputs.gyroAngle).cos -
-              driveAcceleration.second * (-inputs.gyroAngle).sin
-        } else {
-          driveAcceleration.first
-        }
+      if (fieldOriented) {
+        driveAcceleration.first * (-inputs.gyroAngle).cos -
+          driveAcceleration.second * (-inputs.gyroAngle).sin
+      } else {
+        driveAcceleration.first
+      }
 
     val a = vX + angularVelocity * DrivetrainConstants.DRIVETRAIN_LENGTH / 2
     val b = vX - angularVelocity * DrivetrainConstants.DRIVETRAIN_LENGTH / 2
@@ -178,25 +187,29 @@ class Drivetrain(val io: DrivetrainIO) : SubsystemBase() {
     wheelSpeeds[3] = hypot(a, c)
 
     val aA =
-        aX +
-            (angularAcceleration.value * DrivetrainConstants.DRIVETRAIN_LENGTH.value / 2).inches
-                .perSecond
-                .perSecond
+      aX +
+        (angularAcceleration.value * DrivetrainConstants.DRIVETRAIN_LENGTH.value / 2)
+          .inches
+          .perSecond
+          .perSecond
     val aB =
-        aX -
-            (angularAcceleration.value * DrivetrainConstants.DRIVETRAIN_LENGTH.value / 2).inches
-                .perSecond
-                .perSecond
+      aX -
+        (angularAcceleration.value * DrivetrainConstants.DRIVETRAIN_LENGTH.value / 2)
+          .inches
+          .perSecond
+          .perSecond
     val aC =
-        aY +
-            (angularAcceleration.value * DrivetrainConstants.DRIVETRAIN_WIDTH.value / 2).inches
-                .perSecond
-                .perSecond
+      aY +
+        (angularAcceleration.value * DrivetrainConstants.DRIVETRAIN_WIDTH.value / 2)
+          .inches
+          .perSecond
+          .perSecond
     val aD =
-        aY -
-            (angularAcceleration.value * DrivetrainConstants.DRIVETRAIN_WIDTH.value / 2).inches
-                .perSecond
-                .perSecond
+      aY -
+        (angularAcceleration.value * DrivetrainConstants.DRIVETRAIN_WIDTH.value / 2)
+          .inches
+          .perSecond
+          .perSecond
 
     wheelAccelerations[0] = kotlin.math.hypot(aB.value, aD.value).feet.perSecond.perSecond
     wheelAccelerations[1] = kotlin.math.hypot(aB.value, aC.value).feet.perSecond.perSecond
@@ -229,21 +242,22 @@ class Drivetrain(val io: DrivetrainIO) : SubsystemBase() {
     // Logger.addEvent("Drivetrain", "setting open loop with $driveVector and $angularVelocity")
 
     val vX =
-        if (fieldOriented) {
-          driveVector.first * (-inputs.gyroAngle).cos - driveVector.second * (-inputs.gyroAngle).sin
-        } else {
-          driveVector.first
-        }
+      if (fieldOriented) {
+        driveVector.first * (-inputs.gyroAngle).cos - driveVector.second * (-inputs.gyroAngle).sin
+      } else {
+        driveVector.first
+      }
     val vY =
-        if (fieldOriented) {
-          driveVector.second * (-inputs.gyroAngle).cos + driveVector.first * (-inputs.gyroAngle).sin
-        } else {
-          driveVector.second
-        }
+      if (fieldOriented) {
+        driveVector.second * (-inputs.gyroAngle).cos + driveVector.first * (-inputs.gyroAngle).sin
+      } else {
+        driveVector.second
+      }
 
     if (vX == 0.0.meters.perSecond &&
-        vY == 0.0.meters.perSecond &&
-        angularVelocity == 0.0.degrees.perSecond) {
+      vY == 0.0.meters.perSecond &&
+      angularVelocity == 0.0.degrees.perSecond
+    ) {
       wheelSpeeds[0] = 0.0.meters.perSecond
       wheelSpeeds[1] = 0.0.meters.perSecond
       wheelSpeeds[2] = 0.0.meters.perSecond
@@ -263,8 +277,8 @@ class Drivetrain(val io: DrivetrainIO) : SubsystemBase() {
       if (maxWheelSpeed != null && maxWheelSpeed > DrivetrainConstants.DRIVE_SETPOINT_MAX) {
         for (i in 0 until DrivetrainConstants.WHEEL_COUNT) {
           wheelSpeeds[i] =
-              wheelSpeeds[i] / maxWheelSpeed.inMetersPerSecond *
-                  DrivetrainConstants.DRIVE_SETPOINT_MAX.inMetersPerSecond
+            wheelSpeeds[i] / maxWheelSpeed.inMetersPerSecond *
+            DrivetrainConstants.DRIVE_SETPOINT_MAX.inMetersPerSecond
         }
       }
       wheelAngles[0] = atan2(b, d)
@@ -274,30 +288,39 @@ class Drivetrain(val io: DrivetrainIO) : SubsystemBase() {
     }
 
     swerveModules[0].setOpenLoop(
-        wheelAngles[0], wheelSpeeds[0] / DrivetrainConstants.DRIVE_SETPOINT_MAX)
+      wheelAngles[0], wheelSpeeds[0] / DrivetrainConstants.DRIVE_SETPOINT_MAX
+    )
     swerveModules[1].setOpenLoop(
-        wheelAngles[1], wheelSpeeds[1] / DrivetrainConstants.DRIVE_SETPOINT_MAX)
+      wheelAngles[1], wheelSpeeds[1] / DrivetrainConstants.DRIVE_SETPOINT_MAX
+    )
     swerveModules[2].setOpenLoop(
-        wheelAngles[2], wheelSpeeds[2] / DrivetrainConstants.DRIVE_SETPOINT_MAX)
+      wheelAngles[2], wheelSpeeds[2] / DrivetrainConstants.DRIVE_SETPOINT_MAX
+    )
     swerveModules[3].setOpenLoop(
-        wheelAngles[3], wheelSpeeds[3] / DrivetrainConstants.DRIVE_SETPOINT_MAX)
+      wheelAngles[3], wheelSpeeds[3] / DrivetrainConstants.DRIVE_SETPOINT_MAX
+    )
   }
 
   private fun updateOdometry() {
     swerveDriveOdometry.update(
-        inputs.gyroAngle.inRotation2ds,
-        SwerveModuleState(
-            swerveModules[0].inputs.driveVelocity.inMetersPerSecond,
-            -swerveModules[0].inputs.steeringPosition.inRotation2ds),
-        SwerveModuleState(
-            swerveModules[1].inputs.driveVelocity.inMetersPerSecond,
-            -swerveModules[1].inputs.steeringPosition.inRotation2ds),
-        SwerveModuleState(
-            swerveModules[2].inputs.driveVelocity.inMetersPerSecond,
-            -swerveModules[2].inputs.steeringPosition.inRotation2ds),
-        SwerveModuleState(
-            swerveModules[3].inputs.driveVelocity.inMetersPerSecond,
-            -swerveModules[3].inputs.steeringPosition.inRotation2ds))
+      inputs.gyroAngle.inRotation2ds,
+      SwerveModuleState(
+        swerveModules[0].inputs.driveVelocity.inMetersPerSecond,
+        -swerveModules[0].inputs.steeringPosition.inRotation2ds
+      ),
+      SwerveModuleState(
+        swerveModules[1].inputs.driveVelocity.inMetersPerSecond,
+        -swerveModules[1].inputs.steeringPosition.inRotation2ds
+      ),
+      SwerveModuleState(
+        swerveModules[2].inputs.driveVelocity.inMetersPerSecond,
+        -swerveModules[2].inputs.steeringPosition.inRotation2ds
+      ),
+      SwerveModuleState(
+        swerveModules[3].inputs.driveVelocity.inMetersPerSecond,
+        -swerveModules[3].inputs.steeringPosition.inRotation2ds
+      )
+    )
   }
 
   private fun hypot(a: LinearVelocity, b: LinearVelocity): LinearVelocity {

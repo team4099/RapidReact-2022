@@ -31,72 +31,72 @@ class LedCommand(
 
   override fun execute() {
     led.state =
-        when (telescopingClimber.currentState) {
-          TelescopingClimberConstants.ActualTelescopeStates.START -> {
-            when (telescopingClimber.desiredState) {
-              TelescopingClimberConstants.DesiredTelescopeStates.START -> {
-                when (shooter.state) {
-                  ShooterConstants.ShooterState.SPIN_UP_UPPER,
-                  ShooterConstants.ShooterState.SPIN_UP_LOWER -> {
-                    if (DriverStation.getAlliance() == DriverStation.Alliance.Red) {
-                      LEDConstants.LEDState.RED_SHOOT
-                    } else {
-                      LEDConstants.LEDState.BLUE_SHOOT
-                    }
-                  }
-                  else -> {
-                    if (Robot.isAutonomous) {
-                      LEDConstants.LEDState.AUTO
-                    } else if (intake.keepIntakingLEDState) {
-                      when (intake.rollerState) {
-                        IntakeConstants.RollerState.OUT -> LEDConstants.LEDState.OUTTAKING
-                        IntakeConstants.RollerState.IN -> LEDConstants.LEDState.INTAKING
-                        else -> LEDConstants.LEDState.IDLE
-                      }
-                    } else {
-                      when (feeder.ballCount) {
-                        0 -> LEDConstants.LEDState.STANDING_ZERO
-                        1 -> LEDConstants.LEDState.STANDING_ONE
-                        2 -> LEDConstants.LEDState.STANDING_TWO
-                        else -> LEDConstants.LEDState.IDLE
-                      }
-                    }
-                  }
-                }
-              }
-              else -> LEDConstants.LEDState.IDLE
-            }
-          }
-          TelescopingClimberConstants.ActualTelescopeStates.BETWEEN_START_AND_MAX_RETRACT,
-          TelescopingClimberConstants.ActualTelescopeStates
-              .BETWEEN_MAX_RETRACT_AND_MAX_EXTENSION -> {
-            LEDConstants.LEDState.CLIMBING
-          }
-          TelescopingClimberConstants.ActualTelescopeStates.MAX_RETRACT -> {
-            when (telescopingClimber.desiredState) {
-              TelescopingClimberConstants.DesiredTelescopeStates.MAX_RETRACT -> {
-                if (climbDone) {
+      when (telescopingClimber.currentState) {
+        TelescopingClimberConstants.ActualTelescopeStates.START -> {
+          when (telescopingClimber.desiredState) {
+            TelescopingClimberConstants.DesiredTelescopeStates.START -> {
+              when (shooter.state) {
+                ShooterConstants.ShooterState.SPIN_UP_UPPER,
+                ShooterConstants.ShooterState.SPIN_UP_LOWER -> {
                   if (DriverStation.getAlliance() == DriverStation.Alliance.Red) {
-                    LEDConstants.LEDState.CLIMB_FINISHED_RED_ALLIANCE
+                    LEDConstants.LEDState.RED_SHOOT
                   } else {
-                    LEDConstants.LEDState.CLIMB_FINISHED_BLUE_ALLIANCE
+                    LEDConstants.LEDState.BLUE_SHOOT
                   }
-                } else {
-                  LEDConstants.LEDState.CLIMBER_READY
+                }
+                else -> {
+                  if (Robot.isAutonomous) {
+                    LEDConstants.LEDState.AUTO
+                  } else if (intake.keepIntakingLEDState) {
+                    when (intake.rollerState) {
+                      IntakeConstants.RollerState.OUT -> LEDConstants.LEDState.OUTTAKING
+                      IntakeConstants.RollerState.IN -> LEDConstants.LEDState.INTAKING
+                      else -> LEDConstants.LEDState.IDLE
+                    }
+                  } else {
+                    when (feeder.ballCount) {
+                      0 -> LEDConstants.LEDState.STANDING_ZERO
+                      1 -> LEDConstants.LEDState.STANDING_ONE
+                      2 -> LEDConstants.LEDState.STANDING_TWO
+                      else -> LEDConstants.LEDState.IDLE
+                    }
+                  }
                 }
               }
-              else -> LEDConstants.LEDState.IDLE
             }
-          }
-          TelescopingClimberConstants.ActualTelescopeStates.MAX_EXTENSION -> {
-            when (telescopingClimber.desiredState) {
-              TelescopingClimberConstants.DesiredTelescopeStates.MAX_EXTENSION -> {
-                LEDConstants.LEDState.CLIMBER_READY
-              }
-              else -> LEDConstants.LEDState.IDLE
-            }
+            else -> LEDConstants.LEDState.IDLE
           }
         }
+        TelescopingClimberConstants.ActualTelescopeStates.BETWEEN_START_AND_MAX_RETRACT,
+        TelescopingClimberConstants.ActualTelescopeStates
+          .BETWEEN_MAX_RETRACT_AND_MAX_EXTENSION -> {
+          LEDConstants.LEDState.CLIMBING
+        }
+        TelescopingClimberConstants.ActualTelescopeStates.MAX_RETRACT -> {
+          when (telescopingClimber.desiredState) {
+            TelescopingClimberConstants.DesiredTelescopeStates.MAX_RETRACT -> {
+              if (climbDone) {
+                if (DriverStation.getAlliance() == DriverStation.Alliance.Red) {
+                  LEDConstants.LEDState.CLIMB_FINISHED_RED_ALLIANCE
+                } else {
+                  LEDConstants.LEDState.CLIMB_FINISHED_BLUE_ALLIANCE
+                }
+              } else {
+                LEDConstants.LEDState.CLIMBER_READY
+              }
+            }
+            else -> LEDConstants.LEDState.IDLE
+          }
+        }
+        TelescopingClimberConstants.ActualTelescopeStates.MAX_EXTENSION -> {
+          when (telescopingClimber.desiredState) {
+            TelescopingClimberConstants.DesiredTelescopeStates.MAX_EXTENSION -> {
+              LEDConstants.LEDState.CLIMBER_READY
+            }
+            else -> LEDConstants.LEDState.IDLE
+          }
+        }
+      }
   }
 
   override fun isFinished(): Boolean {

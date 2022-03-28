@@ -109,12 +109,13 @@ object RobotContainer {
 
   fun mapDefaultCommands() {
     drivetrain.defaultCommand =
-        TeleopDriveCommand(
-            { ControlBoard.strafe.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
-            { ControlBoard.forward.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
-            { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) },
-            { ControlBoard.robotOriented },
-            drivetrain)
+      TeleopDriveCommand(
+        { ControlBoard.strafe.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
+        { ControlBoard.forward.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
+        { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) },
+        { ControlBoard.robotOriented },
+        drivetrain
+      )
     intake.defaultCommand = IntakeIdleCommand(intake)
     shooter.defaultCommand = ShooterIdleCommand(shooter)
     feeder.defaultCommand = FeederSerializeIdleCommand(feeder)
@@ -140,33 +141,43 @@ object RobotContainer {
   fun mapTeleopControls() {
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand(drivetrain))
 
-    ControlBoard.startShooter
-        .whileActiveOnce(SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder)))
-    ControlBoard.startShooterLower
-        .whileActiveOnce(SpinUpLowerHub(shooter).andThen(ShootCommand(shooter, feeder)))
+    ControlBoard.startShooter.whileActiveOnce(
+      SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder))
+    )
+    ControlBoard.startShooterLower.whileActiveOnce(
+      SpinUpLowerHub(shooter).andThen(ShootCommand(shooter, feeder))
+    )
     ControlBoard.shooterUnjam.whileActiveOnce(ShooterUnjamCommand(shooter))
 
-    ControlBoard.runIntake
-        .whileActiveContinuous(IntakeBallsCommand(intake).alongWith(FeederSerialize(feeder)))
+    ControlBoard.runIntake.whileActiveContinuous(
+      IntakeBallsCommand(intake).alongWith(FeederSerialize(feeder))
+    )
     ControlBoard.runFeederIn.whileActiveOnce(FeederSerialize(feeder))
     ControlBoard.resetBallCount.whileActiveOnce(ResetBallCountCommand(feeder))
-    ControlBoard.outTake
-        .whileActiveContinuous(
-            ReverseIntakeCommand(intake).alongWith(
-                FeederCommand(feeder, FeederConstants.FeederState.BACKWARD_FLOOR)))
+    ControlBoard.outTake.whileActiveContinuous(
+      ReverseIntakeCommand(intake)
+        .alongWith(FeederCommand(feeder, FeederConstants.FeederState.BACKWARD_FLOOR))
+    )
 
     ControlBoard.extendTelescoping.whileActiveOnce(ExtendTelescopingArmCommand(telescopingClimber))
-    ControlBoard.retractTelescoping
-        .whileActiveOnce(RetractTelescopingArmCommand(telescopingClimber))
+    ControlBoard.retractTelescoping.whileActiveOnce(
+      RetractTelescopingArmCommand(telescopingClimber)
+    )
     ControlBoard.extendPivot.whileActiveOnce(ExtendPivotArmCommand(pivotClimber))
     ControlBoard.retractPivot.whileActiveOnce(RetractPivotArmCommand(pivotClimber))
-    ControlBoard.startClimbSequence
-        .whileActiveOnce(
-            RetractPivotArmCommand(pivotClimber).andThen(
-                ExtendTelescopingArmCommand(telescopingClimber).andThen(
-                    ClimbSequenceCommand(telescopingClimber, pivotClimber).andThen(
-                        ClimbSequenceCommand(telescopingClimber, pivotClimber).andThen(
-                            RetractTelescopingArmCommand(telescopingClimber))))))
+    ControlBoard.startClimbSequence.whileActiveOnce(
+      RetractPivotArmCommand(pivotClimber)
+        .andThen(
+          ExtendTelescopingArmCommand(telescopingClimber)
+            .andThen(
+              ClimbSequenceCommand(telescopingClimber, pivotClimber)
+                .andThen(
+                  ClimbSequenceCommand(telescopingClimber, pivotClimber)
+                    .andThen(RetractTelescopingArmCommand(telescopingClimber))
+                )
+            )
+        )
+    )
 
     //
     // ControlBoard.advanceAndClimb.whileActiveOnce(AdvanceClimberCommand().andThen(RunClimbCommand()))
@@ -181,8 +192,9 @@ object RobotContainer {
   fun mapTestControls() {}
 
   fun getAutonomousCommand() =
-      AutonomousSelector.getCommand(
-          drivetrain, intake, feeder, shooter, telescopingClimber, pivotClimber, orchestra)
+    AutonomousSelector.getCommand(
+      drivetrain, intake, feeder, shooter, telescopingClimber, pivotClimber, orchestra
+    )
 
   fun logCompressor() {
     Logger.getInstance().recordOutput("Compressor/pressurePSI", compressor?.pressure)

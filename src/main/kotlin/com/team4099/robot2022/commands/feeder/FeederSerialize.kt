@@ -25,15 +25,15 @@ class FeederSerialize(val feeder: Feeder) : CommandBase() {
       lastUnbrokenTime = currentTime
     }
     feeder.state =
-        when {
-          //          (lastUnbrokenTime - lastBrokenTime <
-          // FeederConstants.BEAM_BREAK_BACKWARDS_TIME) ->
-          //              FeederConstants.FeederState.BACKWARD_VERTICAL
-          feeder.inputs.topBeamBroken -> FeederConstants.FeederState.NEUTRAL
-          (currentTime - lastBrokenTime < FeederConstants.BEAM_BREAK_BROKEN_TIME) ->
-              FeederConstants.FeederState.FORWARD_ALL
-          else -> FeederConstants.FeederState.FORWARD_FLOOR
-        }
+      when {
+        //          (lastUnbrokenTime - lastBrokenTime <
+        // FeederConstants.BEAM_BREAK_BACKWARDS_TIME) ->
+        //              FeederConstants.FeederState.BACKWARD_VERTICAL
+        feeder.inputs.topBeamBroken -> FeederConstants.FeederState.NEUTRAL
+        (currentTime - lastBrokenTime < FeederConstants.BEAM_BREAK_BROKEN_TIME) ->
+          FeederConstants.FeederState.FORWARD_ALL
+        else -> FeederConstants.FeederState.FORWARD_FLOOR
+      }
 
     Logger.getInstance().recordOutput("ActiveCommands/FeederSerialize", true)
   }
