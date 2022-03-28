@@ -83,7 +83,7 @@ object Robot : LoggedRobot() {
   override fun teleopInit() {
     RobotContainer.mapTeleopControls()
     RobotContainer.getAutonomousCommand().cancel()
-    RobotContainer.setDriveCoastMode()
+    RobotContainer.setDriveCoastMode() // change to coast
     RobotContainer.zeroSteering()
     // autonomousCommand.cancel()
   }

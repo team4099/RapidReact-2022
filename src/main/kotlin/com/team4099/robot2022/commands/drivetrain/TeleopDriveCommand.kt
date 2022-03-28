@@ -27,7 +27,7 @@ class TeleopDriveCommand(
         DrivetrainConstants.DRIVE_SETPOINT_MAX * driveY() * driveY() * sign(driveY())
       )
     val direction = DrivetrainConstants.TURN_SETPOINT_MAX * turn() * turn() * sign(turn())
-    drivetrain.setOpenLoop(direction, speed, fieldOriented = true)
+    drivetrain.setOpenLoop(direction, speed, fieldOriented = !robotOriented())
     Logger.getInstance().recordOutput("ActiveCommands/TeleopDriveCommand", true)
   }
   override fun isFinished(): Boolean {

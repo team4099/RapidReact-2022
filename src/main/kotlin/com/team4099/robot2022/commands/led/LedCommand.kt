@@ -3,7 +3,6 @@ package com.team4099.robot2022.commands.led
 import com.team4099.robot2022.Robot
 import com.team4099.robot2022.config.constants.IntakeConstants
 import com.team4099.robot2022.config.constants.LEDConstants
-import com.team4099.robot2022.config.constants.ShooterConstants
 import com.team4099.robot2022.config.constants.TelescopingClimberConstants
 import com.team4099.robot2022.subsystems.climber.PivotClimber
 import com.team4099.robot2022.subsystems.climber.TelescopingClimber
@@ -35,34 +34,34 @@ class LedCommand(
         TelescopingClimberConstants.ActualTelescopeStates.START -> {
           when (telescopingClimber.desiredState) {
             TelescopingClimberConstants.DesiredTelescopeStates.START -> {
-              when (shooter.state) {
-                ShooterConstants.ShooterState.SPIN_UP_UPPER,
-                ShooterConstants.ShooterState.SPIN_UP_LOWER -> {
-                  if (DriverStation.getAlliance() == DriverStation.Alliance.Red) {
-                    LEDConstants.LEDState.RED_SHOOT
-                  } else {
-                    LEDConstants.LEDState.BLUE_SHOOT
-                  }
+              //              when (shooter.state) {
+              //                ShooterConstants.ShooterState.SPIN_UP_UPPER,
+              //                ShooterConstants.ShooterState.SPIN_UP_LOWER -> {
+              //                  if (DriverStation.getAlliance() == DriverStation.Alliance.Red) {
+              //                    LEDConstants.LEDState.RED_SHOOT
+              //                  } else {
+              //                    LEDConstants.LEDState.BLUE_SHOOT
+              //                  }
+              //                }
+              //                else -> {
+              if (Robot.isAutonomous) {
+                LEDConstants.LEDState.AUTO
+              } else if (intake.keepIntakingLEDState) {
+                when (intake.rollerState) {
+                  IntakeConstants.RollerState.OUT -> LEDConstants.LEDState.OUTTAKING
+                  IntakeConstants.RollerState.IN -> LEDConstants.LEDState.INTAKING
+                  else -> LEDConstants.LEDState.IDLE
                 }
-                else -> {
-                  if (Robot.isAutonomous) {
-                    LEDConstants.LEDState.AUTO
-                  } else if (intake.keepIntakingLEDState) {
-                    when (intake.rollerState) {
-                      IntakeConstants.RollerState.OUT -> LEDConstants.LEDState.OUTTAKING
-                      IntakeConstants.RollerState.IN -> LEDConstants.LEDState.INTAKING
-                      else -> LEDConstants.LEDState.IDLE
-                    }
-                  } else {
-                    when (feeder.ballCount) {
-                      0 -> LEDConstants.LEDState.STANDING_ZERO
-                      1 -> LEDConstants.LEDState.STANDING_ONE
-                      2 -> LEDConstants.LEDState.STANDING_TWO
-                      else -> LEDConstants.LEDState.IDLE
-                    }
-                  }
+              } else {
+                when (feeder.ballCount) {
+                  0 -> LEDConstants.LEDState.STANDING_ZERO
+                  1 -> LEDConstants.LEDState.STANDING_ONE
+                  2 -> LEDConstants.LEDState.STANDING_TWO
+                  else -> LEDConstants.LEDState.IDLE
                 }
               }
+              //                }
+              //              }
             }
             else -> LEDConstants.LEDState.IDLE
           }

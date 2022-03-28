@@ -13,12 +13,12 @@ import com.team4099.robot2022.commands.climber.SpoolLeftUpCommand
 import com.team4099.robot2022.commands.climber.SpoolRightDownCommand
 import com.team4099.robot2022.commands.climber.SpoolRightUpCommand
 import com.team4099.robot2022.commands.climber.TelescopingIdleCommand
+import com.team4099.robot2022.commands.drivetrain.DriveBrakeModeCommand
 import com.team4099.robot2022.commands.drivetrain.ResetGyroCommand
 import com.team4099.robot2022.commands.drivetrain.TeleopDriveCommand
 import com.team4099.robot2022.commands.feeder.FeederCommand
 import com.team4099.robot2022.commands.feeder.FeederSerialize
 import com.team4099.robot2022.commands.feeder.FeederSerializeIdleCommand
-import com.team4099.robot2022.commands.feeder.ResetBallCountCommand
 import com.team4099.robot2022.commands.intake.IntakeBallsCommand
 import com.team4099.robot2022.commands.intake.IntakeIdleCommand
 import com.team4099.robot2022.commands.intake.ReverseIntakeCommand
@@ -134,10 +134,12 @@ object RobotContainer {
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand(drivetrain))
 
     ControlBoard.startShooter.whileActiveOnce(
-      SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder))
+      DriveBrakeModeCommand(drivetrain)
+        .alongWith(SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder)))
     )
     ControlBoard.startShooterLower.whileActiveOnce(
-      SpinUpLowerHub(shooter).andThen(ShootCommand(shooter, feeder))
+      DriveBrakeModeCommand(drivetrain)
+        .alongWith(SpinUpLowerHub(shooter).andThen(ShootCommand(shooter, feeder)))
     )
     ControlBoard.shooterUnjam.whileActiveOnce(ShooterUnjamCommand(shooter))
 
@@ -145,7 +147,7 @@ object RobotContainer {
       IntakeBallsCommand(intake).alongWith(FeederSerialize(feeder))
     )
     ControlBoard.runFeederIn.whileActiveOnce(FeederSerialize(feeder))
-    ControlBoard.resetBallCount.whileActiveOnce(ResetBallCountCommand(feeder))
+    //    ControlBoard.resetBallCount.whileActiveOnce(ResetBallCountCommand(feeder))
     ControlBoard.outTake.whileActiveContinuous(
       ReverseIntakeCommand(intake)
         .alongWith(FeederCommand(feeder, FeederConstants.FeederState.BACKWARD_FLOOR))
@@ -160,13 +162,10 @@ object RobotContainer {
     ControlBoard.startClimbSequence.whileActiveOnce(
       RetractPivotArmCommand(pivotClimber)
         .andThen(
-          ExtendTelescopingArmCommand(telescopingClimber)
+          ClimbSequenceCommand(telescopingClimber, pivotClimber)
             .andThen(
               ClimbSequenceCommand(telescopingClimber, pivotClimber)
-                .andThen(
-                  ClimbSequenceCommand(telescopingClimber, pivotClimber)
-                    .andThen(RetractTelescopingArmCommand(telescopingClimber))
-                )
+                .andThen(RetractTelescopingArmCommand(telescopingClimber))
             )
         )
     )
