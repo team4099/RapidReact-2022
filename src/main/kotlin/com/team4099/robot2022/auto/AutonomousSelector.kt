@@ -3,7 +3,6 @@ package com.team4099.robot2022.auto
 import com.team4099.lib.units.base.Time
 import com.team4099.lib.units.base.inSeconds
 import com.team4099.lib.units.base.seconds
-import com.team4099.lib.units.derived.Angle
 import com.team4099.lib.units.derived.degrees
 import com.team4099.robot2022.auto.mode.OneBallFenderShotThenTaxi
 import com.team4099.robot2022.auto.mode.TestAutoPath
@@ -27,17 +26,17 @@ import edu.wpi.first.wpilibj2.command.InstantCommand
 import edu.wpi.first.wpilibj2.command.WaitCommand
 
 object AutonomousSelector {
-//  private var orientationChooser: SendableChooser<Angle> = SendableChooser()
+  //  private var orientationChooser: SendableChooser<Angle> = SendableChooser()
   private var autonomousModeChooser: SendableChooser<AutonomousMode> = SendableChooser()
   private var waitBeforeCommandSlider: NetworkTableEntry
 
   init {
     val autoTab = Shuffleboard.getTab("Auto settings")
-//    orientationChooser.setDefaultOption("Forward", 0.degrees)
-//    orientationChooser.addOption("Backwards", 180.degrees)
-//    orientationChooser.addOption("Left", 90.degrees)
-//    orientationChooser.addOption("Right", 270.degrees)
-//    autoTab.add("Starting Orientation", orientationChooser)
+    //    orientationChooser.setDefaultOption("Forward", 0.degrees)
+    //    orientationChooser.addOption("Backwards", 180.degrees)
+    //    orientationChooser.addOption("Left", 90.degrees)
+    //    orientationChooser.addOption("Right", 270.degrees)
+    //    autoTab.add("Starting Orientation", orientationChooser)
     autonomousModeChooser.addOption(
       "One Ball Fender Shot Then Taxi: Left", AutonomousMode.ONE_BALL_FENDER_SHOT_THEN_TAXI_LEFT
     )
@@ -55,10 +54,12 @@ object AutonomousSelector {
       "Characterize Telescoping Arms", AutonomousMode.CHARACTERIZE_CLIMBER_TELESCOPE
     )
     autonomousModeChooser.addOption("Characterize Shooter", AutonomousMode.CHARACTERIZE_SHOOTER)
-    autoTab.add("Mode", autonomousModeChooser).withSize(5,2).withPosition(3,0)
+    autoTab.add("Mode", autonomousModeChooser).withSize(5, 2).withPosition(3, 0)
     waitBeforeCommandSlider =
       autoTab
-        .add("Wait Time before Running Auto", 0).withSize(3,2).withPosition(0,0)
+        .add("Wait Time before Running Auto", 0)
+        .withSize(3, 2)
+        .withPosition(0, 0)
         .withWidget(BuiltInWidgets.kTextView)
         .entry
   }
@@ -76,7 +77,6 @@ object AutonomousSelector {
     pivotClimber: PivotClimber
   ): CommandBase {
 
-
     val mode = autonomousModeChooser.selected
     println("${getWaitTime().inSeconds} wait command")
     when (mode) {
@@ -89,11 +89,9 @@ object AutonomousSelector {
         return WaitCommand(getWaitTime().inSeconds)
           .andThen(ThreeBallRightStart(drivetrain, intake, feeder, shooter))
       AutonomousMode.CHARACTERIZE_DRIVETRAIN ->
-        return WaitCommand(getWaitTime().inSeconds)
-          .andThen(DriveCharacterizeCommand(drivetrain))
+        return WaitCommand(getWaitTime().inSeconds).andThen(DriveCharacterizeCommand(drivetrain))
       AutonomousMode.CHARACTERIZE_SHOOTER ->
-        return WaitCommand(getWaitTime().inSeconds)
-          .andThen(ShooterCharacterizeCommand(shooter))
+        return WaitCommand(getWaitTime().inSeconds).andThen(ShooterCharacterizeCommand(shooter))
       AutonomousMode.CHARACTERIZE_CLIMBER_TELESCOPE ->
         return WaitCommand(getWaitTime().inSeconds)
           .andThen(TelescopingCharacterizationCommand(telescopingClimber))
