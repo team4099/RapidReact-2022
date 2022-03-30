@@ -5,8 +5,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase
 import org.littletonrobotics.junction.Logger
 import java.util.function.Supplier
 
-class PneumaticIdleCommand(val pneumatic: Pneumatic): CommandBase() {
-  init{
+class PneumaticIdleCommand(val pneumatic: Pneumatic) : CommandBase() {
+  init {
     addRequirements(pneumatic)
   }
 

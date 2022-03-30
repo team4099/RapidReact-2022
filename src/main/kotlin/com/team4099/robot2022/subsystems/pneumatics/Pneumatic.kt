@@ -6,8 +6,6 @@ import com.team4099.robot2022.config.constants.PneumaticConstants
 import com.team4099.robot2022.util.Alert
 import com.team4099.robot2022.util.Alert.AlertType
 import edu.wpi.first.wpilibj.Timer
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import org.littletonrobotics.junction.Logger
 import java.util.function.Supplier
@@ -94,7 +92,7 @@ class Pneumatic(val io: PneumaticIO) : SubsystemBase() {
       filterData.stream().mapToDouble { a: Double? -> a!! }.summaryStatistics().average
 
     Logger.getInstance().recordOutput("Pneumatics/PressurePsi", pressureSmoothedPsi)
-//    Shuffleboard.getTab("Camera Feed").add(pressureSmoothedPsi.toString())
+    //    Shuffleboard.getTab("Camera Feed").add(pressureSmoothedPsi.toString())
 
     if (inputs.pressurePsi > 3) {
       noPressureTimer.reset()
