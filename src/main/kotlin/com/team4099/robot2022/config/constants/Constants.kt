@@ -1,6 +1,7 @@
 package com.team4099.robot2022.config.constants
 
 import com.team4099.lib.units.base.seconds
+import com.team4099.lib.units.centi
 import com.team4099.lib.units.milli
 import edu.wpi.first.wpilibj.RobotBase
 
@@ -11,6 +12,8 @@ object Constants {
 
     val SLOW_STATUS_FRAME_TIME = 255.milli.seconds
     val CANIVORE_NAME = "kestrel_vore"
+
+    val LOOP_PERIOD_TIME = 2.centi.seconds
   }
 
   object Tuning {

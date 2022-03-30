@@ -64,7 +64,6 @@ object Robot : LoggedRobot() {
     PathStore
     RobotContainer.mapDefaultCommands()
     RobotContainer.zeroSensors()
-    RobotContainer.startCompressor()
   }
 
   override fun autonomousInit() {
@@ -104,7 +103,6 @@ object Robot : LoggedRobot() {
           .getStringArray(emptyArray())
       )
 
-    RobotContainer.logCompressor()
     RobotContainer.logDriverController()
     RobotContainer.logOperatorController()
   }

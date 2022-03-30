@@ -23,6 +23,7 @@ import com.team4099.robot2022.commands.intake.IntakeBallsCommand
 import com.team4099.robot2022.commands.intake.IntakeIdleCommand
 import com.team4099.robot2022.commands.intake.ReverseIntakeCommand
 import com.team4099.robot2022.commands.led.LedCommand
+import com.team4099.robot2022.commands.pneumatics.PneumaticIdleCommand
 import com.team4099.robot2022.commands.shooter.ShootCommand
 import com.team4099.robot2022.commands.shooter.ShooterIdleCommand
 import com.team4099.robot2022.commands.shooter.ShooterUnjamCommand
@@ -49,12 +50,12 @@ import com.team4099.robot2022.subsystems.intake.IntakeIOReal
 import com.team4099.robot2022.subsystems.led.Led
 import com.team4099.robot2022.subsystems.led.LedIO
 import com.team4099.robot2022.subsystems.led.LedIOReal
+import com.team4099.robot2022.subsystems.pneumatics.Pneumatic
+import com.team4099.robot2022.subsystems.pneumatics.PneumaticIO
+import com.team4099.robot2022.subsystems.pneumatics.PneumaticsIOReal
 import com.team4099.robot2022.subsystems.shooter.Shooter
 import com.team4099.robot2022.subsystems.shooter.ShooterIO
 import com.team4099.robot2022.subsystems.shooter.ShooterIOReal
-import edu.wpi.first.wpilibj.Compressor
-import edu.wpi.first.wpilibj.PneumaticsModuleType
-import org.littletonrobotics.junction.Logger
 
 object RobotContainer {
   private val drivetrain: Drivetrain
@@ -64,12 +65,10 @@ object RobotContainer {
   private val telescopingClimber: TelescopingClimber
   private val pivotClimber: PivotClimber
   private val led: Led
-  private var compressor: Compressor? = null
+  private val pneumatic: Pneumatic
 
   init {
     if (Constants.Tuning.type == Constants.Tuning.RobotType.REAL) {
-      compressor = Compressor(PneumaticsModuleType.REVPH)
-
       drivetrain = Drivetrain(DrivetrainIOReal)
       intake = Intake(IntakeIOReal)
       shooter = Shooter(ShooterIOReal)
@@ -77,6 +76,7 @@ object RobotContainer {
       telescopingClimber = TelescopingClimber(TelescopingClimberIOReal)
       pivotClimber = PivotClimber(PivotClimberIOReal)
       led = Led(LedIOReal)
+      pneumatic = Pneumatic(PneumaticsIOReal)
     } else {
       drivetrain = Drivetrain(object : DrivetrainIO {})
       intake = Intake(object : IntakeIO {})
@@ -85,15 +85,8 @@ object RobotContainer {
       telescopingClimber = TelescopingClimber(object : TelescopingClimberIO {})
       pivotClimber = PivotClimber(object : PivotClimberIO {})
       led = Led(object : LedIO {})
+      pneumatic = Pneumatic(object : PneumaticIO {})
     }
-  }
-
-  fun startCompressor() {
-    compressor?.enableAnalog(60.0, 120.0)
-  }
-
-  fun stopCompressor() {
-    compressor?.disable()
   }
 
   fun zeroSteering() {
@@ -116,6 +109,7 @@ object RobotContainer {
     pivotClimber.defaultCommand = PivotArmIdleCommand(pivotClimber)
     //    PivotClimber.defaultCommand = PivotIdleCommand()
     led.defaultCommand = LedCommand(led, intake, shooter, feeder, telescopingClimber, pivotClimber)
+    pneumatic.defaultCommand = PneumaticIdleCommand(pneumatic)
   }
 
   fun zeroSensors() {
@@ -186,11 +180,6 @@ object RobotContainer {
     AutonomousSelector.getCommand(
       drivetrain, intake, feeder, shooter, telescopingClimber, pivotClimber
     )
-
-  fun logCompressor() {
-    Logger.getInstance().recordOutput("Compressor/pressurePSI", compressor?.pressure)
-    Logger.getInstance().recordOutput("Compressor/isRunning", compressor?.enabled())
-  }
 
   fun logOperatorController() = ControlBoard.logOperatorController()
   fun logDriverController() = ControlBoard.logDriverController()
