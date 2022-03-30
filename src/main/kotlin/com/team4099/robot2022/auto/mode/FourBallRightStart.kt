@@ -4,7 +4,6 @@ import com.team4099.lib.pathfollow.trajectoryFromPathPlanner
 import com.team4099.robot2022.auto.PathStore
 import com.team4099.robot2022.commands.drivetrain.DrivePathCommand
 import com.team4099.robot2022.commands.drivetrain.ResetPoseCommand
-import com.team4099.robot2022.commands.feeder.FeederSerialize
 import com.team4099.robot2022.commands.intake.IntakeBallsCommand
 import com.team4099.robot2022.commands.shooter.ShootCommand
 import com.team4099.robot2022.commands.shooter.SpinUpLowerHub
@@ -17,29 +16,30 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 import edu.wpi.first.wpilibj2.command.WaitCommand
 
-class ThreeBallRightStart(
+class FourBallRightStart(
   val drivetrain: Drivetrain,
   val intake: Intake,
   val feeder: Feeder,
   val shooter: Shooter
-) : SequentialCommandGroup() {
+): SequentialCommandGroup() {
+  val twoBallRightTrajectory = trajectoryFromPathPlanner(PathStore.twoBallRightStartPath)
+  val fourBallRightTrajectory = trajectoryFromPathPlanner(PathStore.fourBallRightStartPath)
 
-  val trajectory = trajectoryFromPathPlanner(PathStore.threeBallRightStartPath)
-
-  init {
+  init{
     addCommands(
-      SpinUpLowerHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(1.0)),
-      ResetPoseCommand(drivetrain, trajectory.startingPose),
+      ResetPoseCommand(drivetrain, twoBallRightTrajectory.startingPose),
       ParallelCommandGroup(
-        WaitCommand(2.0)
-          .andThen(
-            (IntakeBallsCommand(intake).alongWith(FeederSerialize(feeder))).withTimeout(
-              5.0
-            )
-          ),
-
+        IntakeBallsCommand(intake).withTimeout(1.5),
+        DrivePathCommand(drivetrain, twoBallRightTrajectory, resetPose = false),
+      ),
+      SpinUpLowerHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(3.0)),
+      ParallelCommandGroup(
+        WaitCommand(1.0).andThen(IntakeBallsCommand(intake).withTimeout(5.0)),
+        DrivePathCommand(drivetrain, fourBallRightTrajectory, resetPose = false)
       ),
       SpinUpLowerHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(3.0))
+
+
     )
   }
 }
