@@ -2,13 +2,11 @@ package com.team4099.robot2022.auto.mode
 
 import com.team4099.lib.pathfollow.trajectoryFromPathPlanner
 import com.team4099.robot2022.auto.PathStore
-import com.team4099.robot2022.commands.drivetrain.DrivePathCommand
 import com.team4099.robot2022.commands.drivetrain.ResetPoseCommand
 import com.team4099.robot2022.commands.feeder.FeederSerialize
 import com.team4099.robot2022.commands.intake.IntakeBallsCommand
 import com.team4099.robot2022.commands.shooter.ShootCommand
 import com.team4099.robot2022.commands.shooter.SpinUpLowerHub
-import com.team4099.robot2022.commands.shooter.SpinUpUpperHub
 import com.team4099.robot2022.subsystems.drivetrain.Drivetrain
 import com.team4099.robot2022.subsystems.feeder.Feeder
 import com.team4099.robot2022.subsystems.intake.Intake
@@ -37,7 +35,6 @@ class ThreeBallRightStart(
               5.0
             )
           ),
-
       ),
       SpinUpLowerHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(3.0))
     )

@@ -106,7 +106,8 @@ object AutonomousSelector {
         return WaitCommand(getWaitTime().inSeconds)
           .andThen(OneBallFenderShotThenTaxi(drivetrain, feeder, shooter, 66.degrees))
       AutonomousMode.FOUR_BALL_RIGHT_START ->
-        return WaitCommand(getWaitTime().inSeconds).andThen(FourBallRightStart(drivetrain, intake, feeder, shooter))
+        return WaitCommand(getWaitTime().inSeconds)
+          .andThen(FourBallRightStart(drivetrain, intake, feeder, shooter))
       else -> println("ERROR: unexpected auto mode: $mode")
     }
     return InstantCommand()

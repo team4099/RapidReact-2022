@@ -7,7 +7,6 @@ import com.team4099.robot2022.commands.drivetrain.ResetPoseCommand
 import com.team4099.robot2022.commands.intake.IntakeBallsCommand
 import com.team4099.robot2022.commands.shooter.ShootCommand
 import com.team4099.robot2022.commands.shooter.SpinUpLowerHub
-import com.team4099.robot2022.commands.shooter.SpinUpUpperHub
 import com.team4099.robot2022.subsystems.drivetrain.Drivetrain
 import com.team4099.robot2022.subsystems.feeder.Feeder
 import com.team4099.robot2022.subsystems.intake.Intake
@@ -21,11 +20,11 @@ class FourBallRightStart(
   val intake: Intake,
   val feeder: Feeder,
   val shooter: Shooter
-): SequentialCommandGroup() {
+) : SequentialCommandGroup() {
   val twoBallRightTrajectory = trajectoryFromPathPlanner(PathStore.twoBallRightStartPath)
   val fourBallRightTrajectory = trajectoryFromPathPlanner(PathStore.fourBallRightStartPath)
 
-  init{
+  init {
     addCommands(
       ResetPoseCommand(drivetrain, twoBallRightTrajectory.startingPose),
       ParallelCommandGroup(
@@ -38,8 +37,6 @@ class FourBallRightStart(
         DrivePathCommand(drivetrain, fourBallRightTrajectory, resetPose = false)
       ),
       SpinUpLowerHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(3.0))
-
-
     )
   }
 }
