@@ -23,6 +23,7 @@ import com.team4099.robot2022.commands.intake.IntakeBallsCommand
 import com.team4099.robot2022.commands.intake.IntakeIdleCommand
 import com.team4099.robot2022.commands.intake.ReverseIntakeCommand
 import com.team4099.robot2022.commands.led.LedCommand
+import com.team4099.robot2022.commands.pneumatics.PneumaticClimbCheckCommand
 import com.team4099.robot2022.commands.pneumatics.PneumaticIdleCommand
 import com.team4099.robot2022.commands.shooter.ShootCommand
 import com.team4099.robot2022.commands.shooter.ShooterIdleCommand
@@ -108,7 +109,8 @@ object RobotContainer {
     telescopingClimber.defaultCommand = TelescopingIdleCommand(telescopingClimber)
     pivotClimber.defaultCommand = PivotArmIdleCommand(pivotClimber)
     //    PivotClimber.defaultCommand = PivotIdleCommand()
-    led.defaultCommand = LedCommand(led, intake, shooter, feeder, telescopingClimber, pivotClimber)
+    led.defaultCommand =
+      LedCommand(led, intake, shooter, feeder, telescopingClimber, pivotClimber, pneumatic)
     pneumatic.defaultCommand = PneumaticIdleCommand(pneumatic)
   }
 
@@ -154,11 +156,11 @@ object RobotContainer {
     ControlBoard.extendPivot.whileActiveOnce(ExtendPivotArmCommand(pivotClimber))
     ControlBoard.retractPivot.whileActiveOnce(RetractPivotArmCommand(pivotClimber))
     ControlBoard.startClimbSequence.whileActiveOnce(
-      RetractPivotArmCommand(pivotClimber)
+      PneumaticClimbCheckCommand(pneumatic)
         .andThen(
-          ClimbSequenceCommand(telescopingClimber, pivotClimber)
+          ClimbSequenceCommand(telescopingClimber, pivotClimber, pneumatic)
             .andThen(
-              ClimbSequenceCommand(telescopingClimber, pivotClimber)
+              ClimbSequenceCommand(telescopingClimber, pivotClimber, pneumatic)
                 .andThen(RetractTelescopingArmCommand(telescopingClimber))
             )
         )

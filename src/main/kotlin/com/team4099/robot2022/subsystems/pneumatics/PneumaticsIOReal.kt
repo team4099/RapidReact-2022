@@ -19,7 +19,7 @@ object PneumaticsIOReal : PneumaticIO {
 
   override fun useLowClosedLoopThresholds(useLow: Boolean) {
     if (!useLow) {
-      pneumatics.enableCompressorAnalog(60.0, 120.0)
+      pneumatics.enableCompressorAnalog(80.0, 120.0)
     } else {}
   }
 }

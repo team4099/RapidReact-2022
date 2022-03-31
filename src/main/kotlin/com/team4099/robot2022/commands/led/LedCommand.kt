@@ -3,12 +3,14 @@ package com.team4099.robot2022.commands.led
 import com.team4099.robot2022.Robot
 import com.team4099.robot2022.config.constants.IntakeConstants
 import com.team4099.robot2022.config.constants.LEDConstants
+import com.team4099.robot2022.config.constants.PneumaticConstants
 import com.team4099.robot2022.config.constants.TelescopingClimberConstants
 import com.team4099.robot2022.subsystems.climber.PivotClimber
 import com.team4099.robot2022.subsystems.climber.TelescopingClimber
 import com.team4099.robot2022.subsystems.feeder.Feeder
 import com.team4099.robot2022.subsystems.intake.Intake
 import com.team4099.robot2022.subsystems.led.Led
+import com.team4099.robot2022.subsystems.pneumatics.Pneumatic
 import com.team4099.robot2022.subsystems.shooter.Shooter
 import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj2.command.CommandBase
@@ -19,7 +21,8 @@ class LedCommand(
   val shooter: Shooter,
   val feeder: Feeder,
   val telescopingClimber: TelescopingClimber,
-  val pivotClimber: PivotClimber
+  val pivotClimber: PivotClimber,
+  val pneumatic: Pneumatic
 ) : CommandBase() {
   private var climbDone: Boolean
 
@@ -90,7 +93,10 @@ class LedCommand(
         TelescopingClimberConstants.ActualTelescopeStates.MAX_EXTENSION -> {
           when (telescopingClimber.desiredState) {
             TelescopingClimberConstants.DesiredTelescopeStates.MAX_EXTENSION -> {
-              LEDConstants.LEDState.CLIMBER_READY
+              when (pneumatic.allowClimb) {
+                PneumaticConstants.AllowClimb.CLIMB -> LEDConstants.LEDState.CLIMBER_READY
+                PneumaticConstants.AllowClimb.NO_CLIMB -> LEDConstants.LEDState.DISALLOW_CLIMB
+              }
             }
             else -> LEDConstants.LEDState.IDLE
           }

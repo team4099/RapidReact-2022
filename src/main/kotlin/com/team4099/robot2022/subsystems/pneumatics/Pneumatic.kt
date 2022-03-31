@@ -24,7 +24,7 @@ class Pneumatic(val io: PneumaticIO) : SubsystemBase() {
     Alert("Can't build pressure. Check the dump valve!", AlertType.WARNING)
 
   private val filterData: MutableList<Double> = ArrayList()
-  private var pressureSmoothedPsi = 0.0
+  var pressureSmoothedPsi = 0.0
 
   private var lastPressurePsi = 0.0
   private var lastPressureIncreasing = false
@@ -32,6 +32,8 @@ class Pneumatic(val io: PneumaticIO) : SubsystemBase() {
   private var compressorMinPoint = 0.0
 
   var climbModeOverride = Supplier { false }
+
+  var allowClimb: PneumaticConstants.AllowClimb = PneumaticConstants.AllowClimb.CLIMB
 
   init {
     noPressureTimer.start()
@@ -91,7 +93,7 @@ class Pneumatic(val io: PneumaticIO) : SubsystemBase() {
     pressureSmoothedPsi =
       filterData.stream().mapToDouble { a: Double? -> a!! }.summaryStatistics().average
 
-    Logger.getInstance().recordOutput("Pneumatics/PressurePsi", pressureSmoothedPsi)
+    Logger.getInstance().recordOutput("Pneumatics/pressurePsi", pressureSmoothedPsi)
     //    Shuffleboard.getTab("Camera Feed").add(pressureSmoothedPsi.toString())
 
     if (inputs.pressurePsi > 3) {
@@ -101,5 +103,13 @@ class Pneumatic(val io: PneumaticIO) : SubsystemBase() {
       compressorEnabledTimer.reset()
     }
     dumpValveAlert.set(noPressureTimer.hasElapsed(5.0) && compressorEnabledTimer.hasElapsed(5.0))
+
+    if (pressureSmoothedPsi >= PneumaticConstants.CLIMB_PSI_REQ) {
+      allowClimb = PneumaticConstants.AllowClimb.CLIMB
+    } else {
+      allowClimb = PneumaticConstants.AllowClimb.NO_CLIMB
+    }
+
+    Logger.getInstance().recordOutput("Pneumatics/allowClimb", allowClimb.name)
   }
 }

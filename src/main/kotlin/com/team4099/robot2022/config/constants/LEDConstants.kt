@@ -35,6 +35,9 @@ object LEDConstants {
     // Changing Mix
     CLIMBING(BlinkinLedDriver.BlinkinLedMode.FIXED_BEATS_PARTY),
 
+    // Flashing Red
+    DISALLOW_CLIMB(BlinkinLedDriver.BlinkinLedMode.FIXED_HEARTBEAT_RED),
+
     // Changing Red
     CLIMB_FINISHED_RED_ALLIANCE(BlinkinLedDriver.BlinkinLedMode.FIXED_BEATS_LAVA),
 

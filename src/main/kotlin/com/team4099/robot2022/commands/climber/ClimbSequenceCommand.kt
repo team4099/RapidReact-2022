@@ -2,13 +2,16 @@ package com.team4099.robot2022.commands.climber
 
 import com.team4099.robot2022.subsystems.climber.PivotClimber
 import com.team4099.robot2022.subsystems.climber.TelescopingClimber
+import com.team4099.robot2022.subsystems.pneumatics.Pneumatic
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 import edu.wpi.first.wpilibj2.command.WaitCommand
 
 class ClimbSequenceCommand(
   val telescopingClimber: TelescopingClimber,
-  val pivotClimber: PivotClimber
+  val pivotClimber: PivotClimber,
+  val pneumatic: Pneumatic,
 ) : SequentialCommandGroup() {
+
   init {
     addCommands(
       RetractTelescopingArmCommand(telescopingClimber),
