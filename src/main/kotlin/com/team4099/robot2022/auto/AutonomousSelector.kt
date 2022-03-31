@@ -7,7 +7,7 @@ import com.team4099.lib.units.derived.degrees
 import com.team4099.robot2022.auto.mode.FourBallRightStart
 import com.team4099.robot2022.auto.mode.OneBallFenderShotThenTaxi
 import com.team4099.robot2022.auto.mode.TestAutoPath
-import com.team4099.robot2022.auto.mode.ThreeBallRightStart
+import com.team4099.robot2022.auto.mode.ThreeBallRightStartFaster
 import com.team4099.robot2022.auto.mode.TwoBallLeftStartMode
 import com.team4099.robot2022.commands.climber.TelescopingCharacterizationCommand
 import com.team4099.robot2022.commands.drivetrain.DriveCharacterizeCommand
@@ -46,7 +46,9 @@ object AutonomousSelector {
       AutonomousMode.ONE_BALL_FENDER_SHOT_THEN_TAXI_RIGHT
     )
     autonomousModeChooser.addOption("Two Ball: Left", AutonomousMode.TWO_BALL_LEFT_START)
-    autonomousModeChooser.addOption("Three Ball: Left Start", AutonomousMode.THREE_BALL_RIGHT_START)
+    autonomousModeChooser.addOption(
+      "Three Ball: Right Start", AutonomousMode.THREE_BALL_RIGHT_START
+    )
     autonomousModeChooser.addOption("Test", AutonomousMode.TEST_AUTO_PATH)
     autonomousModeChooser.addOption(
       "Characterize Drivetrain", AutonomousMode.CHARACTERIZE_DRIVETRAIN
@@ -89,7 +91,7 @@ object AutonomousSelector {
           .andThen(TwoBallLeftStartMode(drivetrain, intake, feeder, shooter))
       AutonomousMode.THREE_BALL_RIGHT_START ->
         return WaitCommand(getWaitTime().inSeconds)
-          .andThen(ThreeBallRightStart(drivetrain, intake, feeder, shooter))
+          .andThen(ThreeBallRightStartFaster(drivetrain, intake, feeder, shooter))
       AutonomousMode.CHARACTERIZE_DRIVETRAIN ->
         return WaitCommand(getWaitTime().inSeconds).andThen(DriveCharacterizeCommand(drivetrain))
       AutonomousMode.CHARACTERIZE_SHOOTER ->

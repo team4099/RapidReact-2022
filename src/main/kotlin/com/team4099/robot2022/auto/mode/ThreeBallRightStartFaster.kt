@@ -16,29 +16,29 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 import edu.wpi.first.wpilibj2.command.WaitCommand
 
-class ThreeBallRightStart(
+class ThreeBallRightStartFaster(
   val drivetrain: Drivetrain,
   val intake: Intake,
   val feeder: Feeder,
   val shooter: Shooter
 ) : SequentialCommandGroup() {
 
-  val trajectory = trajectoryFromPathPlanner(PathStore.threeBallRightStartPath)
+  val trajectory = trajectoryFromPathPlanner(PathStore.threeBallRightStartFasterPath)
 
   init {
     addCommands(
       SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(0.5)),
       ResetPoseCommand(drivetrain, trajectory.startingPose),
       ParallelCommandGroup(
-        WaitCommand(2.0)
+        WaitCommand(1.0)
           .andThen(
             (IntakeBallsCommand(intake).alongWith(FeederSerialize(feeder))).withTimeout(
-              5.0
+              2.5
             )
           ),
         DrivePathCommand(drivetrain, trajectory, resetPose = false)
       ),
-      SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(3.0))
+      SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(1.5))
     )
   }
 }

@@ -28,6 +28,13 @@ object PathStore {
       DrivetrainConstants.SLOW_AUTO_ACCEL.inMetersPerSecondPerSecond
     )
 
+  val threeBallRightStartFasterPath =
+    PathPlanner.loadPath(
+      "3 Ball Right Start Faster",
+      DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
+      DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
+    )
+
   val threeAndFourBallLeftStartPath =
     PathPlanner.loadPath(
       "3 and 4 Ball Left Start",

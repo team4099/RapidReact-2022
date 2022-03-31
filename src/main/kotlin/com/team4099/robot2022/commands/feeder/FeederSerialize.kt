@@ -37,4 +37,8 @@ class FeederSerialize(val feeder: Feeder) : CommandBase() {
 
     Logger.getInstance().recordOutput("ActiveCommands/FeederSerialize", true)
   }
+
+  override fun end(interrupted: Boolean) {
+    feeder.state = FeederConstants.FeederState.NEUTRAL
+  }
 }
