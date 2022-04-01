@@ -55,4 +55,11 @@ object PathStore {
       DrivetrainConstants.SLOW_AUTO_VEL.inMetersPerSecond,
       DrivetrainConstants.SLOW_AUTO_ACCEL.inMetersPerSecondPerSecond
     )
+
+  val fiveBallRightStart =
+    PathPlanner.loadPath(
+      "4 and 5 Ball",
+      DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
+      DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
+    )
 }

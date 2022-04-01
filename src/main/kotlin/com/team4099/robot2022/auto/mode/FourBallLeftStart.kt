@@ -38,7 +38,7 @@ class FourBallLeftStart(
         WaitCommand(2.0).andThen(IntakeBallsCommand(intake).withTimeout(2.0)),
         DrivePathCommand(drivetrain, threeAndFourBallTrajectory, resetPose = false)
       ),
-      SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(3.0))
+      SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(3.0)),
     )
   }
 }

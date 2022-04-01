@@ -20,6 +20,6 @@ class SpinUpLowerHub(val shooter: Shooter) : CommandBase() {
   }
 
   override fun execute() {
-    Logger.getInstance().recordOutput("ActiveCommands/SpinUpFarCommand", true)
+    Logger.getInstance().recordOutput("ActiveCommands/SpinUpUpperHubCommand", true)
   }
 }
