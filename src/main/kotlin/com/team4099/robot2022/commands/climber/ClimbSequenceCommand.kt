@@ -19,7 +19,7 @@ class ClimbSequenceCommand(
       WaitCommand(0.5),
       ExtendTelescopingArmCommand(telescopingClimber),
       RetractPivotArmCommand(pivotClimber),
-      WaitCommand(1.0)
+      WaitCommand(2.0)
     )
   }
 }

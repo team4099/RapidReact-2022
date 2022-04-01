@@ -7,7 +7,10 @@ object PneumaticConstants {
   const val COMPRESSOR_AVERAGING_TAPS = 50
   const val COMPRESSOR_RATE_PSI_PER_SECOND = 1.5 // add psi stuff to units library
 
-  const val CLIMB_PSI_REQ = 80.0
+  const val CLIMB_PSI_REQ = 60.0
+
+  const val MINIMUM_PRESSURE = 60.0
+  const val MAXIMUM_PRESSURE = 61.0
 
   enum class AllowClimb(val canClimb: Boolean) {
     CLIMB(true),

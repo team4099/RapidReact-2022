@@ -28,7 +28,7 @@ class FiveBallRightStart(
     val fiveBallRightStartTrajectory = trajectoryFromPathPlanner(PathStore.fiveBallRightStart)
 
     addCommands(
-      SpinUpUpperHub(shooter), //1.775 seconds
+      SpinUpUpperHub(shooter), // 1.775 seconds
       SequentialCommandGroup(
         // three ball
         ShootCommand(shooter, feeder).withTimeout(0.5),
