@@ -6,7 +6,7 @@ import com.team4099.robot2022.commands.drivetrain.DrivePathCommand
 import com.team4099.robot2022.commands.drivetrain.ResetPoseCommand
 import com.team4099.robot2022.commands.feeder.FeederSerialize
 import com.team4099.robot2022.commands.intake.IntakeBallsCommand
-import com.team4099.robot2022.commands.shooter.ShootCommand
+import com.team4099.robot2022.commands.shooter.AutoShootCommand
 import com.team4099.robot2022.commands.shooter.SpinUpUpperHub
 import com.team4099.robot2022.subsystems.drivetrain.Drivetrain
 import com.team4099.robot2022.subsystems.feeder.Feeder
@@ -21,40 +21,36 @@ class FiveBallRightStart(
   val intake: Intake,
   val feeder: Feeder,
   val shooter: Shooter
-) : ParallelCommandGroup() {
+) : SequentialCommandGroup() {
   init {
     val threeBallRightStartFasterTrajectory =
       trajectoryFromPathPlanner(PathStore.threeBallRightStartFasterPath)
     val fiveBallRightStartTrajectory = trajectoryFromPathPlanner(PathStore.fiveBallRightStart)
 
     addCommands(
-      SpinUpUpperHub(shooter), // 1.775 seconds
-      SequentialCommandGroup(
-        // three ball
-        ShootCommand(shooter, feeder).withTimeout(0.5),
-        ResetPoseCommand(drivetrain, threeBallRightStartFasterTrajectory.startingPose),
-        ParallelCommandGroup(
-          WaitCommand(1.0)
-            .andThen(
-              (IntakeBallsCommand(intake).alongWith(FeederSerialize(feeder))).withTimeout(
-                2.5
-              )
-            ),
-          DrivePathCommand(
-            drivetrain, threeBallRightStartFasterTrajectory, resetPose = false
-          )
-        ),
-        ShootCommand(shooter, feeder).withTimeout(1.25),
+      SpinUpUpperHub(shooter)
+        .andThen(AutoShootCommand(shooter, feeder).withTimeout(0.5)), // 1.775 seconds
+      // three ball
+      ResetPoseCommand(drivetrain, threeBallRightStartFasterTrajectory.startingPose),
+      ParallelCommandGroup(
+        WaitCommand(1.0)
+          .andThen(
+            (IntakeBallsCommand(intake).alongWith(FeederSerialize(feeder))).withTimeout(
+              2.5
+            )
+          ),
+        DrivePathCommand(drivetrain, threeBallRightStartFasterTrajectory, resetPose = false)
+      ),
+      SpinUpUpperHub(shooter).andThen(AutoShootCommand(shooter, feeder).withTimeout(1.25)),
 
-        // four and five ball
-        ParallelCommandGroup(
-          WaitCommand(2.0)
-            .andThen(IntakeBallsCommand(intake).alongWith(FeederSerialize(feeder)))
-            .withTimeout(2.5),
-          DrivePathCommand(drivetrain, fiveBallRightStartTrajectory, resetPose = false)
-        ),
-        ShootCommand(shooter, feeder).withTimeout(1.25)
-      )
+      // four and five ball
+      ParallelCommandGroup(
+        WaitCommand(2.0)
+          .andThen(IntakeBallsCommand(intake).alongWith(FeederSerialize(feeder)))
+          .withTimeout(2.5),
+        DrivePathCommand(drivetrain, fiveBallRightStartTrajectory, resetPose = false)
+      ),
+      SpinUpUpperHub(shooter).andThen(AutoShootCommand(shooter, feeder).withTimeout(1.25))
     )
   }
 }

@@ -9,8 +9,8 @@ object PneumaticConstants {
 
   const val CLIMB_PSI_REQ = 60.0
 
-  const val MINIMUM_PRESSURE = 60.0
-  const val MAXIMUM_PRESSURE = 61.0
+  const val MINIMUM_PRESSURE = 80.0
+  const val MAXIMUM_PRESSURE = 120.0
 
   enum class AllowClimb(val canClimb: Boolean) {
     CLIMB(true),
