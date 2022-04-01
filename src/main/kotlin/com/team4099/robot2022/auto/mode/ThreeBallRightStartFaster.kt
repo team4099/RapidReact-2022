@@ -7,7 +7,7 @@ import com.team4099.robot2022.commands.drivetrain.ResetPoseCommand
 import com.team4099.robot2022.commands.feeder.FeederSerialize
 import com.team4099.robot2022.commands.intake.IntakeBallsCommand
 import com.team4099.robot2022.commands.shooter.ShootCommand
-import com.team4099.robot2022.commands.shooter.SpinUpUpperHub
+import com.team4099.robot2022.commands.shooter.SpinUpLowerHub
 import com.team4099.robot2022.subsystems.drivetrain.Drivetrain
 import com.team4099.robot2022.subsystems.feeder.Feeder
 import com.team4099.robot2022.subsystems.intake.Intake
@@ -27,10 +27,10 @@ class ThreeBallRightStartFaster(
 
   init {
     addCommands(
-      SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(0.5)),
+      SpinUpLowerHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(0.5)),
       ResetPoseCommand(drivetrain, trajectory.startingPose),
       ParallelCommandGroup(
-        WaitCommand(1.0)
+        WaitCommand(0.75)
           .andThen(
             (IntakeBallsCommand(intake).alongWith(FeederSerialize(feeder))).withTimeout(
               2.5
@@ -38,7 +38,7 @@ class ThreeBallRightStartFaster(
           ),
         DrivePathCommand(drivetrain, trajectory, resetPose = false)
       ),
-      SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(1.5))
+      SpinUpLowerHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(1.5))
     )
   }
 }
