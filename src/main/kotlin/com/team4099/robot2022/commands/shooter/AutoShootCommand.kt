@@ -18,15 +18,7 @@ class AutoShootCommand(val shooter: Shooter, val feeder: Feeder) : CommandBase()
   }
 
   override fun execute() {
-    if (shooter.isOnTarget) {
-      feeder.state = FeederConstants.FeederState.SHOOT
-    } else {
-      if (feeder.inputs.topBeamBroken) {
-        feeder.state = FeederConstants.FeederState.NEUTRAL
-      } else {
-        feeder.state = FeederConstants.FeederState.SHOOT
-      }
-    }
+    feeder.state = FeederConstants.FeederState.AUTO_SHOOT
     Logger.getInstance().recordOutput("ActiveCommands/ShootCommand", true)
   }
 

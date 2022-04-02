@@ -29,6 +29,7 @@ class FiveBallRightStart(
 
     addCommands(
       SpinUpLowerHub(shooter)
+        .deadlineWith(FeederSerialize(feeder))
         .andThen(AutoShootCommand(shooter, feeder).withTimeout(0.5)), // 1.775 seconds
       // three ball
       ResetPoseCommand(drivetrain, threeBallRightStartFasterTrajectory.startingPose),
@@ -41,7 +42,9 @@ class FiveBallRightStart(
           ),
         DrivePathCommand(drivetrain, threeBallRightStartFasterTrajectory, resetPose = false)
       ),
-      SpinUpLowerHub(shooter).andThen(AutoShootCommand(shooter, feeder).withTimeout(1.5)),
+      SpinUpLowerHub(shooter)
+        .deadlineWith(FeederSerialize(feeder))
+        .andThen(AutoShootCommand(shooter, feeder).withTimeout(1.5)),
 
       // four and five ball
       ParallelCommandGroup(
@@ -51,7 +54,9 @@ class FiveBallRightStart(
           ),
         DrivePathCommand(drivetrain, fiveBallRightStartTrajectory, resetPose = true)
       ),
-      SpinUpLowerHub(shooter).andThen(AutoShootCommand(shooter, feeder).withTimeout(1.5))
+      SpinUpLowerHub(shooter)
+        .deadlineWith(FeederSerialize(feeder))
+        .andThen(AutoShootCommand(shooter, feeder).withTimeout(1.5))
     )
   }
 }

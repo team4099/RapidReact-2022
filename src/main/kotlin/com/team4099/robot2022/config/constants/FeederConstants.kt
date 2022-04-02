@@ -3,6 +3,7 @@ package com.team4099.robot2022.config.constants
 object FeederConstants {
   // feeder_power temp
   const val FEEDER_POWER = 1.0
+  const val AUTO_FEEDER_POWER = 0.8
   const val TAB = "Feeder"
 
   const val FLOOR_SUPPLY_CURRENT_LIMIT = 25.0
@@ -20,6 +21,7 @@ object FeederConstants {
     BACKWARD_FLOOR(-FEEDER_POWER, 0.0),
     BACKWARD_VERTICAL(0.0, -FEEDER_POWER),
     NEUTRAL(0.0, 0.0),
-    SHOOT(FEEDER_POWER, FEEDER_POWER)
+    SHOOT(FEEDER_POWER, FEEDER_POWER),
+    AUTO_SHOOT(AUTO_FEEDER_POWER, AUTO_FEEDER_POWER)
   }
 }
