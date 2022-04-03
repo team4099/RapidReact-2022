@@ -7,7 +7,7 @@ import com.team4099.robot2022.commands.drivetrain.ResetPoseCommand
 import com.team4099.robot2022.commands.feeder.FeederSerialize
 import com.team4099.robot2022.commands.intake.IntakeBallsCommand
 import com.team4099.robot2022.commands.shooter.AutoShootCommand
-import com.team4099.robot2022.commands.shooter.SpinUpLowerHub
+import com.team4099.robot2022.commands.shooter.SpinUpUpperHub
 import com.team4099.robot2022.subsystems.drivetrain.Drivetrain
 import com.team4099.robot2022.subsystems.feeder.Feeder
 import com.team4099.robot2022.subsystems.intake.Intake
@@ -28,33 +28,27 @@ class FiveBallRightStart(
     val fiveBallRightStartTrajectory = trajectoryFromPathPlanner(PathStore.fiveBallRightStart)
 
     addCommands(
-      SpinUpLowerHub(shooter)
+      SpinUpUpperHub(shooter)
         .deadlineWith(FeederSerialize(feeder))
         .andThen(AutoShootCommand(shooter, feeder).withTimeout(0.5)), // 1.775 seconds
       // three ball
       ResetPoseCommand(drivetrain, threeBallRightStartFasterTrajectory.startingPose),
       ParallelCommandGroup(
-        WaitCommand(0.75)
-          .andThen(
-            (IntakeBallsCommand(intake).alongWith(FeederSerialize(feeder))).withTimeout(
-              2.0
-            )
-          ),
+        WaitCommand(0.75).andThen((IntakeBallsCommand(intake)).withTimeout(1.25)),
         DrivePathCommand(drivetrain, threeBallRightStartFasterTrajectory, resetPose = false)
+          .deadlineWith(FeederSerialize(feeder))
       ),
-      SpinUpLowerHub(shooter)
+      SpinUpUpperHub(shooter)
         .deadlineWith(FeederSerialize(feeder))
         .andThen(AutoShootCommand(shooter, feeder).withTimeout(1.5)),
 
       // four and five ball
       ParallelCommandGroup(
-        WaitCommand(2.0)
-          .andThen(
-            IntakeBallsCommand(intake).alongWith(FeederSerialize(feeder)).withTimeout(2.5)
-          ),
+        WaitCommand(2.0).andThen(IntakeBallsCommand(intake).withTimeout(2.5)),
         DrivePathCommand(drivetrain, fiveBallRightStartTrajectory, resetPose = true)
+          .deadlineWith(FeederSerialize(feeder))
       ),
-      SpinUpLowerHub(shooter)
+      SpinUpUpperHub(shooter)
         .deadlineWith(FeederSerialize(feeder))
         .andThen(AutoShootCommand(shooter, feeder).withTimeout(1.5))
     )

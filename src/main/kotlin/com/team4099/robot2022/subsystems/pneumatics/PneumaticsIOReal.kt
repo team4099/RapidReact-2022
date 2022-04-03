@@ -22,6 +22,10 @@ object PneumaticsIOReal : PneumaticIO {
       pneumatics.enableCompressorAnalog(
         PneumaticConstants.MINIMUM_PRESSURE, PneumaticConstants.MAXIMUM_PRESSURE
       )
-    } else {}
+    } else {
+      pneumatics.enableCompressorAnalog(
+        PneumaticConstants.LOW_MIN_PRESSURE, PneumaticConstants.MAXIMUM_PRESSURE
+      )
+    }
   }
 }

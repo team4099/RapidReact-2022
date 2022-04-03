@@ -9,6 +9,7 @@ object PneumaticConstants {
 
   const val CLIMB_PSI_REQ = 60.0
 
+  const val LOW_MIN_PRESSURE = 60.0
   const val MINIMUM_PRESSURE = 80.0
   const val MAXIMUM_PRESSURE = 120.0
 

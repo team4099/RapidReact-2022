@@ -6,9 +6,9 @@ import com.team4099.robot2022.config.constants.PneumaticConstants
 import com.team4099.robot2022.util.Alert
 import com.team4099.robot2022.util.Alert.AlertType
 import edu.wpi.first.wpilibj.Timer
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import org.littletonrobotics.junction.Logger
-import java.util.function.Supplier
 
 class Pneumatic(val io: PneumaticIO) : SubsystemBase() {
 
@@ -31,7 +31,7 @@ class Pneumatic(val io: PneumaticIO) : SubsystemBase() {
   private var compressorMaxPoint = 0.0
   private var compressorMinPoint = 0.0
 
-  var climbModeOverride = Supplier { false }
+  var allowLowPressure = false
 
   var allowClimb: PneumaticConstants.AllowClimb = PneumaticConstants.AllowClimb.CLIMB
 
@@ -40,19 +40,11 @@ class Pneumatic(val io: PneumaticIO) : SubsystemBase() {
     compressorEnabledTimer.start()
   }
 
-  fun getPressure(): Double {
-    return pressureSmoothedPsi
-  }
-
-  fun setSupplier(setClimbModeOverride: Supplier<Boolean>) {
-    climbModeOverride = setClimbModeOverride
-  }
-
   override fun periodic() {
     io.updateInputs(inputs)
     Logger.getInstance().processInputs("Pneumatics", inputs)
 
-    io.useLowClosedLoopThresholds(climbModeOverride.get())
+    io.useLowClosedLoopThresholds(allowLowPressure)
 
     val limitedPressure = if (inputs.pressurePsi < 0.0) 0.0 else inputs.pressurePsi
     var processedPressure = 0.0
@@ -111,5 +103,7 @@ class Pneumatic(val io: PneumaticIO) : SubsystemBase() {
     }
 
     Logger.getInstance().recordOutput("Pneumatics/allowClimb", allowClimb.name)
+
+    SmartDashboard.putNumber("Pneumatics/pressurePSI", pressureSmoothedPsi)
   }
 }

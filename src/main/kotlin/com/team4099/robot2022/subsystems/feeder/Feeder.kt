@@ -2,6 +2,7 @@ package com.team4099.robot2022.subsystems.feeder
 
 import com.team4099.lib.units.derived.volts
 import com.team4099.robot2022.config.constants.FeederConstants
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import org.littletonrobotics.junction.Logger
 
@@ -67,6 +68,9 @@ class Feeder(val io: FeederIO) : SubsystemBase() {
     Logger.getInstance().recordOutput("Feeder/topPrevStage", topPrevStage)
     Logger.getInstance().recordOutput("Feeder/state", state.name)
     Logger.getInstance().recordOutput("Feeder/oneBallCheck", oneBallCheck)
+
+    SmartDashboard.putBoolean("Feeder/oneCargo", ballCount >= 1)
+    SmartDashboard.putBoolean("Feeder/twoCargo", ballCount >= 2)
   }
 
   init {

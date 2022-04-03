@@ -25,6 +25,7 @@ import com.team4099.robot2022.commands.intake.ReverseIntakeCommand
 import com.team4099.robot2022.commands.led.LedCommand
 import com.team4099.robot2022.commands.pneumatics.PneumaticClimbCheckCommand
 import com.team4099.robot2022.commands.pneumatics.PneumaticIdleCommand
+import com.team4099.robot2022.commands.pneumatics.UseLowThresholdClimbCommand
 import com.team4099.robot2022.commands.shooter.ShootCommand
 import com.team4099.robot2022.commands.shooter.ShooterIdleCommand
 import com.team4099.robot2022.commands.shooter.ShooterUnjamCommand
@@ -158,10 +159,13 @@ object RobotContainer {
     ControlBoard.startClimbSequence.whileActiveOnce(
       PneumaticClimbCheckCommand(pneumatic)
         .andThen(
-          ClimbSequenceCommand(telescopingClimber, pivotClimber, pneumatic)
-            .andThen(
-              ClimbSequenceCommand(telescopingClimber, pivotClimber, pneumatic)
-                .andThen(RetractTelescopingArmCommand(telescopingClimber))
+          UseLowThresholdClimbCommand(pneumatic)
+            .alongWith(
+              ClimbSequenceCommand(telescopingClimber, pivotClimber)
+                .andThen(
+                  ClimbSequenceCommand(telescopingClimber, pivotClimber)
+                    .andThen(RetractTelescopingArmCommand(telescopingClimber))
+                )
             )
         )
     )

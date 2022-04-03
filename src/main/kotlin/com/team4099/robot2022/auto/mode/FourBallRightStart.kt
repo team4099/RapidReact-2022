@@ -6,7 +6,7 @@ import com.team4099.robot2022.commands.drivetrain.DrivePathCommand
 import com.team4099.robot2022.commands.drivetrain.ResetPoseCommand
 import com.team4099.robot2022.commands.feeder.FeederSerialize
 import com.team4099.robot2022.commands.intake.IntakeBallsCommand
-import com.team4099.robot2022.commands.shooter.ShootCommand
+import com.team4099.robot2022.commands.shooter.AutoShootCommand
 import com.team4099.robot2022.commands.shooter.SpinUpUpperHub
 import com.team4099.robot2022.subsystems.drivetrain.Drivetrain
 import com.team4099.robot2022.subsystems.feeder.Feeder
@@ -29,20 +29,17 @@ class FourBallRightStart(
     addCommands(
       ResetPoseCommand(drivetrain, twoBallRightTrajectory.startingPose),
       ParallelCommandGroup(
-        (IntakeBallsCommand(intake).alongWith(FeederSerialize(feeder))).withTimeout(2.0),
-        DrivePathCommand(drivetrain, twoBallRightTrajectory, resetPose = false),
+        IntakeBallsCommand(intake).withTimeout(1.25),
+        DrivePathCommand(drivetrain, twoBallRightTrajectory, resetPose = false)
+          .deadlineWith(FeederSerialize(feeder)),
       ),
-      SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(1.0)),
+      SpinUpUpperHub(shooter).andThen(AutoShootCommand(shooter, feeder).withTimeout(1.5)),
       ParallelCommandGroup(
-        WaitCommand(1.0)
-          .andThen(
-            (IntakeBallsCommand(intake).alongWith(FeederSerialize(feeder))).withTimeout(
-              4.5
-            )
-          ),
+        WaitCommand(1.0).andThen((IntakeBallsCommand(intake).withTimeout(4.5))),
         DrivePathCommand(drivetrain, fourBallRightTrajectory, resetPose = false)
+          .deadlineWith(FeederSerialize(feeder))
       ),
-      SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(1.0))
+      SpinUpUpperHub(shooter).andThen(AutoShootCommand(shooter, feeder).withTimeout(1.5))
     )
   }
 }
