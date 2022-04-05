@@ -1,5 +1,6 @@
 package com.team4099.robot2022.auto.mode
 
+import com.team4099.lib.pathfollow.Trajectory
 import com.team4099.lib.pathfollow.trajectoryFromPathPlanner
 import com.team4099.robot2022.auto.PathStore
 import com.team4099.robot2022.commands.drivetrain.DrivePathCommand
@@ -11,6 +12,7 @@ import com.team4099.robot2022.subsystems.drivetrain.Drivetrain
 import com.team4099.robot2022.subsystems.feeder.Feeder
 import com.team4099.robot2022.subsystems.intake.Intake
 import com.team4099.robot2022.subsystems.shooter.Shooter
+import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 
@@ -21,9 +23,15 @@ class TwoBallLeftStartMode(
   val shooter: Shooter
 ) : SequentialCommandGroup() {
 
-  val trajectory = trajectoryFromPathPlanner(PathStore.twoBallLeftStartPath)
+  val trajectory: Trajectory
 
   init {
+    if (DriverStation.getAlliance() == DriverStation.Alliance.Red) {
+      trajectory = trajectoryFromPathPlanner(PathStore.redTwoBallLeftStartPath)
+    } else {
+      trajectory = trajectoryFromPathPlanner(PathStore.blueTwoBallLeftStartPath)
+    }
+
     addCommands(
       ResetPoseCommand(drivetrain, trajectory.startingPose),
       ParallelCommandGroup(
