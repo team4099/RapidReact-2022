@@ -27,7 +27,6 @@ class Feeder(val io: FeederIO) : SubsystemBase() {
   private var topPrevStage: Boolean = timerBottomBreak
   var timer: Time = Clock.fpgaTime
 
-
   //  private var bottomBeamBreakList = mutableListOf<Boolean>()
   //  private var topBeamBreakList = mutableListOf<Boolean>()
 
@@ -35,21 +34,17 @@ class Feeder(val io: FeederIO) : SubsystemBase() {
     io.updateInputs(inputs)
     timerBottomBreak = false
 
-    if (bottomPrevStage != timerBottomBreak &&
-      state == FeederConstants.FeederState.FORWARD_ALL
-    ) {
+    if (bottomPrevStage != timerBottomBreak && state == FeederConstants.FeederState.FORWARD_ALL) {
       oneBallCheck = true
     }
 
-    if(timerBottomBreak) {
-      if(timer == 0.seconds) {
+    if (timerBottomBreak) {
+      if (timer == 0.seconds) {
         timer = Clock.fpgaTime
-      }
-      else if (Clock.fpgaTime - timer >= FeederConstants.BEAM_BREAK_THRESHOLD) {
+      } else if (Clock.fpgaTime - timer >= FeederConstants.BEAM_BREAK_THRESHOLD) {
         timerBottomBreak = true
       }
-    }
-    else {
+    } else {
       timer = 0.seconds
     }
 
