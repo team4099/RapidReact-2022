@@ -1,5 +1,8 @@
 package com.team4099.robot2022.subsystems.feeder
 
+import com.team4099.lib.hal.Clock
+import com.team4099.lib.units.base.Time
+import com.team4099.lib.units.base.seconds
 import com.team4099.lib.units.derived.volts
 import com.team4099.robot2022.config.constants.FeederConstants
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
@@ -19,33 +22,49 @@ class Feeder(val io: FeederIO) : SubsystemBase() {
   var ballCount: Int = 1
 
   var oneBallCheck: Boolean = false
-  private var bottomPrevStage: Boolean = inputs.bottomBeamBroken
-  private var topPrevStage: Boolean = inputs.bottomBeamBroken
+  var timerBottomBreak: Boolean = false
+  private var bottomPrevStage: Boolean = timerBottomBreak
+  private var topPrevStage: Boolean = timerBottomBreak
+  var timer: Time = Clock.fpgaTime
+
 
   //  private var bottomBeamBreakList = mutableListOf<Boolean>()
   //  private var topBeamBreakList = mutableListOf<Boolean>()
 
   override fun periodic() {
     io.updateInputs(inputs)
+    timerBottomBreak = false
 
-    if (bottomPrevStage != inputs.bottomBeamBroken &&
+    if (bottomPrevStage != timerBottomBreak &&
       state == FeederConstants.FeederState.FORWARD_ALL
     ) {
       oneBallCheck = true
     }
 
-    if (!inputs.topBeamBroken && !inputs.bottomBeamBroken && !oneBallCheck) {
+    if(timerBottomBreak) {
+      if(timer == 0.seconds) {
+        timer = Clock.fpgaTime
+      }
+      else if (Clock.fpgaTime - timer >= FeederConstants.BEAM_BREAK_THRESHOLD) {
+        timerBottomBreak = true
+      }
+    }
+    else {
+      timer = 0.seconds
+    }
+
+    if (!inputs.topBeamBroken && !timerBottomBreak && !oneBallCheck) {
       ballCount = 0
-    } else if (inputs.topBeamBroken && inputs.bottomBeamBroken) {
+    } else if (inputs.topBeamBroken && timerBottomBreak) {
       ballCount = 2
       oneBallCheck = false
-    } else if ((inputs.topBeamBroken && !inputs.bottomBeamBroken) || oneBallCheck) {
+    } else if ((inputs.topBeamBroken && !timerBottomBreak) || oneBallCheck) {
       ballCount = 1
     }
 
-    if ((inputs.bottomBeamBroken != bottomPrevStage) && inputs.bottomBeamBroken) {
+    if ((timerBottomBreak != bottomPrevStage) && timerBottomBreak) {
       // in floor if correct ball is intaken
-      if (inputs.topBeamBroken && inputs.bottomBeamBroken) {
+      if (inputs.topBeamBroken && timerBottomBreak) {
         ballCount = 2
       } else if (inputs.floorAppliedVoltage >= 0.volts) {
         ballCount++
@@ -64,7 +83,7 @@ class Feeder(val io: FeederIO) : SubsystemBase() {
     //    if (bottomBeamBreakList.size > FeederConstants.BEAM_BREAK_FILTER_SIZE) {
     //      bottomBeamBreakList.removeAt(bottomBeamBreakList.size - 1)
     //    }
-    //    bottomBeamBreakList.add(inputs.bottomBeamBroken)
+    //    bottomBeamBreakList.add(timerBottomBreak)
     //
     //    if (topBeamBreakList.size > FeederConstants.BEAM_BREAK_FILTER_SIZE) {
     //      topBeamBreakList.removeAt(topBeamBreakList.size - 1)
