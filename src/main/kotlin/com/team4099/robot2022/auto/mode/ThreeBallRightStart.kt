@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 import edu.wpi.first.wpilibj2.command.WaitCommand
+import org.littletonrobotics.junction.Logger
 
 class ThreeBallRightStart(
   val drivetrain: Drivetrain,
@@ -27,9 +28,12 @@ class ThreeBallRightStart(
 
   val trajectory: Trajectory
 
+  private var redAllianceCheck: Boolean = false
+
   init {
     if (DriverStation.getAlliance() == DriverStation.Alliance.Red) {
       trajectory = trajectoryFromPathPlanner(PathStore.redThreeBallRightStartPath)
+      redAllianceCheck = true
     } else {
       trajectory = trajectoryFromPathPlanner(PathStore.blueThreeBallRightStartPath)
     }
@@ -48,5 +52,11 @@ class ThreeBallRightStart(
       ),
       SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(3.0))
     )
+  }
+
+  override fun execute() {
+    Logger.getInstance().recordOutput("ActiveCommands/ThreeBallRightStart", true)
+    Logger.getInstance().recordOutput("DriverStation/onRedAlliance", redAllianceCheck)
+    Logger.getInstance().recordOutput("DriverStation/onBlueAlliance", !redAllianceCheck)
   }
 }

@@ -15,6 +15,7 @@ import com.team4099.robot2022.subsystems.shooter.Shooter
 import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
+import org.littletonrobotics.junction.Logger
 
 class TwoBallLeftStartMode(
   val drivetrain: Drivetrain,
@@ -25,9 +26,12 @@ class TwoBallLeftStartMode(
 
   val trajectory: Trajectory
 
+  private var redAllianceCheck: Boolean = false
+
   init {
     if (DriverStation.getAlliance() == DriverStation.Alliance.Red) {
       trajectory = trajectoryFromPathPlanner(PathStore.redTwoBallLeftStartPath)
+      redAllianceCheck = true
     } else {
       trajectory = trajectoryFromPathPlanner(PathStore.blueTwoBallLeftStartPath)
     }
@@ -40,5 +44,11 @@ class TwoBallLeftStartMode(
       ),
       SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(3.0))
     )
+  }
+
+  override fun execute() {
+    Logger.getInstance().recordOutput("ActiveCommands/TwoBallLeftStartMode", true)
+    Logger.getInstance().recordOutput("DriverStation/onRedAlliance", redAllianceCheck)
+    Logger.getInstance().recordOutput("DriverStation/onBlueAlliance", !redAllianceCheck)
   }
 }

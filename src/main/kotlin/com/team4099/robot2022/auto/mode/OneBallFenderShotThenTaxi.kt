@@ -11,6 +11,7 @@ import com.team4099.robot2022.subsystems.shooter.Shooter
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 import edu.wpi.first.wpilibj2.command.WaitCommand
+import org.littletonrobotics.junction.Logger
 
 class OneBallFenderShotThenTaxi(
   val drivetrain: Drivetrain,
@@ -26,5 +27,9 @@ class OneBallFenderShotThenTaxi(
       ),
       OpenLoopReverseCommand(drivetrain).withTimeout(6.0)
     )
+  }
+
+  override fun execute() {
+    Logger.getInstance().recordOutput("ActiveCommands/OneBallFenderShotThenTaxi", true)
   }
 }
