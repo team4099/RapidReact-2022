@@ -1,5 +1,7 @@
 package com.team4099.robot2022.config.constants
 
+import com.team4099.lib.units.base.seconds
+
 object FeederConstants {
   // feeder_power temp
   const val FEEDER_POWER = 1.0
@@ -12,6 +14,9 @@ object FeederConstants {
   // temp values
   const val BEAM_BREAK_BROKEN_TIME = 0.03
   const val BEAM_BREAK_BACKWARDS_TIME = 0.05
+
+  val BEAM_BREAK_THRESHOLD = 0.075.seconds
+  const val BEAM_BREAK_FILTER_SIZE = 100
 
   // not final
   enum class FeederState(val floorMotorPower: Double, val verticalMotorPower: Double) {

@@ -19,6 +19,7 @@ import com.team4099.robot2022.commands.drivetrain.TeleopDriveCommand
 import com.team4099.robot2022.commands.feeder.FeederCommand
 import com.team4099.robot2022.commands.feeder.FeederSerialize
 import com.team4099.robot2022.commands.feeder.FeederSerializeIdleCommand
+import com.team4099.robot2022.commands.feeder.ResetBallCountCommand
 import com.team4099.robot2022.commands.intake.IntakeBallsCommand
 import com.team4099.robot2022.commands.intake.IntakeIdleCommand
 import com.team4099.robot2022.commands.intake.ReverseIntakeCommand
@@ -149,6 +150,7 @@ object RobotContainer {
       ReverseIntakeCommand(intake)
         .alongWith(FeederCommand(feeder, FeederConstants.FeederState.BACKWARD_FLOOR))
     )
+    ControlBoard.resetBallCount.whileActiveOnce(ResetBallCountCommand(feeder))
 
     ControlBoard.extendTelescoping.whileActiveOnce(ExtendTelescopingArmCommand(telescopingClimber))
     ControlBoard.retractTelescoping.whileActiveOnce(

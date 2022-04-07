@@ -31,7 +31,7 @@ object ControlBoard {
   val runFeederIn = Trigger { operator.rightTriggerAxis > 0.5 }
   val runFeederOut = Trigger { operator.leftTriggerAxis > 0.5 }
 
-  val resetBallCount = Trigger { operator.startButton && operator.selectButton }
+  //  val resetBallCount = Trigger { operator.startButton && operator.selectButton }
 
   val runIntake = Trigger { operator.aButton }
 
@@ -49,7 +49,7 @@ object ControlBoard {
   val retractPivot = Trigger { operator.dPadLeft }
 
   val startClimbSequence = Trigger { operator.startButton }
-  val climbWithoutAdvance = Trigger { operator.selectButton }
+  val resetBallCount = Trigger { operator.selectButton }
 
   val leftSpoolDown = Trigger { operator.leftShoulderButton }
   val rightSpoolDown = Trigger { operator.rightShoulderButton }

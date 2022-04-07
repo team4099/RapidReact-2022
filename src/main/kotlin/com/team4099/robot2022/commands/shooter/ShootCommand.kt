@@ -11,7 +11,7 @@ class ShootCommand(val shooter: Shooter, val feeder: Feeder) : CommandBase() {
   init {
     addRequirements(feeder, shooter)
   }
-
+  //  var ballCount: Int = 0
   override fun initialize() {}
 
   override fun isFinished(): Boolean {
@@ -19,6 +19,7 @@ class ShootCommand(val shooter: Shooter, val feeder: Feeder) : CommandBase() {
   }
 
   override fun execute() {
+    //    ballCount = feeder.ballCount
     if (shooter.isOnTarget) {
       feeder.state = FeederConstants.FeederState.SHOOT
     } else {
@@ -34,5 +35,8 @@ class ShootCommand(val shooter: Shooter, val feeder: Feeder) : CommandBase() {
   override fun end(interrupted: Boolean) {
     shooter.state = ShooterConstants.ShooterState.IDLE
     feeder.state = FeederConstants.FeederState.NEUTRAL
+    //    if (ballCount == 1){
+    //      feeder.oneBallCheck = false
+    //    }
   }
 }

@@ -18,9 +18,12 @@ class Feeder(val io: FeederIO) : SubsystemBase() {
 
   var ballCount: Int = 1
 
-  private var oneBallCheck: Boolean = false
+  var oneBallCheck: Boolean = false
   private var bottomPrevStage: Boolean = inputs.bottomBeamBroken
   private var topPrevStage: Boolean = inputs.bottomBeamBroken
+
+  //  private var bottomBeamBreakList = mutableListOf<Boolean>()
+  //  private var topBeamBreakList = mutableListOf<Boolean>()
 
   override fun periodic() {
     io.updateInputs(inputs)
@@ -57,6 +60,16 @@ class Feeder(val io: FeederIO) : SubsystemBase() {
         ballCount--
       }
     }
+
+    //    if (bottomBeamBreakList.size > FeederConstants.BEAM_BREAK_FILTER_SIZE) {
+    //      bottomBeamBreakList.removeAt(bottomBeamBreakList.size - 1)
+    //    }
+    //    bottomBeamBreakList.add(inputs.bottomBeamBroken)
+    //
+    //    if (topBeamBreakList.size > FeederConstants.BEAM_BREAK_FILTER_SIZE) {
+    //      topBeamBreakList.removeAt(topBeamBreakList.size - 1)
+    //    }
+    //    topBeamBreakList.add(inputs.topBeamBroken)
 
     bottomPrevStage = inputs.bottomBeamBroken
     topPrevStage = inputs.topBeamBroken

@@ -9,6 +9,6 @@ class ResetBallCountCommand(val feeder: Feeder) : CommandBase() {
   }
 
   override fun execute() {
-    feeder.ballCount = 0
+    feeder.oneBallCheck = false
   }
 }
