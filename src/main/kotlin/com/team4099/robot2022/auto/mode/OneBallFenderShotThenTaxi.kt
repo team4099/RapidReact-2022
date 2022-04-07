@@ -30,6 +30,7 @@ class OneBallFenderShotThenTaxi(
   }
 
   override fun execute() {
+    super.execute()
     Logger.getInstance().recordOutput("ActiveCommands/OneBallFenderShotThenTaxi", true)
   }
 }

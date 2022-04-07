@@ -58,8 +58,9 @@ class FourBallRightStart(
   }
 
   override fun execute() {
+    super.execute()
     Logger.getInstance().recordOutput("ActiveCommands/FourBallRightStart", true)
-    Logger.getInstance().recordOutput("DriverStation/onRedAlliance", redAllianceCheck)
-    Logger.getInstance().recordOutput("DriverStation/onBlueAlliance", !redAllianceCheck)
+    Logger.getInstance().recordOutput("Pathfollow/redAllianceCheck", redAllianceCheck)
+    Logger.getInstance().recordOutput("Pathfollow/blueAllianceCheck", !redAllianceCheck)
   }
 }

@@ -55,8 +55,9 @@ class ThreeBallRightStart(
   }
 
   override fun execute() {
+    super.execute()
     Logger.getInstance().recordOutput("ActiveCommands/ThreeBallRightStart", true)
-    Logger.getInstance().recordOutput("DriverStation/onRedAlliance", redAllianceCheck)
-    Logger.getInstance().recordOutput("DriverStation/onBlueAlliance", !redAllianceCheck)
+    Logger.getInstance().recordOutput("Pathfollow/redAllianceCheck", redAllianceCheck)
+    Logger.getInstance().recordOutput("Pathfollow/blueAllianceCheck", !redAllianceCheck)
   }
 }

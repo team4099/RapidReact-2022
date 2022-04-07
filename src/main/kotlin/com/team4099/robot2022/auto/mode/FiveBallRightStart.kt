@@ -50,7 +50,7 @@ class FiveBallRightStart(
       // three ball
       ResetPoseCommand(drivetrain, threeBallRightStartFasterTrajectory.startingPose),
       ParallelCommandGroup(
-        WaitCommand(0.75).andThen((IntakeBallsCommand(intake)).withTimeout(1.25)),
+        WaitCommand(0.75).andThen((IntakeBallsCommand(intake)).withTimeout(2.25)),
         DrivePathCommand(drivetrain, threeBallRightStartFasterTrajectory, resetPose = false)
           .deadlineWith(FeederSerialize(feeder))
       ),
@@ -71,8 +71,9 @@ class FiveBallRightStart(
   }
 
   override fun execute() {
+    super.execute()
     Logger.getInstance().recordOutput("ActiveCommands/FiveBallRightStart", true)
-    Logger.getInstance().recordOutput("DriverStation/onRedAlliance", redAllianceCheck)
-    Logger.getInstance().recordOutput("DriverStation/onBlueAlliance", !redAllianceCheck)
+    Logger.getInstance().recordOutput("Pathfollow/redAllianceCheck", redAllianceCheck)
+    Logger.getInstance().recordOutput("Pathfollow/blueAllianceCheck", !redAllianceCheck)
   }
 }
