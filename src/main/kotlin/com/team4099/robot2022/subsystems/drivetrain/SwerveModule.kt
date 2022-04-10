@@ -73,24 +73,24 @@ class SwerveModule(val io: SwerveModuleIO) {
     }
 
     Logger.getInstance().processInputs(io.label, inputs)
-    Logger.getInstance()
-      .recordOutput(
-        "${io.label}/driveSpeedSetpointMetersPerSecond",
-        if (!shouldInvert) speedSetPoint.inMetersPerSecond
-        else -speedSetPoint.inMetersPerSecond
-      )
-    Logger.getInstance()
-      .recordOutput(
-        "${io.label}/driveAccelSetpointMetersPerSecondSq",
-        accelerationSetPoint.inMetersPerSecondPerSecond
-      )
-    Logger.getInstance()
-      .recordOutput("${io.label}/steeringSetpointDegrees", steeringSetPoint.inDegrees)
-    Logger.getInstance()
-      .recordOutput(
-        "${io.label}/steeringValueDegreesWithMod",
-        inputs.steeringPosition.inDegrees.IEEErem(360.0)
-      )
+//    Logger.getInstance()
+//      .recordOutput(
+//        "${io.label}/driveSpeedSetpointMetersPerSecond",
+//        if (!shouldInvert) speedSetPoint.inMetersPerSecond
+//        else -speedSetPoint.inMetersPerSecond
+//      )
+//    Logger.getInstance()
+//      .recordOutput(
+//        "${io.label}/driveAccelSetpointMetersPerSecondSq",
+//        accelerationSetPoint.inMetersPerSecondPerSecond
+//      )
+//    Logger.getInstance()
+//      .recordOutput("${io.label}/steeringSetpointDegrees", steeringSetPoint.inDegrees)
+//    Logger.getInstance()
+//      .recordOutput(
+//        "${io.label}/steeringValueDegreesWithMod",
+//        inputs.steeringPosition.inDegrees.IEEErem(360.0)
+//      )
   }
 
   /**

@@ -60,7 +60,7 @@ class FiveBallRightStart(
 
       // four and five ball
       ParallelCommandGroup(
-        WaitCommand(2.0).andThen(IntakeBallsCommand(intake).withTimeout(2.5)),
+        WaitCommand(1.0).andThen(IntakeBallsCommand(intake).withTimeout(3.5)),
         DrivePathCommand(drivetrain, fiveBallRightStartTrajectory, resetPose = true)
           .deadlineWith(FeederSerialize(feeder))
       ),

@@ -8,7 +8,6 @@ import com.team4099.robot2022.commands.drivetrain.ResetPoseCommand
 import com.team4099.robot2022.commands.feeder.FeederSerialize
 import com.team4099.robot2022.commands.intake.IntakeBallsCommand
 import com.team4099.robot2022.commands.shooter.AutoShootCommand
-import com.team4099.robot2022.commands.shooter.ShootCommand
 import com.team4099.robot2022.commands.shooter.SpinUpUpperHub
 import com.team4099.robot2022.subsystems.drivetrain.Drivetrain
 import com.team4099.robot2022.subsystems.feeder.Feeder
@@ -20,23 +19,28 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 import edu.wpi.first.wpilibj2.command.WaitCommand
 import org.littletonrobotics.junction.Logger
 
-class ThreeBallRightStartFaster(
+class EightEightEightMode(
   val drivetrain: Drivetrain,
   val intake: Intake,
   val feeder: Feeder,
   val shooter: Shooter
 ) : SequentialCommandGroup() {
 
-  val trajectory: Trajectory
+  private val threeBallRightStartFasterTrajectory: Trajectory
+  private val fiveBallRightStartTrajectory: Trajectory
 
   private var redAllianceCheck: Boolean = false
 
   init {
     if (DriverStation.getAlliance() == DriverStation.Alliance.Red) {
-      trajectory = trajectoryFromPathPlanner(PathStore.redThreeBallRightStartFasterPath)
+      threeBallRightStartFasterTrajectory =
+        trajectoryFromPathPlanner(PathStore.redThreeBallRightStartFasterPath)
+      fiveBallRightStartTrajectory = trajectoryFromPathPlanner(PathStore.redFiveBallRightStart)
       redAllianceCheck = true
     } else {
-      trajectory = trajectoryFromPathPlanner(PathStore.blueThreeBallRightStartFasterPath)
+      threeBallRightStartFasterTrajectory =
+        trajectoryFromPathPlanner(PathStore.blueThreeBallRightStartFasterPath)
+      fiveBallRightStartTrajectory = trajectoryFromPathPlanner(PathStore.blueFiveBallRightStart)
     }
 
     addCommands(
@@ -44,21 +48,31 @@ class ThreeBallRightStartFaster(
         .deadlineWith(FeederSerialize(feeder))
         .andThen(AutoShootCommand(shooter, feeder).withTimeout(0.5)), // 1.775 seconds
       // three ball
-      ResetPoseCommand(drivetrain, trajectory.startingPose),
+      ResetPoseCommand(drivetrain, threeBallRightStartFasterTrajectory.startingPose),
       ParallelCommandGroup(
-        WaitCommand(0.75).andThen((IntakeBallsCommand(intake)).withTimeout(2.25)),
-        DrivePathCommand(drivetrain, trajectory, resetPose = false)
+        WaitCommand(1.5).andThen((IntakeBallsCommand(intake)).withTimeout(1.5)),
+        DrivePathCommand(drivetrain, threeBallRightStartFasterTrajectory, resetPose = false)
           .deadlineWith(FeederSerialize(feeder))
       ),
       SpinUpUpperHub(shooter)
         .deadlineWith(FeederSerialize(feeder))
-        .andThen(AutoShootCommand(shooter, feeder).withTimeout(5.0)),
+        .andThen(AutoShootCommand(shooter, feeder).withTimeout(1.5)),
+
+      // four and five ball
+      ParallelCommandGroup(
+        WaitCommand(1.5).andThen(IntakeBallsCommand(intake).withTimeout(3.0)),
+        DrivePathCommand(drivetrain, fiveBallRightStartTrajectory, resetPose = true)
+          .deadlineWith(FeederSerialize(feeder))
+      ),
+      SpinUpUpperHub(shooter)
+        .deadlineWith(FeederSerialize(feeder))
+        .andThen(AutoShootCommand(shooter, feeder).withTimeout(1.5))
     )
   }
 
   override fun execute() {
     super.execute()
-    Logger.getInstance().recordOutput("ActiveCommands/ThreeBallRightStartFaster", true)
+    Logger.getInstance().recordOutput("ActiveCommands/FiveBallRightStart", true)
     Logger.getInstance().recordOutput("Pathfollow/redAllianceCheck", redAllianceCheck)
     Logger.getInstance().recordOutput("Pathfollow/blueAllianceCheck", !redAllianceCheck)
   }

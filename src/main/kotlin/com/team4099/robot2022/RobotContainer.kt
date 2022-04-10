@@ -159,8 +159,8 @@ object RobotContainer {
     ControlBoard.extendPivot.whileActiveOnce(ExtendPivotArmCommand(pivotClimber))
     ControlBoard.retractPivot.whileActiveOnce(RetractPivotArmCommand(pivotClimber))
     ControlBoard.startClimbSequence.whileActiveOnce(
-      PneumaticClimbCheckCommand(pneumatic)
-        .andThen(
+//      PneumaticClimbCheckCommand(pneumatic)
+//        .andThen(
           UseLowThresholdClimbCommand(pneumatic)
             .alongWith(
               ClimbSequenceCommand(telescopingClimber, pivotClimber)
@@ -169,7 +169,7 @@ object RobotContainer {
                     .andThen(RetractTelescopingArmCommand(telescopingClimber))
                 )
             )
-        )
+//        )
     )
 
     //

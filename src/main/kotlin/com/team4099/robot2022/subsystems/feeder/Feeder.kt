@@ -1,10 +1,13 @@
 package com.team4099.robot2022.subsystems.feeder
 
-import com.team4099.lib.hal.Clock
 import com.team4099.lib.units.base.Time
+import com.team4099.lib.units.base.inSeconds
 import com.team4099.lib.units.base.seconds
 import com.team4099.lib.units.derived.volts
+import com.team4099.robot2022.RobotContainer
 import com.team4099.robot2022.config.constants.FeederConstants
+import edu.wpi.first.wpilibj.RobotController
+import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import org.littletonrobotics.junction.Logger
@@ -22,44 +25,35 @@ class Feeder(val io: FeederIO) : SubsystemBase() {
   var ballCount: Int = 1
 
   var oneBallCheck: Boolean = false
-  var timerBottomBreak: Boolean = false
-  private var bottomPrevStage: Boolean = timerBottomBreak
-  private var topPrevStage: Boolean = timerBottomBreak
-  var timer: Time = Clock.fpgaTime
+  private var bottomPrevStage: Boolean = inputs.bottomBeamBroken
+  private var topPrevStage: Boolean = inputs.bottomBeamBroken
+  var timer: Time = Timer.getFPGATimestamp().seconds
 
   //  private var bottomBeamBreakList = mutableListOf<Boolean>()
   //  private var topBeamBreakList = mutableListOf<Boolean>()
 
   override fun periodic() {
     io.updateInputs(inputs)
-    timerBottomBreak = false
 
-    if (bottomPrevStage != timerBottomBreak && state == FeederConstants.FeederState.FORWARD_ALL) {
+    if (bottomPrevStage != inputs.bottomBeamBroken &&
+      state == FeederConstants.FeederState.FORWARD_ALL &&
+      Timer.getFPGATimestamp().seconds - timer > FeederConstants.BEAM_BREAK_THRESHOLD
+    ) {
       oneBallCheck = true
     }
 
-    if (timerBottomBreak) {
-      if (timer == 0.seconds) {
-        timer = Clock.fpgaTime
-      } else if (Clock.fpgaTime - timer >= FeederConstants.BEAM_BREAK_THRESHOLD) {
-        timerBottomBreak = true
-      }
-    } else {
-      timer = 0.seconds
-    }
-
-    if (!inputs.topBeamBroken && !timerBottomBreak && !oneBallCheck) {
+    if (!inputs.topBeamBroken && !inputs.bottomBeamBroken && !oneBallCheck) {
       ballCount = 0
-    } else if (inputs.topBeamBroken && timerBottomBreak) {
+    } else if (inputs.topBeamBroken && inputs.bottomBeamBroken) {
       ballCount = 2
       oneBallCheck = false
-    } else if ((inputs.topBeamBroken && !timerBottomBreak) || oneBallCheck) {
+    } else if ((inputs.topBeamBroken && !inputs.bottomBeamBroken) || oneBallCheck) {
       ballCount = 1
     }
 
-    if ((timerBottomBreak != bottomPrevStage) && timerBottomBreak) {
+    if ((inputs.bottomBeamBroken != bottomPrevStage) && inputs.bottomBeamBroken) {
       // in floor if correct ball is intaken
-      if (inputs.topBeamBroken && timerBottomBreak) {
+      if (inputs.topBeamBroken && inputs.bottomBeamBroken) {
         ballCount = 2
       } else if (inputs.floorAppliedVoltage >= 0.volts) {
         ballCount++
@@ -70,15 +64,17 @@ class Feeder(val io: FeederIO) : SubsystemBase() {
       //      }
     }
     if (state == FeederConstants.FeederState.SHOOT) {
-      if ((inputs.topBeamBroken != topPrevStage) && !inputs.topBeamBroken) {
+      if ((inputs.topBeamBroken != topPrevStage) && inputs.topBeamBroken) {
         ballCount--
+        oneBallCheck = false
+        timer = Timer.getFPGATimestamp().seconds
       }
     }
 
     //    if (bottomBeamBreakList.size > FeederConstants.BEAM_BREAK_FILTER_SIZE) {
     //      bottomBeamBreakList.removeAt(bottomBeamBreakList.size - 1)
     //    }
-    //    bottomBeamBreakList.add(timerBottomBreak)
+    //    bottomBeamBreakList.add(inputs.bottomBeamBroken)
     //
     //    if (topBeamBreakList.size > FeederConstants.BEAM_BREAK_FILTER_SIZE) {
     //      topBeamBreakList.removeAt(topBeamBreakList.size - 1)
@@ -95,6 +91,7 @@ class Feeder(val io: FeederIO) : SubsystemBase() {
     Logger.getInstance().recordOutput("Feeder/topPrevStage", topPrevStage)
     Logger.getInstance().recordOutput("Feeder/state", state.name)
     Logger.getInstance().recordOutput("Feeder/oneBallCheck", oneBallCheck)
+    Logger.getInstance().recordOutput("Feeder/timer", timer.inSeconds)
 
     SmartDashboard.putBoolean("Feeder/oneCargo", ballCount >= 1)
     SmartDashboard.putBoolean("Feeder/twoCargo", ballCount >= 2)

@@ -14,7 +14,7 @@ object IntakeConstants {
 
   enum class RollerState(val speed: Double) {
     IDLE(-0.1), // change to -0.1
-    IN(0.86),
+    IN(0.9),
     OUT(-1.0)
   }
 

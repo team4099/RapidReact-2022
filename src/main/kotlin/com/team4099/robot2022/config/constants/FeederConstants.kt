@@ -15,7 +15,7 @@ object FeederConstants {
   const val BEAM_BREAK_BROKEN_TIME = 0.03
   const val BEAM_BREAK_BACKWARDS_TIME = 0.05
 
-  val BEAM_BREAK_THRESHOLD = 0.075.seconds
+  val BEAM_BREAK_THRESHOLD = 0.15.seconds
   const val BEAM_BREAK_FILTER_SIZE = 100
 
   // not final

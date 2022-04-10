@@ -4,10 +4,12 @@ import com.team4099.lib.units.base.Time
 import com.team4099.lib.units.base.inSeconds
 import com.team4099.lib.units.base.seconds
 import com.team4099.lib.units.derived.degrees
+import com.team4099.robot2022.auto.mode.EightEightEightMode
 import com.team4099.robot2022.auto.mode.FiveBallRightStart
 import com.team4099.robot2022.auto.mode.FourBallRightStart
 import com.team4099.robot2022.auto.mode.OneBallFenderShotThenTaxi
 import com.team4099.robot2022.auto.mode.TestAutoPath
+import com.team4099.robot2022.auto.mode.ThreeBallRightStart
 import com.team4099.robot2022.auto.mode.ThreeBallRightStartFaster
 import com.team4099.robot2022.auto.mode.TwoBallLeftStartMode
 import com.team4099.robot2022.commands.climber.TelescopingCharacterizationCommand
@@ -48,6 +50,9 @@ object AutonomousSelector {
     )
     autonomousModeChooser.addOption("Two Ball: Left", AutonomousMode.TWO_BALL_LEFT_START)
     autonomousModeChooser.addOption(
+      "Three Ball: Right Start Faster", AutonomousMode.THREE_BALL_RIGHT_START_FASTER
+    )
+    autonomousModeChooser.addOption(
       "Three Ball: Right Start", AutonomousMode.THREE_BALL_RIGHT_START
     )
     autonomousModeChooser.addOption("Test", AutonomousMode.TEST_AUTO_PATH)
@@ -60,6 +65,7 @@ object AutonomousSelector {
     autonomousModeChooser.addOption("Characterize Shooter", AutonomousMode.CHARACTERIZE_SHOOTER)
     autonomousModeChooser.addOption("Four Ball Right Start", AutonomousMode.FOUR_BALL_RIGHT_START)
     autonomousModeChooser.addOption("Five Ball Right Start", AutonomousMode.FIVE_BALL_RIGHT_START)
+    autonomousModeChooser.addOption("888 Mode", AutonomousMode.EIGHT_EIGHT_EIGHT_MODE)
     autoTab.add("Mode", autonomousModeChooser).withSize(5, 2).withPosition(3, 0)
     waitBeforeCommandSlider =
       autoTab
@@ -91,9 +97,11 @@ object AutonomousSelector {
       AutonomousMode.TWO_BALL_LEFT_START ->
         return WaitCommand(getWaitTime().inSeconds)
           .andThen(TwoBallLeftStartMode(drivetrain, intake, feeder, shooter))
-      AutonomousMode.THREE_BALL_RIGHT_START ->
+      AutonomousMode.THREE_BALL_RIGHT_START_FASTER ->
         return WaitCommand(getWaitTime().inSeconds)
           .andThen(ThreeBallRightStartFaster(drivetrain, intake, feeder, shooter))
+      AutonomousMode.THREE_BALL_RIGHT_START ->
+        return WaitCommand(getWaitTime().inSeconds).andThen(ThreeBallRightStart(drivetrain, intake, feeder, shooter))
       AutonomousMode.CHARACTERIZE_DRIVETRAIN ->
         return WaitCommand(getWaitTime().inSeconds).andThen(DriveCharacterizeCommand(drivetrain))
       AutonomousMode.CHARACTERIZE_SHOOTER ->
@@ -115,6 +123,8 @@ object AutonomousSelector {
       AutonomousMode.FIVE_BALL_RIGHT_START ->
         return WaitCommand(getWaitTime().inSeconds)
           .andThen(FiveBallRightStart(drivetrain, intake, feeder, shooter))
+      AutonomousMode.EIGHT_EIGHT_EIGHT_MODE ->
+        return WaitCommand(getWaitTime().inSeconds).andThen(EightEightEightMode(drivetrain, intake, feeder, shooter))
       else -> println("ERROR: unexpected auto mode: $mode")
     }
     return InstantCommand()
@@ -129,8 +139,10 @@ object AutonomousSelector {
     ONE_BALL_FENDER_SHOT_THEN_TAXI_LEFT,
     ONE_BALL_FENDER_SHOT_THEN_TAXI_RIGHT,
     TWO_BALL_LEFT_START,
+    THREE_BALL_RIGHT_START_FASTER,
     THREE_BALL_RIGHT_START,
     FOUR_BALL_RIGHT_START,
-    FIVE_BALL_RIGHT_START
+    FIVE_BALL_RIGHT_START,
+    EIGHT_EIGHT_EIGHT_MODE
   }
 }

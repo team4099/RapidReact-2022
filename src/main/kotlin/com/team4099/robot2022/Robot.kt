@@ -4,6 +4,7 @@ import com.team4099.robot2022.auto.AutonomousSelector
 import com.team4099.robot2022.auto.PathStore
 import com.team4099.robot2022.config.constants.Constants
 import edu.wpi.first.networktables.NetworkTableInstance
+import edu.wpi.first.wpilibj.livewindow.LiveWindow
 import edu.wpi.first.wpilibj2.command.CommandScheduler
 import org.littletonrobotics.junction.LoggedRobot
 import org.littletonrobotics.junction.Logger
@@ -59,6 +60,8 @@ object Robot : LoggedRobot() {
     }
     logger.start()
 
+    LiveWindow.disableAllTelemetry()
+
     RobotContainer
     AutonomousSelector
     PathStore
@@ -95,15 +98,15 @@ object Robot : LoggedRobot() {
   override fun robotPeriodic() {
     CommandScheduler.getInstance().run()
 
-    Logger.getInstance()
-      .recordOutput(
-        "ActiveCommands/Scheduler",
-        NetworkTableInstance.getDefault()
-          .getEntry("/LiveWindow/Ungrouped/Scheduler/Names")
-          .getStringArray(emptyArray())
-      )
+//    Logger.getInstance()
+//      .recordOutput(
+//        "ActiveCommands/Scheduler",
+//        NetworkTableInstance.getDefault()
+//          .getEntry("/LiveWindow/Ungrouped/Scheduler/Names")
+//          .getStringArray(emptyArray())
+//      )
 
-    RobotContainer.logDriverController()
-    RobotContainer.logOperatorController()
+//    RobotContainer.logDriverController()
+//    RobotContainer.logOperatorController()
   }
 }
