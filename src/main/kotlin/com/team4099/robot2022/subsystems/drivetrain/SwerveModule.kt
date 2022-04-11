@@ -7,11 +7,8 @@ import com.team4099.lib.units.base.feet
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.Angle
 import com.team4099.lib.units.derived.degrees
-import com.team4099.lib.units.derived.inDegrees
 import com.team4099.lib.units.derived.inRadians
 import com.team4099.lib.units.derived.radians
-import com.team4099.lib.units.inMetersPerSecond
-import com.team4099.lib.units.inMetersPerSecondPerSecond
 import com.team4099.lib.units.inRadiansPerSecond
 import com.team4099.lib.units.inRadiansPerSecondPerSecond
 import com.team4099.lib.units.perSecond
@@ -73,24 +70,24 @@ class SwerveModule(val io: SwerveModuleIO) {
     }
 
     Logger.getInstance().processInputs(io.label, inputs)
-//    Logger.getInstance()
-//      .recordOutput(
-//        "${io.label}/driveSpeedSetpointMetersPerSecond",
-//        if (!shouldInvert) speedSetPoint.inMetersPerSecond
-//        else -speedSetPoint.inMetersPerSecond
-//      )
-//    Logger.getInstance()
-//      .recordOutput(
-//        "${io.label}/driveAccelSetpointMetersPerSecondSq",
-//        accelerationSetPoint.inMetersPerSecondPerSecond
-//      )
-//    Logger.getInstance()
-//      .recordOutput("${io.label}/steeringSetpointDegrees", steeringSetPoint.inDegrees)
-//    Logger.getInstance()
-//      .recordOutput(
-//        "${io.label}/steeringValueDegreesWithMod",
-//        inputs.steeringPosition.inDegrees.IEEErem(360.0)
-//      )
+    //    Logger.getInstance()
+    //      .recordOutput(
+    //        "${io.label}/driveSpeedSetpointMetersPerSecond",
+    //        if (!shouldInvert) speedSetPoint.inMetersPerSecond
+    //        else -speedSetPoint.inMetersPerSecond
+    //      )
+    //    Logger.getInstance()
+    //      .recordOutput(
+    //        "${io.label}/driveAccelSetpointMetersPerSecondSq",
+    //        accelerationSetPoint.inMetersPerSecondPerSecond
+    //      )
+    //    Logger.getInstance()
+    //      .recordOutput("${io.label}/steeringSetpointDegrees", steeringSetPoint.inDegrees)
+    //    Logger.getInstance()
+    //      .recordOutput(
+    //        "${io.label}/steeringValueDegreesWithMod",
+    //        inputs.steeringPosition.inDegrees.IEEErem(360.0)
+    //      )
   }
 
   /**

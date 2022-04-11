@@ -24,7 +24,6 @@ import com.team4099.robot2022.commands.intake.IntakeBallsCommand
 import com.team4099.robot2022.commands.intake.IntakeIdleCommand
 import com.team4099.robot2022.commands.intake.ReverseIntakeCommand
 import com.team4099.robot2022.commands.led.LedCommand
-import com.team4099.robot2022.commands.pneumatics.PneumaticClimbCheckCommand
 import com.team4099.robot2022.commands.pneumatics.PneumaticIdleCommand
 import com.team4099.robot2022.commands.pneumatics.UseLowThresholdClimbCommand
 import com.team4099.robot2022.commands.shooter.ShootCommand
@@ -159,17 +158,17 @@ object RobotContainer {
     ControlBoard.extendPivot.whileActiveOnce(ExtendPivotArmCommand(pivotClimber))
     ControlBoard.retractPivot.whileActiveOnce(RetractPivotArmCommand(pivotClimber))
     ControlBoard.startClimbSequence.whileActiveOnce(
-//      PneumaticClimbCheckCommand(pneumatic)
-//        .andThen(
-          UseLowThresholdClimbCommand(pneumatic)
-            .alongWith(
+      //      PneumaticClimbCheckCommand(pneumatic)
+      //        .andThen(
+      UseLowThresholdClimbCommand(pneumatic)
+        .alongWith(
+          ClimbSequenceCommand(telescopingClimber, pivotClimber)
+            .andThen(
               ClimbSequenceCommand(telescopingClimber, pivotClimber)
-                .andThen(
-                  ClimbSequenceCommand(telescopingClimber, pivotClimber)
-                    .andThen(RetractTelescopingArmCommand(telescopingClimber))
-                )
+                .andThen(RetractTelescopingArmCommand(telescopingClimber))
             )
-//        )
+        )
+      //        )
     )
 
     //

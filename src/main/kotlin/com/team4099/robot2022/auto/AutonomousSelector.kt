@@ -101,7 +101,8 @@ object AutonomousSelector {
         return WaitCommand(getWaitTime().inSeconds)
           .andThen(ThreeBallRightStartFaster(drivetrain, intake, feeder, shooter))
       AutonomousMode.THREE_BALL_RIGHT_START ->
-        return WaitCommand(getWaitTime().inSeconds).andThen(ThreeBallRightStart(drivetrain, intake, feeder, shooter))
+        return WaitCommand(getWaitTime().inSeconds)
+          .andThen(ThreeBallRightStart(drivetrain, intake, feeder, shooter))
       AutonomousMode.CHARACTERIZE_DRIVETRAIN ->
         return WaitCommand(getWaitTime().inSeconds).andThen(DriveCharacterizeCommand(drivetrain))
       AutonomousMode.CHARACTERIZE_SHOOTER ->
@@ -124,7 +125,8 @@ object AutonomousSelector {
         return WaitCommand(getWaitTime().inSeconds)
           .andThen(FiveBallRightStart(drivetrain, intake, feeder, shooter))
       AutonomousMode.EIGHT_EIGHT_EIGHT_MODE ->
-        return WaitCommand(getWaitTime().inSeconds).andThen(EightEightEightMode(drivetrain, intake, feeder, shooter))
+        return WaitCommand(getWaitTime().inSeconds)
+          .andThen(EightEightEightMode(drivetrain, intake, feeder, shooter))
       else -> println("ERROR: unexpected auto mode: $mode")
     }
     return InstantCommand()
