@@ -73,7 +73,7 @@ class FiveBallRightStart(
   override fun execute() {
     super.execute()
     Logger.getInstance().recordOutput("ActiveCommands/FiveBallRightStart", true)
-    Logger.getInstance().recordOutput("Pathfollow/redAllianceCheck", redAllianceCheck)
-    Logger.getInstance().recordOutput("Pathfollow/blueAllianceCheck", !redAllianceCheck)
+    //    Logger.getInstance().recordOutput("Pathfollow/redAllianceCheck", redAllianceCheck)
+    //    Logger.getInstance().recordOutput("Pathfollow/blueAllianceCheck", !redAllianceCheck)
   }
 }
