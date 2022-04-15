@@ -182,16 +182,16 @@ object PathStore {
       DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
     )
 
-  val blueOneBallFenderShotThenTaxi =
+  val bluePickUpOpponentCargoPath =
     PathPlanner.loadPath(
-      "1 Ball Left Fender Then Taxi Blue",
+      "1 or 2 Ball Left Tarmac Outtake Opp Cargo Blue",
       DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
       DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
     )
 
-  val redOneBallFenderShotThenTaxi =
+  val redPickUpOpponentCargoPath =
     PathPlanner.loadPath(
-      "1 Ball Left Fender Then Taxi Red",
+      "1 or 2 Ball Left Tarmac Outtake Opp Cargo Red",
       DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
       DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
     )

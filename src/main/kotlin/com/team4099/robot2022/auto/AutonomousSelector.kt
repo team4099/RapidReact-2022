@@ -6,7 +6,7 @@ import com.team4099.lib.units.base.seconds
 import com.team4099.robot2022.auto.mode.EightEightEightMode
 import com.team4099.robot2022.auto.mode.FiveBallRightStart
 import com.team4099.robot2022.auto.mode.FourBallRightStart
-import com.team4099.robot2022.auto.mode.OneBallFenderShotThenTaxi
+import com.team4099.robot2022.auto.mode.OneBallFenderShotThenTaxiAndObstruct
 import com.team4099.robot2022.auto.mode.OneBallLeftLeftMode
 import com.team4099.robot2022.auto.mode.OneBallLeftRightMode
 import com.team4099.robot2022.auto.mode.TestAutoPath
@@ -35,6 +35,7 @@ object AutonomousSelector {
   //  private var orientationChooser: SendableChooser<Angle> = SendableChooser()
   private var autonomousModeChooser: SendableChooser<AutonomousMode> = SendableChooser()
   private var waitBeforeCommandSlider: NetworkTableEntry
+  private var secondaryWaitInAuto: NetworkTableEntry
 
   init {
     val autoTab = Shuffleboard.getTab("Auto settings")
@@ -84,10 +85,21 @@ object AutonomousSelector {
         .withPosition(0, 0)
         .withWidget(BuiltInWidgets.kTextView)
         .entry
+    secondaryWaitInAuto =
+      autoTab
+        .add("Secondary Wait Time During Auto Path", 0)
+        .withSize(3, 2)
+        .withPosition(2, 0)
+        .withWidget(BuiltInWidgets.kTextView)
+        .entry
   }
 
   fun getWaitTime(): Time {
     return waitBeforeCommandSlider.getDouble(0.0).seconds
+  }
+
+  fun getSecondaryWaitTime(): Time {
+    return secondaryWaitInAuto.getDouble(0.0).seconds
   }
 
   fun getCommand(
@@ -105,7 +117,9 @@ object AutonomousSelector {
         return WaitCommand(getWaitTime().inSeconds).andThen(TestAutoPath(drivetrain))
       AutonomousMode.TWO_BALL_LEFT_START ->
         return WaitCommand(getWaitTime().inSeconds)
-          .andThen(TwoBallLeftStartMode(drivetrain, intake, feeder, shooter))
+          .andThen(
+            TwoBallLeftStartMode(drivetrain, intake, feeder, shooter, getSecondaryWaitTime())
+          )
       AutonomousMode.THREE_BALL_RIGHT_START_FASTER ->
         return WaitCommand(getWaitTime().inSeconds)
           .andThen(ThreeBallRightStartFaster(drivetrain, intake, feeder, shooter))
@@ -123,7 +137,11 @@ object AutonomousSelector {
       // PivotCharacterizationCommand(pivotClimber)
       AutonomousMode.ONE_BALL_FENDER_SHOT_THEN_TAXI ->
         return WaitCommand(getWaitTime().inSeconds)
-          .andThen(OneBallFenderShotThenTaxi(drivetrain, feeder, shooter))
+          .andThen(
+            OneBallFenderShotThenTaxiAndObstruct(
+              drivetrain, feeder, shooter, intake, getSecondaryWaitTime()
+            )
+          )
       AutonomousMode.FOUR_BALL_RIGHT_START ->
         return WaitCommand(getWaitTime().inSeconds)
           .andThen(FourBallRightStart(drivetrain, intake, feeder, shooter))
