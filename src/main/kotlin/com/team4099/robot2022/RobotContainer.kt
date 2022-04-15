@@ -184,9 +184,7 @@ object RobotContainer {
   fun mapTestControls() {}
 
   fun getAutonomousCommand() =
-    AutonomousSelector.getCommand(
-      drivetrain, intake, feeder, shooter, telescopingClimber, pivotClimber
-    )
+    AutonomousSelector.getCommand(drivetrain, intake, feeder, shooter, telescopingClimber)
 
   fun logOperatorController() = ControlBoard.logOperatorController()
   fun logDriverController() = ControlBoard.logDriverController()
