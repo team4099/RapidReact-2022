@@ -23,7 +23,7 @@ import com.team4099.robot2022.commands.feeder.ResetBallCountCommand
 import com.team4099.robot2022.commands.intake.IntakeBallsCommand
 import com.team4099.robot2022.commands.intake.IntakeIdleCommand
 import com.team4099.robot2022.commands.intake.ReverseIntakeCommand
-import com.team4099.robot2022.commands.led.BlinkinLedCommand
+import com.team4099.robot2022.commands.led.CandleLedCommand
 import com.team4099.robot2022.commands.pneumatics.PneumaticIdleCommand
 import com.team4099.robot2022.commands.pneumatics.UseLowThresholdClimbCommand
 import com.team4099.robot2022.commands.shooter.ShootCommand
@@ -49,9 +49,9 @@ import com.team4099.robot2022.subsystems.feeder.FeederIOReal
 import com.team4099.robot2022.subsystems.intake.Intake
 import com.team4099.robot2022.subsystems.intake.IntakeIO
 import com.team4099.robot2022.subsystems.intake.IntakeIOReal
-import com.team4099.robot2022.subsystems.led.BlinkinLed
-import com.team4099.robot2022.subsystems.led.BlinkinLedIO
-import com.team4099.robot2022.subsystems.led.BlinkinLedIOReal
+import com.team4099.robot2022.subsystems.led.CandleLed
+import com.team4099.robot2022.subsystems.led.CandleLedIO
+import com.team4099.robot2022.subsystems.led.CandleLedIOReal
 import com.team4099.robot2022.subsystems.pneumatics.Pneumatic
 import com.team4099.robot2022.subsystems.pneumatics.PneumaticIO
 import com.team4099.robot2022.subsystems.pneumatics.PneumaticsIOReal
@@ -66,7 +66,7 @@ object RobotContainer {
   private val feeder: Feeder
   private val telescopingClimber: TelescopingClimber
   private val pivotClimber: PivotClimber
-  private val led: BlinkinLed
+  private val led: CandleLed
   private val pneumatic: Pneumatic
 
   init {
@@ -77,7 +77,7 @@ object RobotContainer {
       feeder = Feeder(FeederIOReal)
       telescopingClimber = TelescopingClimber(TelescopingClimberIOReal)
       pivotClimber = PivotClimber(PivotClimberIOReal)
-      led = BlinkinLed(BlinkinLedIOReal)
+      led = CandleLed(CandleLedIOReal)
       pneumatic = Pneumatic(PneumaticsIOReal)
     } else {
       drivetrain = Drivetrain(object : DrivetrainIO {})
@@ -86,7 +86,7 @@ object RobotContainer {
       feeder = Feeder(object : FeederIO {})
       telescopingClimber = TelescopingClimber(object : TelescopingClimberIO {})
       pivotClimber = PivotClimber(object : PivotClimberIO {})
-      led = BlinkinLed(object : BlinkinLedIO {})
+      led = CandleLed(object : CandleLedIO {})
       pneumatic = Pneumatic(object : PneumaticIO {})
     }
   }
@@ -111,7 +111,7 @@ object RobotContainer {
     pivotClimber.defaultCommand = PivotArmIdleCommand(pivotClimber)
     //    PivotClimber.defaultCommand = PivotIdleCommand()
     led.defaultCommand =
-      BlinkinLedCommand(led, intake, shooter, feeder, telescopingClimber, pivotClimber, pneumatic)
+      CandleLedCommand(led, intake, shooter, feeder, telescopingClimber, pivotClimber, pneumatic)
     pneumatic.defaultCommand = PneumaticIdleCommand(pneumatic)
   }
 
