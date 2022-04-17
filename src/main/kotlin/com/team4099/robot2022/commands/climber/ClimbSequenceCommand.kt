@@ -12,6 +12,8 @@ class ClimbSequenceCommand(
 
   init {
     addCommands(
+      RetractTelescopingArmCommand(telescopingClimber).withTimeout(0.5),
+      WaitCommand(0.5),
       RetractTelescopingArmCommand(telescopingClimber),
       ExtendPivotArmCommand(pivotClimber),
       WaitCommand(0.5),

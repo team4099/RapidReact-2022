@@ -45,7 +45,7 @@ object AutonomousSelector {
     //    orientationChooser.addOption("Right", 270.degrees)
     //    autoTab.add("Starting Orientation", orientationChooser)
     autonomousModeChooser.addOption(
-      "One Ball Fender Shot Then Taxi", AutonomousMode.ONE_BALL_FENDER_SHOT_THEN_TAXI
+      "One Ball Fender Shot Then Taxi", AutonomousMode.ONE_BALL_FENDER_SHOT_THEN_TAXI_AND_OBSTRUCT
     )
     autonomousModeChooser.addOption(
       "One Ball Left Taxi Then Fender Shot", AutonomousMode.ONE_BALL_LEFT_LEFT_MODE
@@ -59,7 +59,7 @@ object AutonomousSelector {
     autonomousModeChooser.addOption(
       "Two Ball Right Taxi Then Fender Shot", AutonomousMode.TWO_BALL_LEFT_RIGHT_MODE
     )
-    autonomousModeChooser.addOption("Two Ball: Left", AutonomousMode.TWO_BALL_LEFT_START)
+    autonomousModeChooser.addOption("Two Ball: Left", AutonomousMode.TWO_BALL_LEFT_START_AND_OBSTRUCT)
     autonomousModeChooser.addOption(
       "Three Ball: Right Start Faster", AutonomousMode.THREE_BALL_RIGHT_START_FASTER
     )
@@ -115,7 +115,7 @@ object AutonomousSelector {
     when (mode) {
       AutonomousMode.TEST_AUTO_PATH ->
         return WaitCommand(getWaitTime().inSeconds).andThen(TestAutoPath(drivetrain))
-      AutonomousMode.TWO_BALL_LEFT_START ->
+      AutonomousMode.TWO_BALL_LEFT_START_AND_OBSTRUCT ->
         return WaitCommand(getWaitTime().inSeconds)
           .andThen(
             TwoBallLeftStartMode(drivetrain, intake, feeder, shooter, getSecondaryWaitTime())
@@ -135,7 +135,7 @@ object AutonomousSelector {
           .andThen(TelescopingCharacterizationCommand(telescopingClimber))
       //      AutonomousMode.CHARACTERIZE_CLIMBER_PIVOT -> return
       // PivotCharacterizationCommand(pivotClimber)
-      AutonomousMode.ONE_BALL_FENDER_SHOT_THEN_TAXI ->
+      AutonomousMode.ONE_BALL_FENDER_SHOT_THEN_TAXI_AND_OBSTRUCT ->
         return WaitCommand(getWaitTime().inSeconds)
           .andThen(
             OneBallFenderShotThenTaxiAndObstruct(
@@ -170,8 +170,8 @@ object AutonomousSelector {
     CHARACTERIZE_SHOOTER,
     CHARACTERIZE_CLIMBER_TELESCOPE,
     CHARACTERIZE_CLIMBER_PIVOT,
-    ONE_BALL_FENDER_SHOT_THEN_TAXI,
-    TWO_BALL_LEFT_START,
+    ONE_BALL_FENDER_SHOT_THEN_TAXI_AND_OBSTRUCT,
+    TWO_BALL_LEFT_START_AND_OBSTRUCT,
     THREE_BALL_RIGHT_START_FASTER,
     THREE_BALL_RIGHT_START,
     FOUR_BALL_RIGHT_START,
