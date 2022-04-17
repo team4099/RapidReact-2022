@@ -19,12 +19,13 @@ import com.team4099.robot2022.commands.drivetrain.TeleopDriveCommand
 import com.team4099.robot2022.commands.feeder.FeederCommand
 import com.team4099.robot2022.commands.feeder.FeederSerialize
 import com.team4099.robot2022.commands.feeder.FeederSerializeIdleCommand
+import com.team4099.robot2022.commands.feeder.ResetBallCountCommand
 import com.team4099.robot2022.commands.intake.IntakeBallsCommand
 import com.team4099.robot2022.commands.intake.IntakeIdleCommand
 import com.team4099.robot2022.commands.intake.ReverseIntakeCommand
 import com.team4099.robot2022.commands.led.LedCommand
-import com.team4099.robot2022.commands.pneumatics.PneumaticClimbCheckCommand
 import com.team4099.robot2022.commands.pneumatics.PneumaticIdleCommand
+import com.team4099.robot2022.commands.pneumatics.UseLowThresholdClimbCommand
 import com.team4099.robot2022.commands.shooter.ShootCommand
 import com.team4099.robot2022.commands.shooter.ShooterIdleCommand
 import com.team4099.robot2022.commands.shooter.ShooterUnjamCommand
@@ -148,6 +149,7 @@ object RobotContainer {
       ReverseIntakeCommand(intake)
         .alongWith(FeederCommand(feeder, FeederConstants.FeederState.BACKWARD_FLOOR))
     )
+    ControlBoard.resetBallCount.whileActiveOnce(ResetBallCountCommand(feeder))
 
     ControlBoard.extendTelescoping.whileActiveOnce(ExtendTelescopingArmCommand(telescopingClimber))
     ControlBoard.retractTelescoping.whileActiveOnce(
@@ -156,14 +158,17 @@ object RobotContainer {
     ControlBoard.extendPivot.whileActiveOnce(ExtendPivotArmCommand(pivotClimber))
     ControlBoard.retractPivot.whileActiveOnce(RetractPivotArmCommand(pivotClimber))
     ControlBoard.startClimbSequence.whileActiveOnce(
-      PneumaticClimbCheckCommand(pneumatic)
-        .andThen(
-          ClimbSequenceCommand(telescopingClimber, pivotClimber, pneumatic)
+      //      PneumaticClimbCheckCommand(pneumatic)
+      //        .andThen(
+      UseLowThresholdClimbCommand(pneumatic)
+        .alongWith(
+          ClimbSequenceCommand(telescopingClimber, pivotClimber)
             .andThen(
-              ClimbSequenceCommand(telescopingClimber, pivotClimber, pneumatic)
+              ClimbSequenceCommand(telescopingClimber, pivotClimber)
                 .andThen(RetractTelescopingArmCommand(telescopingClimber))
             )
         )
+      //        )
     )
 
     //
@@ -179,9 +184,7 @@ object RobotContainer {
   fun mapTestControls() {}
 
   fun getAutonomousCommand() =
-    AutonomousSelector.getCommand(
-      drivetrain, intake, feeder, shooter, telescopingClimber, pivotClimber
-    )
+    AutonomousSelector.getCommand(drivetrain, intake, feeder, shooter, telescopingClimber)
 
   fun logOperatorController() = ControlBoard.logOperatorController()
   fun logDriverController() = ControlBoard.logDriverController()

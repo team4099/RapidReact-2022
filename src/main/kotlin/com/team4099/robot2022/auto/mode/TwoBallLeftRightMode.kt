@@ -2,9 +2,10 @@ package com.team4099.robot2022.auto.mode
 
 import com.team4099.lib.pathfollow.Trajectory
 import com.team4099.lib.pathfollow.trajectoryFromPathPlanner
+import com.team4099.lib.units.base.Time
+import com.team4099.lib.units.base.inSeconds
 import com.team4099.robot2022.auto.PathStore
 import com.team4099.robot2022.commands.drivetrain.DrivePathCommand
-import com.team4099.robot2022.commands.drivetrain.ResetPoseCommand
 import com.team4099.robot2022.commands.feeder.FeederSerialize
 import com.team4099.robot2022.commands.intake.IntakeBallsCommand
 import com.team4099.robot2022.commands.shooter.AutoShootCommand
@@ -19,48 +20,52 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 import edu.wpi.first.wpilibj2.command.WaitCommand
 import org.littletonrobotics.junction.Logger
 
-class FourBallRightStart(
+class TwoBallLeftRightMode(
   val drivetrain: Drivetrain,
   val intake: Intake,
   val feeder: Feeder,
-  val shooter: Shooter
+  val shooter: Shooter,
+  val waitTime: Time
 ) : SequentialCommandGroup() {
-  private val twoBallRightTrajectory: Trajectory
-  private val fourBallRightTrajectory: Trajectory
+
+  private val oneBallLeftTarmacRightBump: Trajectory
+  private val oneBallLeftTarmacRightToFender: Trajectory
+  private val twoBallLeftTarmac: Trajectory
 
   private var redAllianceCheck: Boolean = false
 
   init {
     if (DriverStation.getAlliance() == DriverStation.Alliance.Red) {
-      twoBallRightTrajectory = trajectoryFromPathPlanner(PathStore.redTwoBallRightStartPath)
-      fourBallRightTrajectory = trajectoryFromPathPlanner(PathStore.redFourBallRightStartPath)
+      oneBallLeftTarmacRightBump =
+        trajectoryFromPathPlanner(PathStore.redOneBallLeftTarmacRightBump)
+      oneBallLeftTarmacRightToFender =
+        trajectoryFromPathPlanner(PathStore.redOneBallLeftTarmacRightShoot)
+      twoBallLeftTarmac = trajectoryFromPathPlanner(PathStore.redTwoBallLeftFender)
       redAllianceCheck = true
     } else {
-      twoBallRightTrajectory = trajectoryFromPathPlanner(PathStore.blueTwoBallRightStartPath)
-      fourBallRightTrajectory = trajectoryFromPathPlanner(PathStore.blueFourBallRightStartPath)
+      oneBallLeftTarmacRightBump =
+        trajectoryFromPathPlanner(PathStore.blueOneBallLeftTarmacRightBump)
+      oneBallLeftTarmacRightToFender =
+        trajectoryFromPathPlanner(PathStore.blueOneBallLeftTarmacRightShoot)
+      twoBallLeftTarmac = trajectoryFromPathPlanner(PathStore.blueTwoBallLeftFender)
     }
 
     addCommands(
-      ResetPoseCommand(drivetrain, twoBallRightTrajectory.startingPose),
-      ParallelCommandGroup(
-        IntakeBallsCommand(intake).withTimeout(1.25),
-        DrivePathCommand(drivetrain, twoBallRightTrajectory, resetPose = false)
-          .deadlineWith(FeederSerialize(feeder)),
-      ),
+      DrivePathCommand(drivetrain, oneBallLeftTarmacRightBump, resetPose = false),
+      WaitCommand(waitTime.inSeconds),
+      DrivePathCommand(drivetrain, oneBallLeftTarmacRightToFender, resetPose = true),
       SpinUpUpperHub(shooter).andThen(AutoShootCommand(shooter, feeder).withTimeout(1.5)),
       ParallelCommandGroup(
-        WaitCommand(1.0).andThen((IntakeBallsCommand(intake).withTimeout(4.5))),
-        DrivePathCommand(drivetrain, fourBallRightTrajectory, resetPose = false)
-          .deadlineWith(FeederSerialize(feeder))
+        DrivePathCommand(drivetrain, twoBallLeftTarmac, resetPose = true)
+          .deadlineWith(FeederSerialize(feeder)),
+        WaitCommand(1.0).andThen((IntakeBallsCommand(intake).withTimeout(1.0)))
       ),
-      SpinUpUpperHub(shooter).andThen(AutoShootCommand(shooter, feeder).withTimeout(1.5))
+      SpinUpUpperHub(shooter).andThen(AutoShootCommand(shooter, feeder).withTimeout(1.5)),
     )
   }
 
   override fun execute() {
     super.execute()
-    Logger.getInstance().recordOutput("ActiveCommands/FourBallRightStart", true)
-    Logger.getInstance().recordOutput("Pathfollow/redAllianceCheck", redAllianceCheck)
-    Logger.getInstance().recordOutput("Pathfollow/blueAllianceCheck", !redAllianceCheck)
+    Logger.getInstance().recordOutput("ActiveCommands/TwoBallLeftRightMode", true)
   }
 }

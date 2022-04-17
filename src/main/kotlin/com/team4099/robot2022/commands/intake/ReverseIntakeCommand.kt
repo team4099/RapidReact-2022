@@ -22,4 +22,9 @@ class ReverseIntakeCommand(val intake: Intake) : CommandBase() {
   override fun isFinished(): Boolean {
     return false
   }
+
+  override fun end(interrupted: Boolean) {
+    intake.rollerState = IntakeConstants.RollerState.IDLE
+    intake.armState = IntakeConstants.ArmState.IN
+  }
 }

@@ -1,5 +1,6 @@
 package com.team4099.robot2022.auto.mode
 
+import com.team4099.lib.pathfollow.Trajectory
 import com.team4099.lib.pathfollow.trajectoryFromPathPlanner
 import com.team4099.robot2022.auto.PathStore
 import com.team4099.robot2022.commands.drivetrain.DrivePathCommand
@@ -11,9 +12,11 @@ import com.team4099.robot2022.subsystems.drivetrain.Drivetrain
 import com.team4099.robot2022.subsystems.feeder.Feeder
 import com.team4099.robot2022.subsystems.intake.Intake
 import com.team4099.robot2022.subsystems.shooter.Shooter
+import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 import edu.wpi.first.wpilibj2.command.WaitCommand
+import org.littletonrobotics.junction.Logger
 
 class FourBallLeftStart(
   val drivetrain: Drivetrain,
@@ -22,11 +25,22 @@ class FourBallLeftStart(
   val shooter: Shooter
 ) : SequentialCommandGroup() {
 
-  val twoBallTrajectory = trajectoryFromPathPlanner(PathStore.twoBallLeftStartPath)
-  val threeAndFourBallTrajectory =
-    trajectoryFromPathPlanner(PathStore.threeAndFourBallLeftStartPath)
+  private val twoBallTrajectory: Trajectory
+  private val threeAndFourBallTrajectory: Trajectory
+
+  private var redAllianceCheck: Boolean = false
 
   init {
+    if (DriverStation.getAlliance() == DriverStation.Alliance.Red) {
+      twoBallTrajectory = trajectoryFromPathPlanner(PathStore.redTwoBallLeftStartPath)
+      threeAndFourBallTrajectory =
+        trajectoryFromPathPlanner(PathStore.redThreeAndFourBallLeftStartPath)
+      redAllianceCheck = true
+    } else {
+      twoBallTrajectory = trajectoryFromPathPlanner(PathStore.blueTwoBallLeftStartPath)
+      threeAndFourBallTrajectory =
+        trajectoryFromPathPlanner(PathStore.blueThreeAndFourBallLeftStartPath)
+    }
     addCommands(
       ResetPoseCommand(drivetrain, twoBallTrajectory.startingPose),
       ParallelCommandGroup(
@@ -40,5 +54,12 @@ class FourBallLeftStart(
       ),
       SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(3.0)),
     )
+  }
+
+  override fun execute() {
+    super.execute()
+    Logger.getInstance().recordOutput("ActiveCommands/FourBallLeftStart", true)
+    Logger.getInstance().recordOutput("Pathfollow/redAllianceCheck", redAllianceCheck)
+    Logger.getInstance().recordOutput("Pathfollow/blueAllianceCheck", !redAllianceCheck)
   }
 }

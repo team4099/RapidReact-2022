@@ -98,20 +98,28 @@ class Drivetrain(val io: DrivetrainIO) : SubsystemBase() {
 
     Logger.getInstance().processInputs("Drivetrain", inputs)
 
-    Logger.getInstance()
-      .recordOutput("Drivetrain/frontLeftSpeedMetersPerSecond", wheelSpeeds[0].inMetersPerSecond)
-    Logger.getInstance()
-      .recordOutput("Drivetrain/frontRightSpeedMetersPerSecond", wheelSpeeds[1].inMetersPerSecond)
-    Logger.getInstance()
-      .recordOutput("Drivetrain/backLeftSpeedMetersPerSecond", wheelSpeeds[2].inMetersPerSecond)
-    Logger.getInstance()
-      .recordOutput("Drivetrain/backRightSpeedMetersPerSecond", wheelSpeeds[3].inMetersPerSecond)
+    //    Logger.getInstance()
+    //      .recordOutput("Drivetrain/frontLeftSpeedMetersPerSecond",
+    // wheelSpeeds[0].inMetersPerSecond)
+    //    Logger.getInstance()
+    //      .recordOutput("Drivetrain/frontRightSpeedMetersPerSecond",
+    // wheelSpeeds[1].inMetersPerSecond)
+    //    Logger.getInstance()
+    //      .recordOutput("Drivetrain/backLeftSpeedMetersPerSecond",
+    // wheelSpeeds[2].inMetersPerSecond)
+    //    Logger.getInstance()
+    //      .recordOutput("Drivetrain/backRightSpeedMetersPerSecond",
+    // wheelSpeeds[3].inMetersPerSecond)
 
     // Wheel angles
-    Logger.getInstance().recordOutput("Drivetrain/frontLeftAngleRadians", wheelAngles[0].inRadians)
-    Logger.getInstance().recordOutput("Drivetrain/frontRightAngleRadians", wheelAngles[1].inRadians)
-    Logger.getInstance().recordOutput("Drivetrain/backLeftAngleRadians", wheelAngles[2].inRadians)
-    Logger.getInstance().recordOutput("Drivetrain/backRightAngleRadians", wheelAngles[3].inRadians)
+    //    Logger.getInstance().recordOutput("Drivetrain/frontLeftAngleRadians",
+    // wheelAngles[0].inRadians)
+    //    Logger.getInstance().recordOutput("Drivetrain/frontRightAngleRadians",
+    // wheelAngles[1].inRadians)
+    //    Logger.getInstance().recordOutput("Drivetrain/backLeftAngleRadians",
+    // wheelAngles[2].inRadians)
+    //    Logger.getInstance().recordOutput("Drivetrain/backRightAngleRadians",
+    // wheelAngles[3].inRadians)
 
     Logger.getInstance()
       .recordOutput(

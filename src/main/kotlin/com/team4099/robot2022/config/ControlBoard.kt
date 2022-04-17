@@ -12,7 +12,6 @@ import org.littletonrobotics.junction.Logger
 object ControlBoard {
   private val driver = XboxOneGamepad(Constants.Joysticks.DRIVER_PORT)
   private val operator = XboxOneGamepad(Constants.Joysticks.SHOTGUN_PORT)
-  private val technician = XboxOneGamepad(Constants.Joysticks.TECHNICIAN_PORT)
 
   val strafe: Double
     get() = -driver.leftXAxis
@@ -32,7 +31,7 @@ object ControlBoard {
   val runFeederIn = Trigger { operator.rightTriggerAxis > 0.5 }
   val runFeederOut = Trigger { operator.leftTriggerAxis > 0.5 }
 
-  val resetBallCount = Trigger { operator.startButton && operator.selectButton }
+  //  val resetBallCount = Trigger { operator.startButton && operator.selectButton }
 
   val runIntake = Trigger { operator.aButton }
 
@@ -50,13 +49,13 @@ object ControlBoard {
   val retractPivot = Trigger { operator.dPadLeft }
 
   val startClimbSequence = Trigger { operator.startButton }
-  val climbWithoutAdvance = Trigger { operator.selectButton }
+  val resetBallCount = Trigger { operator.selectButton }
 
-  val leftSpoolDown = Trigger { technician.leftShoulderButton }
-  val rightSpoolDown = Trigger { technician.rightShoulderButton }
+  val leftSpoolDown = Trigger { operator.leftShoulderButton }
+  val rightSpoolDown = Trigger { operator.rightShoulderButton }
 
-  val leftSpoolUp = Trigger { technician.leftTriggerAxis > 0.5 }
-  val rightSpoolUp = Trigger { technician.rightTriggerAxis > 0.5 }
+  val leftSpoolUp = Trigger { operator.leftTriggerAxis > 0.5 }
+  val rightSpoolUp = Trigger { operator.rightTriggerAxis > 0.5 }
 
   fun logDriverController() {
     Logger.getInstance().recordOutput("DriverController/leftXAxis", driver.leftXAxis)

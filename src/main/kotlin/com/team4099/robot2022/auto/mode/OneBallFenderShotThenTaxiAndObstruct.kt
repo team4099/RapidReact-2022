@@ -6,7 +6,6 @@ import com.team4099.lib.units.base.Time
 import com.team4099.lib.units.base.inSeconds
 import com.team4099.robot2022.auto.PathStore
 import com.team4099.robot2022.commands.drivetrain.DrivePathCommand
-import com.team4099.robot2022.commands.drivetrain.ResetPoseCommand
 import com.team4099.robot2022.commands.intake.IntakeBallsCommand
 import com.team4099.robot2022.commands.intake.ReverseIntakeCommand
 import com.team4099.robot2022.commands.shooter.ShootCommand
@@ -21,41 +20,29 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 import edu.wpi.first.wpilibj2.command.WaitCommand
 import org.littletonrobotics.junction.Logger
 
-class TwoBallLeftStartMode(
+class OneBallFenderShotThenTaxiAndObstruct(
   val drivetrain: Drivetrain,
-  val intake: Intake,
   val feeder: Feeder,
   val shooter: Shooter,
+  val intake: Intake,
   waitTime: Time
 ) : SequentialCommandGroup() {
 
-  val trajectory: Trajectory
-  val intakeOpponentCargoTrajectory: Trajectory
-
+  private val oneBallFenderShotThenTaxi: Trajectory
   private var redAllianceCheck: Boolean = false
 
   init {
     if (DriverStation.getAlliance() == DriverStation.Alliance.Red) {
-      trajectory = trajectoryFromPathPlanner(PathStore.redTwoBallLeftStartPath)
-      intakeOpponentCargoTrajectory =
-        trajectoryFromPathPlanner(PathStore.redPickUpOpponentCargoPath)
+      oneBallFenderShotThenTaxi = trajectoryFromPathPlanner(PathStore.redPickUpOpponentCargoPath)
       redAllianceCheck = true
     } else {
-      trajectory = trajectoryFromPathPlanner(PathStore.blueTwoBallLeftStartPath)
-      intakeOpponentCargoTrajectory =
-        trajectoryFromPathPlanner(PathStore.bluePickUpOpponentCargoPath)
+      oneBallFenderShotThenTaxi = trajectoryFromPathPlanner(PathStore.bluePickUpOpponentCargoPath)
     }
-
     addCommands(
-      ResetPoseCommand(drivetrain, trajectory.startingPose),
-      ParallelCommandGroup(
-        IntakeBallsCommand(intake).withTimeout(1.5),
-        DrivePathCommand(drivetrain, trajectory, resetPose = false)
-      ),
       SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(2.0)),
       WaitCommand(waitTime.inSeconds),
       ParallelCommandGroup(
-        DrivePathCommand(drivetrain, intakeOpponentCargoTrajectory, resetPose = true),
+        DrivePathCommand(drivetrain, oneBallFenderShotThenTaxi, resetPose = false),
         SequentialCommandGroup(
           WaitCommand(1.0),
           IntakeBallsCommand(intake).withTimeout(1.0),
@@ -69,8 +56,6 @@ class TwoBallLeftStartMode(
 
   override fun execute() {
     super.execute()
-    Logger.getInstance().recordOutput("ActiveCommands/TwoBallLeftStartMode", true)
-    Logger.getInstance().recordOutput("Pathfollow/redAllianceCheck", redAllianceCheck)
-    Logger.getInstance().recordOutput("Pathfollow/blueAllianceCheck", !redAllianceCheck)
+    Logger.getInstance().recordOutput("ActiveCommands/OneBallFenderShotThenTaxi", true)
   }
 }
