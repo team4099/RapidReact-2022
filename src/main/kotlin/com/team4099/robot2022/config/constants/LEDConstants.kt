@@ -33,6 +33,50 @@ object LEDConstants {
     CLIMBER_READY(0, 0, 0),
 
     // Changing Mix
+    // CLIMBING(BlinkinLedDriver.BlinkinLedMode.FIXED_BEATS_PARTY),
+
+    // Flashing Red
+    // DISALLOW_CLIMB(BlinkinLedDriver.BlinkinLedMode.FIXED_HEARTBEAT_RED),
+
+    // Changing Red
+    // CLIMB_FINISHED_RED_ALLIANCE(BlinkinLedDriver.BlinkinLedMode.FIXED_BEATS_LAVA),
+
+    // Changing Blue
+    // CLIMB_FINISHED_BLUE_ALLIANCE(BlinkinLedDriver.BlinkinLedMode.FIXED_BEATS_OCEAN),
+
+    // Speeding Blue
+    // BLUE_SHOOT(BlinkinLedDriver.BlinkinLedMode.FIXED_CHASE_BLUE),
+
+    // Speeding Red
+    // RED_SHOOT(BlinkinLedDriver.BlinkinLedMode.FIXED_CHASE_RED)
+  }
+
+  enum class BlinkinLEDState(val blinkinMode: BlinkinLedDriver.BlinkinLedMode) {
+    // Solid Orange (never used)
+    IDLE(BlinkinLedDriver.BlinkinLedMode.SOLID_ORANGE),
+
+    // Blinking Gold
+    AUTO(BlinkinLedDriver.BlinkinLedMode.FIXED_STROBE_GOLD),
+
+    // Solid Gold
+    STANDING_ZERO(BlinkinLedDriver.BlinkinLedMode.SOLID_GOLD),
+
+    // Solid Purple
+    STANDING_ONE(BlinkinLedDriver.BlinkinLedMode.SOLID_VIOLET),
+
+    // Solid Green
+    STANDING_TWO(BlinkinLedDriver.BlinkinLedMode.SOLID_GREEN),
+
+    // Solid Blue
+    INTAKING(BlinkinLedDriver.BlinkinLedMode.SOLID_BLUE),
+
+    // Solid Red
+    OUTTAKING(BlinkinLedDriver.BlinkinLedMode.SOLID_DARK_RED),
+
+    // Changing Green
+    CLIMBER_READY(BlinkinLedDriver.BlinkinLedMode.FIXED_BEATS_FOREST),
+
+    // Changing Mix
     CLIMBING(BlinkinLedDriver.BlinkinLedMode.FIXED_BEATS_PARTY),
 
     // Flashing Red

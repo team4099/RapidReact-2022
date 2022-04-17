@@ -4,7 +4,7 @@ import com.team4099.lib.drivers.BlinkinLedDriver
 import org.littletonrobotics.junction.LogTable
 import org.littletonrobotics.junction.inputs.LoggableInputs
 
-interface LedIO {
+interface BlinkinLedIO {
   class LedIOInputs : LoggableInputs {
 
     var pwmValue = 0.0
