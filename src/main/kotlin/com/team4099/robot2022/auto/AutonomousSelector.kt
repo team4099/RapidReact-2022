@@ -45,7 +45,8 @@ object AutonomousSelector {
     //    orientationChooser.addOption("Right", 270.degrees)
     //    autoTab.add("Starting Orientation", orientationChooser)
     autonomousModeChooser.addOption(
-      "One Ball Fender Shot Then Taxi", AutonomousMode.ONE_BALL_FENDER_SHOT_THEN_TAXI_AND_OBSTRUCT
+      "One Ball Fender Shot Then Taxi",
+      AutonomousMode.ONE_BALL_FENDER_SHOT_THEN_TAXI_AND_OBSTRUCT
     )
     autonomousModeChooser.addOption(
       "One Ball Left Taxi Then Fender Shot", AutonomousMode.ONE_BALL_LEFT_LEFT_MODE
@@ -59,7 +60,9 @@ object AutonomousSelector {
     autonomousModeChooser.addOption(
       "Two Ball Right Taxi Then Fender Shot", AutonomousMode.TWO_BALL_LEFT_RIGHT_MODE
     )
-    autonomousModeChooser.addOption("Two Ball: Left", AutonomousMode.TWO_BALL_LEFT_START_AND_OBSTRUCT)
+    autonomousModeChooser.addOption(
+      "Two Ball: Left", AutonomousMode.TWO_BALL_LEFT_START_AND_OBSTRUCT
+    )
     autonomousModeChooser.addOption(
       "Three Ball: Right Start Faster", AutonomousMode.THREE_BALL_RIGHT_START_FASTER
     )
