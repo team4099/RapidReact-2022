@@ -25,7 +25,7 @@ class DriveCharacterizeCommand(val drivetrain: Drivetrain) : SequentialCommandGr
           (DrivetrainConstants.WHEEL_DIAMETER.inMeters / 2),
         drivetrain.swerveModules[1].inputs.driveVelocity.inMetersPerSecond /
           (DrivetrainConstants.WHEEL_DIAMETER.inMeters / 2),
-        drivetrain.inputs.gyroAngle.inRadians,
+        drivetrain.inputs.gyroYaw.inRadians,
         drivetrain.inputs.gyroVelocity.inRadiansPerSecond
       )
     }

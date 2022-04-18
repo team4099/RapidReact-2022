@@ -14,7 +14,8 @@ import com.team4099.robot2022.commands.climber.SpoolRightDownCommand
 import com.team4099.robot2022.commands.climber.SpoolRightUpCommand
 import com.team4099.robot2022.commands.climber.TelescopingIdleCommand
 import com.team4099.robot2022.commands.drivetrain.DriveBrakeModeCommand
-import com.team4099.robot2022.commands.drivetrain.ResetGyroCommand
+import com.team4099.robot2022.commands.drivetrain.ResetGyroPitchCommand
+import com.team4099.robot2022.commands.drivetrain.ResetGyroYawCommand
 import com.team4099.robot2022.commands.drivetrain.TeleopDriveCommand
 import com.team4099.robot2022.commands.feeder.FeederCommand
 import com.team4099.robot2022.commands.feeder.FeederSerialize
@@ -128,7 +129,7 @@ object RobotContainer {
   }
 
   fun mapTeleopControls() {
-    ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand(drivetrain))
+    ControlBoard.resetGyro.whileActiveOnce(ResetGyroYawCommand(drivetrain))
 
     ControlBoard.startShooter.whileActiveOnce(
       DriveBrakeModeCommand(drivetrain)
@@ -162,10 +163,13 @@ object RobotContainer {
       //        .andThen(
       UseLowThresholdClimbCommand(pneumatic)
         .alongWith(
-          ClimbSequenceCommand(telescopingClimber, pivotClimber)
+          ResetGyroPitchCommand(drivetrain)
             .andThen(
               ClimbSequenceCommand(telescopingClimber, pivotClimber)
-                .andThen(RetractTelescopingArmCommand(telescopingClimber))
+                .andThen(
+                  ClimbSequenceCommand(telescopingClimber, pivotClimber)
+                    .andThen(RetractTelescopingArmCommand(telescopingClimber))
+                )
             )
         )
       //        )

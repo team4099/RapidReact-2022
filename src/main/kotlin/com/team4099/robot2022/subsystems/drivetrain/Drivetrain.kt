@@ -78,15 +78,15 @@ class Drivetrain(val io: DrivetrainIO) : SubsystemBase() {
   private val swerveDriveOdometry =
     SwerveDriveOdometry(
       swerveDriveKinematics,
-      inputs.gyroAngle.inRotation2ds,
+      inputs.gyroYaw.inRotation2ds,
       Pose(0.meters, 0.meters, 0.degrees).pose2d
     )
 
   var pose: Pose
     get() = Pose(swerveDriveOdometry.poseMeters)
     set(value) {
-      swerveDriveOdometry.resetPosition(value.pose2d, inputs.gyroAngle.inRotation2ds)
-      zeroGyro(pose.theta)
+      swerveDriveOdometry.resetPosition(value.pose2d, inputs.gyroYaw.inRotation2ds)
+      zeroGyroYaw(pose.theta)
     }
 
   var targetPose: Pose = Pose(0.meters, 0.meters, 0.radians)
@@ -157,28 +157,28 @@ class Drivetrain(val io: DrivetrainIO) : SubsystemBase() {
     //    Logger.addEvent("Drivetrain", "gyro angle: ${(-gyroAngle).inDegrees}")
     val vX =
       if (fieldOriented) {
-        driveVector.first * (-inputs.gyroAngle).cos - driveVector.second * (-inputs.gyroAngle).sin
+        driveVector.first * (-inputs.gyroYaw).cos - driveVector.second * (-inputs.gyroYaw).sin
       } else {
         driveVector.first
       }
     val vY =
       if (fieldOriented) {
-        driveVector.second * (-inputs.gyroAngle).cos + driveVector.first * (-inputs.gyroAngle).sin
+        driveVector.second * (-inputs.gyroYaw).cos + driveVector.first * (-inputs.gyroYaw).sin
       } else {
         driveVector.second
       }
 
     val aY =
       if (fieldOriented) {
-        driveAcceleration.second * (-inputs.gyroAngle).cos +
-          driveAcceleration.first * (-inputs.gyroAngle).sin
+        driveAcceleration.second * (-inputs.gyroYaw).cos +
+          driveAcceleration.first * (-inputs.gyroYaw).sin
       } else {
         driveAcceleration.second
       }
     val aX =
       if (fieldOriented) {
-        driveAcceleration.first * (-inputs.gyroAngle).cos -
-          driveAcceleration.second * (-inputs.gyroAngle).sin
+        driveAcceleration.first * (-inputs.gyroYaw).cos -
+          driveAcceleration.second * (-inputs.gyroYaw).sin
       } else {
         driveAcceleration.first
       }
@@ -251,13 +251,13 @@ class Drivetrain(val io: DrivetrainIO) : SubsystemBase() {
 
     val vX =
       if (fieldOriented) {
-        driveVector.first * (-inputs.gyroAngle).cos - driveVector.second * (-inputs.gyroAngle).sin
+        driveVector.first * (-inputs.gyroYaw).cos - driveVector.second * (-inputs.gyroYaw).sin
       } else {
         driveVector.first
       }
     val vY =
       if (fieldOriented) {
-        driveVector.second * (-inputs.gyroAngle).cos + driveVector.first * (-inputs.gyroAngle).sin
+        driveVector.second * (-inputs.gyroYaw).cos + driveVector.first * (-inputs.gyroYaw).sin
       } else {
         driveVector.second
       }
@@ -311,7 +311,7 @@ class Drivetrain(val io: DrivetrainIO) : SubsystemBase() {
 
   private fun updateOdometry() {
     swerveDriveOdometry.update(
-      inputs.gyroAngle.inRotation2ds,
+      inputs.gyroYaw.inRotation2ds,
       SwerveModuleState(
         swerveModules[0].inputs.driveVelocity.inMetersPerSecond,
         -swerveModules[0].inputs.steeringPosition.inRotation2ds
@@ -345,7 +345,8 @@ class Drivetrain(val io: DrivetrainIO) : SubsystemBase() {
 
   /** Zeros all the sensors on the drivetrain. */
   fun zeroSensors() {
-    zeroGyro()
+    zeroGyroYaw()
+    zeroPitchYaw()
     zeroSteering()
     zeroDrive()
   }
@@ -355,9 +356,13 @@ class Drivetrain(val io: DrivetrainIO) : SubsystemBase() {
    *
    * @param toAngle Zeros the gyro to the value
    */
-  fun zeroGyro(toAngle: Angle = 0.degrees) {
-    io.zeroGyro(toAngle)
+  fun zeroGyroYaw(toAngle: Angle = 0.degrees) {
+    io.zeroGyroYaw(toAngle)
     swerveDriveOdometry.resetPosition(pose.pose2d, toAngle.inRotation2ds)
+  }
+
+  fun zeroPitchYaw(toAngle: Angle = 0.0.degrees) {
+    io.zeroGyroPitch(toAngle)
   }
 
   /** Zeros the steering motors for each swerve module. */

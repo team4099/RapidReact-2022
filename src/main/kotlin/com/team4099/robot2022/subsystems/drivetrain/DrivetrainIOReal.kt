@@ -71,21 +71,32 @@ object DrivetrainIOReal : DrivetrainIO {
     gyro.calibrate()
   }
 
-  var gyroOffset: Angle = 0.0.degrees
+  var gyroYawOffset: Angle = 0.0.degrees
+  var gyroPitchOffset: Angle = 0.0.degrees
 
   /** The current angle of the drivetrain. */
-  val gyroAngle: Angle
+  val gyroYaw: Angle
     get() {
       if (gyro.isConnected) {
-        var rawAngle = gyro.angle + gyroOffset.inDegrees
-        rawAngle += DrivetrainConstants.GYRO_RATE_COEFFICIENT * gyro.rate
-        return rawAngle.IEEErem(360.0).degrees
+        var rawYaw = gyro.angle + gyroYawOffset.inDegrees
+        rawYaw += DrivetrainConstants.GYRO_RATE_COEFFICIENT * gyro.rate
+        return rawYaw.IEEErem(360.0).degrees
       } else {
         return -1.337.degrees
       }
     }
 
-  val gyroRate: AngularVelocity
+  val gyroPitch: Angle
+    get() {
+      if (gyro.isConnected) {
+        val rawPitch = gyro.pitch + gyroPitchOffset.inDegrees
+        return rawPitch.IEEErem(360.0).degrees
+      } else {
+        return -1.337.degrees
+      }
+    }
+
+  val gyroYawRate: AngularVelocity
     get() {
       if (gyro.isConnected) {
         return gyro.rate.degrees.perSecond
@@ -95,13 +106,18 @@ object DrivetrainIOReal : DrivetrainIO {
     }
 
   override fun updateInputs(inputs: DrivetrainIO.DrivetrainIOInputs) {
-    inputs.gyroAngle = gyroAngle
-    inputs.gyroVelocity = gyroRate
+    inputs.gyroYaw = gyroYaw
+    inputs.gyroVelocity = gyroYawRate
+    inputs.gyroPitch = gyroPitch
 
     inputs.gyroConnected = gyro.isConnected
   }
 
-  override fun zeroGyro(toAngle: Angle) {
-    gyroOffset = (toAngle.inDegrees - gyro.angle).degrees
+  override fun zeroGyroYaw(toAngle: Angle) {
+    gyroYawOffset = (toAngle.inDegrees - gyro.angle).degrees
+  }
+
+  override fun zeroGyroPitch(toAngle: Angle) {
+    gyroPitchOffset = (toAngle.inDegrees - gyro.pitch).degrees
   }
 }

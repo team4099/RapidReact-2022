@@ -12,19 +12,22 @@ import org.littletonrobotics.junction.inputs.LoggableInputs
 interface DrivetrainIO {
   class DrivetrainIOInputs : LoggableInputs {
 
-    var gyroAngle = 0.0.radians
+    var gyroYaw = 0.0.radians
+    var gyroPitch = 0.0.radians
     var gyroVelocity = 0.0.radians.perSecond
 
     var gyroConnected = true
 
     override fun toLog(table: LogTable?) {
-      table?.put("gyroAngleDegrees", gyroAngle.inDegrees)
+      table?.put("gyroYawAngleDegrees", gyroYaw.inDegrees)
+      table?.put("gyroPitchAngleDegrees", gyroPitch.inDegrees)
       table?.put("gyroVelocityDegreesPerSecond", gyroVelocity.inDegreesPerSecond)
       table?.put("gyroConnected", gyroConnected)
     }
 
     override fun fromLog(table: LogTable?) {
-      table?.getDouble("gyroAngleDegrees", gyroAngle.inDegrees)?.let { gyroAngle = it.degrees }
+      table?.getDouble("gyroAngleDegrees", gyroYaw.inDegrees)?.let { gyroYaw = it.degrees }
+      table?.getDouble("gyroPitchDegrees", gyroPitch.inDegrees)?.let { gyroPitch = it.degrees }
       table?.getDouble("gyroVelocityDegreesPerSecond", gyroVelocity.inDegreesPerSecond)?.let {
         gyroVelocity.inDegreesPerSecond
       }
@@ -55,5 +58,7 @@ interface DrivetrainIO {
 
   fun updateInputs(inputs: DrivetrainIOInputs) {}
 
-  fun zeroGyro(toAngle: Angle) {}
+  fun zeroGyroYaw(toAngle: Angle) {}
+
+  fun zeroGyroPitch(toAngle: Angle) {}
 }
