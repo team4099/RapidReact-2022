@@ -4,17 +4,17 @@ import com.team4099.lib.drivers.BlinkinLedDriver
 import org.littletonrobotics.junction.LogTable
 import org.littletonrobotics.junction.inputs.LoggableInputs
 
-interface BlinkinLedIO {
+interface LedIO {
   class LedIOInputs : LoggableInputs {
 
-    var pwmValue = 0.0
+    var ledState = BlinkinLedDriver.BlinkinLedMode.SOLID_GOLD.name
 
     override fun toLog(table: LogTable?) {
-      table?.put("pwmValue", pwmValue)
+      table?.put("ledState", ledState)
     }
 
     override fun fromLog(table: LogTable?) {
-      table?.getDouble("pwmValue", pwmValue)?.let { pwmValue = it }
+      table?.getString("ledState", ledState)?.let { ledState = it }
     }
   }
 

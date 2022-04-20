@@ -9,14 +9,14 @@ import com.team4099.robot2022.subsystems.climber.PivotClimber
 import com.team4099.robot2022.subsystems.climber.TelescopingClimber
 import com.team4099.robot2022.subsystems.feeder.Feeder
 import com.team4099.robot2022.subsystems.intake.Intake
-import com.team4099.robot2022.subsystems.led.BlinkinLed
+import com.team4099.robot2022.subsystems.led.Led
 import com.team4099.robot2022.subsystems.pneumatics.Pneumatic
 import com.team4099.robot2022.subsystems.shooter.Shooter
 import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj2.command.CommandBase
 
-class BlinkinLedCommand(
-  val led: BlinkinLed,
+class LedCommand(
+  val led: Led,
   val intake: Intake,
   val shooter: Shooter,
   val feeder: Feeder,
@@ -37,16 +37,16 @@ class BlinkinLedCommand(
         TelescopingClimberConstants.ActualTelescopeStates.START -> {
           when (telescopingClimber.desiredState) {
             TelescopingClimberConstants.DesiredTelescopeStates.START -> {
-                /*             when (shooter.state) {
-                  ShooterConstants.ShooterState.SPIN_UP_UPPER,
-                 ShooterConstants.ShooterState.SPIN_UP_LOWER -> {
-                    if (DriverStation.getAlliance() == DriverStation.Alliance.Red) {
-                     LEDConstants.BlinkinLEDState.RED_SHOOT
-                   } else {
-                     LEDConstants.BlinkinLEDState.BLUE_SHOOT
-                   }
-                 }
-                else -> {*/
+              //              when (shooter.state) {
+              //                ShooterConstants.ShooterState.SPIN_UP_UPPER,
+              //                ShooterConstants.ShooterState.SPIN_UP_LOWER -> {
+              //                  if (DriverStation.getAlliance() == DriverStation.Alliance.Red) {
+              //                    LEDConstants.LEDState.RED_SHOOT
+              //                  } else {
+              //                    LEDConstants.LEDState.BLUE_SHOOT
+              //                  }
+              //                }
+              //                else -> {
               if (Robot.isAutonomous) {
                 LEDConstants.BlinkinLEDState.AUTO
               } else if (intake.keepIntakingLEDState) {
@@ -63,8 +63,8 @@ class BlinkinLedCommand(
                   else -> LEDConstants.BlinkinLEDState.IDLE
                 }
               }
-              //               }
-              //            }
+              //                }
+              //              }
             }
             else -> LEDConstants.BlinkinLEDState.IDLE
           }

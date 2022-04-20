@@ -4,12 +4,12 @@ import com.team4099.robot2022.config.constants.LEDConstants
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import org.littletonrobotics.junction.Logger
 
-class CandleLed(val io: CandleLedIO) : SubsystemBase() {
-  val inputs = CandleLedIO.LEDIOInputs()
+class Led(val io: LedIO) : SubsystemBase() {
+  val inputs = LedIO.LedIOInputs()
 
-  var state = LEDConstants.CandleState.IDLE
+  var state = LEDConstants.BlinkinLEDState.IDLE
     set(newState) {
-      newState.animation?.let { io.setAnimation(it, state.r, state.g, state.b) }
+      io.setMode(newState.blinkinMode)
       field = newState
     }
 
