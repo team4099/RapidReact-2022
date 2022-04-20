@@ -19,30 +19,34 @@ object LedIOCandle : LedIO {
     lastLedState = mode
     when (mode) {
       LEDConstants.BlinkinLEDState.IDLE.blinkinMode ->
-        convertCandleStateToRGB(LEDConstants.CandleState.IDLE)
+        mapBlinkinStateToCandle(LEDConstants.CandleState.IDLE)
       LEDConstants.BlinkinLEDState.AUTO.blinkinMode ->
-        convertCandleStateToRGB(LEDConstants.CandleState.AUTO)
+        mapBlinkinStateToCandle(LEDConstants.CandleState.AUTO)
       LEDConstants.BlinkinLEDState.STANDING_ZERO.blinkinMode ->
-        convertCandleStateToRGB(LEDConstants.CandleState.STANDING_ZERO)
+        mapBlinkinStateToCandle(LEDConstants.CandleState.STANDING_ZERO)
       LEDConstants.BlinkinLEDState.STANDING_ONE.blinkinMode ->
-        convertCandleStateToRGB(LEDConstants.CandleState.STANDING_ONE)
+        mapBlinkinStateToCandle(LEDConstants.CandleState.STANDING_ONE)
       LEDConstants.BlinkinLEDState.STANDING_TWO.blinkinMode ->
-        convertCandleStateToRGB(LEDConstants.CandleState.STANDING_TWO)
+        mapBlinkinStateToCandle(LEDConstants.CandleState.STANDING_TWO)
       LEDConstants.BlinkinLEDState.INTAKING.blinkinMode ->
-        convertCandleStateToRGB(LEDConstants.CandleState.INTAKING)
+        mapBlinkinStateToCandle(LEDConstants.CandleState.INTAKING)
       LEDConstants.BlinkinLEDState.OUTTAKING.blinkinMode ->
-        convertCandleStateToRGB(LEDConstants.CandleState.OUTTAKING)
+        mapBlinkinStateToCandle(LEDConstants.CandleState.OUTTAKING)
       LEDConstants.BlinkinLEDState.CLIMBER_READY.blinkinMode ->
-        convertCandleStateToRGB(LEDConstants.CandleState.CLIMBER_READY)
+        mapBlinkinStateToCandle(LEDConstants.CandleState.CLIMBER_READY)
       LEDConstants.BlinkinLEDState.CLIMBING.blinkinMode ->
-        convertCandleStateToRGB(LEDConstants.CandleState.CLIMBING)
+        mapBlinkinStateToCandle(LEDConstants.CandleState.CLIMBING)
       LEDConstants.BlinkinLEDState.DISALLOW_CLIMB.blinkinMode ->
-        convertCandleStateToRGB(LEDConstants.CandleState.DISALLOW_CLIMB)
-      else -> convertCandleStateToRGB(LEDConstants.CandleState.IDLE)
+        mapBlinkinStateToCandle(LEDConstants.CandleState.DISALLOW_CLIMB)
+      else -> mapBlinkinStateToCandle(LEDConstants.CandleState.IDLE)
     }
   }
 
-  private fun convertCandleStateToRGB(candleState: LEDConstants.CandleState) {
-    ledController.setLEDs(candleState.r, candleState.g, candleState.b)
+  private fun mapBlinkinStateToCandle(candleState: LEDConstants.CandleState) {
+    if (candleState.animation == null) {
+      ledController.setLEDs(candleState.r, candleState.g, candleState.b)
+    } else {
+      ledController.animate(candleState.animation)
+    }
   }
 }
