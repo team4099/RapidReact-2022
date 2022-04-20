@@ -7,7 +7,7 @@ import org.littletonrobotics.junction.Logger
 class Led(val io: LedIO) : SubsystemBase() {
   val inputs = LedIO.LedIOInputs()
 
-  var state = LEDConstants.LEDState.IDLE
+  var state = LEDConstants.BlinkinLEDState.IDLE
     set(newState) {
       io.setMode(newState.blinkinMode)
       field = newState

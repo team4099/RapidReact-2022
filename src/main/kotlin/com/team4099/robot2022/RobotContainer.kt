@@ -52,7 +52,7 @@ import com.team4099.robot2022.subsystems.intake.IntakeIO
 import com.team4099.robot2022.subsystems.intake.IntakeIOReal
 import com.team4099.robot2022.subsystems.led.Led
 import com.team4099.robot2022.subsystems.led.LedIO
-import com.team4099.robot2022.subsystems.led.LedIOReal
+import com.team4099.robot2022.subsystems.led.LedIOCandle
 import com.team4099.robot2022.subsystems.pneumatics.Pneumatic
 import com.team4099.robot2022.subsystems.pneumatics.PneumaticIO
 import com.team4099.robot2022.subsystems.pneumatics.PneumaticsIOReal
@@ -78,7 +78,7 @@ object RobotContainer {
       feeder = Feeder(FeederIOReal)
       telescopingClimber = TelescopingClimber(TelescopingClimberIOReal)
       pivotClimber = PivotClimber(PivotClimberIOReal)
-      led = Led(LedIOReal)
+      led = Led(LedIOCandle)
       pneumatic = Pneumatic(PneumaticsIOReal)
     } else {
       drivetrain = Drivetrain(object : DrivetrainIO {})
