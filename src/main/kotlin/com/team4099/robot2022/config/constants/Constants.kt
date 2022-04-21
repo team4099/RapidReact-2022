@@ -82,7 +82,7 @@ object Constants {
   }
 
   object LED {
-    const val LED_CONTROLLER_ID = 0
+    const val LED_CONTROLLER_ID = 1
     const val TAB = "LED"
   }
 
