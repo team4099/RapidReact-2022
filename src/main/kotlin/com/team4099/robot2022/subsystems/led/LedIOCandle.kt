@@ -3,13 +3,14 @@ package com.team4099.robot2022.subsystems.led
 import com.ctre.phoenix.led.CANdle
 import com.team4099.lib.drivers.BlinkinLedDriver
 import com.team4099.robot2022.config.constants.Constants
-import com.team4099.robot2022.config.constants.LEDConstants
+import com.team4099.robot2022.config.constants.LEDConstants.BlinkinLEDState
+import com.team4099.robot2022.config.constants.LEDConstants.CandleState
 
 object LedIOCandle : LedIO {
   private val ledController = CANdle(Constants.LED.LED_CONTROLLER_ID)
 
   private var lastLedState: BlinkinLedDriver.BlinkinLedMode =
-    LEDConstants.BlinkinLEDState.IDLE.blinkinMode
+    BlinkinLEDState.IDLE.blinkinMode
 
   override fun updateInputs(inputs: LedIO.LedIOInputs) {
     inputs.ledState = lastLedState.name
@@ -18,31 +19,31 @@ object LedIOCandle : LedIO {
   override fun setMode(mode: BlinkinLedDriver.BlinkinLedMode) {
     lastLedState = mode
     when (mode) {
-      LEDConstants.BlinkinLEDState.IDLE.blinkinMode ->
-        mapBlinkinStateToCandle(LEDConstants.CandleState.IDLE)
-      LEDConstants.BlinkinLEDState.AUTO.blinkinMode ->
-        mapBlinkinStateToCandle(LEDConstants.CandleState.AUTO)
-      LEDConstants.BlinkinLEDState.STANDING_ZERO.blinkinMode ->
-        mapBlinkinStateToCandle(LEDConstants.CandleState.STANDING_ZERO)
-      LEDConstants.BlinkinLEDState.STANDING_ONE.blinkinMode ->
-        mapBlinkinStateToCandle(LEDConstants.CandleState.STANDING_ONE)
-      LEDConstants.BlinkinLEDState.STANDING_TWO.blinkinMode ->
-        mapBlinkinStateToCandle(LEDConstants.CandleState.STANDING_TWO)
-      LEDConstants.BlinkinLEDState.INTAKING.blinkinMode ->
-        mapBlinkinStateToCandle(LEDConstants.CandleState.INTAKING)
-      LEDConstants.BlinkinLEDState.OUTTAKING.blinkinMode ->
-        mapBlinkinStateToCandle(LEDConstants.CandleState.OUTTAKING)
-      LEDConstants.BlinkinLEDState.CLIMBER_READY.blinkinMode ->
-        mapBlinkinStateToCandle(LEDConstants.CandleState.CLIMBER_READY)
-      LEDConstants.BlinkinLEDState.CLIMBING.blinkinMode ->
-        mapBlinkinStateToCandle(LEDConstants.CandleState.CLIMBING)
-      LEDConstants.BlinkinLEDState.DISALLOW_CLIMB.blinkinMode ->
-        mapBlinkinStateToCandle(LEDConstants.CandleState.DISALLOW_CLIMB)
-      else -> mapBlinkinStateToCandle(LEDConstants.CandleState.IDLE)
+      BlinkinLEDState.IDLE.blinkinMode ->
+        setCandleState(CandleState.IDLE)
+      BlinkinLEDState.AUTO.blinkinMode ->
+        setCandleState(CandleState.AUTO)
+      BlinkinLEDState.STANDING_ZERO.blinkinMode ->
+        setCandleState(CandleState.STANDING_ZERO)
+      BlinkinLEDState.STANDING_ONE.blinkinMode ->
+        setCandleState(CandleState.STANDING_ONE)
+      BlinkinLEDState.STANDING_TWO.blinkinMode ->
+        setCandleState(CandleState.STANDING_TWO)
+      BlinkinLEDState.INTAKING.blinkinMode ->
+        setCandleState(CandleState.INTAKING)
+      BlinkinLEDState.OUTTAKING.blinkinMode ->
+        setCandleState(CandleState.OUTTAKING)
+      BlinkinLEDState.CLIMBER_READY.blinkinMode ->
+        setCandleState(CandleState.CLIMBER_READY)
+      BlinkinLEDState.CLIMBING.blinkinMode ->
+        setCandleState(CandleState.CLIMBING)
+      BlinkinLEDState.DISALLOW_CLIMB.blinkinMode ->
+        setCandleState(CandleState.DISALLOW_CLIMB)
+      else -> setCandleState(CandleState.IDLE)
     }
   }
 
-  private fun mapBlinkinStateToCandle(candleState: LEDConstants.CandleState) {
+  private fun setCandleState(candleState: CandleState) {
     if (candleState.animation == null) {
       ledController.setLEDs(candleState.r, candleState.g, candleState.b)
     } else {
