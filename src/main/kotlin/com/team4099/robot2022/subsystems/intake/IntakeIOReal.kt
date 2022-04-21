@@ -33,6 +33,7 @@ object IntakeIOReal : IntakeIO {
         true, IntakeConstants.SUPPLY_CURRENT_LIMIT, IntakeConstants.SUPPLY_CURRENT_LIMIT, 200.0
       )
 
+    intakeTalon.clearStickyFaults()
     intakeTalon.configAllSettings(intakeConfiguration)
     intakeTalon.configOpenloopRamp(IntakeConstants.RAMP_TIME)
 

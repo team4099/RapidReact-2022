@@ -35,6 +35,8 @@ object ShooterIOReal : ShooterIO {
     leaderMotor.setInverted(InvertType.None)
     followerMotor.setInverted(InvertType.OpposeMaster)
 
+    leaderMotor.clearStickyFaults()
+    followerMotor.clearStickyFaults()
     leaderMotor.enableVoltageCompensation(true)
     followerMotor.enableVoltageCompensation(true)
     leaderMotor.configVoltageCompSaturation(12.0)

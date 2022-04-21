@@ -50,7 +50,9 @@ object FeederIOReal : FeederIO {
       )
     )
 
-    // temp values
+    floorMotor.clearStickyFaults()
+    verticalMotor.clearStickyFaults()
+
     floorMotor.enableVoltageCompensation(true)
     verticalMotor.enableVoltageCompensation(true)
 

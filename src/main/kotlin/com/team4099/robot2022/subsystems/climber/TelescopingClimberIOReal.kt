@@ -54,6 +54,7 @@ object TelescopingClimberIOReal : TelescopingClimberIO {
     telescopingConfiguration.slot0.kF = TelescopingClimberConstants.KFF
 
     telescopingRightArm.configFactoryDefault()
+    telescopingRightArm.clearStickyFaults()
     telescopingRightArm.configAllSettings(telescopingConfiguration)
     telescopingRightArm.setNeutralMode(NeutralMode.Brake)
     telescopingRightArm.enableVoltageCompensation(true)
@@ -71,6 +72,7 @@ object TelescopingClimberIOReal : TelescopingClimberIO {
     )
 
     telescopingLeftArm.configFactoryDefault()
+    telescopingLeftArm.clearStickyFaults()
     telescopingLeftArm.configAllSettings(telescopingConfiguration)
     telescopingLeftArm.setNeutralMode(NeutralMode.Brake)
     telescopingLeftArm.enableVoltageCompensation(true)
