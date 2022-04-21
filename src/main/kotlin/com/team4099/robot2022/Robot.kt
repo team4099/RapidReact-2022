@@ -52,7 +52,7 @@ object Robot : LoggedRobot() {
       logger.addDataReceiver(ByteLogReceiver("/media/sda1"))
       logger.addDataReceiver(LogSocketServer(5800))
       LoggedSystemStats.getInstance()
-        .setPowerDistributionConfig(1, PowerDistribution.ModuleType.kRev)
+        .setPowerDistributionConfig(50, PowerDistribution.ModuleType.kRev)
     } else {
       // if in replay mode get file path from command line and read log file
       val path = ByteLogReplay.promptForPath()

@@ -25,19 +25,18 @@ class FourBallLeftStart(
   val shooter: Shooter
 ) : SequentialCommandGroup() {
 
-  private val twoBallTrajectory: Trajectory
+  private val twoBallTrajectory: Trajectory =
+    trajectoryFromPathPlanner(PathStore.twoBallLeftStartPath)
   private val threeAndFourBallTrajectory: Trajectory
 
   private var redAllianceCheck: Boolean = false
 
   init {
     if (DriverStation.getAlliance() == DriverStation.Alliance.Red) {
-      twoBallTrajectory = trajectoryFromPathPlanner(PathStore.redTwoBallLeftStartPath)
       threeAndFourBallTrajectory =
         trajectoryFromPathPlanner(PathStore.redThreeAndFourBallLeftStartPath)
       redAllianceCheck = true
     } else {
-      twoBallTrajectory = trajectoryFromPathPlanner(PathStore.blueTwoBallLeftStartPath)
       threeAndFourBallTrajectory =
         trajectoryFromPathPlanner(PathStore.blueThreeAndFourBallLeftStartPath)
     }

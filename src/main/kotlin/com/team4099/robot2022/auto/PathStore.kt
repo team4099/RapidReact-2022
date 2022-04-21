@@ -14,13 +14,6 @@ object PathStore {
       DrivetrainConstants.SLOW_AUTO_ACCEL.inMetersPerSecondPerSecond
     )
 
-  val blueTwoBallLeftStartPath =
-    PathPlanner.loadPath(
-      "2 Ball Left Start Blue",
-      DrivetrainConstants.SLOW_AUTO_VEL.inMetersPerSecond,
-      DrivetrainConstants.SLOW_AUTO_ACCEL.inMetersPerSecondPerSecond
-    )
-
   val blueThreeBallRightStartPath =
     PathPlanner.loadPath(
       "3 Ball Right Start Blue",
@@ -63,9 +56,9 @@ object PathStore {
       DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
     )
 
-  val redTwoBallLeftStartPath =
+  val twoBallLeftStartPath =
     PathPlanner.loadPath(
-      "2 Ball Left Start Red",
+      "2 Ball Left Start",
       DrivetrainConstants.SLOW_AUTO_VEL.inMetersPerSecond,
       DrivetrainConstants.SLOW_AUTO_ACCEL.inMetersPerSecondPerSecond
     )
@@ -112,86 +105,135 @@ object PathStore {
       DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
     )
 
-  val blueOneBallLeftTarmacLeftBump =
+  //  val blueOneBallLeftTarmacLeftBump =
+  //    PathPlanner.loadPath(
+  //      "1 Ball Left Tarmac Left Bump Blue",
+  //      DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
+  //      DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
+  //    )
+  //
+  val oneBallLeftTarmacLeftBump =
     PathPlanner.loadPath(
-      "1 Ball Left Tarmac Left Bump Blue",
+      "1 Ball Left Tarmac Left Bump",
+      DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
+      DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
+    )
+  //
+  //  val blueOneBallLeftTarmacLeftShoot =
+  //    PathPlanner.loadPath(
+  //      "1 Ball Left Tarmac Left Shoot Path Blue",
+  //      DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
+  //      DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
+  //    )
+
+  val oneBallLeftTarmacLeftShoot =
+    PathPlanner.loadPath(
+      "1 Ball Left Tarmac Left Shoot Path",
       DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
       DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
     )
 
-  val redOneBallLeftTarmacLeftBump =
+  //  val blueOneBallLeftTarmacRightBump =
+  //    PathPlanner.loadPath(
+  //      "1 Ball Left Tarmac Right Bump Blue",
+  //      DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
+  //      DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
+  //    )
+  //
+  //  val oneBallLeftTarmacRightBump =
+  //    PathPlanner.loadPath(
+  //      "1 Ball Left Tarmac Right Bump",
+  //      DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
+  //      DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
+  //    )
+  //
+  //  val blueOneBallLeftTarmacRightShoot =
+  //    PathPlanner.loadPath(
+  //      "1 Ball Left Tarmac Right Shoot Path Blue",
+  //      DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
+  //      DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
+  //    )
+  //
+  //  val oneBallLeftTarmacRightShoot =
+  //    PathPlanner.loadPath(
+  //      "1 Ball Left Tarmac Right Shoot Path",
+  //      DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
+  //      DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
+  //    )
+  //
+  //  val blueTwoBallLeftFender =
+  //    PathPlanner.loadPath(
+  //      "2 Ball Left From Fender Blue",
+  //      DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
+  //      DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
+  //    )
+  //
+  val twoBallLeftFender =
     PathPlanner.loadPath(
-      "1 Ball Left Tarmac Left Bump Red",
+      "2 Ball Left From Fender",
       DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
       DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
     )
 
-  val blueOneBallLeftTarmacLeftShoot =
+  //  val bluePickUpOpponentCargoPath =
+  //    PathPlanner.loadPath(
+  //      "1 or 2 Ball Left Tarmac Outtake Opp Cargo Blue",
+  //      DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
+  //      DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
+  //    )
+
+  val pickUpBothOpponentCargoPath =
     PathPlanner.loadPath(
-      "1 Ball Left Tarmac Left Shoot Path Blue",
+      "1 or 2 Ball Left Tarmac Outtake Opp Cargo",
       DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
       DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
     )
 
-  val redOneBallLeftTarmacLeftShoot =
+  val oneBallStealTrajectory =
     PathPlanner.loadPath(
-      "1 Ball Left Tarmac Left Shoot Path Red",
+      "1 Ball Left Tarmac Left Outtake Opponent",
       DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
       DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
     )
 
-  val blueOneBallLeftTarmacRightBump =
+  val oneBallShootTrajectory =
     PathPlanner.loadPath(
-      "1 Ball Left Tarmac Right Bump Blue",
+      "1 Ball Left Tarmac Left Outtake Shoot",
       DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
       DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
     )
 
-  val redOneBallLeftTarmacRightBump =
+  val twoBallEjectOneTrajectory =
     PathPlanner.loadPath(
-      "1 Ball Left Tarmac Right Bump Red",
+      "2 Ball Eject 1 Ball",
       DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
       DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
     )
 
-  val blueOneBallLeftTarmacRightShoot =
+  val oneBallEjectOneTrajectory =
     PathPlanner.loadPath(
-      "1 Ball Left Tarmac Right Shoot Path Blue",
+      "1 Ball Left Fender Then Eject Opp Cargo",
       DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
       DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
     )
 
-  val redOneBallLeftTarmacRightShoot =
+  val oneBallRightEjectOneTrajectory =
     PathPlanner.loadPath(
-      "1 Ball Left Tarmac Right Shoot Path Red",
+      "1 Ball Left Tarmac Right Eject",
       DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
       DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
     )
 
-  val blueTwoBallLeftFender =
+  val oneBallRightShootTrajectory =
     PathPlanner.loadPath(
-      "2 Ball Left From Fender Blue",
+      "1 Ball Left Tarmac Right Shoot",
       DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
       DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
     )
 
-  val redTwoBallLeftFender =
+  val twoBallRightShootTrajectory =
     PathPlanner.loadPath(
-      "2 Ball Left From Fender Red",
-      DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
-      DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
-    )
-
-  val bluePickUpOpponentCargoPath =
-    PathPlanner.loadPath(
-      "1 or 2 Ball Left Tarmac Outtake Opp Cargo Blue",
-      DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
-      DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
-    )
-
-  val redPickUpOpponentCargoPath =
-    PathPlanner.loadPath(
-      "1 or 2 Ball Left Tarmac Outtake Opp Cargo Red",
+      "2 Ball Left Tarmac Right Shoot",
       DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
       DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
     )

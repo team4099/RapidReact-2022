@@ -7,6 +7,7 @@ import com.team4099.lib.units.base.inSeconds
 import com.team4099.robot2022.auto.PathStore
 import com.team4099.robot2022.commands.drivetrain.DrivePathCommand
 import com.team4099.robot2022.commands.drivetrain.ResetPoseCommand
+import com.team4099.robot2022.commands.feeder.FeederSerialize
 import com.team4099.robot2022.commands.intake.IntakeBallsCommand
 import com.team4099.robot2022.commands.intake.ReverseIntakeCommand
 import com.team4099.robot2022.commands.shooter.ShootCommand
@@ -20,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 import edu.wpi.first.wpilibj2.command.WaitCommand
 import org.littletonrobotics.junction.Logger
 
-class OneBallLeftRightMode(
+class TwoBallLeftRightSteal(
   val drivetrain: Drivetrain,
   val intake: Intake,
   val feeder: Feeder,
@@ -28,27 +29,31 @@ class OneBallLeftRightMode(
   val waitTime: Time
 ) : SequentialCommandGroup() {
 
-  private val oneBallLeftTarmacRightEject: Trajectory =
+  private val twoBallLeftTarmacRightEject: Trajectory =
     trajectoryFromPathPlanner(PathStore.oneBallRightEjectOneTrajectory)
-  private val oneBallLeftTarmacRightToFender: Trajectory =
-    trajectoryFromPathPlanner(PathStore.oneBallRightShootTrajectory)
+  private val twoBallLeftTarmacRightToFender: Trajectory =
+    trajectoryFromPathPlanner(PathStore.twoBallRightShootTrajectory)
 
   init {
     addCommands(
-      ResetPoseCommand(drivetrain, oneBallLeftTarmacRightEject.startingPose),
+      ResetPoseCommand(drivetrain, twoBallLeftTarmacRightEject.startingPose),
       ParallelCommandGroup(
-        DrivePathCommand(drivetrain, oneBallLeftTarmacRightEject, resetPose = false),
+        DrivePathCommand(drivetrain, twoBallLeftTarmacRightEject, resetPose = false),
         IntakeBallsCommand(intake).withTimeout(2.0)
       ),
       ReverseIntakeCommand(intake).withTimeout(3.0),
       WaitCommand(waitTime.inSeconds),
-      DrivePathCommand(drivetrain, oneBallLeftTarmacRightToFender, resetPose = true),
+      ParallelCommandGroup(
+        DrivePathCommand(drivetrain, twoBallLeftTarmacRightToFender, resetPose = true)
+          .deadlineWith(FeederSerialize(feeder)),
+        WaitCommand(1.0).andThen(IntakeBallsCommand(intake).withTimeout(1.5))
+      ),
       SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder))
     )
   }
 
   override fun execute() {
     super.execute()
-    Logger.getInstance().recordOutput("ActiveCommands/OneBallLeftRightMode", true)
+    Logger.getInstance().recordOutput("ActiveCommands/TwoBallLeftRightMode", true)
   }
 }

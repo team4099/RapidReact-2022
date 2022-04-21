@@ -17,38 +17,31 @@ import com.team4099.robot2022.subsystems.intake.Intake
 import com.team4099.robot2022.subsystems.shooter.Shooter
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
-import edu.wpi.first.wpilibj2.command.WaitCommand
-import org.littletonrobotics.junction.Logger
 
-class OneBallLeftRightMode(
+class OneBallLeftLeftSteal(
   val drivetrain: Drivetrain,
-  val intake: Intake,
   val feeder: Feeder,
   val shooter: Shooter,
-  val waitTime: Time
+  val intake: Intake,
+  waitTime: Time
 ) : SequentialCommandGroup() {
 
-  private val oneBallLeftTarmacRightEject: Trajectory =
-    trajectoryFromPathPlanner(PathStore.oneBallRightEjectOneTrajectory)
-  private val oneBallLeftTarmacRightToFender: Trajectory =
-    trajectoryFromPathPlanner(PathStore.oneBallRightShootTrajectory)
+  private val oneBallStealTrajectory: Trajectory =
+    trajectoryFromPathPlanner(PathStore.oneBallStealTrajectory)
+  private val oneBallShootTrajectory: Trajectory =
+    trajectoryFromPathPlanner(PathStore.oneBallShootTrajectory)
 
   init {
+
     addCommands(
-      ResetPoseCommand(drivetrain, oneBallLeftTarmacRightEject.startingPose),
+      ResetPoseCommand(drivetrain, oneBallStealTrajectory.startingPose),
       ParallelCommandGroup(
-        DrivePathCommand(drivetrain, oneBallLeftTarmacRightEject, resetPose = false),
-        IntakeBallsCommand(intake).withTimeout(2.0)
+        IntakeBallsCommand(intake),
+        DrivePathCommand(drivetrain, oneBallStealTrajectory, resetPose = false)
       ),
-      ReverseIntakeCommand(intake).withTimeout(3.0),
-      WaitCommand(waitTime.inSeconds),
-      DrivePathCommand(drivetrain, oneBallLeftTarmacRightToFender, resetPose = true),
+      ReverseIntakeCommand(intake).withTimeout(waitTime.inSeconds),
+      DrivePathCommand(drivetrain, oneBallShootTrajectory, resetPose = true),
       SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder))
     )
-  }
-
-  override fun execute() {
-    super.execute()
-    Logger.getInstance().recordOutput("ActiveCommands/OneBallLeftRightMode", true)
   }
 }

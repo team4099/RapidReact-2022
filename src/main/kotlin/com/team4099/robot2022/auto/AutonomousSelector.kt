@@ -6,15 +6,17 @@ import com.team4099.lib.units.base.seconds
 import com.team4099.robot2022.auto.mode.EightEightEightMode
 import com.team4099.robot2022.auto.mode.FiveBallRightStart
 import com.team4099.robot2022.auto.mode.FourBallRightStart
-import com.team4099.robot2022.auto.mode.OneBallFenderShotThenTaxiAndObstruct
-import com.team4099.robot2022.auto.mode.OneBallLeftLeftMode
+import com.team4099.robot2022.auto.mode.OneBallFenderShotOneSteal
+import com.team4099.robot2022.auto.mode.OneBallLeftLeftBumpMode
+import com.team4099.robot2022.auto.mode.OneBallLeftLeftSteal
 import com.team4099.robot2022.auto.mode.OneBallLeftRightMode
 import com.team4099.robot2022.auto.mode.TestAutoPath
 import com.team4099.robot2022.auto.mode.ThreeBallRightStart
 import com.team4099.robot2022.auto.mode.ThreeBallRightStartFaster
-import com.team4099.robot2022.auto.mode.TwoBallLeftLeftMode
-import com.team4099.robot2022.auto.mode.TwoBallLeftRightMode
-import com.team4099.robot2022.auto.mode.TwoBallLeftStartMode
+import com.team4099.robot2022.auto.mode.TwoBallLeftMiddleOneStealMode
+import com.team4099.robot2022.auto.mode.TwoBallLeftMiddleStartMode
+import com.team4099.robot2022.auto.mode.TwoBallLeftMiddleTwoStealMode
+import com.team4099.robot2022.auto.mode.TwoBallLeftRightSteal
 import com.team4099.robot2022.commands.climber.TelescopingCharacterizationCommand
 import com.team4099.robot2022.commands.drivetrain.DriveCharacterizeCommand
 import com.team4099.robot2022.commands.shooter.ShooterCharacterizeCommand
@@ -45,23 +47,31 @@ object AutonomousSelector {
     //    orientationChooser.addOption("Right", 270.degrees)
     //    autoTab.add("Starting Orientation", orientationChooser)
     autonomousModeChooser.addOption(
-      "One Ball Fender Shot Then Taxi",
-      AutonomousMode.ONE_BALL_FENDER_SHOT_THEN_TAXI_AND_OBSTRUCT
+      "One Ball From Middle Bump Opponent Cargo", AutonomousMode.ONE_BALL_MIDDLE_BUMP
     )
     autonomousModeChooser.addOption(
-      "One Ball Left Taxi Then Fender Shot", AutonomousMode.ONE_BALL_LEFT_LEFT_MODE
+      "One Ball From Middle Steal Opponent Cargo", AutonomousMode.ONE_BALL_MIDDLE_STEAL
     )
     autonomousModeChooser.addOption(
-      "One Ball Right Taxi Then Fender Shot", AutonomousMode.ONE_BALL_LEFT_RIGHT_MODE
+      "One Ball From Left Steal Opponent Cargo", AutonomousMode.ONE_BALL_RIGHT_STEAL
     )
     autonomousModeChooser.addOption(
-      "Two Ball Left Taxi Then Fender Shot", AutonomousMode.TWO_BALL_LEFT_LEFT_MODE
+      "One Ball From Fender Then Steal Middle Opponent Cargo",
+      AutonomousMode.ONE_BALL_FENDER_THEN_MIDDLE_STEAL
     )
     autonomousModeChooser.addOption(
-      "Two Ball Right Taxi Then Fender Shot", AutonomousMode.TWO_BALL_LEFT_RIGHT_MODE
+      "Two Ball From Left Tarmac Center Then One Steal",
+      AutonomousMode.TWO_BALL_LEFT_MIDDLE_ONE_STEAL
     )
     autonomousModeChooser.addOption(
-      "Two Ball: Left", AutonomousMode.TWO_BALL_LEFT_START_AND_OBSTRUCT
+      "Two Ball From Left Tarmac Center No Steal", AutonomousMode.TWO_BALL_LEFT_MIDDLE_NO_STEAL
+    )
+    autonomousModeChooser.addOption(
+      "Two Ball From Left Tarmac Center Then Two Steal",
+      AutonomousMode.TWO_BALL_LEFT_MIDDLE_TWO_STEAL
+    )
+    autonomousModeChooser.addOption(
+      "Two Ball From Left Tarmac Then One Steal", AutonomousMode.TWO_BALL_LEFT_RIGHT_ONE_STEAL
     )
     autonomousModeChooser.addOption(
       "Three Ball: Right Start Faster", AutonomousMode.THREE_BALL_RIGHT_START_FASTER
@@ -92,7 +102,7 @@ object AutonomousSelector {
       autoTab
         .add("Secondary Wait Time During Auto Path", 0)
         .withSize(3, 2)
-        .withPosition(2, 0)
+        .withPosition(0, 2)
         .withWidget(BuiltInWidgets.kTextView)
         .entry
   }
@@ -114,15 +124,10 @@ object AutonomousSelector {
   ): CommandBase {
 
     val mode = autonomousModeChooser.selected
-    println("${getWaitTime().inSeconds} wait command")
+    //    println("${getWaitTime().inSeconds} wait command")
     when (mode) {
       AutonomousMode.TEST_AUTO_PATH ->
         return WaitCommand(getWaitTime().inSeconds).andThen(TestAutoPath(drivetrain))
-      AutonomousMode.TWO_BALL_LEFT_START_AND_OBSTRUCT ->
-        return WaitCommand(getWaitTime().inSeconds)
-          .andThen(
-            TwoBallLeftStartMode(drivetrain, intake, feeder, shooter, getSecondaryWaitTime())
-          )
       AutonomousMode.THREE_BALL_RIGHT_START_FASTER ->
         return WaitCommand(getWaitTime().inSeconds)
           .andThen(ThreeBallRightStartFaster(drivetrain, intake, feeder, shooter))
@@ -138,13 +143,6 @@ object AutonomousSelector {
           .andThen(TelescopingCharacterizationCommand(telescopingClimber))
       //      AutonomousMode.CHARACTERIZE_CLIMBER_PIVOT -> return
       // PivotCharacterizationCommand(pivotClimber)
-      AutonomousMode.ONE_BALL_FENDER_SHOT_THEN_TAXI_AND_OBSTRUCT ->
-        return WaitCommand(getWaitTime().inSeconds)
-          .andThen(
-            OneBallFenderShotThenTaxiAndObstruct(
-              drivetrain, feeder, shooter, intake, getSecondaryWaitTime()
-            )
-          )
       AutonomousMode.FOUR_BALL_RIGHT_START ->
         return WaitCommand(getWaitTime().inSeconds)
           .andThen(FourBallRightStart(drivetrain, intake, feeder, shooter))
@@ -154,14 +152,54 @@ object AutonomousSelector {
       AutonomousMode.EIGHT_EIGHT_EIGHT_MODE ->
         return WaitCommand(getWaitTime().inSeconds)
           .andThen(EightEightEightMode(drivetrain, intake, feeder, shooter))
-      AutonomousMode.ONE_BALL_LEFT_LEFT_MODE ->
-        return OneBallLeftLeftMode(drivetrain, intake, feeder, shooter, getWaitTime())
-      AutonomousMode.ONE_BALL_LEFT_RIGHT_MODE ->
-        return OneBallLeftRightMode(drivetrain, intake, feeder, shooter, getWaitTime())
-      AutonomousMode.TWO_BALL_LEFT_LEFT_MODE ->
-        return TwoBallLeftLeftMode(drivetrain, intake, feeder, shooter, getWaitTime())
-      AutonomousMode.TWO_BALL_LEFT_RIGHT_MODE ->
-        return TwoBallLeftRightMode(drivetrain, intake, feeder, shooter, getWaitTime())
+      AutonomousMode.ONE_BALL_MIDDLE_BUMP ->
+        return WaitCommand(getWaitTime().inSeconds)
+          .andThen(
+            OneBallLeftLeftBumpMode(
+              drivetrain, intake, feeder, shooter, getSecondaryWaitTime()
+            )
+          )
+      AutonomousMode.ONE_BALL_MIDDLE_STEAL ->
+        return WaitCommand(getWaitTime().inSeconds)
+          .andThen(
+            OneBallLeftLeftSteal(drivetrain, feeder, shooter, intake, getSecondaryWaitTime())
+          )
+      AutonomousMode.ONE_BALL_RIGHT_STEAL ->
+        return WaitCommand(getWaitTime().inSeconds)
+          .andThen(
+            OneBallLeftRightMode(drivetrain, intake, feeder, shooter, getSecondaryWaitTime())
+          )
+      AutonomousMode.ONE_BALL_FENDER_THEN_MIDDLE_STEAL ->
+        return WaitCommand(getWaitTime().inSeconds)
+          .andThen(
+            OneBallFenderShotOneSteal(
+              drivetrain, feeder, shooter, intake, getSecondaryWaitTime()
+            )
+          )
+      AutonomousMode.TWO_BALL_LEFT_MIDDLE_ONE_STEAL ->
+        return WaitCommand(getWaitTime().inSeconds)
+          .andThen(
+            TwoBallLeftMiddleOneStealMode(
+              drivetrain, intake, feeder, shooter, getSecondaryWaitTime()
+            )
+          )
+      AutonomousMode.TWO_BALL_LEFT_MIDDLE_NO_STEAL ->
+        return WaitCommand(getWaitTime().inSeconds)
+          .andThen(TwoBallLeftMiddleStartMode(drivetrain, intake, feeder, shooter))
+      AutonomousMode.TWO_BALL_LEFT_MIDDLE_TWO_STEAL ->
+        return WaitCommand(getWaitTime().inSeconds)
+          .andThen(
+            TwoBallLeftMiddleTwoStealMode(
+              drivetrain, intake, feeder, shooter, getSecondaryWaitTime()
+            )
+          )
+      AutonomousMode.TWO_BALL_LEFT_RIGHT_ONE_STEAL ->
+        return WaitCommand(getWaitTime().inSeconds)
+          .andThen(
+            TwoBallLeftRightSteal(
+              drivetrain, intake, feeder, shooter, getSecondaryWaitTime()
+            )
+          )
       else -> println("ERROR: unexpected auto mode: $mode")
     }
     return InstantCommand()
@@ -173,16 +211,18 @@ object AutonomousSelector {
     CHARACTERIZE_SHOOTER,
     CHARACTERIZE_CLIMBER_TELESCOPE,
     CHARACTERIZE_CLIMBER_PIVOT,
-    ONE_BALL_FENDER_SHOT_THEN_TAXI_AND_OBSTRUCT,
-    TWO_BALL_LEFT_START_AND_OBSTRUCT,
     THREE_BALL_RIGHT_START_FASTER,
     THREE_BALL_RIGHT_START,
     FOUR_BALL_RIGHT_START,
     FIVE_BALL_RIGHT_START,
     EIGHT_EIGHT_EIGHT_MODE,
-    ONE_BALL_LEFT_LEFT_MODE,
-    ONE_BALL_LEFT_RIGHT_MODE,
-    TWO_BALL_LEFT_LEFT_MODE,
-    TWO_BALL_LEFT_RIGHT_MODE,
+    ONE_BALL_FENDER_THEN_MIDDLE_STEAL,
+    ONE_BALL_MIDDLE_BUMP,
+    ONE_BALL_MIDDLE_STEAL,
+    ONE_BALL_RIGHT_STEAL,
+    TWO_BALL_LEFT_MIDDLE_ONE_STEAL,
+    TWO_BALL_LEFT_MIDDLE_NO_STEAL,
+    TWO_BALL_LEFT_MIDDLE_TWO_STEAL,
+    TWO_BALL_LEFT_RIGHT_ONE_STEAL
   }
 }
