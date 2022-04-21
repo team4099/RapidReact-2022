@@ -63,6 +63,11 @@ object Constants {
     const val BACK_LEFT_ANALOG_POTENTIOMETER = 3
   }
 
+  object Shooter {
+    const val LEADER_MOTOR_ID = 51
+    const val FOLLOWER_MOTOR_ID = 52
+  }
+
   object Feeder {
     const val FLOOR_MOTOR_ID = 61
     const val VERTICAL_MOTOR_ID = 62

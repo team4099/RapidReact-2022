@@ -7,10 +7,6 @@ import com.team4099.lib.units.derived.rotations
 import com.team4099.lib.units.perMinute
 
 object ShooterConstants {
-  // Motor configuration
-  const val LEADER_MOTOR_ID = 51 // put in values from the design tool (leader motor is left)
-  const val FOLLOWER_MOTOR_ID = 52
-
   const val SHOOTER_KP = 0.075 // TODO: tune
   const val SHOOTER_KI = 0.0
   const val SHOOTER_KD = 7.0
