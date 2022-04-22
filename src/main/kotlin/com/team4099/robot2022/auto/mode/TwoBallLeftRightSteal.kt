@@ -5,13 +5,18 @@ import com.team4099.lib.pathfollow.trajectoryFromPathPlanner
 import com.team4099.lib.units.base.Time
 import com.team4099.lib.units.base.inSeconds
 import com.team4099.robot2022.auto.PathStore
+import com.team4099.robot2022.commands.climber.ExtendPivotArmCommand
+import com.team4099.robot2022.commands.climber.RetractPivotArmCommand
 import com.team4099.robot2022.commands.drivetrain.DrivePathCommand
 import com.team4099.robot2022.commands.drivetrain.ResetPoseCommand
+import com.team4099.robot2022.commands.feeder.FeederCommand
 import com.team4099.robot2022.commands.feeder.FeederSerialize
 import com.team4099.robot2022.commands.intake.IntakeBallsCommand
 import com.team4099.robot2022.commands.intake.ReverseIntakeCommand
 import com.team4099.robot2022.commands.shooter.ShootCommand
 import com.team4099.robot2022.commands.shooter.SpinUpUpperHub
+import com.team4099.robot2022.config.constants.FeederConstants
+import com.team4099.robot2022.subsystems.climber.PivotClimber
 import com.team4099.robot2022.subsystems.drivetrain.Drivetrain
 import com.team4099.robot2022.subsystems.feeder.Feeder
 import com.team4099.robot2022.subsystems.intake.Intake
@@ -26,6 +31,7 @@ class TwoBallLeftRightSteal(
   val intake: Intake,
   val feeder: Feeder,
   val shooter: Shooter,
+  val pivotClimber: PivotClimber,
   val waitTime: Time
 ) : SequentialCommandGroup() {
 
@@ -41,7 +47,11 @@ class TwoBallLeftRightSteal(
         DrivePathCommand(drivetrain, twoBallLeftTarmacRightEject, resetPose = false),
         IntakeBallsCommand(intake).withTimeout(2.0)
       ),
-      ReverseIntakeCommand(intake).withTimeout(3.0),
+      ReverseIntakeCommand(intake)
+        .alongWith(FeederCommand(feeder, FeederConstants.FeederState.BACKWARD_FLOOR))
+        .withTimeout(3.0)
+        .deadlineWith(ExtendPivotArmCommand(pivotClimber)),
+      RetractPivotArmCommand(pivotClimber),
       WaitCommand(waitTime.inSeconds),
       ParallelCommandGroup(
         DrivePathCommand(drivetrain, twoBallLeftTarmacRightToFender, resetPose = true)

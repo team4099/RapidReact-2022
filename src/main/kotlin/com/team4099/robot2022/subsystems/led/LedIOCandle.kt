@@ -7,7 +7,8 @@ import com.team4099.robot2022.config.constants.LEDConstants.BlinkinLEDState
 import com.team4099.robot2022.config.constants.LEDConstants.CandleState
 
 object LedIOCandle : LedIO {
-  private val ledController = CANdle(Constants.LED.LED_CONTROLLER_ID)
+  private val ledController =
+    CANdle(Constants.LED.LED_CONTROLLER_ID, Constants.Universal.CANIVORE_NAME)
 
   private var lastLedState: BlinkinLedDriver.BlinkinLedMode = BlinkinLEDState.IDLE.blinkinMode
 

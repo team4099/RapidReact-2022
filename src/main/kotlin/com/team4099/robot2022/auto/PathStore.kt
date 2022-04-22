@@ -237,4 +237,11 @@ object PathStore {
       DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
       DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
     )
+
+  val oneBallFenderThenTaxi =
+    PathPlanner.loadPath(
+      "1 Ball Fender Then Taxi",
+      DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
+      DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
+    )
 }

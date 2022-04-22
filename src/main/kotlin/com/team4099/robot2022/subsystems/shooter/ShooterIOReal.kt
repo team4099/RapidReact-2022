@@ -18,7 +18,7 @@ import com.team4099.robot2022.config.constants.ShooterConstants
 
 object ShooterIOReal : ShooterIO {
   private val leaderMotor = TalonFX(Constants.Shooter.LEADER_MOTOR_ID, CANIVORE_NAME)
-  private val followerMotor = TalonFX(Constants.Shooter.FOLLOWER_MOTOR_ID, CANIVORE_NAME)
+  //  private val followerMotor = TalonFX(Constants.Shooter.FOLLOWER_MOTOR_ID, CANIVORE_NAME)
 
   private val shooterSensor =
     ctreAngularMechanismSensor(
@@ -29,18 +29,18 @@ object ShooterIOReal : ShooterIO {
 
   init {
     leaderMotor.configFactoryDefault()
-    followerMotor.configFactoryDefault()
+    //    followerMotor.configFactoryDefault()
 
-    followerMotor.follow(leaderMotor)
+    //    followerMotor.follow(leaderMotor)
     leaderMotor.setInverted(InvertType.None)
-    followerMotor.setInverted(InvertType.OpposeMaster)
+    //    followerMotor.setInverted(InvertType.OpposeMaster)
 
     leaderMotor.clearStickyFaults()
-    followerMotor.clearStickyFaults()
+    //    followerMotor.clearStickyFaults()
     leaderMotor.enableVoltageCompensation(true)
-    followerMotor.enableVoltageCompensation(true)
+    //    followerMotor.enableVoltageCompensation(true)
     leaderMotor.configVoltageCompSaturation(12.0)
-    followerMotor.configVoltageCompSaturation(12.0)
+    //    followerMotor.configVoltageCompSaturation(12.0)
 
     leaderMotor.configSupplyCurrentLimit(
       SupplyCurrentLimitConfiguration(
@@ -50,14 +50,14 @@ object ShooterIOReal : ShooterIO {
         1000.0
       )
     )
-    followerMotor.configSupplyCurrentLimit(
-      SupplyCurrentLimitConfiguration(
-        true,
-        ShooterConstants.SUPPLY_CURRENT_LIMIT,
-        ShooterConstants.SUPPLY_CURRENT_LIMIT,
-        1000.0
-      )
-    )
+    //    followerMotor.configSupplyCurrentLimit(
+    //      SupplyCurrentLimitConfiguration(
+    //        true,
+    //        ShooterConstants.SUPPLY_CURRENT_LIMIT,
+    //        ShooterConstants.SUPPLY_CURRENT_LIMIT,
+    //        1000.0
+    //      )
+    //    )
 
     leaderMotor.config_kP(0, ShooterConstants.SHOOTER_KP)
     leaderMotor.config_kI(0, ShooterConstants.SHOOTER_KI)
@@ -145,11 +145,11 @@ object ShooterIOReal : ShooterIO {
     inputs.position = shooterSensor.position
     inputs.velocity = shooterSensor.velocity
     inputs.statorCurrent[0] = leaderMotor.statorCurrent.amps
-    inputs.statorCurrent[1] = followerMotor.statorCurrent.amps
+    //    inputs.statorCurrent[1] = followerMotor.statorCurrent.amps
     inputs.supplyCurrent[0] = leaderMotor.supplyCurrent.amps
-    inputs.supplyCurrent[1] = followerMotor.supplyCurrent.amps
+    //    inputs.supplyCurrent[1] = followerMotor.supplyCurrent.amps
     inputs.tempCelcius[0] = leaderMotor.temperature
-    inputs.tempCelcius[1] = followerMotor.temperature
+    //    inputs.tempCelcius[1] = followerMotor.temperature
 
     inputs.appliedVoltage = leaderMotor.motorOutputVoltage.volts
   }

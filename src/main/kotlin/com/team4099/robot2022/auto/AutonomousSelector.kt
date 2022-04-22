@@ -7,6 +7,7 @@ import com.team4099.robot2022.auto.mode.EightEightEightMode
 import com.team4099.robot2022.auto.mode.FiveBallRightStart
 import com.team4099.robot2022.auto.mode.FourBallRightStart
 import com.team4099.robot2022.auto.mode.OneBallFenderShotOneSteal
+import com.team4099.robot2022.auto.mode.OneBallFenderThenTaxi
 import com.team4099.robot2022.auto.mode.OneBallLeftLeftBumpMode
 import com.team4099.robot2022.auto.mode.OneBallLeftLeftSteal
 import com.team4099.robot2022.auto.mode.OneBallLeftRightMode
@@ -20,6 +21,7 @@ import com.team4099.robot2022.auto.mode.TwoBallLeftRightSteal
 import com.team4099.robot2022.commands.climber.TelescopingCharacterizationCommand
 import com.team4099.robot2022.commands.drivetrain.DriveCharacterizeCommand
 import com.team4099.robot2022.commands.shooter.ShooterCharacterizeCommand
+import com.team4099.robot2022.subsystems.climber.PivotClimber
 import com.team4099.robot2022.subsystems.climber.TelescopingClimber
 import com.team4099.robot2022.subsystems.drivetrain.Drivetrain
 import com.team4099.robot2022.subsystems.feeder.Feeder
@@ -58,6 +60,9 @@ object AutonomousSelector {
     autonomousModeChooser.addOption(
       "One Ball From Fender Then Steal Middle Opponent Cargo",
       AutonomousMode.ONE_BALL_FENDER_THEN_MIDDLE_STEAL
+    )
+    autonomousModeChooser.addOption(
+      "One Ball From Fender Then Taxi", AutonomousMode.ONE_BALL_FENDER_THEN_TAXI
     )
     autonomousModeChooser.addOption(
       "Two Ball From Left Tarmac Center Then One Steal",
@@ -121,6 +126,7 @@ object AutonomousSelector {
     feeder: Feeder,
     shooter: Shooter,
     telescopingClimber: TelescopingClimber,
+    pivotClimber: PivotClimber
   ): CommandBase {
 
     val mode = autonomousModeChooser.selected
@@ -197,7 +203,14 @@ object AutonomousSelector {
         return WaitCommand(getWaitTime().inSeconds)
           .andThen(
             TwoBallLeftRightSteal(
-              drivetrain, intake, feeder, shooter, getSecondaryWaitTime()
+              drivetrain, intake, feeder, shooter, pivotClimber, getSecondaryWaitTime()
+            )
+          )
+      AutonomousMode.ONE_BALL_FENDER_THEN_TAXI ->
+        return WaitCommand(getWaitTime().inSeconds)
+          .andThen(
+            OneBallFenderThenTaxi(
+              drivetrain, feeder, shooter, intake, getSecondaryWaitTime()
             )
           )
       else -> println("ERROR: unexpected auto mode: $mode")
@@ -220,6 +233,7 @@ object AutonomousSelector {
     ONE_BALL_MIDDLE_BUMP,
     ONE_BALL_MIDDLE_STEAL,
     ONE_BALL_RIGHT_STEAL,
+    ONE_BALL_FENDER_THEN_TAXI,
     TWO_BALL_LEFT_MIDDLE_ONE_STEAL,
     TWO_BALL_LEFT_MIDDLE_NO_STEAL,
     TWO_BALL_LEFT_MIDDLE_TWO_STEAL,
