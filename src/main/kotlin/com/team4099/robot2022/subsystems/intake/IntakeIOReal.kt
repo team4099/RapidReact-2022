@@ -93,7 +93,7 @@ object IntakeIOReal : IntakeIO {
     inputs.rollerVelocity = intakeSensor.velocity
     inputs.rollerStatorCurrent = intakeTalon.statorCurrent.amps
     inputs.rollerSupplyCurrent = intakeTalon.supplyCurrent.amps
-    inputs.rollerAppliedVoltage = intakeTalon.motorOutputVoltage.volts
+//    inputs.rollerAppliedVoltage = intakeTalon.motorOutputVoltage.volts
     inputs.rollerTempCelcius = intakeTalon.temperature
   }
 }

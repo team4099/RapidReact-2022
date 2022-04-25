@@ -42,7 +42,7 @@ class OneBallLeftRightMode(
       ),
       ReverseIntakeCommand(intake).withTimeout(3.0),
       WaitCommand(waitTime.inSeconds),
-      DrivePathCommand(drivetrain, oneBallLeftTarmacRightToFender, resetPose = true),
+      DrivePathCommand(drivetrain, oneBallLeftTarmacRightToFender, resetPose = false),
       SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder))
     )
   }

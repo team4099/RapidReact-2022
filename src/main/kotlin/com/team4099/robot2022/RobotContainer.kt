@@ -148,7 +148,7 @@ object RobotContainer {
     //    ControlBoard.resetBallCount.whileActiveOnce(ResetBallCountCommand(feeder))
     ControlBoard.outTake.whileActiveContinuous(
       ReverseIntakeCommand(intake)
-        .alongWith(FeederCommand(feeder, FeederConstants.FeederState.BACKWARD_FLOOR))
+        .alongWith(FeederCommand(feeder, FeederConstants.FeederState.BACKWARD_ALL))
     )
     ControlBoard.resetBallCount.whileActiveOnce(ResetBallCountCommand(feeder))
 

@@ -54,7 +54,7 @@ class TwoBallLeftRightSteal(
       RetractPivotArmCommand(pivotClimber),
       WaitCommand(waitTime.inSeconds),
       ParallelCommandGroup(
-        DrivePathCommand(drivetrain, twoBallLeftTarmacRightToFender, resetPose = true)
+        DrivePathCommand(drivetrain, twoBallLeftTarmacRightToFender, resetPose = false)
           .deadlineWith(FeederSerialize(feeder)),
         WaitCommand(1.0).andThen(IntakeBallsCommand(intake).withTimeout(1.5))
       ),

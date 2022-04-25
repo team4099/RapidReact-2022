@@ -37,7 +37,7 @@ object TelescopingClimberConstants {
   enum class DesiredTelescopeStates(val position: Length) {
     START(0.0.inches),
     MAX_RETRACT(1.inches),
-    MAX_EXTENSION(26.inches),
+    MAX_EXTENSION(25.5.inches),
     DUMMY(-Double.NEGATIVE_INFINITY.inches)
   }
 

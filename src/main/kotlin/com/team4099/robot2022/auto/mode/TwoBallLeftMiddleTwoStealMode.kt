@@ -44,7 +44,7 @@ class TwoBallLeftMiddleTwoStealMode(
       SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(2.0)),
       WaitCommand(waitTime.inSeconds),
       ParallelCommandGroup(
-        DrivePathCommand(drivetrain, intakeOpponentCargoTrajectory, resetPose = true),
+        DrivePathCommand(drivetrain, intakeOpponentCargoTrajectory, resetPose = false),
         SequentialCommandGroup(
           WaitCommand(1.0),
           IntakeBallsCommand(intake).withTimeout(1.0),

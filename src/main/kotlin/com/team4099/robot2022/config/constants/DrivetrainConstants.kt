@@ -44,10 +44,11 @@ object DrivetrainConstants {
   val ALLOWED_STEERING_ANGLE_ERROR = 1.degrees
 
   const val STEERING_SUPPLY_CURRENT_LIMIT = 20.0
-  const val DRIVE_SUPPLY_CURRENT_LIMIT = 80.0
+  const val DRIVE_SUPPLY_CURRENT_LIMIT = 35.0
+  const val DRIVE_THRESHOLD_CURRENT_LIMIT = 60.0
 
   val FRONT_LEFT_MODULE_ZERO = 2.687684.radians
-  val FRONT_RIGHT_MODULE_ZERO = 0.62325.radians
+  val FRONT_RIGHT_MODULE_ZERO = 3.24553.radians //todo change
   val BACK_RIGHT_MODULE_ZERO = 4.608515.radians
   val BACK_LEFT_MODULE_ZERO = 5.204072.radians
 

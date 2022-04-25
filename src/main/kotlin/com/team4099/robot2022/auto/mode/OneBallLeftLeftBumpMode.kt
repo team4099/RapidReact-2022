@@ -35,7 +35,7 @@ class OneBallLeftLeftBumpMode(
       ResetPoseCommand(drivetrain, oneBallLeftTarmacLeftBump.startingPose),
       DrivePathCommand(drivetrain, oneBallLeftTarmacLeftBump, resetPose = false),
       WaitCommand(waitTime.inSeconds),
-      DrivePathCommand(drivetrain, oneBallLeftTarmacLeftToFender, resetPose = true),
+      DrivePathCommand(drivetrain, oneBallLeftTarmacLeftToFender, resetPose = false),
       SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder))
     )
   }

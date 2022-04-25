@@ -33,7 +33,7 @@ object ShooterConstants {
   enum class ShooterState(val targetVelocity: AngularVelocity) {
     OFF(0.0.rotations.perMinute),
     IDLE(500.0.rotations.perMinute), // TODO: Fix with a better idle value
-    SPIN_UP_UPPER(1850.0.rotations.perMinute),
+    SPIN_UP_UPPER(1900.0.rotations.perMinute),
     SPIN_UP_LOWER(1100.0.rotations.perMinute),
     SHOOTER_UNJAM(-2000.0.rotations.perMinute)
   }

@@ -42,7 +42,7 @@ class TwoBallLeftMiddleOneStealMode(
       ),
       SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(3.0)),
       WaitCommand(waitTime.inSeconds),
-      DrivePathCommand(drivetrain, stealTrajectory, resetPose = true)
+      DrivePathCommand(drivetrain, stealTrajectory, resetPose = false)
         .deadlineWith(IntakeBallsCommand(intake)),
       ReverseIntakeCommand(intake).withTimeout(5.0)
     )

@@ -40,7 +40,7 @@ class OneBallLeftLeftSteal(
         DrivePathCommand(drivetrain, oneBallStealTrajectory, resetPose = false)
       ),
       ReverseIntakeCommand(intake).withTimeout(waitTime.inSeconds),
-      DrivePathCommand(drivetrain, oneBallShootTrajectory, resetPose = true),
+      DrivePathCommand(drivetrain, oneBallShootTrajectory, resetPose = false),
       SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder))
     )
   }

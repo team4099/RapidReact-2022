@@ -30,7 +30,7 @@ class OneBallFenderThenTaxi(
 
   init {
     addCommands(
-      SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(1.25)),
+      SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder).withTimeout(1.5)),
       WaitCommand(waitTime.inSeconds),
       ResetPoseCommand(drivetrain, oneBallFenderShotThenTaxi.startingPose),
       DrivePathCommand(drivetrain, oneBallFenderShotThenTaxi, resetPose = false),

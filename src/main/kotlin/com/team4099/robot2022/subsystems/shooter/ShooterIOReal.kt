@@ -151,7 +151,7 @@ object ShooterIOReal : ShooterIO {
     inputs.tempCelcius[0] = leaderMotor.temperature
     //    inputs.tempCelcius[1] = followerMotor.temperature
 
-    inputs.appliedVoltage = leaderMotor.motorOutputVoltage.volts
+//    inputs.appliedVoltage = leaderMotor.motorOutputVoltage.volts
   }
 
   override fun setVelocity(velocity: AngularVelocity) {
