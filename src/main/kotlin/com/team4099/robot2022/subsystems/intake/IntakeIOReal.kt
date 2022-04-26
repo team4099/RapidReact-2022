@@ -6,7 +6,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration
 import com.team4099.lib.units.base.amps
 import com.team4099.lib.units.ctreAngularMechanismSensor
-import com.team4099.lib.units.derived.volts
 import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.config.constants.Constants.Universal.CANIVORE_NAME
 import com.team4099.robot2022.config.constants.IntakeConstants
@@ -93,7 +92,7 @@ object IntakeIOReal : IntakeIO {
     inputs.rollerVelocity = intakeSensor.velocity
     inputs.rollerStatorCurrent = intakeTalon.statorCurrent.amps
     inputs.rollerSupplyCurrent = intakeTalon.supplyCurrent.amps
-//    inputs.rollerAppliedVoltage = intakeTalon.motorOutputVoltage.volts
+    //    inputs.rollerAppliedVoltage = intakeTalon.motorOutputVoltage.volts
     inputs.rollerTempCelcius = intakeTalon.temperature
   }
 }

@@ -16,7 +16,6 @@ import com.team4099.lib.units.derived.Angle
 import com.team4099.lib.units.derived.inRadians
 import com.team4099.lib.units.derived.inVolts
 import com.team4099.lib.units.derived.radians
-import com.team4099.lib.units.derived.volts
 import com.team4099.robot2022.config.constants.DrivetrainConstants
 import edu.wpi.first.wpilibj.AnalogPotentiometer
 import kotlin.math.sign
@@ -79,7 +78,8 @@ class SwerveModuleIOReal(
     driveConfiguration.slot0.kD = DrivetrainConstants.PID.DRIVE_KD
     driveConfiguration.slot0.kF = DrivetrainConstants.PID.DRIVE_KFF
     driveConfiguration.supplyCurrLimit.currentLimit = DrivetrainConstants.DRIVE_SUPPLY_CURRENT_LIMIT
-    driveConfiguration.supplyCurrLimit.triggerThresholdCurrent = DrivetrainConstants.DRIVE_THRESHOLD_CURRENT_LIMIT
+    driveConfiguration.supplyCurrLimit.triggerThresholdCurrent =
+      DrivetrainConstants.DRIVE_THRESHOLD_CURRENT_LIMIT
     driveConfiguration.supplyCurrLimit.triggerThresholdTime = 0.1
     driveConfiguration.supplyCurrLimit.enable = true
     driveConfiguration.voltageCompSaturation = 12.0
@@ -91,8 +91,8 @@ class SwerveModuleIOReal(
   }
 
   override fun updateInputs(inputs: SwerveModuleIO.SwerveModuleIOInputs) {
-//    inputs.driveAppliedVoltage = driveFalcon.motorOutputVoltage.volts
-//    inputs.steeringAppliedVoltage = steeringFalcon.motorOutputVoltage.volts
+    //    inputs.driveAppliedVoltage = driveFalcon.motorOutputVoltage.volts
+    //    inputs.steeringAppliedVoltage = steeringFalcon.motorOutputVoltage.volts
 
     inputs.driveStatorCurrent = driveFalcon.statorCurrent.amps
     inputs.driveSupplyCurrent = driveFalcon.supplyCurrent.amps

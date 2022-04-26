@@ -9,7 +9,6 @@ import com.team4099.lib.units.AngularVelocity
 import com.team4099.lib.units.base.amps
 import com.team4099.lib.units.ctreAngularMechanismSensor
 import com.team4099.lib.units.derived.rotations
-import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.inRadiansPerSecond
 import com.team4099.lib.units.perMinute
 import com.team4099.robot2022.config.constants.Constants
@@ -151,7 +150,7 @@ object ShooterIOReal : ShooterIO {
     inputs.tempCelcius[0] = leaderMotor.temperature
     //    inputs.tempCelcius[1] = followerMotor.temperature
 
-//    inputs.appliedVoltage = leaderMotor.motorOutputVoltage.volts
+    //    inputs.appliedVoltage = leaderMotor.motorOutputVoltage.volts
   }
 
   override fun setVelocity(velocity: AngularVelocity) {
