@@ -10,6 +10,7 @@ import com.team4099.lib.units.AngularVelocity
 import com.team4099.lib.units.LinearAcceleration
 import com.team4099.lib.units.LinearVelocity
 import com.team4099.lib.units.base.amps
+import com.team4099.lib.units.base.inSeconds
 import com.team4099.lib.units.ctreAngularMechanismSensor
 import com.team4099.lib.units.ctreLinearMechanismSensor
 import com.team4099.lib.units.derived.Angle
@@ -80,8 +81,12 @@ class SwerveModuleIOReal(
     driveConfiguration.supplyCurrLimit.currentLimit = DrivetrainConstants.DRIVE_SUPPLY_CURRENT_LIMIT
     driveConfiguration.supplyCurrLimit.triggerThresholdCurrent =
       DrivetrainConstants.DRIVE_THRESHOLD_CURRENT_LIMIT
-    driveConfiguration.supplyCurrLimit.triggerThresholdTime = 0.1
+    driveConfiguration.supplyCurrLimit.triggerThresholdTime = DrivetrainConstants.DRIVE_TRIGGER_THRESHOLD_TIME.inSeconds
     driveConfiguration.supplyCurrLimit.enable = true
+    driveConfiguration.statorCurrLimit.currentLimit = DrivetrainConstants.DRIVE_STATOR_CURRENT_LIMIT
+    driveConfiguration.statorCurrLimit.triggerThresholdCurrent = DrivetrainConstants.DRIVE_THRESHOLD_CURRENT_LIMIT
+    driveConfiguration.statorCurrLimit.triggerThresholdTime = DrivetrainConstants.DRIVE_TRIGGER_THRESHOLD_TIME.inSeconds
+    driveConfiguration.statorCurrLimit.enable = true
     driveConfiguration.voltageCompSaturation = 12.0
 
     driveFalcon.configAllSettings(driveConfiguration)
