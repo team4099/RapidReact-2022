@@ -19,5 +19,10 @@ object VisionConstants {
   val RANGE_THRESHOLD = 2.inches // TODO: Update with correct value
 
   val GOAL_RANGE_METERS = 0.1.meters
+  val FOV_VERTICAL = 30.degrees // TODO: ask for a better value
+  val FOV_HORIZONTAL = 0.degrees // TODO: Check if its the correct value
 
+  enum class VisionLedMode {
+    AUTO, ALWAYS_ON, ALWAYS_OFF
+  }
 }
