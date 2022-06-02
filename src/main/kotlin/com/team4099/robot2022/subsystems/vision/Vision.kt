@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.RobotState
 import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import org.littletonrobotics.junction.Logger
-import java.util.Optional
 import java.util.function.Supplier
 
 
@@ -135,11 +134,11 @@ class Vision(io: VisionIO) : SubsystemBase() {
     val captureTimestamp: Double = inputs.captureTimestamp - extraLatencySecs
 
     // Get camera constants
-    val hoodAngle: Optional<Double> = robotState.getHoodAngle(captureTimestamp)
-    if (hoodAngle.isEmpty) { // No valid hood data
+    val hoodAngle: Double = 0.0
+    if (hoodAngle != 0.0) { // No valid hood data
       return
     }
-    val cameraPosition: CameraPosition = VisionConstants.getCameraPosition(hoodAngle.get())
+    val cameraPosition: VisionConstants.CameraPosition? = VisionConstants.getCameraPosition(hoodAngle)
 
     // Calculate camera to target translation
     if (targetCount >= minTargetCount) {
@@ -151,7 +150,7 @@ class Vision(io: VisionIO) : SubsystemBase() {
         var totalX = 0.0
         var totalY = 0.0
         for (i in targetIndex * 4 until targetIndex * 4 + 4) {
-          if (i < inputs.cornerX.length && i < inputs.cornerY.length) {
+          if (i < inputs.cornerX.size && i < inputs.cornerY.size) {
             corners.add(VisionPoint(inputs.cornerX.get(i), inputs.cornerY.get(i)))
             totalX += inputs.cornerX.get(i)
             totalY += inputs.cornerY.get(i)
@@ -162,8 +161,8 @@ class Vision(io: VisionIO) : SubsystemBase() {
         for (i in corners.indices) {
           val translation = solveCameraToTargetTranslation(
             corners[i],
-            if (i < 2) FieldConstants.visionTargetHeightUpper else FieldConstants.visionTargetHeightLower,
-            cameraPosition
+            if (i < 2) VisionConstants.FieldConstants.visionTargetHeightUpper else VisionConstants.FieldConstants.visionTargetHeightLower,
+            VisionConstants.getCameraPosition(hoodAngle)
           )
           if (translation != null) {
             cameraToTargetTranslations.add(translation)
@@ -177,8 +176,8 @@ class Vision(io: VisionIO) : SubsystemBase() {
 
       // Combine corner translations to full target translation
       if (cameraToTargetTranslations.size >= minTargetCount * 4) {
-        val cameraToTargetTranslation: Translation2d = CircleFitter.fit(
-          FieldConstants.visionTargetDiameter / 2.0,
+        val cameraToTargetTranslation: Translation2d = VisionConstants.CircleFitter.fit(
+          VisionConstants.FieldConstants.visionTargetDiameter / 2.0,
           cameraToTargetTranslations, circleFitPrecision
         )
 
@@ -186,15 +185,15 @@ class Vision(io: VisionIO) : SubsystemBase() {
         val robotRotation: Rotation2d = robotState.getDriveRotation(captureTimestamp)
         val cameraRotation = robotRotation
           .rotateBy(cameraPosition.vehicleToCamera.getRotation())
-        val fieldToTargetRotated = Transform2d(FieldConstants.hubCenter, cameraRotation)
+        val fieldToTargetRotated = Transform2d(VisionConstants.FieldConstants.hubCenter, cameraRotation)
         val fieldToCamera = fieldToTargetRotated.plus(
-          GeomUtil
+          VisionConstants.GeomUtil
             .transformFromTranslation(cameraToTargetTranslation.unaryMinus())
         )
-        val fieldToVehicle: Pose2d = GeomUtil.transformToPose(
+        val fieldToVehicle: Pose2d = VisionConstants.GeomUtil.transformToPose(
           fieldToCamera.plus(cameraPosition.vehicleToCamera.inverse())
         )
-        if (fieldToVehicle.x > FieldConstants.fieldLength || fieldToVehicle.x < 0.0 || fieldToVehicle.y > FieldConstants.fieldWidth || fieldToVehicle.y < 0.0) {
+        if (fieldToVehicle.x > VisionConstants.FieldConstants.fieldLength || fieldToVehicle.x < 0.0 || fieldToVehicle.y > VisionConstants.FieldConstants.fieldWidth || fieldToVehicle.y < 0.0) {
           return
         }
 
@@ -277,10 +276,10 @@ class Vision(io: VisionIO) : SubsystemBase() {
 
   private fun solveCameraToTargetTranslation(
     corner: VisionPoint,
-    goalHeight: Double, cameraPosition: CameraPosition
+    goalHeight: Double, cameraPosition: VisionConstants.CameraPosition?
   ): Translation2d? {
-    val halfWidthPixels: Double = VisionConstants.widthPixels / 2.0
-    val halfHeightPixels: Double = VisionConstants.heightPixels / 2.0
+    val halfWidthPixels: Double = VisionConstants.WIDTH_PIXELS / 2.0
+    val halfHeightPixels: Double = VisionConstants.HEIGHT_PIXELS / 2.0
     val nY: Double = -((corner.x - halfWidthPixels - VisionConstants.crosshairX)
       / halfWidthPixels)
     val nZ: Double = -((corner.y - halfHeightPixels - VisionConstants.crosshairY)
