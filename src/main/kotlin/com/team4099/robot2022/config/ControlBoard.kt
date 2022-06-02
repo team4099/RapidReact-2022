@@ -28,8 +28,8 @@ object ControlBoard {
   val resetGyro = Trigger { driver.startButton && driver.selectButton }
 
   // buttons not final
-  val runFeederIn = Trigger { operator.rightTriggerAxis > 0.5 }
-  val runFeederOut = Trigger { operator.leftTriggerAxis > 0.5 }
+//  val runFeederIn = Trigger { operator.rightTriggerAxis > 0.5 }
+//  val runFeederOut = Trigger { operator.leftTriggerAxis > 0.5 }
 
   //  val resetBallCount = Trigger { operator.startButton && operator.selectButton }
 
