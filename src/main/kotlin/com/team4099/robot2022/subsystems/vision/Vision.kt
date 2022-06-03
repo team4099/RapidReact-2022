@@ -184,14 +184,14 @@ class Vision(io: VisionIO) : SubsystemBase() {
         // Calculate field to robot translation
         val robotRotation: Rotation2d = robotState.getDriveRotation(captureTimestamp)
         val cameraRotation = robotRotation
-          .rotateBy(cameraPosition.vehicleToCamera.getRotation())
+          .rotateBy(cameraPosition?.vehicleToCamera?.rotation)
         val fieldToTargetRotated = Transform2d(VisionConstants.FieldConstants.hubCenter, cameraRotation)
         val fieldToCamera = fieldToTargetRotated.plus(
           VisionConstants.GeomUtil
             .transformFromTranslation(cameraToTargetTranslation.unaryMinus())
         )
         val fieldToVehicle: Pose2d = VisionConstants.GeomUtil.transformToPose(
-          fieldToCamera.plus(cameraPosition.vehicleToCamera.inverse())
+          fieldToCamera.plus(cameraPosition?.vehicleToCamera?.inverse())
         )
         if (fieldToVehicle.x > VisionConstants.FieldConstants.fieldLength || fieldToVehicle.x < 0.0 || fieldToVehicle.y > VisionConstants.FieldConstants.fieldWidth || fieldToVehicle.y < 0.0) {
           return
@@ -285,11 +285,11 @@ class Vision(io: VisionIO) : SubsystemBase() {
     val nZ: Double = -((corner.y - halfHeightPixels - VisionConstants.crosshairY)
       / halfHeightPixels)
     val xzPlaneTranslation = Translation2d(1.0, vph / 2.0 * nZ)
-      .rotateBy(cameraPosition.verticalRotation)
+      .rotateBy(cameraPosition?.verticalRotation)
     val x = xzPlaneTranslation.x
     val y = vpw / 2.0 * nY
     val z = xzPlaneTranslation.y
-    val differentialHeight: Double = cameraPosition.cameraHeight - goalHeight
+    val differentialHeight: Double = (cameraPosition?.cameraHeight?.minus(goalHeight) ?: Double) as Double
     if (z < 0.0 == differentialHeight > 0.0) {
       val scaling = differentialHeight / -z
       val distance = Math.hypot(x, y) * scaling
