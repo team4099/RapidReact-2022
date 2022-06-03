@@ -6,6 +6,7 @@ import com.team4099.lib.units.base.seconds
 import com.team4099.robot2022.auto.mode.EightEightEightMode
 import com.team4099.robot2022.auto.mode.FiveBallRightStart
 import com.team4099.robot2022.auto.mode.FourBallRightStart
+import com.team4099.robot2022.auto.mode.KhetarpalMode
 import com.team4099.robot2022.auto.mode.OneBallFenderShotOneSteal
 import com.team4099.robot2022.auto.mode.OneBallFenderThenTaxi
 import com.team4099.robot2022.auto.mode.OneBallLeftLeftBumpMode
@@ -91,6 +92,7 @@ object AutonomousSelector {
     autonomousModeChooser.addOption(
       "Characterize Telescoping Arms", AutonomousMode.CHARACTERIZE_CLIMBER_TELESCOPE
     )
+    autonomousModeChooser.addOption("KhetarpalMode", AutonomousMode.KHETARPAL_PATH_ONE_METER)
     autonomousModeChooser.addOption("Characterize Shooter", AutonomousMode.CHARACTERIZE_SHOOTER)
     autonomousModeChooser.addOption("Four Ball Right Start", AutonomousMode.FOUR_BALL_RIGHT_START)
     autonomousModeChooser.addOption("Five Ball Right Start", AutonomousMode.FIVE_BALL_RIGHT_START)
@@ -213,6 +215,9 @@ object AutonomousSelector {
               drivetrain, feeder, shooter, intake, getSecondaryWaitTime()
             )
           )
+      AutonomousMode.KHETARPAL_PATH_ONE_METER ->
+        return WaitCommand(getWaitTime().inSeconds)
+          .andThen(KhetarpalMode(drivetrain, feeder, shooter, intake, getSecondaryWaitTime()))
       else -> println("ERROR: unexpected auto mode: $mode")
     }
     return InstantCommand()
@@ -237,6 +242,7 @@ object AutonomousSelector {
     TWO_BALL_LEFT_MIDDLE_ONE_STEAL,
     TWO_BALL_LEFT_MIDDLE_NO_STEAL,
     TWO_BALL_LEFT_MIDDLE_TWO_STEAL,
-    TWO_BALL_LEFT_RIGHT_ONE_STEAL
+    TWO_BALL_LEFT_RIGHT_ONE_STEAL,
+    KHETARPAL_PATH_ONE_METER
   }
 }
