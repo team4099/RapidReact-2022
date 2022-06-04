@@ -1,0 +1,10 @@
+{
+  "fast-backward": [],
+  "fast-forward": [],
+  "slow-backward": [],
+  "slow-forward": [],
+  "sysid": true,
+  "test": "Simple",
+  "units": "Meters",
+  "unitsPerRotation": 1.0
+}

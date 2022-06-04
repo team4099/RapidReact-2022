@@ -10,7 +10,7 @@ object ShooterConstants {
   const val SHOOTER_KP = 0.075
   const val SHOOTER_KI = 0.0
   const val SHOOTER_KD = 7.0
-  val SHOOTER_KS_VOLTS = 1.1
+  val SHOOTER_KS_VOLTS = 0.45
   val SHOOTER_KV_VOLTS_PER_RADIAN_PER_SECOND = 0.018
 
   const val SHOOTER_SENSOR_CPR = 2048
