@@ -81,11 +81,14 @@ class SwerveModuleIOReal(
     driveConfiguration.supplyCurrLimit.currentLimit = DrivetrainConstants.DRIVE_SUPPLY_CURRENT_LIMIT
     driveConfiguration.supplyCurrLimit.triggerThresholdCurrent =
       DrivetrainConstants.DRIVE_THRESHOLD_CURRENT_LIMIT
-    driveConfiguration.supplyCurrLimit.triggerThresholdTime = DrivetrainConstants.DRIVE_TRIGGER_THRESHOLD_TIME.inSeconds
+    driveConfiguration.supplyCurrLimit.triggerThresholdTime =
+      DrivetrainConstants.DRIVE_TRIGGER_THRESHOLD_TIME.inSeconds
     driveConfiguration.supplyCurrLimit.enable = true
     driveConfiguration.statorCurrLimit.currentLimit = DrivetrainConstants.DRIVE_STATOR_CURRENT_LIMIT
-    driveConfiguration.statorCurrLimit.triggerThresholdCurrent = DrivetrainConstants.DRIVE_THRESHOLD_CURRENT_LIMIT
-    driveConfiguration.statorCurrLimit.triggerThresholdTime = DrivetrainConstants.DRIVE_TRIGGER_THRESHOLD_TIME.inSeconds
+    driveConfiguration.statorCurrLimit.triggerThresholdCurrent =
+      DrivetrainConstants.DRIVE_THRESHOLD_CURRENT_LIMIT
+    driveConfiguration.statorCurrLimit.triggerThresholdTime =
+      DrivetrainConstants.DRIVE_TRIGGER_THRESHOLD_TIME.inSeconds
     driveConfiguration.statorCurrLimit.enable = true
     driveConfiguration.voltageCompSaturation = 12.0
 

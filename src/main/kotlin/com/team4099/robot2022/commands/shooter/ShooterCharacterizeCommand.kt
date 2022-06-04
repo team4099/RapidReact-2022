@@ -10,7 +10,7 @@ class ShooterCharacterizeCommand(val shooter: Shooter) : SequentialCommandGroup(
   init {
     val shooterSetter = { voltage: Double ->
       shooter.setOpenLoop(voltage / 12.0)
-            println("ShooterSetter voltage $voltage")
+      println("ShooterSetter voltage $voltage")
     }
 
     val shooterGetter = {

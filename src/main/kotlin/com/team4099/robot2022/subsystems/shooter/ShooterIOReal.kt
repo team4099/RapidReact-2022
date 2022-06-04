@@ -28,18 +28,18 @@ object ShooterIOReal : ShooterIO {
 
   init {
     leaderMotor.configFactoryDefault()
-        followerMotor.configFactoryDefault()
+    followerMotor.configFactoryDefault()
 
-        followerMotor.follow(leaderMotor)
+    followerMotor.follow(leaderMotor)
     leaderMotor.setInverted(InvertType.None)
-        followerMotor.setInverted(InvertType.OpposeMaster)
+    followerMotor.setInverted(InvertType.OpposeMaster)
 
     leaderMotor.clearStickyFaults()
-        followerMotor.clearStickyFaults()
+    followerMotor.clearStickyFaults()
     leaderMotor.enableVoltageCompensation(true)
-        followerMotor.enableVoltageCompensation(true)
+    followerMotor.enableVoltageCompensation(true)
     leaderMotor.configVoltageCompSaturation(12.0)
-        followerMotor.configVoltageCompSaturation(12.0)
+    followerMotor.configVoltageCompSaturation(12.0)
 
     leaderMotor.configSupplyCurrentLimit(
       SupplyCurrentLimitConfiguration(
@@ -49,14 +49,14 @@ object ShooterIOReal : ShooterIO {
         1000.0
       )
     )
-        followerMotor.configSupplyCurrentLimit(
-          SupplyCurrentLimitConfiguration(
-            true,
-            ShooterConstants.SUPPLY_CURRENT_LIMIT,
-            ShooterConstants.SUPPLY_CURRENT_LIMIT,
-            1000.0
-          )
-        )
+    followerMotor.configSupplyCurrentLimit(
+      SupplyCurrentLimitConfiguration(
+        true,
+        ShooterConstants.SUPPLY_CURRENT_LIMIT,
+        ShooterConstants.SUPPLY_CURRENT_LIMIT,
+        1000.0
+      )
+    )
 
     leaderMotor.config_kP(0, ShooterConstants.SHOOTER_KP)
     leaderMotor.config_kI(0, ShooterConstants.SHOOTER_KI)
