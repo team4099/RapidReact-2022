@@ -2,8 +2,38 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/LiveWindow/Drivetrain": "Subsystem",
+      "/LiveWindow/Feeder": "Subsystem",
+      "/LiveWindow/Intake": "Subsystem",
+      "/LiveWindow/Led": "Subsystem",
+      "/LiveWindow/PivotClimber": "Subsystem",
+      "/LiveWindow/Pneumatic": "Subsystem",
+      "/LiveWindow/Shooter": "Subsystem",
+      "/LiveWindow/TelescopingClimber": "Subsystem",
+      "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/Shuffleboard/Auto settings/Mode": "String Chooser",
       "/Shuffleboard/Auto settings/Starting Orientation": "String Chooser"
+    }
+  },
+  "NetworkTables": {
+    "Shuffleboard": {
+      "Auto settings": {
+        "open": true
+      },
+      "open": true
+    },
+    "SmartDashboard": {
+      "Alerts": {
+        "open": true
+      },
+      "Feeder": {
+        "open": true
+      },
+      "Pneumatics": {
+        "open": true
+      },
+      "open": true
     }
   }
 }

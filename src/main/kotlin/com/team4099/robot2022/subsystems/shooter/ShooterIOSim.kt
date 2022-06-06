@@ -12,30 +12,30 @@ import edu.wpi.first.math.controller.PIDController
 import edu.wpi.first.math.system.plant.DCMotor
 import edu.wpi.first.wpilibj.simulation.FlywheelSim
 
-object ShooterIOSim: ShooterIO {
+object ShooterIOSim : ShooterIO {
   private val motorSim: DCMotor = DCMotor.getFalcon500(1)
 
-  private val flywheelSim: FlywheelSim = FlywheelSim(
-    motorSim,
-    ShooterConstants.SHOOTER_SENSOR_GEAR_RATIO,
-    ShooterConstants.FLYWHEEL_MOMENT_OF_INERTIA
-  )
+  private val flywheelSim: FlywheelSim =
+    FlywheelSim(
+      motorSim,
+      ShooterConstants.SHOOTER_SENSOR_GEAR_RATIO,
+      ShooterConstants.FLYWHEEL_MOMENT_OF_INERTIA
+    )
 
-  private val pid: PIDController = PIDController(
-    0.0,0.0,0.0
-  )
+  private val pid: PIDController = PIDController(0.0, 0.0, 0.0)
 
   private var closedLoop = false
   private const val ffVolts = 0.0
   private var appliedVolts = 0.0
 
   override fun updateInputs(inputs: ShooterIO.ShooterIOInputs) {
-    if (closedLoop){
-      appliedVolts = MathUtil.clamp(
-        pid.calculate(flywheelSim.angularVelocityRadPerSec) + ffVolts,
-        -12.0.volts.inVolts,
-        12.0.volts.inVolts
-      )
+    if (closedLoop) {
+      appliedVolts =
+        MathUtil.clamp(
+          pid.calculate(flywheelSim.angularVelocityRadPerSec) + ffVolts,
+          -12.0.volts.inVolts,
+          12.0.volts.inVolts
+        )
     }
     inputs.position = 0.0.radians
     inputs.velocity = flywheelSim.angularVelocityRadPerSec.radians.perSecond
@@ -57,5 +57,4 @@ object ShooterIOSim: ShooterIO {
   override fun configurePID(kP: Double, kI: Double, kD: Double) {
     pid.setPID(kP, kI, kD)
   }
-
 }

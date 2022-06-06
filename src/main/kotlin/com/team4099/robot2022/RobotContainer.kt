@@ -57,7 +57,6 @@ import com.team4099.robot2022.subsystems.pneumatics.Pneumatic
 import com.team4099.robot2022.subsystems.pneumatics.PneumaticIO
 import com.team4099.robot2022.subsystems.pneumatics.PneumaticsIOReal
 import com.team4099.robot2022.subsystems.shooter.Shooter
-import com.team4099.robot2022.subsystems.shooter.ShooterIO
 import com.team4099.robot2022.subsystems.shooter.ShooterIOReal
 import com.team4099.robot2022.subsystems.shooter.ShooterIOSim
 

@@ -11,7 +11,6 @@ import org.littletonrobotics.junction.Logger
 import org.littletonrobotics.junction.inputs.LoggedNetworkTables
 import org.littletonrobotics.junction.inputs.LoggedSystemStats
 import org.littletonrobotics.junction.io.ByteLogReceiver
-import org.littletonrobotics.junction.io.ByteLogReplay
 import org.littletonrobotics.junction.io.LogSocketServer
 
 object Robot : LoggedRobot() {
@@ -55,17 +54,23 @@ object Robot : LoggedRobot() {
         .setPowerDistributionConfig(1, PowerDistribution.ModuleType.kRev)
     } else {
       // if in replay mode get file path from command line and read log file
-      val path = ByteLogReplay.promptForPath()
-      logger.setReplaySource(ByteLogReplay(path))
-      logger.addDataReceiver(ByteLogReceiver(ByteLogReceiver.addPathSuffix(path, "_sim")))
+      logger.addDataReceiver(LogSocketServer(5800))
+      //      val path = ByteLogReplay.promptForPath()
+      //      logger.setReplaySource(ByteLogReplay(path))
+      //      logger.addDataReceiver(ByteLogReceiver(ByteLogReceiver.addPathSuffix(path, "_sim")))
     }
     logger.start()
 
     LiveWindow.disableAllTelemetry()
 
-    RobotContainer
-    AutonomousSelector
-    PathStore
+    if (isReal()) {
+      RobotContainer
+      AutonomousSelector
+      PathStore
+    } else {
+      RobotContainer
+    }
+
     RobotContainer.mapDefaultCommands()
     RobotContainer.zeroSensors()
   }
