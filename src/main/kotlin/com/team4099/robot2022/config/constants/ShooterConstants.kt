@@ -1,9 +1,14 @@
 package com.team4099.robot2022.config.constants
 
 import com.team4099.lib.units.AngularVelocity
+import com.team4099.lib.units.base.grams
+import com.team4099.lib.units.base.inKilograms
+import com.team4099.lib.units.base.inMeters
 import com.team4099.lib.units.base.inches
+import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.rotations
+import com.team4099.lib.units.kilo
 import com.team4099.lib.units.perMinute
 
 object ShooterConstants {
@@ -15,6 +20,8 @@ object ShooterConstants {
 
   const val SHOOTER_SENSOR_CPR = 2048
   const val SHOOTER_SENSOR_GEAR_RATIO = 1.0
+  // I = MR^2/2
+  const val FLYWHEEL_MOMENT_OF_INERTIA = 0.59329882 * (0.0508 * 0.0508) / 2.0
 
   const val SUPPLY_CURRENT_LIMIT = 60.0
 

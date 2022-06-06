@@ -59,6 +59,7 @@ import com.team4099.robot2022.subsystems.pneumatics.PneumaticsIOReal
 import com.team4099.robot2022.subsystems.shooter.Shooter
 import com.team4099.robot2022.subsystems.shooter.ShooterIO
 import com.team4099.robot2022.subsystems.shooter.ShooterIOReal
+import com.team4099.robot2022.subsystems.shooter.ShooterIOSim
 
 object RobotContainer {
   private val drivetrain: Drivetrain
@@ -83,7 +84,7 @@ object RobotContainer {
     } else {
       drivetrain = Drivetrain(object : DrivetrainIO {})
       intake = Intake(object : IntakeIO {})
-      shooter = Shooter(object : ShooterIO {})
+      shooter = Shooter(ShooterIOSim)
       feeder = Feeder(object : FeederIO {})
       telescopingClimber = TelescopingClimber(object : TelescopingClimberIO {})
       pivotClimber = PivotClimber(object : PivotClimberIO {})
