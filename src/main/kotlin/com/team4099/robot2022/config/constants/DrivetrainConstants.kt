@@ -36,6 +36,9 @@ object DrivetrainConstants {
   val MAX_AUTO_VEL = 3.meters.perSecond
   val MAX_AUTO_ACCEL = 3.meters.perSecond.perSecond
 
+  val MAX_TEST_AUTO_VEL = 0.25.meters.perSecond
+  val MAX_TEST_AUTO_ACCEL = 0.25.meters.perSecond.perSecond
+
   const val DRIVE_SENSOR_CPR = 2048
   const val STEERING_SENSOR_CPR = 2048
 

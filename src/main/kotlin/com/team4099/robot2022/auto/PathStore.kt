@@ -247,7 +247,7 @@ object PathStore {
   val oneMeterDrive =
     PathPlanner.loadPath(
       "1 Ball Meter Then Turn",
-      DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
-      DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
+      DrivetrainConstants.MAX_TEST_AUTO_VEL.inMetersPerSecond,
+      DrivetrainConstants.MAX_TEST_AUTO_ACCEL.inMetersPerSecondPerSecond
     )
 }
