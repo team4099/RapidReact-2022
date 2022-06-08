@@ -244,9 +244,9 @@ object PathStore {
       DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
       DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
     )
-  val khetarpalPathOneMeterThenShoot =
+  val oneMeterDrive =
     PathPlanner.loadPath(
-      "Khetarpal Path 1m",
+      "1 Ball Meter Then Turn",
       DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
       DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
     )
