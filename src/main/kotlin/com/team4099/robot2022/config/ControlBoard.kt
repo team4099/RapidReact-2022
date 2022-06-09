@@ -46,7 +46,8 @@ object ControlBoard {
   val retractTelescoping = Trigger { operator.dPadDown }
 
   val extendPivot = Trigger { operator.dPadRight }
-  val retractPivot = Trigger { operator.dPadLeft }
+  // val retractPivot = Trigger { operator.dPadLeft }
+  val openLoopClimb = Trigger { operator.dPadLeft }
 
   val startClimbSequence = Trigger { operator.startButton }
   val resetBallCount = Trigger { operator.selectButton }
