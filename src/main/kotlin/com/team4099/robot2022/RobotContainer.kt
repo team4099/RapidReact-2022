@@ -7,6 +7,7 @@ import com.team4099.robot2022.commands.climber.ExtendPivotArmCommand
 import com.team4099.robot2022.commands.climber.ExtendTelescopingArmCommand
 import com.team4099.robot2022.commands.climber.OpenLoopClimbCommand
 import com.team4099.robot2022.commands.climber.PivotArmIdleCommand
+import com.team4099.robot2022.commands.climber.RetractPivotArmCommand
 import com.team4099.robot2022.commands.climber.RetractTelescopingArmCommand
 import com.team4099.robot2022.commands.climber.SpoolLeftDownCommand
 import com.team4099.robot2022.commands.climber.SpoolLeftUpCommand
@@ -157,8 +158,7 @@ object RobotContainer {
       RetractTelescopingArmCommand(telescopingClimber)
     )
     ControlBoard.extendPivot.whileActiveOnce(ExtendPivotArmCommand(pivotClimber))
-    // ControlBoard.retractPivot.whileActiveOnce(RetractPivotArmCommand(pivotClimber))
-    ControlBoard.openLoopClimb.whileActiveOnce(OpenLoopClimbCommand(telescopingClimber))
+    ControlBoard.retractPivot.whileActiveOnce(RetractPivotArmCommand(pivotClimber))
     ControlBoard.startClimbSequence.whileActiveOnce(
       //      PneumaticClimbCheckCommand(pneumatic)
       //        .andThen(
