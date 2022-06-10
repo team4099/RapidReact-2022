@@ -16,32 +16,31 @@ import com.team4099.robot2022.config.constants.Constants.Universal.CANIVORE_NAME
 import com.team4099.robot2022.config.constants.ShooterConstants
 
 object ShooterIOReal : ShooterIO {
-  private val leaderMotor = TalonFX(Constants.Shooter.LEADER_MOTOR_ID, CANIVORE_NAME)
-  private val followerMotor = TalonFX(Constants.Shooter.FOLLOWER_MOTOR_ID, CANIVORE_NAME)
+  private val flywheelMotor = TalonFX(Constants.Shooter.FLYWHEEL_MOTOR_ID, CANIVORE_NAME)
+  private val backWheelsMotor = TalonFX(Constants.Shooter.BACK_WHEELS_MOTOR_ID, CANIVORE_NAME)
 
   private val shooterSensor =
     ctreAngularMechanismSensor(
-      leaderMotor,
+      flywheelMotor,
       ShooterConstants.SHOOTER_SENSOR_CPR,
       ShooterConstants.SHOOTER_SENSOR_GEAR_RATIO
     )
 
   init {
-    leaderMotor.configFactoryDefault()
-    followerMotor.configFactoryDefault()
+    flywheelMotor.configFactoryDefault()
+    backWheelsMotor.configFactoryDefault()
 
-    followerMotor.follow(leaderMotor)
-    leaderMotor.setInverted(InvertType.None)
-    followerMotor.setInverted(InvertType.OpposeMaster)
+    flywheelMotor.setInverted(InvertType.None)
+    backWheelsMotor.setInverted(InvertType.None)
 
-    leaderMotor.clearStickyFaults()
-    followerMotor.clearStickyFaults()
-    leaderMotor.enableVoltageCompensation(true)
-    followerMotor.enableVoltageCompensation(true)
-    leaderMotor.configVoltageCompSaturation(12.0)
-    followerMotor.configVoltageCompSaturation(12.0)
+    flywheelMotor.clearStickyFaults()
+    backWheelsMotor.clearStickyFaults()
+    flywheelMotor.enableVoltageCompensation(true)
+    backWheelsMotor.enableVoltageCompensation(true)
+    flywheelMotor.configVoltageCompSaturation(12.0)
+    backWheelsMotor.configVoltageCompSaturation(12.0)
 
-    leaderMotor.configSupplyCurrentLimit(
+    flywheelMotor.configSupplyCurrentLimit(
       SupplyCurrentLimitConfiguration(
         true,
         ShooterConstants.SUPPLY_CURRENT_LIMIT,
@@ -49,7 +48,7 @@ object ShooterIOReal : ShooterIO {
         1000.0
       )
     )
-    followerMotor.configSupplyCurrentLimit(
+    backWheelsMotor.configSupplyCurrentLimit(
       SupplyCurrentLimitConfiguration(
         true,
         ShooterConstants.SUPPLY_CURRENT_LIMIT,
@@ -58,9 +57,13 @@ object ShooterIOReal : ShooterIO {
       )
     )
 
-    leaderMotor.config_kP(0, ShooterConstants.SHOOTER_KP)
-    leaderMotor.config_kI(0, ShooterConstants.SHOOTER_KI)
-    leaderMotor.config_kD(0, ShooterConstants.SHOOTER_KD)
+    flywheelMotor.config_kP(0, ShooterConstants.SHOOTER_KP)
+    flywheelMotor.config_kI(0, ShooterConstants.SHOOTER_KI)
+    flywheelMotor.config_kD(0, ShooterConstants.SHOOTER_KD)
+
+    backWheelsMotor.config_kP(0, ShooterConstants.SHOOTER_KP)
+    backWheelsMotor.config_kI(0, ShooterConstants.SHOOTER_KI)
+    backWheelsMotor.config_kD(0, ShooterConstants.SHOOTER_KD)
 
     //    leaderMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General,
     // Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
@@ -143,11 +146,11 @@ object ShooterIOReal : ShooterIO {
   override fun updateInputs(inputs: ShooterIO.ShooterIOInputs) {
     inputs.position = shooterSensor.position
     inputs.velocity = shooterSensor.velocity
-    inputs.statorCurrent[0] = leaderMotor.statorCurrent.amps
+    inputs.statorCurrent[0] = flywheelMotor.statorCurrent.amps
     //    inputs.statorCurrent[1] = followerMotor.statorCurrent.amps
-    inputs.supplyCurrent[0] = leaderMotor.supplyCurrent.amps
+    inputs.supplyCurrent[0] = flywheelMotor.supplyCurrent.amps
     //    inputs.supplyCurrent[1] = followerMotor.supplyCurrent.amps
-    inputs.tempCelcius[0] = leaderMotor.temperature
+    inputs.tempCelcius[0] = flywheelMotor.temperature
     //    inputs.tempCelcius[1] = followerMotor.temperature
 
     //    inputs.appliedVoltage = leaderMotor.motorOutputVoltage.volts
@@ -157,7 +160,7 @@ object ShooterIOReal : ShooterIO {
     if (velocity.absoluteValue <= 600.rotations.perMinute) {
       setOpenLoop(0.0)
     } else {
-      leaderMotor.set(
+      flywheelMotor.set(
         ControlMode.Velocity,
         shooterSensor.velocityToRawUnits(velocity),
         DemandType.ArbitraryFeedForward,
@@ -171,12 +174,13 @@ object ShooterIOReal : ShooterIO {
   }
 
   override fun setOpenLoop(power: Double) {
-    leaderMotor.set(ControlMode.PercentOutput, power)
+    flywheelMotor.set(ControlMode.PercentOutput, power)
+    backWheelsMotor.set(ControlMode.PercentOutput, power)
   }
 
   override fun configurePID(kP: Double, kI: Double, kD: Double) {
-    leaderMotor.config_kP(0, kP)
-    leaderMotor.config_kI(0, kI)
-    leaderMotor.config_kD(0, kD)
+    flywheelMotor.config_kP(0, kP)
+    flywheelMotor.config_kI(0, kI)
+    flywheelMotor.config_kD(0, kD)
   }
 }
