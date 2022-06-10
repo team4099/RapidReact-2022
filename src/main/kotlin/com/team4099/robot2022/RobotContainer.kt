@@ -5,7 +5,6 @@ import com.team4099.robot2022.auto.AutonomousSelector
 import com.team4099.robot2022.commands.climber.ClimbSequenceCommand
 import com.team4099.robot2022.commands.climber.ExtendPivotArmCommand
 import com.team4099.robot2022.commands.climber.ExtendTelescopingArmCommand
-import com.team4099.robot2022.commands.climber.OpenLoopClimbCommand
 import com.team4099.robot2022.commands.climber.PivotArmIdleCommand
 import com.team4099.robot2022.commands.climber.RetractPivotArmCommand
 import com.team4099.robot2022.commands.climber.RetractTelescopingArmCommand
