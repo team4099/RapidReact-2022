@@ -49,54 +49,58 @@ object AutonomousSelector {
     //    orientationChooser.addOption("Left", 90.degrees)
     //    orientationChooser.addOption("Right", 270.degrees)
     //    autoTab.add("Starting Orientation", orientationChooser)
-    autonomousModeChooser.addOption(
-      "One Ball From Middle Bump Opponent Cargo", AutonomousMode.ONE_BALL_MIDDLE_BUMP
-    )
-    autonomousModeChooser.addOption(
-      "One Ball From Middle Steal Opponent Cargo", AutonomousMode.ONE_BALL_MIDDLE_STEAL
-    )
-    autonomousModeChooser.addOption(
-      "One Ball From Left Steal Opponent Cargo", AutonomousMode.ONE_BALL_RIGHT_STEAL
-    )
-    autonomousModeChooser.addOption(
-      "One Ball From Fender Then Steal Middle Opponent Cargo",
-      AutonomousMode.ONE_BALL_FENDER_THEN_MIDDLE_STEAL
-    )
-    autonomousModeChooser.addOption(
-      "One Ball From Fender Then Taxi", AutonomousMode.ONE_BALL_FENDER_THEN_TAXI
-    )
-    autonomousModeChooser.addOption(
-      "Two Ball From Left Tarmac Center Then One Steal",
-      AutonomousMode.TWO_BALL_LEFT_MIDDLE_ONE_STEAL
-    )
-    autonomousModeChooser.addOption(
-      "Two Ball From Left Tarmac Center No Steal", AutonomousMode.TWO_BALL_LEFT_MIDDLE_NO_STEAL
-    )
-    autonomousModeChooser.addOption(
-      "Two Ball From Left Tarmac Center Then Two Steal",
-      AutonomousMode.TWO_BALL_LEFT_MIDDLE_TWO_STEAL
-    )
-    autonomousModeChooser.addOption(
-      "Two Ball From Left Tarmac Then One Steal", AutonomousMode.TWO_BALL_LEFT_RIGHT_ONE_STEAL
-    )
-    autonomousModeChooser.addOption(
-      "Three Ball: Right Start Faster", AutonomousMode.THREE_BALL_RIGHT_START_FASTER
-    )
-    autonomousModeChooser.addOption(
-      "Three Ball: Right Start", AutonomousMode.THREE_BALL_RIGHT_START
-    )
-    autonomousModeChooser.addOption("Test", AutonomousMode.TEST_AUTO_PATH)
-    autonomousModeChooser.addOption(
-      "Characterize Drivetrain", AutonomousMode.CHARACTERIZE_DRIVETRAIN
-    )
-    autonomousModeChooser.addOption(
-      "Characterize Telescoping Arms", AutonomousMode.CHARACTERIZE_CLIMBER_TELESCOPE
-    )
+    //    autonomousModeChooser.addOption(
+    //      "One Ball From Middle Bump Opponent Cargo", AutonomousMode.ONE_BALL_MIDDLE_BUMP
+    //    )
+    //    autonomousModeChooser.addOption(
+    //      "One Ball From Middle Steal Opponent Cargo", AutonomousMode.ONE_BALL_MIDDLE_STEAL
+    //    )
+    //    autonomousModeChooser.addOption(
+    //      "One Ball From Left Steal Opponent Cargo", AutonomousMode.ONE_BALL_RIGHT_STEAL
+    //    )
+    //    autonomousModeChooser.addOption(
+    //      "One Ball From Fender Then Steal Middle Opponent Cargo",
+    //      AutonomousMode.ONE_BALL_FENDER_THEN_MIDDLE_STEAL
+    //    )
+    //    autonomousModeChooser.addOption(
+    //      "One Ball From Fender Then Taxi", AutonomousMode.ONE_BALL_FENDER_THEN_TAXI
+    //    )
+    //    autonomousModeChooser.addOption(
+    //      "Two Ball From Left Tarmac Center Then One Steal",
+    //      AutonomousMode.TWO_BALL_LEFT_MIDDLE_ONE_STEAL
+    //    )
+    //    autonomousModeChooser.addOption(
+    //      "Two Ball From Left Tarmac Center No Steal",
+    // AutonomousMode.TWO_BALL_LEFT_MIDDLE_NO_STEAL
+    //    )
+    //    autonomousModeChooser.addOption(
+    //      "Two Ball From Left Tarmac Center Then Two Steal",
+    //      AutonomousMode.TWO_BALL_LEFT_MIDDLE_TWO_STEAL
+    //    )
+    //    autonomousModeChooser.addOption(
+    //      "Two Ball From Left Tarmac Then One Steal", AutonomousMode.TWO_BALL_LEFT_RIGHT_ONE_STEAL
+    //    )
+    //    autonomousModeChooser.addOption(
+    //      "Three Ball: Right Start Faster", AutonomousMode.THREE_BALL_RIGHT_START_FASTER
+    //    )
+    //    autonomousModeChooser.addOption(
+    //      "Three Ball: Right Start", AutonomousMode.THREE_BALL_RIGHT_START
+    //    )
+    //    autonomousModeChooser.addOption("Test", AutonomousMode.TEST_AUTO_PATH)
+    //    autonomousModeChooser.addOption(
+    //      "Characterize Drivetrain", AutonomousMode.CHARACTERIZE_DRIVETRAIN
+    //    )
+    //    autonomousModeChooser.addOption(
+    //      "Characterize Telescoping Arms", AutonomousMode.CHARACTERIZE_CLIMBER_TELESCOPE
+    //    )
     autonomousModeChooser.addOption("One Meter Turn Shot", AutonomousMode.ONE_METER_TURN_SHOT)
-    autonomousModeChooser.addOption("Characterize Shooter", AutonomousMode.CHARACTERIZE_SHOOTER)
-    autonomousModeChooser.addOption("Four Ball Right Start", AutonomousMode.FOUR_BALL_RIGHT_START)
-    autonomousModeChooser.addOption("Five Ball Right Start", AutonomousMode.FIVE_BALL_RIGHT_START)
-    autonomousModeChooser.addOption("888 Mode", AutonomousMode.EIGHT_EIGHT_EIGHT_MODE)
+    //    autonomousModeChooser.addOption("Characterize Shooter",
+    // AutonomousMode.CHARACTERIZE_SHOOTER)
+    //    autonomousModeChooser.addOption("Four Ball Right Start",
+    // AutonomousMode.FOUR_BALL_RIGHT_START)
+    //    autonomousModeChooser.addOption("Five Ball Right Start",
+    // AutonomousMode.FIVE_BALL_RIGHT_START)
+    //    autonomousModeChooser.addOption("888 Mode", AutonomousMode.EIGHT_EIGHT_EIGHT_MODE)
     autoTab.add("Mode", autonomousModeChooser).withSize(5, 2).withPosition(3, 0)
     waitBeforeCommandSlider =
       autoTab
