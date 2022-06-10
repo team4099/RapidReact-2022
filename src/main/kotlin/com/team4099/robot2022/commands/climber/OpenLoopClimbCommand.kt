@@ -10,7 +10,7 @@ class OpenLoopClimbCommand(val telescopingClimber: TelescopingClimber) : Command
   }
 
   override fun execute() {
-    telescopingClimber.setOpenLoop(-1.0, -1.0, true)
+    telescopingClimber.setOpenLoop(-1.0, -1.0)
 
     Logger.getInstance().recordOutput("ActiveCommands/OpenLoopClimbCommand", true)
   }
