@@ -10,7 +10,7 @@ class RetractTelescopingArmCommand(val telescopingClimber: TelescopingClimber) :
   // lateinit var leftTelescopingProfile: TrapezoidProfile
   // / lateinit var rightTelescopingProfile: TrapezoidProfile
 
-  var startTime = Clock.fpgaTime
+  //var startTime = Clock.fpgaTime
 
   init {
     addRequirements(telescopingClimber)
@@ -41,7 +41,7 @@ class RetractTelescopingArmCommand(val telescopingClimber: TelescopingClimber) :
         )
       )
     */
-    startTime = Clock.fpgaTime
+    //startTime = Clock.fpgaTime
   }
 
   override fun execute() {
