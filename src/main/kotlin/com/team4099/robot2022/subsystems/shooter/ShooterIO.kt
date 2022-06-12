@@ -17,46 +17,98 @@ import org.littletonrobotics.junction.inputs.LoggableInputs
 
 interface ShooterIO {
   class ShooterIOInputs : LoggableInputs {
-    var position = 0.0.radians
-    var velocity = 0.0.radians.perSecond
+    var flywheelPosition = 0.0.radians
+    var backwheelsPosition = 0.0.radians
 
-    var appliedVoltage = 0.0.volts
-    var statorCurrent = mutableListOf(0.0.amps, 0.0.amps)
-    var supplyCurrent = mutableListOf(0.0.amps, 0.0.amps)
-    var tempCelcius = mutableListOf(0.0, 0.0)
+    var flywheelVelocity = 0.0.radians.perSecond
+    var backwheelsVelocity = 0.0.radians.perSecond
+
+    var flywheelAppliedVoltage = 0.0.volts
+    var backwheelsAppliedVoltage = 0.0.volts
+
+    var flywheelStatorCurrent = 0.0.amps
+    var backwheelsStatorCurrent = 0.0.amps
+
+    var flywheelSupplyCurrent = 0.0.amps
+    var backwheelsSupplyCurrent = 0.0.amps
+
+    var flywheelTempCelcius = 0.0
+    var backwheelsTempCelcius = 0.0
 
     override fun toLog(table: LogTable?) {
-      table?.put("positionRad", position.inRadians)
-      table?.put("velocityRPM", velocity.inRotationsPerMinute)
-      table?.put("appliedVolts", appliedVoltage.inVolts)
-      table?.put("statorCurrentAmps", statorCurrent.map { it.inAmperes }.toDoubleArray())
-      table?.put("supplyCurrentAmps", supplyCurrent.map { it.inAmperes }.toDoubleArray())
-      table?.put("tempCelcius", tempCelcius.toDoubleArray())
+      table?.put("flywheelPositionRad", flywheelPosition.inRadians)
+      table?.put("backwheelsPositionRad", backwheelsPosition.inRadians)
+
+      table?.put("flywheelVelocityRPM", flywheelVelocity.inRotationsPerMinute)
+      table?.put("backwheelsVelocityRPM", backwheelsVelocity.inRotationsPerMinute)
+
+      table?.put("flywheelAppliedVolts", flywheelAppliedVoltage.inVolts)
+      table?.put("backwheelsAppliedVolts", backwheelsAppliedVoltage.inVolts)
+
+      table?.put("flywheelStatorCurrentAmps", flywheelStatorCurrent.inAmperes)
+      table?.put("backwheelsStatorCurrentAmps", backwheelsStatorCurrent.inAmperes)
+
+      table?.put("flywheelSupplyCurrentAmps", flywheelSupplyCurrent.inAmperes)
+      table?.put("backwheelsSupplyCurrentAmps", backwheelsSupplyCurrent.inAmperes)
+
+      table?.put("flywheelTempCelcius", flywheelTempCelcius)
+      table?.put("backwheelsTempCelcius", backwheelsTempCelcius)
     }
 
     override fun fromLog(table: LogTable?) {
-      table?.getDouble("positionRad", position.inRadians)?.let { position = it.radians }
-      table?.getDouble("velocityRPM", velocity.inRotationsPerMinute)?.let {
-        velocity = it.rotations.perMinute
+      table?.getDouble("flywheelPositionRad", flywheelPosition.inRadians)?.let {
+        flywheelPosition = it.radians
       }
-      table?.getDouble("appliedVolts", appliedVoltage.inVolts)?.let { appliedVoltage = it.volts }
-      table?.getDoubleArray("statorCurrentAmps", statorCurrent.map { it.inAmperes }.toDoubleArray())
-        ?.let { statorCurrent = it.map { it.amps }.toMutableList() }
-      table?.getDoubleArray("supplyCurrentAmps", supplyCurrent.map { it.inAmperes }.toDoubleArray())
-        ?.let { supplyCurrent = it.map { it.amps }.toMutableList() }
-      table?.getDoubleArray("tempCelcius", tempCelcius.toDoubleArray())?.let {
-        tempCelcius = it.toMutableList()
+      table?.getDouble("backwheelsPositionRad", backwheelsPosition.inRadians)?.let {
+        backwheelsPosition = it.radians
+      }
+
+      table?.getDouble("flywheelVelocityRPM", backwheelsVelocity.inRotationsPerMinute)?.let {
+        backwheelsVelocity = it.rotations.perMinute
+      }
+      table?.getDouble("backwheelsVelocityRPM", backwheelsVelocity.inRotationsPerMinute)?.let {
+        backwheelsVelocity = it.rotations.perMinute
+      }
+
+      table?.getDouble("flywheelAppliedVolts", flywheelAppliedVoltage.inVolts)?.let {
+        flywheelAppliedVoltage = it.volts
+      }
+      table?.getDouble("backwheelsAppliedVolts", backwheelsAppliedVoltage.inVolts)?.let {
+        backwheelsAppliedVoltage = it.volts
+      }
+
+      table?.getDouble("flywheelStatorCurrentAmps", flywheelStatorCurrent.inAmperes)?.let {
+        flywheelStatorCurrent = it.amps
+      }
+      table?.getDouble("backwheelStatorCurrentAmps", backwheelsStatorCurrent.inAmperes)?.let {
+        backwheelsStatorCurrent = it.amps
+      }
+
+      table?.getDouble("flywheelStatorCurrentAmps", flywheelSupplyCurrent.inAmperes)?.let {
+        flywheelSupplyCurrent = it.amps
+      }
+      table?.getDouble("backwheelStatorCurrentAmps", backwheelsSupplyCurrent.inAmperes)?.let {
+        backwheelsSupplyCurrent = it.amps
+      }
+
+      table?.getDouble("flywheelTempCelcius", flywheelTempCelcius)?.let { flywheelTempCelcius = it }
+      table?.getDouble("backwheelTempCelcius", backwheelsTempCelcius)?.let {
+        backwheelsTempCelcius = it
       }
     }
   }
 
-  fun updateInputs(inputs: ShooterIOInputs) {}
+  fun updateInputs(inputs: ShooterIO.ShooterIOInputs) {}
 
   fun setShooterState(shooterState: ShooterConstants.ShooterState) {}
 
-  fun setVelocity(velocity: AngularVelocity) {}
+  fun setVelocity(velocity: Pair<AngularVelocity, AngularVelocity>) {}
 
-  fun setOpenLoop(power: Double) {}
+  fun setFlywheelOpenLoop(power: Double) {}
 
-  fun configurePID(kP: Double, kI: Double, kD: Double) {}
+  fun setBackwheelsOpenLoop(power: Double) {}
+
+  fun configureFlywheelPID(kP: Double, kI: Double, kD: Double) {}
+
+  fun configureBackwheelsPID(kP: Double, kI: Double, kD: Double) {}
 }

@@ -64,8 +64,8 @@ object Constants {
   }
 
   object Shooter {
-    const val LEADER_MOTOR_ID = 51
-    const val FOLLOWER_MOTOR_ID = 52
+    const val FLYWHEEL_MOTOR_ID = 51
+    const val BACK_WHEELS_MOTOR_ID = 52
   }
 
   object Feeder {
