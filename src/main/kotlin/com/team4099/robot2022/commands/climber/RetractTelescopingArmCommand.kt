@@ -1,6 +1,5 @@
 package com.team4099.robot2022.commands.climber
 
-import com.team4099.lib.hal.Clock
 import com.team4099.robot2022.config.constants.TelescopingClimberConstants
 import com.team4099.robot2022.subsystems.climber.TelescopingClimber
 import edu.wpi.first.wpilibj2.command.CommandBase
@@ -10,7 +9,7 @@ class RetractTelescopingArmCommand(val telescopingClimber: TelescopingClimber) :
   // lateinit var leftTelescopingProfile: TrapezoidProfile
   // / lateinit var rightTelescopingProfile: TrapezoidProfile
 
-  //var startTime = Clock.fpgaTime
+  // var startTime = Clock.fpgaTime
 
   init {
     addRequirements(telescopingClimber)
@@ -41,7 +40,7 @@ class RetractTelescopingArmCommand(val telescopingClimber: TelescopingClimber) :
         )
       )
     */
-    //startTime = Clock.fpgaTime
+    // startTime = Clock.fpgaTime
   }
 
   override fun execute() {
