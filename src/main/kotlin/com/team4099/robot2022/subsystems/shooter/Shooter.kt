@@ -15,17 +15,28 @@ class Shooter(val io: ShooterIO) : SubsystemBase() {
   val inputs = ShooterIO.ShooterIOInputs()
   private var filter = MedianFilter(ShooterConstants.FILTER_SIZE)
 
-  private var lastRecordedSpeeds = mutableListOf<AngularVelocity>()
+  // Pair<flywheel velocity, backwheels velocity>
+  private var lastRecordedSpeeds = mutableListOf<Pair<AngularVelocity, AngularVelocity>>()
 
-  private val kP = TunableNumber("Shooter/kP", ShooterConstants.SHOOTER_KP)
-  private val kI = TunableNumber("Shooter/kI", ShooterConstants.SHOOTER_KI)
-  private val kD = TunableNumber("Shooter/kD", ShooterConstants.SHOOTER_KD)
+  private val flywheel_kP =
+    TunableNumber("Shooter/flywheel_kP", ShooterConstants.SHOOTER_FLYWHEEL_KP)
+  private val flywheel_kI =
+    TunableNumber("Shooter/flywheel_kI", ShooterConstants.SHOOTER_FLYWHEEL_KI)
+  private val flywheel_kD =
+    TunableNumber("Shooter/flywheel_kD", ShooterConstants.SHOOTER_FLYWHEEL_KD)
 
-  private val nearSpeedRM =
-    TunableNumber(
-      "Shooter/targetRPM",
-      ShooterConstants.ShooterState.SPIN_UP_UPPER.targetVelocity.inRotationsPerMinute
-    )
+  private val backwheels_kP =
+    TunableNumber("Shooter/backwheels_kP", ShooterConstants.SHOOTER_BACKWHEELS_KP)
+  private val backwheels_kI =
+    TunableNumber("Shooter/backwheels_kI", ShooterConstants.SHOOTER_BACKWHEELS_KI)
+  private val backwheels_kD =
+    TunableNumber("Shooter/backwheels_kD", ShooterConstants.SHOOTER_BACKWHEELS_KD)
+
+  //  private val nearSpeedRM =
+  //    TunableNumber(
+  //      "Shooter/targetRPM",
+  //      ShooterConstants.ShooterState.SPIN_UP_UPPER.targetVelocity.inRotationsPerMinute
+  //    )
 
   private val filterSize =
     TunableNumber("Shooter/filterSize", ShooterConstants.FILTER_SIZE.toDouble())
@@ -41,11 +52,12 @@ class Shooter(val io: ShooterIO) : SubsystemBase() {
       field = state
     }
 
-  var targetVelocity = 0.0.rotations.perMinute
+  var targetVelocity: Pair<AngularVelocity, AngularVelocity> =
+    Pair(0.0.rotations.perMinute, 0.0.rotations.perMinute)
     set(value) {
-      io.setVelocity(value)
-      field = value
-    }
+        io.setVelocity(value)
+        field = value
+      }
 
   var isOnTarget = false
 
@@ -53,14 +65,15 @@ class Shooter(val io: ShooterIO) : SubsystemBase() {
     state = state
   }
 
-  fun setOpenLoop(power: Double) {
-    io.setOpenLoop(power)
+  fun setOpenLoop(flywheelPower: Double, backwheelsPower: Double) {
+    io.setFlywheelOpenLoop(flywheelPower)
+    io.setBackwheelsOpenLoop(backwheelsPower)
   }
 
   override fun periodic() {
     io.updateInputs(inputs)
 
-    lastRecordedSpeeds.add(inputs.velocity)
+    lastRecordedSpeeds.add(Pair(inputs.flywheelVelocity, inputs.backwheelsVelocity))
 
     if (lastRecordedSpeeds.size > filterSize.value) {
       lastRecordedSpeeds.removeAt(0)
@@ -72,20 +85,29 @@ class Shooter(val io: ShooterIO) : SubsystemBase() {
     //                .around(targetVelocity.inRotationsPerMinute, shooterToleranceRPM.value)
 
     isOnTarget =
-      targetVelocity != 0.0.rotations.perMinute &&
+      targetVelocity != Pair(0.0.rotations.perMinute, 0.0.rotations.perMinute) &&
       lastRecordedSpeeds.all {
-        it.inRotationsPerMinute.around(
-          targetVelocity.inRotationsPerMinute, shooterToleranceRPM.value
-        )
+        it.first.inRotationsPerMinute.around(
+          targetVelocity.first.inRotationsPerMinute, shooterToleranceRPM.value
+        ) &&
+          it.second.inRotationsPerMinute.around(
+            targetVelocity.second.inRotationsPerMinute, shooterToleranceRPM.value
+          )
       }
 
     Logger.getInstance().processInputs("Shooter", inputs)
-    Logger.getInstance().recordOutput("Shooter/setpointRPM", targetVelocity.inRotationsPerMinute)
+    Logger.getInstance()
+      .recordOutput("Shooter/flywheelSetpointRPM", targetVelocity.first.inRotationsPerMinute)
+    Logger.getInstance()
+      .recordOutput("Shooter/backwheelsSetpointRPM", targetVelocity.second.inRotationsPerMinute)
     Logger.getInstance().recordOutput("Shooter/isOnTarget", isOnTarget)
     Logger.getInstance().recordOutput("Shooter/state", state.name)
 
-    if (kP.hasChanged() || kI.hasChanged() || kD.hasChanged()) {
-      io.configurePID(kP.value, kI.value, kD.value)
+    if (flywheel_kP.hasChanged() || flywheel_kI.hasChanged() || flywheel_kD.hasChanged()) {
+      io.configureFlywheelPID(flywheel_kP.value, flywheel_kI.value, flywheel_kD.value)
+    }
+    if (backwheels_kD.hasChanged() || backwheels_kI.hasChanged() || backwheels_kD.hasChanged()) {
+      io.configureBackwheelsPID(backwheels_kP.value, backwheels_kI.value, backwheels_kD.value)
     }
 
     if (filterSize.hasChanged()) {

@@ -9,6 +9,7 @@ import com.team4099.lib.units.AngularVelocity
 import com.team4099.lib.units.base.amps
 import com.team4099.lib.units.ctreAngularMechanismSensor
 import com.team4099.lib.units.derived.rotations
+import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.inRadiansPerSecond
 import com.team4099.lib.units.perMinute
 import com.team4099.robot2022.config.constants.Constants
@@ -17,28 +18,35 @@ import com.team4099.robot2022.config.constants.ShooterConstants
 
 object ShooterIOReal : ShooterIO {
   private val flywheelMotor = TalonFX(Constants.Shooter.FLYWHEEL_MOTOR_ID, CANIVORE_NAME)
-  private val backWheelsMotor = TalonFX(Constants.Shooter.BACK_WHEELS_MOTOR_ID, CANIVORE_NAME)
+  private val backwheelsMotor = TalonFX(Constants.Shooter.BACK_WHEELS_MOTOR_ID, CANIVORE_NAME)
 
-  private val shooterSensor =
+  private val flywheelShooterSensor =
     ctreAngularMechanismSensor(
       flywheelMotor,
       ShooterConstants.SHOOTER_SENSOR_CPR,
       ShooterConstants.SHOOTER_SENSOR_GEAR_RATIO
     )
 
+  private val backwheelsShooterSensor =
+    ctreAngularMechanismSensor(
+      backwheelsMotor,
+      ShooterConstants.SHOOTER_SENSOR_CPR,
+      ShooterConstants.SHOOTER_SENSOR_GEAR_RATIO
+    )
+
   init {
     flywheelMotor.configFactoryDefault()
-    backWheelsMotor.configFactoryDefault()
+    backwheelsMotor.configFactoryDefault()
 
     flywheelMotor.setInverted(InvertType.None)
-    backWheelsMotor.setInverted(InvertType.None)
+    backwheelsMotor.setInverted(InvertType.None)
 
     flywheelMotor.clearStickyFaults()
-    backWheelsMotor.clearStickyFaults()
+    backwheelsMotor.clearStickyFaults()
     flywheelMotor.enableVoltageCompensation(true)
-    backWheelsMotor.enableVoltageCompensation(true)
+    backwheelsMotor.enableVoltageCompensation(true)
     flywheelMotor.configVoltageCompSaturation(12.0)
-    backWheelsMotor.configVoltageCompSaturation(12.0)
+    backwheelsMotor.configVoltageCompSaturation(12.0)
 
     flywheelMotor.configSupplyCurrentLimit(
       SupplyCurrentLimitConfiguration(
@@ -48,7 +56,7 @@ object ShooterIOReal : ShooterIO {
         1000.0
       )
     )
-    backWheelsMotor.configSupplyCurrentLimit(
+    backwheelsMotor.configSupplyCurrentLimit(
       SupplyCurrentLimitConfiguration(
         true,
         ShooterConstants.SUPPLY_CURRENT_LIMIT,
@@ -57,13 +65,13 @@ object ShooterIOReal : ShooterIO {
       )
     )
 
-    flywheelMotor.config_kP(0, ShooterConstants.SHOOTER_KP)
-    flywheelMotor.config_kI(0, ShooterConstants.SHOOTER_KI)
-    flywheelMotor.config_kD(0, ShooterConstants.SHOOTER_KD)
+    flywheelMotor.config_kP(0, ShooterConstants.SHOOTER_FLYWHEEL_KP)
+    flywheelMotor.config_kI(0, ShooterConstants.SHOOTER_FLYWHEEL_KI)
+    flywheelMotor.config_kD(0, ShooterConstants.SHOOTER_FLYWHEEL_KD)
 
-    backWheelsMotor.config_kP(0, ShooterConstants.SHOOTER_KP)
-    backWheelsMotor.config_kI(0, ShooterConstants.SHOOTER_KI)
-    backWheelsMotor.config_kD(0, ShooterConstants.SHOOTER_KD)
+    backwheelsMotor.config_kP(0, ShooterConstants.SHOOTER_BACKWHEELS_KP)
+    backwheelsMotor.config_kI(0, ShooterConstants.SHOOTER_BACKWHEELS_KI)
+    backwheelsMotor.config_kD(0, ShooterConstants.SHOOTER_BACKWHEELS_KD)
 
     //    leaderMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General,
     // Constants.Universal.SLOW_STATUS_FRAME_TIME.inMilliseconds.toInt())
@@ -144,41 +152,70 @@ object ShooterIOReal : ShooterIO {
   }
 
   override fun updateInputs(inputs: ShooterIO.ShooterIOInputs) {
-    inputs.position = shooterSensor.position
-    inputs.velocity = shooterSensor.velocity
-    inputs.statorCurrent[0] = flywheelMotor.statorCurrent.amps
-    //    inputs.statorCurrent[1] = followerMotor.statorCurrent.amps
-    inputs.supplyCurrent[0] = flywheelMotor.supplyCurrent.amps
-    //    inputs.supplyCurrent[1] = followerMotor.supplyCurrent.amps
-    inputs.tempCelcius[0] = flywheelMotor.temperature
-    //    inputs.tempCelcius[1] = followerMotor.temperature
+    inputs.flywheelPosition = flywheelShooterSensor.position
+    inputs.backwheelsPosition = backwheelsShooterSensor.position
 
-    //    inputs.appliedVoltage = leaderMotor.motorOutputVoltage.volts
+    inputs.flywheelVelocity = flywheelShooterSensor.velocity
+    inputs.backwheelsVelocity = backwheelsShooterSensor.velocity
+
+    inputs.flywheelAppliedVoltage = flywheelMotor.motorOutputVoltage.volts
+    inputs.backwheelsAppliedVoltage = backwheelsMotor.motorOutputVoltage.volts
+
+    inputs.flywheelStatorCurrent = flywheelMotor.statorCurrent.amps
+    inputs.backwheelsStatorCurrent = backwheelsMotor.statorCurrent.amps
+
+    inputs.flywheelSupplyCurrent = flywheelMotor.supplyCurrent.amps
+    inputs.backwheelsSupplyCurrent = backwheelsMotor.supplyCurrent.amps
+
+    inputs.flywheelTempCelcius = flywheelMotor.temperature
+    inputs.backwheelsTempCelcius = backwheelsMotor.temperature
   }
 
-  override fun setVelocity(velocity: AngularVelocity) {
-    if (velocity.absoluteValue <= 600.rotations.perMinute) {
-      setOpenLoop(0.0)
+  override fun setVelocity(velocity: Pair<AngularVelocity, AngularVelocity>) {
+    if (velocity.first.absoluteValue <= 600.rotations.perMinute &&
+      velocity.second.absoluteValue <= 600.rotations.perMinute
+    ) {
+      setFlywheelOpenLoop(0.0)
+      setBackwheelsOpenLoop(0.0)
     } else {
       flywheelMotor.set(
         ControlMode.Velocity,
-        shooterSensor.velocityToRawUnits(velocity),
+        flywheelShooterSensor.velocityToRawUnits(velocity.first),
         DemandType.ArbitraryFeedForward,
         (
-          ShooterConstants.SHOOTER_KS_VOLTS +
-            ShooterConstants.SHOOTER_KV_VOLTS_PER_RADIAN_PER_SECOND *
-            velocity.inRadiansPerSecond
+          ShooterConstants.SHOOTER_FLYWHEEL_KS_VOLTS +
+            ShooterConstants.SHOOTER_FLYWHEEL_KV_VOLTS_PER_RADIAN_PER_SECOND *
+            velocity.first.inRadiansPerSecond
+          ) / 12.0
+      )
+      backwheelsMotor.set(
+        ControlMode.Velocity,
+        backwheelsShooterSensor.velocityToRawUnits(velocity.second),
+        DemandType.ArbitraryFeedForward,
+        (
+          ShooterConstants.SHOOTER_BACKWHEELS_KS_VOLTS +
+            ShooterConstants.SHOOTER_BACKWHEELS_KV_VOLTS_PER_RADIAN_PER_SECOND *
+            velocity.second.inRadiansPerSecond
           ) / 12.0
       )
     }
   }
 
-  override fun setOpenLoop(power: Double) {
+  override fun setFlywheelOpenLoop(power: Double) {
     flywheelMotor.set(ControlMode.PercentOutput, power)
-    backWheelsMotor.set(ControlMode.PercentOutput, power)
   }
 
-  override fun configurePID(kP: Double, kI: Double, kD: Double) {
+  override fun setBackwheelsOpenLoop(power: Double) {
+    flywheelMotor.set(ControlMode.PercentOutput, power)
+  }
+
+  override fun configureFlywheelPID(kP: Double, kI: Double, kD: Double) {
+    flywheelMotor.config_kP(0, kP)
+    flywheelMotor.config_kI(0, kI)
+    flywheelMotor.config_kD(0, kD)
+  }
+
+  override fun configureBackwheelsPID(kP: Double, kI: Double, kD: Double) {
     flywheelMotor.config_kP(0, kP)
     flywheelMotor.config_kI(0, kI)
     flywheelMotor.config_kD(0, kD)

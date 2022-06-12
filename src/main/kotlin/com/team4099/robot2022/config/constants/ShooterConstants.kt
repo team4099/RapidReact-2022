@@ -7,11 +7,20 @@ import com.team4099.lib.units.derived.rotations
 import com.team4099.lib.units.perMinute
 
 object ShooterConstants {
-  const val SHOOTER_KP = 0.075
-  const val SHOOTER_KI = 0.0
-  const val SHOOTER_KD = 7.0
-  val SHOOTER_KS_VOLTS = 0.4
-  val SHOOTER_KV_VOLTS_PER_RADIAN_PER_SECOND = 0.018
+  // TODO change PID, ks, and kv values
+  const val SHOOTER_FLYWHEEL_KP = 0.075
+  const val SHOOTER_FLYWHEEL_KI = 0.0
+  const val SHOOTER_FLYWHEEL_KD = 7.0
+
+  const val SHOOTER_BACKWHEELS_KP = 0.075
+  const val SHOOTER_BACKWHEELS_KI = 0.0
+  const val SHOOTER_BACKWHEELS_KD = 7.0
+
+  val SHOOTER_FLYWHEEL_KS_VOLTS = 0.4
+  val SHOOTER_FLYWHEEL_KV_VOLTS_PER_RADIAN_PER_SECOND = 0.018
+
+  val SHOOTER_BACKWHEELS_KS_VOLTS = 0.4
+  val SHOOTER_BACKWHEELS_KV_VOLTS_PER_RADIAN_PER_SECOND = 0.018
 
   const val SHOOTER_SENSOR_CPR = 2048
   const val SHOOTER_SENSOR_GEAR_RATIO = 1.0
@@ -30,11 +39,17 @@ object ShooterConstants {
   val SHOOTER_HEIGHT = 33.0.inches
   val FLYWHEEL_RADIUS = 2.0.inches
 
-  enum class ShooterState(val targetVelocity: AngularVelocity) {
-    OFF(0.0.rotations.perMinute),
-    IDLE(500.0.rotations.perMinute), // TODO: Fix with a better idle value
-    SPIN_UP_UPPER(1900.0.rotations.perMinute),
-    SPIN_UP_LOWER(1100.0.rotations.perMinute),
-    SHOOTER_UNJAM(-2000.0.rotations.perMinute)
+  enum class ShooterState(val targetVelocity: Pair<AngularVelocity, AngularVelocity>) {
+    // Pair<flywheel velocity, backwheels velocity>
+    OFF(Pair(0.0.rotations.perMinute, 0.0.rotations.perMinute)),
+    IDLE(
+      Pair(
+        500.0.rotations.perMinute,
+        500.0.rotations.perMinute
+      )
+    ), // TODO: Fix with a better idle value
+    SPIN_UP_UPPER(Pair(1900.0.rotations.perMinute, 1900.0.rotations.perMinute)),
+    SPIN_UP_LOWER(Pair(1100.0.rotations.perMinute, 1100.0.rotations.perMinute)),
+    SHOOTER_UNJAM(Pair(-2000.0.rotations.perMinute, -2000.0.rotations.perMinute))
   }
 }
