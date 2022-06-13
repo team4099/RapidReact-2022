@@ -206,7 +206,7 @@ object ShooterIOReal : ShooterIO {
   }
 
   override fun setBackwheelsOpenLoop(power: Double) {
-    flywheelMotor.set(ControlMode.PercentOutput, power)
+    backwheelsMotor.set(ControlMode.PercentOutput, power)
   }
 
   override fun configureFlywheelPID(kP: Double, kI: Double, kD: Double) {
@@ -216,8 +216,8 @@ object ShooterIOReal : ShooterIO {
   }
 
   override fun configureBackwheelsPID(kP: Double, kI: Double, kD: Double) {
-    flywheelMotor.config_kP(0, kP)
-    flywheelMotor.config_kI(0, kI)
-    flywheelMotor.config_kD(0, kD)
+    backwheelsMotor.config_kP(0, kP)
+    backwheelsMotor.config_kI(0, kI)
+    backwheelsMotor.config_kD(0, kD)
   }
 }
