@@ -12,7 +12,7 @@ object ShooterConstants {
   const val SHOOTER_FLYWHEEL_KI = 0.0
   const val SHOOTER_FLYWHEEL_KD = 7.0
 
-  const val SHOOTER_BACKWHEELS_KP = 0.075
+  const val SHOOTER_BACKWHEELS_KP = 0.15
   const val SHOOTER_BACKWHEELS_KI = 0.0
   const val SHOOTER_BACKWHEELS_KD = 7.0
 
@@ -20,7 +20,7 @@ object ShooterConstants {
   val SHOOTER_FLYWHEEL_KV_VOLTS_PER_RADIAN_PER_SECOND = 0.018
 
   val SHOOTER_BACKWHEELS_KS_VOLTS = 0.4
-  val SHOOTER_BACKWHEELS_KV_VOLTS_PER_RADIAN_PER_SECOND = 0.018
+  val SHOOTER_BACKWHEELS_KV_VOLTS_PER_RADIAN_PER_SECOND = 0.0225
 
   const val SHOOTER_SENSOR_CPR = 2048
   const val SHOOTER_SENSOR_GEAR_RATIO = 1.0
@@ -48,7 +48,7 @@ object ShooterConstants {
         500.0.rotations.perMinute
       )
     ), // TODO: Fix with a better idle value
-    SPIN_UP_UPPER(Pair(1900.0.rotations.perMinute, 1900.0.rotations.perMinute)),
+    SPIN_UP_UPPER(Pair(1900.0.rotations.perMinute, -1900.0.rotations.perMinute)),
     SPIN_UP_LOWER(Pair(700.0.rotations.perMinute, 4000.0.rotations.perMinute)),
     SHOOTER_UNJAM(Pair(-2000.0.rotations.perMinute, -2000.0.rotations.perMinute))
   }

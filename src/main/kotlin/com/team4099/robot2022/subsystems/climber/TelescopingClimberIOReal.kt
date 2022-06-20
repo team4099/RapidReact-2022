@@ -75,7 +75,7 @@ object TelescopingClimberIOReal : TelescopingClimberIO {
     telescopingLeftArm.configAllSettings(telescopingConfiguration)
     telescopingLeftArm.setNeutralMode(NeutralMode.Brake)
     telescopingLeftArm.enableVoltageCompensation(true)
-    telescopingLeftArm.inverted = true
+    telescopingLeftArm.inverted = false
     telescopingLeftArm.configForwardSoftLimitThreshold(
       telescopingLeftArmSensor.positionToRawUnits(TelescopingClimberConstants.FORWARD_SOFT_LIMIT)
     )
