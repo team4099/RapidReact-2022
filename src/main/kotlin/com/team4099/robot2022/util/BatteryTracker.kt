@@ -24,7 +24,7 @@ object BatteryTracker {
       val response: ByteArray = port.read(fullResponseLength)
 
       if (response.size != fullResponseLength) {
-        System.out.println(
+        println(
           "[BatteryTracker] Expected " + fullResponseLength
             + " bytes from scanner, got " + response.size
         )
@@ -47,10 +47,10 @@ object BatteryTracker {
         nameLength
       )
       name = String(batteryNameBytes).substring(7, name.length)
-      System.out.println("[BatteryTracker] Scanned battery " + name)
+      println("[BatteryTracker] Scanned battery " + name)
 
     } catch (e: Exception) {
-      System.out.println(
+      println(
         "[BatteryTracker] Exception while trying to scan battery"
       )
       e.printStackTrace()
