@@ -6,14 +6,12 @@ import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.perSecond
 
 object VisionConstants {
-  const val CAMERA_NAME = "photoncamera"
+  const val CAMERA_NAME = "glowworm"
+  const val DRIVER_PIPELINE_ID = 1
 
   val CAMERA_HEIGHT = 29.413.inches // TODO: Update with correct value
   val UPPER_HUB_TARGET_HEIGHT = (8.feet + 8.inches) // TODO: Make sure this is correct
   val CAMERA_ANGLE = 60.degrees
-
-  val TARGET_RANGE = 5.inches // TODO: Update with correct value
-  val RANGE_THRESHOLD = 2.inches // TODO: Update with correct value
 
   val MAX_DIST_ERROR = 0.1.inches
   val MAX_ANGLE_ERROR = 1.0.degrees

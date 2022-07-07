@@ -37,6 +37,13 @@ object VisionIOReal : VisionIO {
       )
     )
 
+  var pipeline = VisionConstants.DRIVER_PIPELINE_ID
+    set(value) {
+      // this method sets the pipeline index and entry
+      camera.setPipelineIndex(value)
+      field = value
+    }
+
   override fun configPID(kP: Double, kI: Double, kD: Double) {
     visionPIDcontroller.p = kP
     visionPIDcontroller.i = kI
