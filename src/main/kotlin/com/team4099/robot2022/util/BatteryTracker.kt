@@ -32,7 +32,7 @@ object BatteryTracker {
       }
 
       for (i in responsePrefix.indices) {
-        if (response[i] !== responsePrefix[i]) {
+        if (response[i] != responsePrefix[i]) {
           println(
             "[BatteryTracker] Invalid prefix from scanner.  Got data:"
           )
