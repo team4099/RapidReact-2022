@@ -37,7 +37,7 @@ object Robot : LoggedRobot() {
     logger.recordMetadata("RobotName", robotName.name)
     logger.recordMetadata("TuningMode", Constants.Tuning.TUNING_MODE.toString())
     logger.recordMetadata("RuntimeType", getRuntimeType().name)
-    if (isReal()){
+    if (isReal()) {
       logger.recordMetadata("BatteryName", BatteryTracker.scanBattery(2.0))
     } else {
       logger.recordMetadata("BatteryName", "N/A")

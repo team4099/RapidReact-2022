@@ -48,7 +48,7 @@ object ShooterConstants {
         500.0.rotations.perMinute
       )
     ), // TODO: Fix with a better idle value
-    //1200,-3600 gave a lot more arc
+    // 1200,-3600 gave a lot more arc
     SPIN_UP_UPPER(Pair(1900.0.rotations.perMinute, -1900.0.rotations.perMinute)),
     SPIN_UP_LOWER(Pair(1100.0.rotations.perMinute, -1100.0.rotations.perMinute)),
     SHOOTER_UNJAM(Pair(-2000.0.rotations.perMinute, -2000.0.rotations.perMinute))
