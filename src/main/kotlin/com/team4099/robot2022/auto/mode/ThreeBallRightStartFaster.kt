@@ -45,7 +45,7 @@ class ThreeBallRightStartFaster(
       // three ball
       ResetPoseCommand(drivetrain, trajectory.startingPose),
       ParallelCommandGroup(
-        WaitCommand(0.75).andThen((IntakeBallsCommand(intake)).withTimeout(2.25)),
+        WaitCommand(0.75).andThen((IntakeBallsCommand(intake)).withTimeout(2.75)),
         DrivePathCommand(drivetrain, trajectory, resetPose = false)
           .deadlineWith(FeederSerialize(feeder))
       ),

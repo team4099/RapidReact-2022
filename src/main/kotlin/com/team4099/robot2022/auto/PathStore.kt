@@ -52,8 +52,8 @@ object PathStore {
   val blueFiveBallRightStart =
     PathPlanner.loadPath(
       "4 and 5 Ball Blue",
-      DrivetrainConstants.SLOW_AUTO_VEL.inMetersPerSecond,
-      DrivetrainConstants.SLOW_AUTO_ACCEL.inMetersPerSecondPerSecond
+      DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
+      DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
     )
 
   val twoBallLeftStartPath =
