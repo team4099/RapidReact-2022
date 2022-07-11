@@ -20,7 +20,7 @@ object ShooterConstants {
   val SHOOTER_FLYWHEEL_KV_VOLTS_PER_RADIAN_PER_SECOND = 0.018
 
   val SHOOTER_BACKWHEELS_KS_VOLTS = 0.4
-  val SHOOTER_BACKWHEELS_KV_VOLTS_PER_RADIAN_PER_SECOND = 0.0205
+  val SHOOTER_BACKWHEELS_KV_VOLTS_PER_RADIAN_PER_SECOND = 0.02125
 
   const val SHOOTER_SENSOR_CPR = 2048
   const val SHOOTER_SENSOR_GEAR_RATIO = 1.0
@@ -49,8 +49,8 @@ object ShooterConstants {
       )
     ), // TODO: Fix with a better idle value
     //1200,-3600 gave a lot more arc
-    SPIN_UP_UPPER(Pair(1900.0.rotations.perMinute, -1900.0.rotations.perMinute)),
-    SPIN_UP_LOWER(Pair(1100.0.rotations.perMinute, -1100.0.rotations.perMinute)),
+    SPIN_UP_UPPER(Pair(1900.0.rotations.perMinute, -2400.0.rotations.perMinute)),
+    SPIN_UP_LOWER(Pair(2200.0.rotations.perMinute, -1100.0.rotations.perMinute)),
     SHOOTER_UNJAM(Pair(-2000.0.rotations.perMinute, -2000.0.rotations.perMinute))
   }
 }

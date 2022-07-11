@@ -10,8 +10,8 @@ object PathStore {
   val testAutoPath =
     PathPlanner.loadPath(
       "strafeRight",
-      DrivetrainConstants.SLOW_AUTO_VEL.inMetersPerSecond,
-      DrivetrainConstants.SLOW_AUTO_ACCEL.inMetersPerSecondPerSecond
+      DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
+      DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
     )
 
   val blueThreeBallRightStartPath =
@@ -52,8 +52,8 @@ object PathStore {
   val blueFiveBallRightStart =
     PathPlanner.loadPath(
       "4 and 5 Ball Blue",
-      DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
-      DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
+      DrivetrainConstants.SLOW_AUTO_VEL.inMetersPerSecond,
+      DrivetrainConstants.SLOW_AUTO_ACCEL.inMetersPerSecondPerSecond
     )
 
   val twoBallLeftStartPath =
@@ -101,8 +101,8 @@ object PathStore {
   val redFiveBallRightStart =
     PathPlanner.loadPath(
       "4 and 5 Ball Red",
-      DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
-      DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
+      DrivetrainConstants.SLOW_AUTO_VEL.inMetersPerSecond,
+      DrivetrainConstants.SLOW_AUTO_ACCEL.inMetersPerSecondPerSecond
     )
 
   //  val blueOneBallLeftTarmacLeftBump =

@@ -14,7 +14,7 @@ object BatteryTracker {
 
   fun scanBattery(timeout: Double): String {
     try {
-      val port: SerialPort = SerialPort(9600, SerialPort.Port.kUSB)
+      val port: SerialPort = SerialPort(9600, SerialPort.Port.kUSB2)
 
       port.setTimeout(timeout)
       port.setWriteBufferSize(scanCommand.size)
