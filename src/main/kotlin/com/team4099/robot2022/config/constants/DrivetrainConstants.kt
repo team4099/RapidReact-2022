@@ -49,8 +49,8 @@ object DrivetrainConstants {
   const val DRIVE_THRESHOLD_CURRENT_LIMIT = 60.0
   val DRIVE_TRIGGER_THRESHOLD_TIME = 0.1.seconds
 
-  const val DRIVE_STATOR_CURRENT_LIMIT = 35.0 // todo change
-  const val DRIVE_STATOR_THRESHOLD_CURRENT_LIMIT = 60.0
+  const val DRIVE_STATOR_CURRENT_LIMIT = 45.0 // todo change
+  const val DRIVE_STATOR_THRESHOLD_CURRENT_LIMIT = 50.0
   val DRIVE_STATOR_TRIGGER_THRESHOLD_TIME = 1.0.seconds
 
 
