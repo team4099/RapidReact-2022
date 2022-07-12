@@ -10,6 +10,7 @@ import com.team4099.lib.units.AngularVelocity
 import com.team4099.lib.units.LinearAcceleration
 import com.team4099.lib.units.LinearVelocity
 import com.team4099.lib.units.base.amps
+import com.team4099.lib.units.base.inAmperes
 import com.team4099.lib.units.base.inSeconds
 import com.team4099.lib.units.ctreAngularMechanismSensor
 import com.team4099.lib.units.ctreLinearMechanismSensor
@@ -64,7 +65,7 @@ class SwerveModuleIOReal(
     steeringConfiguration.peakOutputForward = 1.0
     steeringConfiguration.peakOutputReverse = -1.0
     steeringConfiguration.supplyCurrLimit.currentLimit =
-      DrivetrainConstants.STEERING_SUPPLY_CURRENT_LIMIT
+      DrivetrainConstants.STEERING_SUPPLY_CURRENT_LIMIT.inAmperes
     steeringConfiguration.supplyCurrLimit.enable = true
 
     steeringFalcon.setNeutralMode(NeutralMode.Coast)
@@ -78,15 +79,17 @@ class SwerveModuleIOReal(
     driveConfiguration.slot0.kI = DrivetrainConstants.PID.DRIVE_KI
     driveConfiguration.slot0.kD = DrivetrainConstants.PID.DRIVE_KD
     driveConfiguration.slot0.kF = DrivetrainConstants.PID.DRIVE_KFF
-    driveConfiguration.supplyCurrLimit.currentLimit = DrivetrainConstants.DRIVE_SUPPLY_CURRENT_LIMIT
+    driveConfiguration.supplyCurrLimit.currentLimit =
+      DrivetrainConstants.DRIVE_SUPPLY_CURRENT_LIMIT.inAmperes
     driveConfiguration.supplyCurrLimit.triggerThresholdCurrent =
-      DrivetrainConstants.DRIVE_THRESHOLD_CURRENT_LIMIT
+      DrivetrainConstants.DRIVE_THRESHOLD_CURRENT_LIMIT.inAmperes
     driveConfiguration.supplyCurrLimit.triggerThresholdTime =
       DrivetrainConstants.DRIVE_TRIGGER_THRESHOLD_TIME.inSeconds
     driveConfiguration.supplyCurrLimit.enable = true
-    driveConfiguration.statorCurrLimit.currentLimit = DrivetrainConstants.DRIVE_STATOR_CURRENT_LIMIT
+    driveConfiguration.statorCurrLimit.currentLimit =
+      DrivetrainConstants.DRIVE_STATOR_CURRENT_LIMIT.inAmperes
     driveConfiguration.statorCurrLimit.triggerThresholdCurrent =
-      DrivetrainConstants.DRIVE_STATOR_THRESHOLD_CURRENT_LIMIT
+      DrivetrainConstants.DRIVE_STATOR_THRESHOLD_CURRENT_LIMIT.inAmperes
     driveConfiguration.statorCurrLimit.triggerThresholdTime =
       DrivetrainConstants.DRIVE_STATOR_TRIGGER_THRESHOLD_TIME.inSeconds
     driveConfiguration.statorCurrLimit.enable = true

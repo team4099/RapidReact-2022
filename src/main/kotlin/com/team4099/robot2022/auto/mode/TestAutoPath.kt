@@ -20,9 +20,7 @@ class TestAutoPath(val drivetrain: Drivetrain) : SequentialCommandGroup() {
 
     addCommands(
       ResetPoseCommand(drivetrain, trajectory.startingPose),
-      DrivePathCommand(
-        drivetrain, trajectory, resetPose = true
-      )
+      DrivePathCommand(drivetrain, trajectory, resetPose = true)
     )
   }
 

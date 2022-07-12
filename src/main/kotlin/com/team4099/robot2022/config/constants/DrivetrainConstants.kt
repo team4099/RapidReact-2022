@@ -1,5 +1,6 @@
 package com.team4099.robot2022.config.constants
 
+import com.team4099.lib.units.base.amps
 import com.team4099.lib.units.base.feet
 import com.team4099.lib.units.base.inMeters
 import com.team4099.lib.units.base.inches
@@ -33,8 +34,8 @@ object DrivetrainConstants {
   val SLOW_AUTO_VEL = 2.meters.perSecond
   val SLOW_AUTO_ACCEL = 2.0.meters.perSecond.perSecond
 
-  val MAX_AUTO_VEL = 2.meters.perSecond //4
-  val MAX_AUTO_ACCEL = 2.meters.perSecond.perSecond //3
+  val MAX_AUTO_VEL = 2.meters.perSecond // 4
+  val MAX_AUTO_ACCEL = 2.meters.perSecond.perSecond // 3
 
   const val DRIVE_SENSOR_CPR = 2048
   const val STEERING_SENSOR_CPR = 2048
@@ -44,15 +45,14 @@ object DrivetrainConstants {
 
   val ALLOWED_STEERING_ANGLE_ERROR = 1.degrees
 
-  const val STEERING_SUPPLY_CURRENT_LIMIT = 20.0
-  const val DRIVE_SUPPLY_CURRENT_LIMIT = 35.0
-  const val DRIVE_THRESHOLD_CURRENT_LIMIT = 60.0
+  val STEERING_SUPPLY_CURRENT_LIMIT = 20.0.amps
+  val DRIVE_SUPPLY_CURRENT_LIMIT = 35.0.amps
+  val DRIVE_THRESHOLD_CURRENT_LIMIT = 60.0.amps
   val DRIVE_TRIGGER_THRESHOLD_TIME = 0.1.seconds
 
-  const val DRIVE_STATOR_CURRENT_LIMIT = 45.0 // todo change
-  const val DRIVE_STATOR_THRESHOLD_CURRENT_LIMIT = 50.0
+  val DRIVE_STATOR_CURRENT_LIMIT = 45.0.amps // todo change
+  val DRIVE_STATOR_THRESHOLD_CURRENT_LIMIT = 50.0.amps
   val DRIVE_STATOR_TRIGGER_THRESHOLD_TIME = 1.0.seconds
-
 
   val FRONT_LEFT_MODULE_ZERO = 2.687684.radians
   val FRONT_RIGHT_MODULE_ZERO = 3.24553.radians // todo change
