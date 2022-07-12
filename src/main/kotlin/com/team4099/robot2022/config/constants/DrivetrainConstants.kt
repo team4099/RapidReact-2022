@@ -47,9 +47,12 @@ object DrivetrainConstants {
   const val STEERING_SUPPLY_CURRENT_LIMIT = 20.0
   const val DRIVE_SUPPLY_CURRENT_LIMIT = 35.0
   const val DRIVE_THRESHOLD_CURRENT_LIMIT = 60.0
+  val DRIVE_TRIGGER_THRESHOLD_TIME = 0.1.seconds
+
   const val DRIVE_STATOR_CURRENT_LIMIT = 35.0 // todo change
   const val DRIVE_STATOR_THRESHOLD_CURRENT_LIMIT = 60.0
-  val DRIVE_TRIGGER_THRESHOLD_TIME = 0.1.seconds
+  val DRIVE_STATOR_TRIGGER_THRESHOLD_TIME = 1.0.seconds
+
 
   val FRONT_LEFT_MODULE_ZERO = 2.687684.radians
   val FRONT_RIGHT_MODULE_ZERO = 3.24553.radians // todo change
