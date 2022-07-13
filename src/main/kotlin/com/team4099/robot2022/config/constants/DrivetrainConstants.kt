@@ -50,12 +50,12 @@ object DrivetrainConstants {
   val DRIVE_THRESHOLD_CURRENT_LIMIT = 60.0.amps
   val DRIVE_TRIGGER_THRESHOLD_TIME = 0.1.seconds
 
-  val DRIVE_STATOR_CURRENT_LIMIT = 45.0.amps // todo change
+  val DRIVE_STATOR_CURRENT_LIMIT = 45.0.amps
   val DRIVE_STATOR_THRESHOLD_CURRENT_LIMIT = 50.0.amps
   val DRIVE_STATOR_TRIGGER_THRESHOLD_TIME = 1.0.seconds
 
   val FRONT_LEFT_MODULE_ZERO = 2.687684.radians
-  val FRONT_RIGHT_MODULE_ZERO = 3.24553.radians // todo change
+  val FRONT_RIGHT_MODULE_ZERO = 3.24553.radians
   val BACK_RIGHT_MODULE_ZERO = 4.608515.radians
   val BACK_LEFT_MODULE_ZERO = 5.204072.radians
 
