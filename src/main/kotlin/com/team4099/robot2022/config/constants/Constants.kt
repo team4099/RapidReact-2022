@@ -14,6 +14,7 @@ object Constants {
     val CANIVORE_NAME = "kestrel_vore"
 
     val LOOP_PERIOD_TIME = 2.centi.seconds
+    val POWER_DISTRIBUTION_HUB_ID = 1
   }
 
   object Tuning {

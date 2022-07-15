@@ -69,6 +69,7 @@ object RobotContainer {
   private val pivotClimber: PivotClimber
   private val led: Led
   private val pneumatic: Pneumatic
+  //  private val pdh: PowerDistributionHub
 
   init {
     if (Constants.Tuning.type == Constants.Tuning.RobotType.REAL) {
@@ -80,6 +81,7 @@ object RobotContainer {
       pivotClimber = PivotClimber(PivotClimberIOReal)
       led = Led(LedIOCandle)
       pneumatic = Pneumatic(PneumaticsIOReal)
+      //      pdh = PowerDistributionHub(PowerDistributionHubReal)
     } else {
       drivetrain = Drivetrain(object : DrivetrainIO {})
       intake = Intake(object : IntakeIO {})
@@ -89,6 +91,7 @@ object RobotContainer {
       pivotClimber = PivotClimber(object : PivotClimberIO {})
       led = Led(object : LedIO {})
       pneumatic = Pneumatic(object : PneumaticIO {})
+      //      pdh = PowerDistributionHub(object: PowerDistributionHubIO {})
     }
   }
 
