@@ -3,7 +3,6 @@ package com.team4099.robot2022
 import com.team4099.robot2022.auto.AutonomousSelector
 import com.team4099.robot2022.auto.PathStore
 import com.team4099.robot2022.config.constants.Constants
-import com.team4099.robot2022.util.BatteryTracker
 import edu.wpi.first.wpilibj.PowerDistribution
 import edu.wpi.first.wpilibj.livewindow.LiveWindow
 import edu.wpi.first.wpilibj2.command.CommandScheduler
@@ -37,11 +36,11 @@ object Robot : LoggedRobot() {
     logger.recordMetadata("RobotName", robotName.name)
     logger.recordMetadata("TuningMode", Constants.Tuning.TUNING_MODE.toString())
     logger.recordMetadata("RuntimeType", getRuntimeType().name)
-    if (isReal()) {
-      logger.recordMetadata("BatteryName", BatteryTracker.scanBattery(2.0))
-    } else {
-      logger.recordMetadata("BatteryName", "N/A")
-    }
+    //    if (isReal()) {
+    //      logger.recordMetadata("BatteryName", BatteryTracker.scanBattery(2.0))
+    //    } else {
+    //      logger.recordMetadata("BatteryName", "N/A")
+    //    }
 
     logger.recordMetadata("ProjectName", MAVEN_NAME)
     logger.recordMetadata("BuildDate", BUILD_DATE)

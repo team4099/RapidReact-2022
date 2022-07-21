@@ -64,4 +64,10 @@ class ExtendTelescopingArmCommand(val telescopingClimber: TelescopingClimber) : 
     return leftTelescopingProfile.isFinished((Clock.fpgaTime - startTime).inSeconds) &&
       rightTelescopingProfile.isFinished((Clock.fpgaTime - startTime).inSeconds)
   }
+
+  override fun end(interrupted: Boolean) {
+    if (interrupted) {
+      telescopingClimber.setOpenLoop(0.0, 0.0)
+    }
+  }
 }

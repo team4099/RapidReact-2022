@@ -56,7 +56,7 @@ class TwoBallLeftRightSteal(
       ParallelCommandGroup(
         DrivePathCommand(drivetrain, twoBallLeftTarmacRightToFender, resetPose = false)
           .deadlineWith(FeederSerialize(feeder)),
-        WaitCommand(1.0).andThen(IntakeBallsCommand(intake).withTimeout(1.5))
+        WaitCommand(1.0).andThen(IntakeBallsCommand(intake).withTimeout(0.75))
       ),
       SpinUpUpperHub(shooter).andThen(ShootCommand(shooter, feeder))
     )

@@ -92,7 +92,7 @@ class SwerveModuleIOReal(
       DrivetrainConstants.DRIVE_STATOR_THRESHOLD_CURRENT_LIMIT.inAmperes
     driveConfiguration.statorCurrLimit.triggerThresholdTime =
       DrivetrainConstants.DRIVE_STATOR_TRIGGER_THRESHOLD_TIME.inSeconds
-    driveConfiguration.statorCurrLimit.enable = true
+    driveConfiguration.statorCurrLimit.enable = false // TODO tune
     driveConfiguration.voltageCompSaturation = 12.0
 
     driveFalcon.configAllSettings(driveConfiguration)

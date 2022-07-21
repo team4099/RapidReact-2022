@@ -15,7 +15,7 @@ class OpenLoopExtendClimberCommand(val telescopingClimber: TelescopingClimber) :
     ) {
       telescopingClimber.setOpenLoop(0.6, 0.6)
     } else {
-      telescopingClimber.setOpenLoop(1.0, 1.0)
+      telescopingClimber.setOpenLoop(0.6, 0.6)
     }
 
     Logger.getInstance().recordOutput("ActiveCommands/OpenLoopExtendClimberCommand", true)

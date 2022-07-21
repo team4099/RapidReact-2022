@@ -34,8 +34,8 @@ object DrivetrainConstants {
   val SLOW_AUTO_VEL = 2.meters.perSecond
   val SLOW_AUTO_ACCEL = 2.0.meters.perSecond.perSecond
 
-  val MAX_AUTO_VEL = 2.meters.perSecond // 4
-  val MAX_AUTO_ACCEL = 2.meters.perSecond.perSecond // 3
+  val MAX_AUTO_VEL = 3.meters.perSecond // 4
+  val MAX_AUTO_ACCEL = 3.meters.perSecond.perSecond // 3
 
   const val DRIVE_SENSOR_CPR = 2048
   const val STEERING_SENSOR_CPR = 2048
@@ -50,8 +50,8 @@ object DrivetrainConstants {
   val DRIVE_THRESHOLD_CURRENT_LIMIT = 60.0.amps
   val DRIVE_TRIGGER_THRESHOLD_TIME = 0.1.seconds
 
-  val DRIVE_STATOR_CURRENT_LIMIT = 45.0.amps
-  val DRIVE_STATOR_THRESHOLD_CURRENT_LIMIT = 50.0.amps
+  val DRIVE_STATOR_CURRENT_LIMIT = 65.0.amps
+  val DRIVE_STATOR_THRESHOLD_CURRENT_LIMIT = 80.0.amps
   val DRIVE_STATOR_TRIGGER_THRESHOLD_TIME = 1.0.seconds
 
   val FRONT_LEFT_MODULE_ZERO = 2.687684.radians

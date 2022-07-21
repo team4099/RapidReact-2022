@@ -5,9 +5,10 @@ import com.team4099.robot2022.auto.AutonomousSelector
 import com.team4099.robot2022.commands.climber.ClimbSequenceCommand
 import com.team4099.robot2022.commands.climber.ExtendPivotArmCommand
 import com.team4099.robot2022.commands.climber.ExtendTelescopingArmCommand
+import com.team4099.robot2022.commands.climber.FixTelescopingInFrontOfRungCommand
+import com.team4099.robot2022.commands.climber.OpenLoopClimbCommand
 import com.team4099.robot2022.commands.climber.PivotArmIdleCommand
 import com.team4099.robot2022.commands.climber.RetractPivotArmCommand
-import com.team4099.robot2022.commands.climber.RetractTelescopingArmCommand
 import com.team4099.robot2022.commands.climber.SpoolLeftDownCommand
 import com.team4099.robot2022.commands.climber.SpoolLeftUpCommand
 import com.team4099.robot2022.commands.climber.SpoolRightDownCommand
@@ -20,7 +21,6 @@ import com.team4099.robot2022.commands.drivetrain.TeleopDriveCommand
 import com.team4099.robot2022.commands.feeder.FeederCommand
 import com.team4099.robot2022.commands.feeder.FeederSerialize
 import com.team4099.robot2022.commands.feeder.FeederSerializeIdleCommand
-import com.team4099.robot2022.commands.feeder.ResetBallCountCommand
 import com.team4099.robot2022.commands.intake.IntakeBallsCommand
 import com.team4099.robot2022.commands.intake.IntakeIdleCommand
 import com.team4099.robot2022.commands.intake.ReverseIntakeCommand
@@ -29,7 +29,6 @@ import com.team4099.robot2022.commands.pneumatics.PneumaticIdleCommand
 import com.team4099.robot2022.commands.pneumatics.UseLowThresholdClimbCommand
 import com.team4099.robot2022.commands.shooter.ShootCommand
 import com.team4099.robot2022.commands.shooter.ShooterIdleCommand
-import com.team4099.robot2022.commands.shooter.ShooterUnjamCommand
 import com.team4099.robot2022.commands.shooter.SpinUpLowerHub
 import com.team4099.robot2022.commands.shooter.SpinUpUpperHub
 import com.team4099.robot2022.config.ControlBoard
@@ -142,7 +141,7 @@ object RobotContainer {
       DriveBrakeModeCommand(drivetrain)
         .alongWith(SpinUpLowerHub(shooter).andThen(ShootCommand(shooter, feeder)))
     )
-    ControlBoard.shooterUnjam.whileActiveOnce(ShooterUnjamCommand(shooter))
+    //    ControlBoard.shooterUnjam.whileActiveOnce(ShooterUnjamCommand(shooter))
 
     ControlBoard.runIntake.whileActiveContinuous(
       IntakeBallsCommand(intake).alongWith(FeederSerialize(feeder))
@@ -151,14 +150,12 @@ object RobotContainer {
     //    ControlBoard.resetBallCount.whileActiveOnce(ResetBallCountCommand(feeder))
     ControlBoard.outTake.whileActiveContinuous(
       ReverseIntakeCommand(intake)
-        .alongWith(FeederCommand(feeder, FeederConstants.FeederState.BACKWARD_FLOOR))
+        .alongWith(FeederCommand(feeder, FeederConstants.FeederState.BACKWARD_ALL))
     )
-    ControlBoard.resetBallCount.whileActiveOnce(ResetBallCountCommand(feeder))
+    //    ControlBoard.resetBallCount.whileActiveOnce(ResetBallCountCommand(feeder))
 
     ControlBoard.extendTelescoping.whileActiveOnce(ExtendTelescopingArmCommand(telescopingClimber))
-    ControlBoard.retractTelescoping.whileActiveOnce(
-      RetractTelescopingArmCommand(telescopingClimber)
-    )
+    ControlBoard.retractTelescoping.whileActiveOnce(OpenLoopClimbCommand(telescopingClimber))
     ControlBoard.extendPivot.whileActiveOnce(ExtendPivotArmCommand(pivotClimber))
     ControlBoard.retractPivot.whileActiveOnce(RetractPivotArmCommand(pivotClimber))
     ControlBoard.startClimbSequence.whileActiveOnce(
@@ -167,15 +164,12 @@ object RobotContainer {
       UseLowThresholdClimbCommand(pneumatic)
         .alongWith(
           ResetGyroPitchCommand(drivetrain)
-            .andThen(
-              ClimbSequenceCommand(telescopingClimber, pivotClimber)
-                .andThen(
-                  ClimbSequenceCommand(telescopingClimber, pivotClimber)
-                    .andThen(RetractTelescopingArmCommand(telescopingClimber))
-                )
-            )
+            .andThen(ClimbSequenceCommand(telescopingClimber, pivotClimber))
+          //        )
         )
-      //        )
+    )
+    ControlBoard.fixTelescopingRung.whileActiveOnce(
+      FixTelescopingInFrontOfRungCommand(telescopingClimber)
     )
 
     //

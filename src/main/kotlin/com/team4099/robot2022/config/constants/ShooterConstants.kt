@@ -32,7 +32,7 @@ object ShooterConstants {
   //  val FOLLOWER_STATUS_FRAME_PERIOD = 255.milli.seconds
 
   // Target values
-  val TARGET_VELOCITY_THRESHOLD = 50.rotations.perMinute
+  val TARGET_VELOCITY_THRESHOLD = 100.rotations.perMinute
 
   // Physical measurements
   val ANGLE = 80.0.degrees
@@ -49,8 +49,8 @@ object ShooterConstants {
       )
     ), // TODO: Fix with a better idle value
     // 1200,-3600 gave a lot more arc
-    SPIN_UP_UPPER(Pair(1900.0.rotations.perMinute, -2400.0.rotations.perMinute)),
-    SPIN_UP_LOWER(Pair(2200.0.rotations.perMinute, -1100.0.rotations.perMinute)),
+    SPIN_UP_UPPER(Pair(1950.0.rotations.perMinute, -2100.0.rotations.perMinute)),
+    SPIN_UP_LOWER(Pair(1100.0.rotations.perMinute, -1100.0.rotations.perMinute)),
     SHOOTER_UNJAM(Pair(-2000.0.rotations.perMinute, -2000.0.rotations.perMinute))
   }
 }

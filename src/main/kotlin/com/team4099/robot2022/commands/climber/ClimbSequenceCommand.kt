@@ -12,16 +12,30 @@ class ClimbSequenceCommand(
 
   init {
     addCommands(
-      RetractTelescopingArmCommand(telescopingClimber).withTimeout(0.5),
-      WaitCommand(0.5),
+      // mid to high
+      RetractTelescopingArmCommand(telescopingClimber).withTimeout(0.75),
+      WaitCommand(0.25),
+      RetractTelescopingArmCommand(telescopingClimber),
+      ExtendPivotArmCommand(pivotClimber),
+      WaitCommand(0.25),
+      ExtendTelescopingArmCommand(telescopingClimber).withTimeout(0.5),
+      WaitCommand(1.0),
+      ExtendTelescopingArmCommand(telescopingClimber),
+      RetractPivotArmCommand(pivotClimber),
+      WaitCommand(1.0),
+
+      // high to traversal
+      RetractTelescopingArmCommand(telescopingClimber).withTimeout(0.75),
+      WaitCommand(0.25),
       RetractTelescopingArmCommand(telescopingClimber),
       ExtendPivotArmCommand(pivotClimber),
       WaitCommand(0.5),
-      ExtendTelescopingArmCommand(telescopingClimber).withTimeout(0.5),
-      WaitCommand(0.75),
+      OpenLoopExtendClimberCommand(telescopingClimber).withTimeout(0.6),
+      WaitCommand(1.75),
       ExtendTelescopingArmCommand(telescopingClimber),
       RetractPivotArmCommand(pivotClimber),
-      WaitCommand(1.0)
+      WaitCommand(1.0),
+      OpenLoopClimbCommand(telescopingClimber).withTimeout(0.75)
     )
   }
 }

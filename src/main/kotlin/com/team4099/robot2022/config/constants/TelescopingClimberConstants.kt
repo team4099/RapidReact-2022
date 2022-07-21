@@ -27,9 +27,9 @@ object TelescopingClimberConstants {
 
   val SPOOL_RADIUS = 0.5.inches
   val LEFT_SPOOL_RADIUS = 0.5125.inches
-  val RIGHT_SPOOL_RADIUS = 0.5.inches
+  val RIGHT_SPOOL_RADIUS = 0.515.inches
   val MAX_VELOCITY = 35.inches.perSecond
-  val MAX_ACCELERATION = 50.inches.perSecond.perSecond
+  val MAX_ACCELERATION = 60.inches.perSecond.perSecond
 
   const val BOTTOM_SAFETY_THRESHOLD = 0
   const val TOP_SAFETY_THRESHOLD = 0

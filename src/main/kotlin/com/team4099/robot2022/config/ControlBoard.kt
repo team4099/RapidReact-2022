@@ -39,7 +39,7 @@ object ControlBoard {
   val startShooter = Trigger { operator.yButton }
   val startShooterLower = Trigger { operator.xButton }
   val outTake = Trigger { operator.bButton }
-  val shooterUnjam = Trigger { operator.selectButton }
+  //  val shooterUnjam = Trigger { operator.selectButton }
   //  val alignRobot = Trigger { operator.yButton }
 
   val extendTelescoping = Trigger { operator.dPadUp }
@@ -49,7 +49,7 @@ object ControlBoard {
   val retractPivot = Trigger { operator.dPadLeft }
 
   val startClimbSequence = Trigger { operator.startButton }
-  val resetBallCount = Trigger { operator.selectButton }
+  val fixTelescopingRung = Trigger { operator.selectButton }
 
   val leftSpoolDown = Trigger { operator.leftShoulderButton }
   val rightSpoolDown = Trigger { operator.rightShoulderButton }
