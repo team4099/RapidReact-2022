@@ -4,8 +4,8 @@ import com.team4099.lib.units.UnitKey
 import com.team4099.lib.units.Value
 
 object Celsius : UnitKey
-// Somewhat misleading to use UnitKey because adding celsius and farenheit together
-// will produce different results if you convert them both to celsius or farenheit first
+// Somewhat misleading to use UnitKey because adding celsius and fahrenheit together
+// will produce different results if you convert them both to celsius or fahrenheit first
 // so addition/subtraction between temperatures should not be done (although supported)
 
 // The incorporation of UnitKey does allow scalar multiplication and division which might be useful
