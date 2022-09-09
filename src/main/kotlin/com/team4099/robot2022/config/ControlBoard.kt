@@ -14,10 +14,10 @@ object ControlBoard {
   private val operator = XboxOneGamepad(Constants.Joysticks.SHOTGUN_PORT)
 
   val strafe: Double
-    get() = -driver.leftXAxis
+    get() = -driver.leftXAxis * Constants.Joysticks.SENSITIVITY
 
   val forward: Double
-    get() = driver.leftYAxis
+    get() = driver.leftYAxis * Constants.Joysticks.SENSITIVITY
 
   val turn: Double
     get() = driver.rightXAxis
