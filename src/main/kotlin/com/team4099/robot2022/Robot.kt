@@ -58,7 +58,8 @@ object Robot : LoggedRobot() {
       LoggedSystemStats.getInstance()
         .setPowerDistributionConfig(1, PowerDistribution.ModuleType.kRev)
     } else {
-      // determines whether simulation runs all loop cycles as fast as possible or replays in real time
+      // determines whether simulation runs all loop cycles as fast as possible or replays in real
+      // time
       setUseTiming(Constants.Universal.USE_TIMING)
       // if in replay mode get file path from command line and read log file
       val path = ByteLogReplay.promptForPath()
