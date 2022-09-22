@@ -63,6 +63,7 @@ object Robot : LoggedRobot() {
       val path = ByteLogReplay.promptForPath()
       logger.setReplaySource(ByteLogReplay(path))
       logger.addDataReceiver(ByteLogReceiver(ByteLogReceiver.addPathSuffix(path, "_sim")))
+      logger.addDataReceiver(LogSocketServer(5800))
     }
     logger.start()
 
