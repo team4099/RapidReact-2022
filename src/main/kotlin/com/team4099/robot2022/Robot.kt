@@ -51,7 +51,6 @@ object Robot : LoggedRobot() {
       1 -> logger.recordMetadata("GitDirty", "Uncommitted changes")
       else -> logger.recordMetadata("GitDirty", "Unknown")
     }
-
     if (isReal()) {
       // log to USB stick and network for real time data viewing on AdvantageScope
       logger.addDataReceiver(ByteLogReceiver("/media/sda1"))
@@ -59,6 +58,8 @@ object Robot : LoggedRobot() {
       LoggedSystemStats.getInstance()
         .setPowerDistributionConfig(1, PowerDistribution.ModuleType.kRev)
     } else {
+      // determines whether simulation runs all loop cycles as fast as possible or replays in real time
+      setUseTiming(Constants.Universal.USE_TIMING)
       // if in replay mode get file path from command line and read log file
       val path = ByteLogReplay.promptForPath()
       logger.setReplaySource(ByteLogReplay(path))
