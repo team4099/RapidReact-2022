@@ -8,14 +8,14 @@ import org.littletonrobotics.junction.Logger
 class PowerDistributionHub(val io: PowerDistributionHubIO) : SubsystemBase() {
 
   val inputs = PowerDistributionHubIO.PowerDistributionHubIOInputs()
+  var resistance = 0.0
 
   override fun periodic() {
     io.updateInputs(inputs)
-    Logger.getInstance().processInputs("Pneumatics", inputs)
+    Logger.getInstance().processInputs("PDH", inputs)
 
-    var resistance = 0.0
     resistance = inputs.voltage.inVolts / inputs.current.inAmperes
 
-    Logger.getInstance().recordOutput("Pneumatics/resistance", resistance)
+    Logger.getInstance().recordOutput("PDH/resistance", resistance)
   }
 }

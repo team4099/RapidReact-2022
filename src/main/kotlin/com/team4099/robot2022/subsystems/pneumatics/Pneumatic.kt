@@ -20,8 +20,12 @@ class Pneumatic(val io: PneumaticIO) : SubsystemBase() {
 
   private val noPressureTimer: Timer = Timer()
   private val compressorEnabledTimer: Timer = Timer()
+  private val compressorDisabledTimer: Timer = Timer()
   private val dumpValveAlert =
     Alert("Can't build pressure. Check the dump valve!", AlertType.WARNING)
+
+  private val notCompressing =
+    Alert("Compressor not running when pressure low", AlertType.WARNING)
 
   private val filterData: MutableList<Double> = ArrayList()
   var pressureSmoothedPsi = 0.0
@@ -38,6 +42,7 @@ class Pneumatic(val io: PneumaticIO) : SubsystemBase() {
   init {
     noPressureTimer.start()
     compressorEnabledTimer.start()
+    compressorDisabledTimer.start()
   }
 
   override fun periodic() {
@@ -93,9 +98,11 @@ class Pneumatic(val io: PneumaticIO) : SubsystemBase() {
     }
     if (!inputs.compressorActive) {
       compressorEnabledTimer.reset()
+    } else {
+      compressorDisabledTimer.reset()
     }
     dumpValveAlert.set(noPressureTimer.hasElapsed(5.0) && compressorEnabledTimer.hasElapsed(5.0))
-
+    notCompressing.set(noPressureTimer.hasElapsed(5.0) && compressorDisabledTimer.hasElapsed(5.0))
     if (pressureSmoothedPsi >= PneumaticConstants.CLIMB_PSI_REQ) {
       allowClimb = PneumaticConstants.AllowClimb.CLIMB
     } else {
