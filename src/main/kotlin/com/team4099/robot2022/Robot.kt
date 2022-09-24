@@ -3,6 +3,8 @@ package com.team4099.robot2022
 import com.team4099.robot2022.auto.AutonomousSelector
 import com.team4099.robot2022.auto.PathStore
 import com.team4099.robot2022.config.constants.Constants
+import com.team4099.robot2022.util.Alert
+import com.team4099.robot2022.util.Alert.AlertType
 import edu.wpi.first.wpilibj.PowerDistribution
 import edu.wpi.first.wpilibj.livewindow.LiveWindow
 import edu.wpi.first.wpilibj2.command.CommandScheduler
@@ -16,6 +18,15 @@ import org.littletonrobotics.junction.io.LogSocketServer
 
 object Robot : LoggedRobot() {
   val robotName: Constants.Tuning.RobotType
+
+  private val logReceiverQueueAlert: Alert =
+    Alert("Logging queue exceeded capacity, data will NOT be logged.", AlertType.ERROR)
+  private val logOpenFileAlert: Alert =
+    Alert("Failed to open log file. Data will NOT be logged.", AlertType.ERROR)
+  private val logWriteAlert: Alert =
+    Alert("Failed write to the log file. Data will NOT be logged.", AlertType.ERROR)
+
+  private var logReceiver: ByteLogReceiver? = null
 
   init {
     robotName = Constants.Tuning.type
@@ -53,12 +64,14 @@ object Robot : LoggedRobot() {
     }
     if (isReal()) {
       // log to USB stick and network for real time data viewing on AdvantageScope
-      logger.addDataReceiver(ByteLogReceiver("/media/sda1"))
+      logReceiver = ByteLogReceiver("/media/sda1")
+      logger.addDataReceiver(logReceiver)
       logger.addDataReceiver(LogSocketServer(5800))
       LoggedSystemStats.getInstance()
         .setPowerDistributionConfig(1, PowerDistribution.ModuleType.kRev)
     } else {
-      // determines whether simulation runs all loop cycles as fast as possible or replays in real time
+      // determines whether simulation runs all loop cycles as fast as possible or replays in real
+      // time
       setUseTiming(Constants.Universal.USE_TIMING)
       // if in replay mode get file path from command line and read log file
       val path = ByteLogReplay.promptForPath()
@@ -105,6 +118,14 @@ object Robot : LoggedRobot() {
 
   override fun robotPeriodic() {
     CommandScheduler.getInstance().run()
+
+    // update logging alerts
+    logReceiverQueueAlert.set(Logger.getInstance().getReceiverQueueFault())
+
+    if (logReceiver != null) {
+      logOpenFileAlert.set(logReceiver!!.getOpenFault())
+      logWriteAlert.set(logReceiver!!.getWriteFault())
+    }
 
     //    Logger.getInstance()
     //      .recordOutput(
