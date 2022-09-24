@@ -40,8 +40,7 @@ class Drivetrain(val io: DrivetrainIO) : SubsystemBase() {
   }
 
   private val gyroDisconnectedAlert: Alert =
-    Alert("Gyro sensor disconnected, odometry will be very inaccurate", AlertType.ERROR);
-
+    Alert("Gyro sensor disconnected, odometry will be very inaccurate", AlertType.ERROR)
 
   private val wheelSpeeds =
     mutableListOf(0.feet.perSecond, 0.feet.perSecond, 0.feet.perSecond, 0.feet.perSecond)
@@ -127,7 +126,7 @@ class Drivetrain(val io: DrivetrainIO) : SubsystemBase() {
     //    Logger.getInstance().recordOutput("Drivetrain/backRightAngleRadians",
     // wheelAngles[3].inRadians)
 
-    //update gyro alert
+    // update gyro alert
     gyroDisconnectedAlert.set(!inputs.gyroConnected)
 
     Logger.getInstance()

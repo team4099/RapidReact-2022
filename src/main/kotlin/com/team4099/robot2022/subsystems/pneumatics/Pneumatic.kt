@@ -24,8 +24,7 @@ class Pneumatic(val io: PneumaticIO) : SubsystemBase() {
   private val dumpValveAlert =
     Alert("Can't build pressure. Check the dump valve!", AlertType.WARNING)
 
-  private val notCompressing =
-    Alert("Compressor not running when pressure low", AlertType.WARNING)
+  private val notCompressing = Alert("Compressor not running when pressure low", AlertType.WARNING)
 
   private val filterData: MutableList<Double> = ArrayList()
   var pressureSmoothedPsi = 0.0
