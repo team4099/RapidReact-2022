@@ -58,6 +58,8 @@ import com.team4099.robot2022.subsystems.pneumatics.PneumaticsIOReal
 import com.team4099.robot2022.subsystems.shooter.Shooter
 import com.team4099.robot2022.subsystems.shooter.ShooterIO
 import com.team4099.robot2022.subsystems.shooter.ShooterIOReal
+import com.team4099.robot2022.util.Alert
+import com.team4099.robot2022.util.Alert.AlertType
 
 object RobotContainer {
   private val drivetrain: Drivetrain
@@ -91,6 +93,9 @@ object RobotContainer {
       led = Led(object : LedIO {})
       pneumatic = Pneumatic(object : PneumaticIO {})
       //      pdh = PowerDistributionHub(object: PowerDistributionHubIO {})
+    }
+    if (Constants.Tuning.TUNING_MODE) {
+      Alert("Tuning mode active, expect decreased network  performance.", AlertType.INFO).set(true);
     }
   }
 

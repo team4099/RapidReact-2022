@@ -16,7 +16,7 @@ interface DrivetrainIO {
     var gyroPitch = 0.0.radians
     var gyroVelocity = 0.0.radians.perSecond
 
-    var gyroConnected = true
+    var gyroConnected = false
 
     override fun toLog(table: LogTable?) {
       table?.put("gyroYawAngleDegrees", gyroYaw.inDegrees)

@@ -21,6 +21,8 @@ import com.team4099.lib.units.derived.times
 import com.team4099.lib.units.inMetersPerSecond
 import com.team4099.lib.units.perSecond
 import com.team4099.robot2022.config.constants.DrivetrainConstants
+import com.team4099.robot2022.util.Alert
+import com.team4099.robot2022.util.Alert.AlertType
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry
 import edu.wpi.first.math.kinematics.SwerveModuleState
@@ -36,6 +38,10 @@ class Drivetrain(val io: DrivetrainIO) : SubsystemBase() {
     // Wheel speeds
     zeroSteering()
   }
+
+  private val gyroDisconnectedAlert: Alert =
+    Alert("Gyro sensor disconnected, odometry will be very inaccurate", AlertType.ERROR);
+
 
   private val wheelSpeeds =
     mutableListOf(0.feet.perSecond, 0.feet.perSecond, 0.feet.perSecond, 0.feet.perSecond)
@@ -120,6 +126,9 @@ class Drivetrain(val io: DrivetrainIO) : SubsystemBase() {
     // wheelAngles[2].inRadians)
     //    Logger.getInstance().recordOutput("Drivetrain/backRightAngleRadians",
     // wheelAngles[3].inRadians)
+
+    //update gyro alert
+    gyroDisconnectedAlert.set(!inputs.gyroConnected)
 
     Logger.getInstance()
       .recordOutput(
