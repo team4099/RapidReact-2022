@@ -52,6 +52,9 @@ import com.team4099.robot2022.subsystems.intake.IntakeIOReal
 import com.team4099.robot2022.subsystems.led.Led
 import com.team4099.robot2022.subsystems.led.LedIO
 import com.team4099.robot2022.subsystems.led.LedIOCandle
+import com.team4099.robot2022.subsystems.pdh.PowerDistributionHub
+import com.team4099.robot2022.subsystems.pdh.PowerDistributionHubIO
+import com.team4099.robot2022.subsystems.pdh.PowerDistributionHubIOReal
 import com.team4099.robot2022.subsystems.pneumatics.Pneumatic
 import com.team4099.robot2022.subsystems.pneumatics.PneumaticIO
 import com.team4099.robot2022.subsystems.pneumatics.PneumaticsIOReal
@@ -70,7 +73,7 @@ object RobotContainer {
   private val pivotClimber: PivotClimber
   private val led: Led
   private val pneumatic: Pneumatic
-  //  private val pdh: PowerDistributionHub
+  private val pdh: PowerDistributionHub
 
   init {
     if (Constants.Tuning.type == Constants.Tuning.RobotType.REAL) {
@@ -82,7 +85,8 @@ object RobotContainer {
       pivotClimber = PivotClimber(PivotClimberIOReal)
       led = Led(LedIOCandle)
       pneumatic = Pneumatic(PneumaticsIOReal)
-      //      pdh = PowerDistributionHub(PowerDistributionHubReal)
+      pdh = PowerDistributionHub(PowerDistributionHubIOReal)
+
     } else {
       drivetrain = Drivetrain(object : DrivetrainIO {})
       intake = Intake(object : IntakeIO {})
@@ -92,7 +96,7 @@ object RobotContainer {
       pivotClimber = PivotClimber(object : PivotClimberIO {})
       led = Led(object : LedIO {})
       pneumatic = Pneumatic(object : PneumaticIO {})
-      //  pdh = PowerDistributionHub(object: PowerDistributionHubIO {})
+      pdh = PowerDistributionHub(object: PowerDistributionHubIO {})
     }
     if (Constants.Tuning.TUNING_MODE) {
       Alert("Tuning mode active, expect decreased network  performance.", AlertType.INFO).set(true);
