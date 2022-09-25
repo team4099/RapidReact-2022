@@ -91,6 +91,10 @@ object Robot : LoggedRobot() {
 
     LiveWindow.disableAllTelemetry()
 
+    if (Constants.Tuning.TUNING_MODE) {
+      Alert("Tuning mode active, expect decreased network  performance.", AlertType.INFO).set(true)
+    }
+
     RobotContainer
     AutonomousSelector
     PathStore
