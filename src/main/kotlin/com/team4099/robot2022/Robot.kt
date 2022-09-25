@@ -6,6 +6,7 @@ import com.team4099.robot2022.config.ControlBoard
 import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.util.Alert
 import com.team4099.robot2022.util.Alert.AlertType
+import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.PowerDistribution
 import edu.wpi.first.wpilibj.livewindow.LiveWindow
 import edu.wpi.first.wpilibj2.command.CommandScheduler
@@ -32,7 +33,6 @@ object Robot : LoggedRobot() {
 
   private val operatorControllerAlert: Alert =
     Alert("Operator Controller not connected", AlertType.WARNING)
-
 
   private var logReceiver: ByteLogReceiver? = null
 
@@ -95,11 +95,16 @@ object Robot : LoggedRobot() {
       Alert("Tuning mode active, expect decreased network  performance.", AlertType.INFO).set(true)
     }
 
+    if (!DriverStation.isJoystickConnectionWarningSilenced()) {
+      DriverStation.silenceJoystickConnectionWarning(true)
+    }
+
     RobotContainer
     AutonomousSelector
     PathStore
     RobotContainer.mapDefaultCommands()
     RobotContainer.zeroSensors()
+    RobotContainer.setPDHConfig()
   }
 
   override fun autonomousInit() {

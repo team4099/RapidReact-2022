@@ -95,7 +95,6 @@ object RobotContainer {
       pneumatic = Pneumatic(object : PneumaticIO {})
       pdh = PowerDistributionHub(object : PowerDistributionHubIO {})
     }
-
   }
 
   fun zeroSteering() {
@@ -192,6 +191,10 @@ object RobotContainer {
     AutonomousSelector.getCommand(
       drivetrain, intake, feeder, shooter, telescopingClimber, pivotClimber
     )
+
+  fun setPDHConfig() {
+    pdh.setPDHConfig()
+  }
 
   fun logOperatorController() = ControlBoard.logOperatorController()
   fun logDriverController() = ControlBoard.logDriverController()

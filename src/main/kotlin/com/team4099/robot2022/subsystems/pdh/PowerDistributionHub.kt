@@ -2,6 +2,7 @@ package com.team4099.robot2022.subsystems.pdh
 
 import com.team4099.lib.units.base.inAmperes
 import com.team4099.lib.units.derived.inVolts
+import com.team4099.robot2022.config.constants.PDHConstants
 import com.team4099.robot2022.util.Alert
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import org.littletonrobotics.junction.Logger
@@ -13,6 +14,10 @@ class PowerDistributionHub(val io: PowerDistributionHubIO) : SubsystemBase() {
 
   private val lowVoltage =
     Alert("PDH reading under 12 volts, should switch battery!", Alert.AlertType.WARNING)
+
+  fun setPDHConfig() {
+    inputs.setPowerDistributionConfig(PDHConstants.MODULE, PDHConstants.TYPE)
+  }
 
   override fun periodic() {
     io.updateInputs(inputs)
