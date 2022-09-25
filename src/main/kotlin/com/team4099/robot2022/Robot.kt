@@ -2,6 +2,7 @@ package com.team4099.robot2022
 
 import com.team4099.robot2022.auto.AutonomousSelector
 import com.team4099.robot2022.auto.PathStore
+import com.team4099.robot2022.config.ControlBoard
 import com.team4099.robot2022.config.constants.Constants
 import com.team4099.robot2022.util.Alert
 import com.team4099.robot2022.util.Alert.AlertType
@@ -25,6 +26,13 @@ object Robot : LoggedRobot() {
     Alert("Failed to open log file. Data will NOT be logged.", AlertType.ERROR)
   private val logWriteAlert: Alert =
     Alert("Failed write to the log file. Data will NOT be logged.", AlertType.ERROR)
+
+  private val driverControllerAlert: Alert =
+    Alert("Driver Controller not connected", AlertType.WARNING)
+
+  private val operatorControllerAlert: Alert =
+    Alert("Operator Controller not connected", AlertType.WARNING)
+
 
   private var logReceiver: ByteLogReceiver? = null
 
@@ -126,6 +134,9 @@ object Robot : LoggedRobot() {
       logOpenFileAlert.set(logReceiver!!.getOpenFault())
       logWriteAlert.set(logReceiver!!.getWriteFault())
     }
+
+    driverControllerAlert.set(!ControlBoard.driverConnected())
+    operatorControllerAlert.set(!ControlBoard.operatorConnected())
 
     //    Logger.getInstance()
     //      .recordOutput(

@@ -87,4 +87,13 @@ object ControlBoard {
     Logger.getInstance()
       .recordOutput("OperatorController/leftShoulderButton", operator.leftShoulderButton)
   }
+
+
+  fun driverConnected(): Boolean {
+    return driver.isConnected()
+  }
+
+  fun operatorConnected(): Boolean {
+    return operator.isConnected()
+  }
 }
