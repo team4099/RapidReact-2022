@@ -3,11 +3,10 @@ package com.team4099.robot2022.util
 import edu.wpi.first.wpilibj.SerialPort
 
 object BatteryTracker {
-  private const val nameLength: Int = 19
-  private var name: String = "bit.ly/BAT-00000000"
+  private const val nameLength: Int = 12
+  private var name: String = "BAT-00000000"
   private val scanCommand =
     byteArrayOf(0x7e, 0x00, 0x08, 0x01, 0x00, 0x02, 0x01, 0xab.toByte(), 0xcd.toByte())
-
   private val responsePrefix = byteArrayOf(0x02, 0x00, 0x00, 0x01, 0x00, 0x33, 0x31)
   private val fullResponseLength = responsePrefix.size + nameLength + 1
 
