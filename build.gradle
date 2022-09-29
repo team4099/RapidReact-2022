@@ -136,11 +136,21 @@ compileKotlin {
 	}
 }
 
+task changePermission {
+	doLast {
+		project.exec {
+			commandLine('chmod',  'ug+x', '.git/hooks/*')
+		}
+	}
+}
 
 task installLocalGitHook(type: Copy){
 	from new File(rootProject.rootDir, 'scripts/pre-commit.sh')
 	into { new File(rootProject.rootDir, '.git/hooks')}
 	fileMode 0775
+	doLast{
+		changePermission.execute()
+	}
 }
 
 build.dependsOn installLocalGitHook
