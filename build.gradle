@@ -105,14 +105,6 @@ test {
 	useJUnitPlatform()
 }
 
-task installLocalGitHook(type: Copy){
-	from new File(rootProject.rootDir, 'scripts/pre-commit')
-	into { new File(rootProject.rootDir, '.git/hooks')}
-	fileMode 0777
-}
-
-build.dependsOn installLocalGitHook
-
 spotless {
 	format 'misc', {
 		// define the files to apply `misc` to
