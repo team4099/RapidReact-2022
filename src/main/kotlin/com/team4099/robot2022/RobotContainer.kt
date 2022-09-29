@@ -158,9 +158,13 @@ object RobotContainer {
     ControlBoard.retractTelescoping.whileActiveOnce(OpenLoopClimbCommand(telescopingClimber))
     ControlBoard.extendPivot.whileActiveOnce(ExtendPivotArmCommand(pivotClimber))
     ControlBoard.retractPivot.whileActiveOnce(RetractPivotArmCommand(pivotClimber))
-    ControlBoard.startClimbSequence.
-    whileActiveOnce(UseLowThresholdClimbCommand(pneumatic).alongWith(ResetGyroPitchCommand(drivetrain).andThen(
-      ClimbSequenceCommand(telescopingClimber, pivotClimber))))
+    ControlBoard.startClimbSequence.whileActiveOnce(
+      UseLowThresholdClimbCommand(pneumatic)
+        .alongWith(
+          ResetGyroPitchCommand(drivetrain)
+            .andThen(ClimbSequenceCommand(telescopingClimber, pivotClimber))
+        )
+    )
     ControlBoard.fixTelescopingRung.whileActiveOnce(
       FixTelescopingInFrontOfRungCommand(telescopingClimber)
     )
