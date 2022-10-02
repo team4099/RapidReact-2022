@@ -62,11 +62,16 @@ configurations.all {
 	exclude group: "edu.wpi.first.wpilibj"
 }
 
+test {
+	useJUnitPlatform()
+}
+
 // Defining my dependencies. In this case, WPILib (+ friends)
 dependencies {
 	implementation wpi.java.deps.wpilib()
 	implementation wpi.java.vendor.java()
 	implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0'
+	implementation 'org.junit.jupiter:junit-jupiter:5.7.0'
 
 	roborioDebug wpi.java.deps.wpilibJniDebug(wpi.platforms.roborio)
 	roborioDebug wpi.java.vendor.jniDebug(wpi.platforms.roborio)
