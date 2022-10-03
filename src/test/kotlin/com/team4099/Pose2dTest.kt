@@ -19,19 +19,20 @@ class Pose2dTest {
   //  fun testTransformBy() {
   //    val initial = Pose(Translation(Translation2d(1.0, 2.0)),
   // Rotation2d.fromDegrees(45.0).radians)
-  //    val transformation = Transform2d(Translation(Translation2d(5.0, 0.0)),
-  // Rotation2d.fromDegrees(5.0))
+  //    val transformation =
+  //      Transform2d(Translation(Translation2d(5.0, 0.0)), Rotation2d.fromDegrees(5.0))
   //    val transformed = initial.plus(transformation)
   //    assertAll(
   //      { assertEquals(1.0 + 5.0 / Math.sqrt(2.0), transformed.x, kEpsilon) },
   //      { assertEquals(2.0 + 5.0 / Math.sqrt(2.0), transformed.y, kEpsilon) },
-  //      { assertEquals(50.0, transformed.rotation.degrees, kEpsilon) })
+  //      { assertEquals(50.0, transformed.rotation.degrees, kEpsilon) }
+  //    )
   //  }
-
+  //
   @Test
   fun testRelativeTo() {
-    val initial = Pose(0.0.meters, 0.0.meters, 45.degrees.inRadians.radians)
-    val last = Pose(5.0.meters, 5.0.meters, 45.degrees.inRadians.radians)
+    val initial = Pose(0.0.meters, 0.0.meters, 45.degrees)
+    val last = Pose(5.0.meters, 5.0.meters, 45.degrees)
     val finalRelativeToInitial = last.relativeTo(initial)
     assertAll(
       { assertEquals(5.0 * Math.sqrt(2.0), finalRelativeToInitial.x.inMeters, kEpsilon) },
@@ -42,15 +43,15 @@ class Pose2dTest {
 
   @Test
   fun testEquality() {
-    val one = Pose(0.0.meters, 5.0.meters, 43.degrees.inRadians.radians)
-    val two = Pose(0.0.meters, 5.0.meters, 43.degrees.inRadians.radians)
+    val one = Pose(0.0.meters, 5.0.meters, 43.degrees)
+    val two = Pose(0.0.meters, 5.0.meters, 43.degrees)
     assertEquals(one, two)
   }
 
   @Test
   fun testInequality() {
-    val one = Pose(0.0.meters, 5.0.meters, 43.degrees.inRadians.radians)
-    val two = Pose(0.0.meters, 1.524.meters, 43.degrees.inRadians.radians)
+    val one = Pose(0.0.meters, 5.0.meters, 43.degrees)
+    val two = Pose(0.0.meters, 1.524.meters, 43.degrees)
     assertNotEquals(one, two)
   }
 

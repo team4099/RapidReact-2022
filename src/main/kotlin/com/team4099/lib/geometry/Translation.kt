@@ -3,6 +3,7 @@ package com.team4099.lib.geometry
 import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.base.inMeters
 import com.team4099.lib.units.base.meters
+import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.geometry.Translation2d
 import kotlin.math.hypot
 
@@ -40,6 +41,10 @@ data class Translation(val x: Length, val y: Length) {
 
   operator fun unaryMinus(): Translation {
     return Translation(x * -1, y * -1)
+  }
+
+  fun rotateBy(other: Rotation2d): Translation {
+    return Translation(x * other.cos - y * other.sin, x * other.sin + y * other.cos)
   }
 
   fun normalize(): Translation {
