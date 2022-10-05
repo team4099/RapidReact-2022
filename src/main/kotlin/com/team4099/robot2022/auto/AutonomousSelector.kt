@@ -18,6 +18,7 @@ import com.team4099.robot2022.auto.mode.TwoBallLeftMiddleOneStealMode
 import com.team4099.robot2022.auto.mode.TwoBallLeftMiddleStartMode
 import com.team4099.robot2022.auto.mode.TwoBallLeftMiddleTwoStealMode
 import com.team4099.robot2022.auto.mode.TwoBallLeftRightSteal
+import com.team4099.robot2022.auto.mode.TwoMeterWheelCharacterization
 import com.team4099.robot2022.commands.climber.TelescopingCharacterizationCommand
 import com.team4099.robot2022.commands.drivetrain.DriveCharacterizeCommand
 import com.team4099.robot2022.commands.shooter.ShooterCharacterizeCommand
@@ -95,6 +96,10 @@ object AutonomousSelector {
     autonomousModeChooser.addOption("Four Ball Right Start", AutonomousMode.FOUR_BALL_RIGHT_START)
     autonomousModeChooser.addOption("Five Ball Right Start", AutonomousMode.FIVE_BALL_RIGHT_START)
     autonomousModeChooser.addOption("888 Mode", AutonomousMode.EIGHT_EIGHT_EIGHT_MODE)
+    autonomousModeChooser.addOption(
+      "TWO Meter Wheel Characterization", AutonomousMode.TWO_METER_WHEEL_CHARACTERIZATION
+    )
+
     autoTab.add("Mode", autonomousModeChooser).withSize(5, 2).withPosition(3, 0)
     waitBeforeCommandSlider =
       autoTab
@@ -147,8 +152,6 @@ object AutonomousSelector {
       AutonomousMode.CHARACTERIZE_CLIMBER_TELESCOPE ->
         return WaitCommand(getWaitTime().inSeconds)
           .andThen(TelescopingCharacterizationCommand(telescopingClimber))
-      //      AutonomousMode.CHARACTERIZE_CLIMBER_PIVOT -> return
-      // PivotCharacterizationCommand(pivotClimber)
       AutonomousMode.FOUR_BALL_RIGHT_START ->
         return WaitCommand(getWaitTime().inSeconds)
           .andThen(FourBallRightStart(drivetrain, intake, feeder, shooter))
@@ -213,6 +216,9 @@ object AutonomousSelector {
               drivetrain, feeder, shooter, intake, getSecondaryWaitTime()
             )
           )
+      AutonomousMode.TWO_METER_WHEEL_CHARACTERIZATION ->
+        return WaitCommand(getWaitTime().inSeconds)
+          .andThen(TwoMeterWheelCharacterization(drivetrain))
       else -> println("ERROR: unexpected auto mode: $mode")
     }
     return InstantCommand()
@@ -237,6 +243,7 @@ object AutonomousSelector {
     TWO_BALL_LEFT_MIDDLE_ONE_STEAL,
     TWO_BALL_LEFT_MIDDLE_NO_STEAL,
     TWO_BALL_LEFT_MIDDLE_TWO_STEAL,
-    TWO_BALL_LEFT_RIGHT_ONE_STEAL
+    TWO_BALL_LEFT_RIGHT_ONE_STEAL,
+    TWO_METER_WHEEL_CHARACTERIZATION
   }
 }
