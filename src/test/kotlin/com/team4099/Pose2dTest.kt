@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test
 
 class Pose2dTest {
   private val kEpsilon = 1E-9
-  //test commit
+  // test commit
 
   //  @Test
   //  fun testTransformBy() {
