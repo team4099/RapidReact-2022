@@ -11,7 +11,7 @@ import com.team4099.lib.units.inRadiansPerSecond
 import com.team4099.lib.units.perSecond
 import edu.wpi.first.math.geometry.Twist2d
 
-data class Twist(val dx: LinearVelocity, val dy: LinearVelocity, val dtheta: AngularVelocity) {
+data class Twist2d(val dx: LinearVelocity, val dy: LinearVelocity, val dtheta: AngularVelocity) {
   constructor(
     translationSpeeds: Pair<LinearVelocity, LinearVelocity>,
     theta: AngularVelocity

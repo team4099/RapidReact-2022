@@ -45,12 +45,12 @@ data class Pose(val x: Length, val y: Length, val theta: Angle) {
     return Pose(-translation, theta + 180.degrees)
   }
 
-  fun update(twist: Twist, timestep: Time): Pose {
+  fun update(twist: Twist2d, timestep: Time): Pose {
     return Pose(pose2d.exp(twist.toTwist2d(timestep)))
   }
 
-  fun change(pose: Pose, timestep: Time): Twist {
-    return Twist(pose2d.log(pose.pose2d), timestep)
+  fun change(pose: Pose, timestep: Time): Twist2d {
+    return Twist2d(pose2d.log(pose.pose2d), timestep)
   }
 
   fun relativeTo(other: Pose): Pose {
