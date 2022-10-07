@@ -58,6 +58,9 @@ import com.team4099.robot2022.subsystems.pneumatics.PneumaticsIOReal
 import com.team4099.robot2022.subsystems.shooter.Shooter
 import com.team4099.robot2022.subsystems.shooter.ShooterIO
 import com.team4099.robot2022.subsystems.shooter.ShooterIOReal
+import com.team4099.robot2022.subsystems.vision.Vision
+import com.team4099.robot2022.subsystems.vision.VisionIO
+import com.team4099.robot2022.subsystems.vision.VisionIOReal
 
 object RobotContainer {
   private val drivetrain: Drivetrain
@@ -68,6 +71,7 @@ object RobotContainer {
   private val pivotClimber: PivotClimber
   private val led: Led
   private val pneumatic: Pneumatic
+  private val vision: Vision
   //  private val pdh: PowerDistributionHub
 
   init {
@@ -80,6 +84,7 @@ object RobotContainer {
       pivotClimber = PivotClimber(PivotClimberIOReal)
       led = Led(LedIOCandle)
       pneumatic = Pneumatic(PneumaticsIOReal)
+      vision = Vision(VisionIOReal)
       //      pdh = PowerDistributionHub(PowerDistributionHubReal)
     } else {
       drivetrain = Drivetrain(object : DrivetrainIO {})
@@ -90,6 +95,7 @@ object RobotContainer {
       pivotClimber = PivotClimber(object : PivotClimberIO {})
       led = Led(object : LedIO {})
       pneumatic = Pneumatic(object : PneumaticIO {})
+      vision = Vision(object : VisionIO {})
       //      pdh = PowerDistributionHub(object: PowerDistributionHubIO {})
     }
   }
