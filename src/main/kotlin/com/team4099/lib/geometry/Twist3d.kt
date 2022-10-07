@@ -27,8 +27,8 @@ data class Twist3d(
     translationSpeeds.second,
     translationSpeeds.third,
     rotationalSpeeds.first,
-    rotationalSpeeds.first,
-    rotationalSpeeds.first
+    rotationalSpeeds.second,
+    rotationalSpeeds.third
   )
 
   constructor(
@@ -36,8 +36,8 @@ data class Twist3d(
     timestep: Time
   ) : this(
     (twist.dx / timestep.inSeconds).meters.perSecond,
-    (twist.dx / timestep.inSeconds).meters.perSecond,
-    (twist.dx / timestep.inSeconds).meters.perSecond,
+    (twist.dy / timestep.inSeconds).meters.perSecond,
+    (twist.dz / timestep.inSeconds).meters.perSecond,
     (twist.rx / timestep.inSeconds).radians.perSecond,
     (twist.ry / timestep.inSeconds).radians.perSecond,
     (twist.rz / timestep.inSeconds).radians.perSecond
