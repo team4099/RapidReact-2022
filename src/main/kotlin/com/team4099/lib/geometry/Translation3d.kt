@@ -34,8 +34,8 @@ class Translation3d(val m_x: Length, val m_y: Length, val m_z: Length) {
     return Translation3d(qprime.x.meters, qprime.y.meters, qprime.z.meters)
   }
 
-  fun toTranslation2d(): Translation2d {
-    return Translation2d(m_x, m_y)
+  fun toTranslation2d(): Translation {
+    return Translation(m_x, m_y)
   }
 
   fun getX(): Length {
