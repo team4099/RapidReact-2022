@@ -55,7 +55,7 @@ object DrivetrainConstants {
   val DRIVE_STATOR_TRIGGER_THRESHOLD_TIME = 1.0.seconds
 
   val FRONT_LEFT_MODULE_ZERO = 2.687684.radians
-  val FRONT_RIGHT_MODULE_ZERO = 3.24553.radians
+  val FRONT_RIGHT_MODULE_ZERO = 3.274.radians
   val BACK_RIGHT_MODULE_ZERO = 4.608515.radians
   val BACK_LEFT_MODULE_ZERO = 5.204072.radians
 
