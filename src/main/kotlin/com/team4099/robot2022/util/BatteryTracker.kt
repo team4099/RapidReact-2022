@@ -3,8 +3,8 @@ package com.team4099.robot2022.util
 import edu.wpi.first.wpilibj.SerialPort
 
 object BatteryTracker {
-  private const val nameLength: Int = 19
-  private var name: String = "bit.ly/BAT-00000000"
+  private const val nameLength: Int = 12
+  private var name: String = "BAT-00000000"
   private val scanCommand =
     byteArrayOf(0x7e, 0x00, 0x08, 0x01, 0x00, 0x02, 0x01, 0xab.toByte(), 0xcd.toByte())
   private val responsePrefix = byteArrayOf(0x02, 0x00, 0x00, 0x01, 0x00, 0x33, 0x31)
@@ -12,7 +12,7 @@ object BatteryTracker {
 
   fun scanBattery(timeout: Double): String {
     try {
-      val port: SerialPort = SerialPort(9600, SerialPort.Port.kUSB)
+      val port: SerialPort = SerialPort(9600, SerialPort.Port.kUSB2)
 
       port.setTimeout(timeout)
       port.setWriteBufferSize(scanCommand.size)
@@ -28,7 +28,6 @@ object BatteryTracker {
             " bytes from scanner, got " +
             response.size
         )
-        println(response.contentToString())
         return name
       }
 
@@ -42,7 +41,7 @@ object BatteryTracker {
       // Read name from data
       val batteryNameBytes: ByteArray = ByteArray(nameLength)
       System.arraycopy(response, responsePrefix.size, batteryNameBytes, 0, nameLength)
-      name = String(batteryNameBytes).substring(7, name.length)
+      //      name = String(batteryNameBytes).substring(7, name.length)
       println("[BatteryTracker] Scanned battery " + name)
     } catch (e: Exception) {
       println("[BatteryTracker] Exception while trying to scan battery")

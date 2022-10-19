@@ -15,6 +15,7 @@ object Constants {
 
     val LOOP_PERIOD_TIME = 2.centi.seconds
     val POWER_DISTRIBUTION_HUB_ID = 1
+    val USE_TIMING = true
   }
 
   object Tuning {
