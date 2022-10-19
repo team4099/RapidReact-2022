@@ -244,4 +244,11 @@ object PathStore {
       DrivetrainConstants.MAX_AUTO_VEL.inMetersPerSecond,
       DrivetrainConstants.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond
     )
+
+  val twoMeterWheelTrajectory =
+    PathPlanner.loadPath(
+      "2 meter wheel charac",
+      DrivetrainConstants.MAX_AUTO_BRAKE_VEL.inMetersPerSecond,
+      DrivetrainConstants.MAX_AUTO_BRAKE_ACCEL.inMetersPerSecondPerSecond
+    )
 }

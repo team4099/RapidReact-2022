@@ -15,7 +15,7 @@ import kotlin.math.sqrt
 
 object DrivetrainConstants {
   const val WHEEL_COUNT = 4
-  val WHEEL_DIAMETER = 4.inches
+  val WHEEL_DIAMETER = 3.785.inches
   val DRIVETRAIN_LENGTH = 22.750.inches
   val DRIVETRAIN_WIDTH = 22.750.inches
 
@@ -36,6 +36,9 @@ object DrivetrainConstants {
 
   val MAX_AUTO_VEL = 3.meters.perSecond // 4
   val MAX_AUTO_ACCEL = 3.meters.perSecond.perSecond // 3
+
+  val MAX_AUTO_BRAKE_VEL = 0.5.meters.perSecond // 4
+  val MAX_AUTO_BRAKE_ACCEL = 0.5.meters.perSecond.perSecond // 3
 
   const val DRIVE_SENSOR_CPR = 2048
   const val STEERING_SENSOR_CPR = 2048
