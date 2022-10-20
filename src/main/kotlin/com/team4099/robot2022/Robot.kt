@@ -81,7 +81,7 @@ object Robot : LoggedRobot() {
   override fun autonomousInit() {
     // autonomousCommand.schedule()
     RobotContainer.setDriveBrakeMode()
-    //    RobotContainer.zeroSteering()
+    RobotContainer.zeroSteering()
     RobotContainer.getAutonomousCommand().schedule()
   }
 
@@ -95,7 +95,7 @@ object Robot : LoggedRobot() {
     RobotContainer.mapTeleopControls()
     RobotContainer.getAutonomousCommand().cancel()
     RobotContainer.setDriveBrakeMode() // change to coast
-    //    RobotContainer.zeroSteering()
+    RobotContainer.zeroSteering()
     // autonomousCommand.cancel()
   }
 
