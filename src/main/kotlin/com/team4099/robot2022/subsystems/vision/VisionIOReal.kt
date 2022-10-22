@@ -2,6 +2,7 @@ package com.team4099.robot2022.subsystems.vision
 
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.base.seconds
+import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.milli
 import edu.wpi.first.networktables.EntryListenerFlags
 import edu.wpi.first.networktables.EntryNotification
@@ -11,9 +12,13 @@ import org.photonvision.PhotonCamera
 
 object VisionIOReal : VisionIO {
   val camera: PhotonCamera = PhotonCamera("gloworm")
-  var bestXReading = 0.meters
-  var bestYReading = 0.meters
+  var bestXReading = 0.0.meters
+  var bestYReading = 0.0.meters
   var bestZReading = 0.0.meters
+  var bestRollReading = 0.0.degrees
+  var bestPitchReading = 0.0.degrees
+  var bestYawReading = 0.0.degrees
+
   var latency = 0.milli.seconds
   var hasTargets = false
 
@@ -30,11 +35,18 @@ object VisionIOReal : VisionIO {
           var bestX = 0.meters
           var bestY = 0.meters
           var bestZ = 0.0.meters
+          var bestRoll = 0.0.degrees
+          var bestPitch = 0.0.degrees
+          var bestYaw = 0.0.degrees
+
           if (result.hasTargets()) {
             System.out.println(result.bestTarget.cameraToTarget.z)
             bestX = result.bestTarget.cameraToTarget.x.meters
             bestY = result.bestTarget.cameraToTarget.y.meters
             bestZ = result.bestTarget.cameraToTarget.z.meters
+            bestRoll = result.bestTarget.cameraToTarget.rotation.x.degrees
+            bestPitch = result.bestTarget.cameraToTarget.rotation.y.degrees
+            bestYaw = result.bestTarget.cameraToTarget.rotation.z.degrees
           }
           val existentTargets = result.hasTargets()
           synchronized(this@VisionIOReal) {
@@ -42,6 +54,9 @@ object VisionIOReal : VisionIO {
             bestXReading = bestX
             bestYReading = bestY
             bestZReading = bestZ
+            bestRollReading = bestRoll
+            bestPitchReading = bestPitch
+            bestYawReading = bestYaw
             hasTargets = existentTargets
           }
         },
@@ -54,6 +69,9 @@ object VisionIOReal : VisionIO {
     inputs.bestX = bestXReading
     inputs.bestY = bestYReading
     inputs.bestZ = bestZReading
+    inputs.bestRoll = bestRollReading
+    inputs.bestPitch = bestPitchReading
+    inputs.bestYaw = bestYawReading
     inputs.hasTargets = hasTargets
   }
 }

@@ -4,6 +4,8 @@ import com.team4099.lib.units.base.inMeters
 import com.team4099.lib.units.base.inMilliseconds
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.base.seconds
+import com.team4099.lib.units.derived.degrees
+import com.team4099.lib.units.derived.inDegrees
 import com.team4099.lib.units.milli
 import org.littletonrobotics.junction.LogTable
 import org.littletonrobotics.junction.inputs.LoggableInputs
@@ -14,9 +16,12 @@ interface VisionIO {
     var hasTargets: Boolean = false
     val targets: List<PhotonTrackedTarget> = mutableListOf()
     var latency = 0.milli.seconds
-    var bestX = 0.meters
-    var bestY = 0.meters
+    var bestX = 0.0.meters
+    var bestY = 0.0.meters
     var bestZ = 0.0.meters
+    var bestRoll = 0.0.degrees
+    var bestPitch = 0.0.degrees
+    var bestYaw = 0.0.degrees
 
     override fun toLog(table: LogTable?) {
       table?.put("hasTargets", hasTargets)
@@ -24,6 +29,9 @@ interface VisionIO {
       table?.put("bestX", bestX.inMeters)
       table?.put("bestY", bestY.inMeters)
       table?.put("bestZ", bestZ.inMeters)
+      table?.put("bestRoll", bestRoll.inDegrees)
+      table?.put("bestPitch", bestPitch.inDegrees)
+      table?.put("bestYaw", bestYaw.inDegrees)
     }
 
     override fun fromLog(table: LogTable?) {
@@ -32,6 +40,7 @@ interface VisionIO {
       table?.getDouble("bestX", bestX.inMeters)?.let { bestX = it.meters }
       table?.getDouble("bestY", bestY.inMeters)?.let { bestY = it.meters }
       table?.getDouble("bestZ", bestZ.inMeters)?.let { bestZ = it.meters }
+      table?.getDouble("bestRoll", bestRoll.inDegrees)?.let { bestZ = it.meters }
     }
   }
 
