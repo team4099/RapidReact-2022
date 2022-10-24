@@ -38,7 +38,7 @@ object VisionIOPhotonReal : VisionIO {
           var bestRoll = 0.0.degrees
           var bestPitch = 0.0.degrees
           var bestYaw = 0.0.degrees
-
+          System.out.println(result)
           if (result.hasTargets()) {
             bestX = result.bestTarget.cameraToTarget.x.meters
             bestY = result.bestTarget.cameraToTarget.y.meters

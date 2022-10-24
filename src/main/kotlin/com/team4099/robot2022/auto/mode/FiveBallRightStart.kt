@@ -56,7 +56,7 @@ class FiveBallRightStart(
       ),
       SpinUpUpperHub(shooter)
         .deadlineWith(FeederSerialize(feeder))
-        .andThen(AutoShootCommand(shooter, feeder).withTimeout(1.5)),
+        .andThen(AutoShootCommand(shooter, feeder).withTimeout(2.0)),
 
       // four and five ball
       ParallelCommandGroup(
