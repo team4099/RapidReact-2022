@@ -28,7 +28,6 @@ object VisionIOPhotonReal : VisionIO {
       .getEntry("/photonvision/" + "gloworm" + "/latencyMillis")
       .addListener(
         { event: EntryNotification? ->
-          System.out.println(camera.latestResult.toString())
           val result = camera.latestResult
           val timestamp =
             (Logger.getInstance().realTimestamp - result.latencyMillis / 1000.0).seconds
@@ -38,14 +37,13 @@ object VisionIOPhotonReal : VisionIO {
           var bestRoll = 0.0.degrees
           var bestPitch = 0.0.degrees
           var bestYaw = 0.0.degrees
-          System.out.println(result)
           if (result.hasTargets()) {
-            bestX = result.bestTarget.cameraToTarget.x.meters
-            bestY = result.bestTarget.cameraToTarget.y.meters
-            bestZ = result.bestTarget.cameraToTarget.z.meters
-            bestRoll = result.bestTarget.cameraToTarget.rotation.x.degrees
-            bestPitch = result.bestTarget.cameraToTarget.rotation.y.degrees
-            bestYaw = result.bestTarget.cameraToTarget.rotation.z.degrees
+            bestX = result.bestTarget.bestCameraToTarget.x.meters
+            bestY = result.bestTarget.bestCameraToTarget.y.meters
+            bestZ = result.bestTarget.bestCameraToTarget.z.meters
+            bestRoll = result.bestTarget.bestCameraToTarget.rotation.x.degrees
+            bestPitch = result.bestTarget.bestCameraToTarget.rotation.y.degrees
+            bestYaw = result.bestTarget.bestCameraToTarget.rotation.z.degrees
           }
           val existentTargets = result.hasTargets()
           synchronized(this@VisionIOPhotonReal) {
