@@ -1,7 +1,5 @@
 package com.team4099.robot2022
 
-import com.team4099.robot2022.auto.AutonomousSelector
-import com.team4099.robot2022.auto.PathStore
 import com.team4099.robot2022.config.constants.Constants
 import edu.wpi.first.wpilibj.PowerDistribution
 import edu.wpi.first.wpilibj.livewindow.LiveWindow
@@ -72,36 +70,27 @@ object Robot : LoggedRobot() {
     LiveWindow.disableAllTelemetry()
 
     RobotContainer
-    AutonomousSelector
-    PathStore
     RobotContainer.mapDefaultCommands()
     RobotContainer.zeroSensors()
   }
 
   override fun autonomousInit() {
     // autonomousCommand.schedule()
-    RobotContainer.setDriveBrakeMode()
     //    RobotContainer.zeroSteering()
-    RobotContainer.getAutonomousCommand().schedule()
   }
 
   override fun disabledInit() {
-    RobotContainer.getAutonomousCommand().cancel()
-    RobotContainer.setDriveBrakeMode()
     // autonomousCommand.cancel()
   }
 
   override fun teleopInit() {
     RobotContainer.mapTeleopControls()
-    RobotContainer.getAutonomousCommand().cancel()
-    RobotContainer.setDriveBrakeMode() // change to coast
     //    RobotContainer.zeroSteering()
     // autonomousCommand.cancel()
   }
 
   override fun testInit() {
     RobotContainer.mapTestControls()
-    RobotContainer.getAutonomousCommand().cancel()
   }
 
   override fun robotPeriodic() {
