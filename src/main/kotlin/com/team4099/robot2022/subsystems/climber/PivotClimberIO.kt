@@ -5,12 +5,16 @@ import org.littletonrobotics.junction.inputs.LoggableInputs
 
 interface PivotClimberIO {
   class PivotClimberIOInputs : LoggableInputs {
+    var isExtended: Boolean = false
+
     override fun toLog(table: LogTable?) {
-      TODO("Not yet implemented")
+      table?.put("pivotExtended", isExtended)
     }
 
     override fun fromLog(table: LogTable?) {
-      TODO("Not yet implemented")
+      table?.getBoolean("pivotExtended", isExtended)?.let { isExtended = it }
     }
   }
+
+  fun updateInputs(io: PivotClimberIOInputs)
 }
