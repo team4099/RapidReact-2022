@@ -84,7 +84,7 @@ class Feeder(val io: FeederIO) : SubsystemBase() {
 
     Logger.getInstance().processInputs("Feeder", inputs)
 
-    Logger.getInstance().recordOutput("Feeder/ballCount", ballCount)
+    Logger.getInstance().recordOutput("Feeder/ballCount", ballCount.toDouble())
     Logger.getInstance().recordOutput("Feeder/bottomPrevStage", bottomPrevStage)
     Logger.getInstance().recordOutput("Feeder/topPrevStage", topPrevStage)
     Logger.getInstance().recordOutput("Feeder/state", state.name)

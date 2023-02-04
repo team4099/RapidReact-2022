@@ -75,7 +75,7 @@ class Shooter(val io: ShooterIO) : SubsystemBase() {
 
     lastRecordedSpeeds.add(Pair(inputs.flywheelVelocity, inputs.backwheelsVelocity))
 
-    if (lastRecordedSpeeds.size > filterSize.value) {
+    if (lastRecordedSpeeds.size > filterSize.get()) {
       lastRecordedSpeeds.removeAt(0)
     }
 
@@ -88,10 +88,10 @@ class Shooter(val io: ShooterIO) : SubsystemBase() {
       targetVelocity != Pair(0.0.rotations.perMinute, 0.0.rotations.perMinute) &&
       lastRecordedSpeeds.all {
         it.first.inRotationsPerMinute.around(
-          targetVelocity.first.inRotationsPerMinute, shooterToleranceRPM.value
+          targetVelocity.first.inRotationsPerMinute, shooterToleranceRPM.get()
         ) &&
           it.second.inRotationsPerMinute.around(
-            targetVelocity.second.inRotationsPerMinute, shooterToleranceRPM.value
+            targetVelocity.second.inRotationsPerMinute, shooterToleranceRPM.get()
           )
       }
 
@@ -104,14 +104,14 @@ class Shooter(val io: ShooterIO) : SubsystemBase() {
     Logger.getInstance().recordOutput("Shooter/state", state.name)
 
     if (flywheel_kP.hasChanged() || flywheel_kI.hasChanged() || flywheel_kD.hasChanged()) {
-      io.configureFlywheelPID(flywheel_kP.value, flywheel_kI.value, flywheel_kD.value)
+      io.configureFlywheelPID(flywheel_kP.get(), flywheel_kI.get(), flywheel_kD.get())
     }
     if (backwheels_kD.hasChanged() || backwheels_kI.hasChanged() || backwheels_kD.hasChanged()) {
-      io.configureBackwheelsPID(backwheels_kP.value, backwheels_kI.value, backwheels_kD.value)
+      io.configureBackwheelsPID(backwheels_kP.get(), backwheels_kI.get(), backwheels_kD.get())
     }
 
     if (filterSize.hasChanged()) {
-      filter = MedianFilter(filterSize.value.toInt())
+      filter = MedianFilter(filterSize.get().toInt())
       lastRecordedSpeeds = mutableListOf()
     }
 

@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import org.littletonrobotics.junction.Logger
+import org.team4099.lib.units.base.inSeconds
 
 class Pneumatic(val io: PneumaticIO) : SubsystemBase() {
 

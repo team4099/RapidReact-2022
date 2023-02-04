@@ -4,10 +4,6 @@ import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.base.seconds
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.milli
-import edu.wpi.first.networktables.EntryListenerFlags
-import edu.wpi.first.networktables.EntryNotification
-import edu.wpi.first.networktables.NetworkTableInstance
-import org.littletonrobotics.junction.Logger
 import org.photonvision.PhotonCamera
 
 object VisionIOPhotonReal : VisionIO {
@@ -24,6 +20,7 @@ object VisionIOPhotonReal : VisionIO {
 
   init {
     camera.pipelineIndex = 1
+    /*
     NetworkTableInstance.getDefault()
       .getEntry("/photonvision/" + "gloworm" + "/latencyMillis")
       .addListener(
@@ -59,6 +56,7 @@ object VisionIOPhotonReal : VisionIO {
         },
         EntryListenerFlags.kUpdate
       )
+     */
   }
 
   override fun updateInputs(inputs: VisionIO.VisionIOInputs) {

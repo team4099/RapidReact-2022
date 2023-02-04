@@ -77,7 +77,7 @@ class TelescopingClimber(val io: TelescopingClimberIO) : SubsystemBase() {
       .recordOutput("TelescopingClimber/rightReverseLimitReached", rightReverseLimitReached)
 
     if (kP.hasChanged() || kI.hasChanged() || kD.hasChanged()) {
-      io.configPID(kP.value, kI.value, kD.value)
+      io.configPID(kP.get(), kI.get(), kD.get())
     }
   }
 

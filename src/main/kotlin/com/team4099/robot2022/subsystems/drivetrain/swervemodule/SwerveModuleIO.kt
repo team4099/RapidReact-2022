@@ -1,24 +1,33 @@
-package com.team4099.robot2022.subsystems.drivetrain
+package com.team4099.robot2022.subsystems.drivetrain.swervemodule
 
-import com.team4099.lib.units.AngularAcceleration
-import com.team4099.lib.units.AngularVelocity
-import com.team4099.lib.units.LinearAcceleration
-import com.team4099.lib.units.LinearVelocity
-import com.team4099.lib.units.base.amps
-import com.team4099.lib.units.base.inAmperes
-import com.team4099.lib.units.base.inMeters
-import com.team4099.lib.units.base.meters
-import com.team4099.lib.units.derived.Angle
-import com.team4099.lib.units.derived.degrees
-import com.team4099.lib.units.derived.inRadians
-import com.team4099.lib.units.derived.inVolts
-import com.team4099.lib.units.derived.radians
-import com.team4099.lib.units.derived.volts
-import com.team4099.lib.units.inMetersPerSecond
-import com.team4099.lib.units.inRadiansPerSecond
-import com.team4099.lib.units.perSecond
 import org.littletonrobotics.junction.LogTable
 import org.littletonrobotics.junction.inputs.LoggableInputs
+import org.team4099.lib.units.AngularAcceleration
+import org.team4099.lib.units.AngularVelocity
+import org.team4099.lib.units.LinearAcceleration
+import org.team4099.lib.units.LinearVelocity
+import org.team4099.lib.units.Velocity
+import org.team4099.lib.units.base.Meter
+import org.team4099.lib.units.base.amps
+import org.team4099.lib.units.base.celsius
+import org.team4099.lib.units.base.inAmperes
+import org.team4099.lib.units.base.inCelsius
+import org.team4099.lib.units.base.inMeters
+import org.team4099.lib.units.base.meters
+import org.team4099.lib.units.derived.Angle
+import org.team4099.lib.units.derived.DerivativeGain
+import org.team4099.lib.units.derived.IntegralGain
+import org.team4099.lib.units.derived.ProportionalGain
+import org.team4099.lib.units.derived.Radian
+import org.team4099.lib.units.derived.Volt
+import org.team4099.lib.units.derived.degrees
+import org.team4099.lib.units.derived.inRadians
+import org.team4099.lib.units.derived.inVolts
+import org.team4099.lib.units.derived.radians
+import org.team4099.lib.units.derived.volts
+import org.team4099.lib.units.inMetersPerSecond
+import org.team4099.lib.units.inRadiansPerSecond
+import org.team4099.lib.units.perSecond
 
 interface SwerveModuleIO {
   class SwerveModuleIOInputs : LoggableInputs {
@@ -36,8 +45,8 @@ interface SwerveModuleIO {
     var driveVelocity = 0.0.meters.perSecond
     var steeringVelocity = 0.0.degrees.perSecond
 
-    var driveTempCelcius = 0.0
-    var steeringTempCelcius = 0.0
+    var driveTemp = 0.0.celsius
+    var steeringTemp = 0.0.celsius
 
     var potentiometerOutputRaw = 0.0
     var potentiometerOutputRadians = 0.0.radians
@@ -53,8 +62,8 @@ interface SwerveModuleIO {
       table?.put("steeringPositionRadians", steeringPosition.inRadians)
       table?.put("driveVelocityMetersPerSecond", driveVelocity.inMetersPerSecond)
       table?.put("steeringVelocityRadiansPerSecond", steeringVelocity.inRadiansPerSecond)
-      table?.put("driveTempCelcius", driveTempCelcius)
-      table?.put("steeringTempCelcius", steeringTempCelcius)
+      table?.put("driveTempCelcius", driveTemp.inCelsius)
+      table?.put("steeringTempCelcius", steeringTemp.inCelsius)
       table?.put("potentiometerOutputRaw", potentiometerOutputRaw)
       table?.put("potentiometerOutputRadians", potentiometerOutputRadians.inRadians)
     }
@@ -89,8 +98,10 @@ interface SwerveModuleIO {
       }
       table?.getDouble("steeringVelocityRadiansPerSecond", steeringVelocity.inRadiansPerSecond)
         ?.let { steeringVelocity = it.radians.perSecond }
-      table?.getDouble("driveTempCelcius", driveTempCelcius)?.let { driveTempCelcius = it }
-      table?.getDouble("steeringTempCelcius", steeringTempCelcius)?.let { steeringTempCelcius = it }
+      table?.getDouble("driveTempCelcius", driveTemp.inCelsius)?.let { driveTemp = it.celsius }
+      table?.getDouble("steeringTempCelcius", steeringTemp.inCelsius)?.let {
+        steeringTemp = it.celsius
+      }
       table?.getDouble("potentiometerOutputRaw", potentiometerOutputRaw)?.let {
         potentiometerOutputRaw = it
       }
@@ -106,7 +117,7 @@ interface SwerveModuleIO {
 
   fun setSteeringSetpoint(angle: Angle) {}
   fun setClosedLoop(steering: Angle, speed: LinearVelocity, acceleration: LinearAcceleration) {}
-  fun setOpenLoop(steering: Angle, speed: Double) {}
+  fun setOpenLoop(steering: Angle, speed: LinearVelocity) {}
 
   fun resetModuleZero() {}
   fun zeroSteering() {}
@@ -114,7 +125,15 @@ interface SwerveModuleIO {
 
   fun setBrakeMode(brake: Boolean) {}
 
-  fun configureDrivePID(kP: Double, kI: Double, kD: Double) {}
-  fun configureSteeringPID(kP: Double, kI: Double, kD: Double) {}
+  fun configureDrivePID(
+    kP: ProportionalGain<Velocity<Meter>, Volt>,
+    kI: IntegralGain<Velocity<Meter>, Volt>,
+    kD: DerivativeGain<Velocity<Meter>, Volt>
+  ) {}
+  fun configureSteeringPID(
+    kP: ProportionalGain<Radian, Volt>,
+    kI: IntegralGain<Radian, Volt>,
+    kD: DerivativeGain<Radian, Volt>
+  ) {}
   fun configureSteeringMotionMagic(maxVel: AngularVelocity, maxAccel: AngularAcceleration) {}
 }

@@ -1,9 +1,8 @@
 package com.team4099.robot2022.config.constants
 
-import com.team4099.lib.units.base.seconds
-import com.team4099.lib.units.centi
-import com.team4099.lib.units.milli
 import edu.wpi.first.wpilibj.RobotBase
+import org.team4099.lib.units.base.seconds
+import org.team4099.lib.units.milli
 
 object Constants {
   object Universal {
@@ -12,18 +11,26 @@ object Constants {
 
     val SLOW_STATUS_FRAME_TIME = 255.milli.seconds
     val CANIVORE_NAME = "kestrel_vore"
+    val LOG_FOLDER = "/media/sda1/"
 
-    val LOOP_PERIOD_TIME = 2.centi.seconds
+    val LOOP_PERIOD_TIME = 20.milli.seconds
     val POWER_DISTRIBUTION_HUB_ID = 1
     val USE_TIMING = true
+    val SIM_MODE = Tuning.SimType.SIM
   }
 
   object Tuning {
 
     val TUNING_MODE = false
+    const val SIMULATE_DRIFT = true
 
     enum class RobotType {
       REAL,
+      SIM,
+      REPLAY
+    }
+
+    enum class SimType {
       SIM,
       REPLAY
     }

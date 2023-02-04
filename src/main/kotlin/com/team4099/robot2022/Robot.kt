@@ -1,47 +1,40 @@
 package com.team4099.robot2022
 
-import com.team4099.robot2022.auto.AutonomousSelector
-import com.team4099.robot2022.auto.PathStore
 import com.team4099.robot2022.config.constants.Constants
+import com.team4099.robot2022.util.Alert
+import com.team4099.robot2022.util.Alert.AlertType
 import edu.wpi.first.wpilibj.PowerDistribution
+import edu.wpi.first.wpilibj.RobotBase
 import edu.wpi.first.wpilibj.livewindow.LiveWindow
+import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.CommandScheduler
+import org.littletonrobotics.junction.LogFileUtil
 import org.littletonrobotics.junction.LoggedRobot
 import org.littletonrobotics.junction.Logger
-import org.littletonrobotics.junction.inputs.LoggedNetworkTables
-import org.littletonrobotics.junction.inputs.LoggedSystemStats
-import org.littletonrobotics.junction.io.ByteLogReceiver
-import org.littletonrobotics.junction.io.ByteLogReplay
-import org.littletonrobotics.junction.io.LogSocketServer
+import org.littletonrobotics.junction.inputs.LoggedPowerDistribution
+import org.littletonrobotics.junction.networktables.NT4Publisher
+import org.littletonrobotics.junction.wpilog.WPILOGReader
+import org.littletonrobotics.junction.wpilog.WPILOGWriter
+import java.nio.file.Files
+import java.nio.file.Paths
 
 object Robot : LoggedRobot() {
-  val robotName: Constants.Tuning.RobotType
 
-  init {
-    robotName = Constants.Tuning.type
-  }
+  val logFolderAlert =
+    Alert("Log folder path does not exist. Data will NOT be logged.", AlertType.ERROR)
+  val logReceiverQueueAlert =
+    Alert("Logging queue exceeded capacity, data will NOT be logged.", AlertType.ERROR)
+  val logOpenFileAlert = Alert("Failed to open log file. Data will NOT be logged", AlertType.ERROR)
+  val logWriteAlert =
+    Alert("Failed write to the log file. Data will NOT be logged", AlertType.ERROR)
+  val logSimulationAlert = Alert("Running in simulation", AlertType.INFO)
 
   override fun robotInit() {
-    // set up AdvantageKit logging
-
     val logger = Logger.getInstance()
 
-    // allow running faster than real time when replaying logs
     setUseTiming(isReal())
 
-    // log smart dashboard values (otherwise nothing is logged by default
-    LoggedNetworkTables.getInstance().addTable("/SmartDashboard")
-
-    // metadata value (not timed -- just metadata for given log file)
-    logger.recordMetadata("RobotName", robotName.name)
-    logger.recordMetadata("TuningMode", Constants.Tuning.TUNING_MODE.toString())
-    logger.recordMetadata("RuntimeType", getRuntimeType().name)
-    //    if (isReal()) {
-    //      logger.recordMetadata("BatteryName", BatteryTracker.scanBattery(2.0))
-    //    } else {
-    //      logger.recordMetadata("BatteryName", "N/A")
-    //    }
-
+    logger.recordMetadata("Tuning Mode Enabled", Constants.Tuning.TUNING_MODE.toString())
     logger.recordMetadata("ProjectName", MAVEN_NAME)
     logger.recordMetadata("BuildDate", BUILD_DATE)
     logger.recordMetadata("GitSHA", GIT_SHA)
@@ -51,49 +44,80 @@ object Robot : LoggedRobot() {
       1 -> logger.recordMetadata("GitDirty", "Uncommitted changes")
       else -> logger.recordMetadata("GitDirty", "Unknown")
     }
-    if (isReal()) {
-      // log to USB stick and network for real time data viewing on AdvantageScope
-      logger.addDataReceiver(ByteLogReceiver("/media/sda1"))
-      logger.addDataReceiver(LogSocketServer(5800))
-      LoggedSystemStats.getInstance()
-        .setPowerDistributionConfig(1, PowerDistribution.ModuleType.kRev)
+
+    if (RobotBase.isReal()) {
+      // check if folder path exists
+      if (Files.exists(Paths.get(Constants.Universal.LOG_FOLDER))) {
+        // log to USB stick and network for real time data viewing on AdvantageScope
+        logger.addDataReceiver(WPILOGWriter(Constants.Universal.LOG_FOLDER))
+      } else {
+        logFolderAlert.set(true)
+      }
+
+      logger.addDataReceiver(NT4Publisher())
+      LoggedPowerDistribution.getInstance(
+        Constants.Universal.POWER_DISTRIBUTION_HUB_ID, PowerDistribution.ModuleType.kRev
+      )
     } else {
-      // determines whether simulation runs all loop cycles as fast as possible or replays in real
-      // time
-      setUseTiming(Constants.Universal.USE_TIMING)
-      // if in replay mode get file path from command line and read log file
-      val path = ByteLogReplay.promptForPath()
-      logger.setReplaySource(ByteLogReplay(path))
-      logger.addDataReceiver(ByteLogReceiver(ByteLogReceiver.addPathSuffix(path, "_sim")))
-      logger.addDataReceiver(LogSocketServer(5800))
+      when (Constants.Universal.SIM_MODE) {
+        Constants.Tuning.SimType.SIM -> {
+          logger.addDataReceiver(NT4Publisher())
+          logSimulationAlert.set(true)
+        }
+        Constants.Tuning.SimType.REPLAY -> {
+          // if in replay mode get file path from command line and read log file
+          val path = LogFileUtil.findReplayLog()
+          logger.setReplaySource(WPILOGReader(path))
+          logger.addDataReceiver(WPILOGWriter(LogFileUtil.addPathSuffix(path, "_sim")))
+        }
+      }
     }
-    logger.start()
+
+    logger.start() // no more configuration allowed
 
     LiveWindow.disableAllTelemetry()
 
+    // init robot container too
     RobotContainer
-    AutonomousSelector
-    PathStore
-    RobotContainer.mapDefaultCommands()
     RobotContainer.zeroSensors()
+    RobotContainer.mapDefaultCommands()
   }
 
   override fun autonomousInit() {
     // autonomousCommand.schedule()
     RobotContainer.setDriveBrakeMode()
     //    RobotContainer.zeroSteering()
-    RobotContainer.getAutonomousCommand().schedule()
   }
 
   override fun disabledInit() {
-    RobotContainer.getAutonomousCommand().cancel()
     RobotContainer.setDriveBrakeMode()
     // autonomousCommand.cancel()
   }
 
+  override fun robotPeriodic() {
+    // begin scheduling all commands
+    CommandScheduler.getInstance().run()
+
+    // checking for logging errors
+    logReceiverQueueAlert.set(Logger.getInstance().receiverQueueFault)
+
+    // Set the scheduler to log events for command initialize, interrupt, finish
+    CommandScheduler.getInstance().onCommandInitialize { command: Command ->
+      Logger.getInstance().recordOutput("/ActiveCommands/${command.name}", true)
+    }
+
+    CommandScheduler.getInstance().onCommandFinish { command: Command ->
+      Logger.getInstance().recordOutput("/ActiveCommands/${command.name}", false)
+    }
+
+    CommandScheduler.getInstance().onCommandInterrupt { command: Command ->
+      Logger.getInstance().recordOutput("/ActiveCommands/${command.name}", false)
+    }
+  }
+
   override fun teleopInit() {
     RobotContainer.mapTeleopControls()
-    RobotContainer.getAutonomousCommand().cancel()
+    // RobotContainer.getAutonomousCommand().cancel()
     RobotContainer.setDriveBrakeMode() // change to coast
     //    RobotContainer.zeroSteering()
     // autonomousCommand.cancel()
@@ -101,21 +125,5 @@ object Robot : LoggedRobot() {
 
   override fun testInit() {
     RobotContainer.mapTestControls()
-    RobotContainer.getAutonomousCommand().cancel()
-  }
-
-  override fun robotPeriodic() {
-    CommandScheduler.getInstance().run()
-
-    //    Logger.getInstance()
-    //      .recordOutput(
-    //        "ActiveCommands/Scheduler",
-    //        NetworkTableInstance.getDefault()
-    //          .getEntry("/LiveWindow/Ungrouped/Scheduler/Names")
-    //          .getStringArray(emptyArray())
-    //      )
-
-    //    RobotContainer.logDriverController()
-    //    RobotContainer.logOperatorController()
   }
 }

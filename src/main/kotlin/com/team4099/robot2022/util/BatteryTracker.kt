@@ -41,7 +41,7 @@ object BatteryTracker {
       // Read name from data
       val batteryNameBytes: ByteArray = ByteArray(nameLength)
       System.arraycopy(response, responsePrefix.size, batteryNameBytes, 0, nameLength)
-      //      name = String(batteryNameBytes).substring(7, name.length)
+      name = String(batteryNameBytes).substring(7, name.length)
       println("[BatteryTracker] Scanned battery " + name)
     } catch (e: Exception) {
       println("[BatteryTracker] Exception while trying to scan battery")

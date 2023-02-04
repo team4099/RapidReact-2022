@@ -1,7 +1,6 @@
 package com.team4099.robot2022
 
 import com.team4099.lib.smoothDeadband
-import com.team4099.robot2022.auto.AutonomousSelector
 import com.team4099.robot2022.commands.climber.ClimbSequenceCommand
 import com.team4099.robot2022.commands.climber.ExtendPivotArmCommand
 import com.team4099.robot2022.commands.climber.ExtendTelescopingArmCommand
@@ -14,10 +13,6 @@ import com.team4099.robot2022.commands.climber.SpoolLeftUpCommand
 import com.team4099.robot2022.commands.climber.SpoolRightDownCommand
 import com.team4099.robot2022.commands.climber.SpoolRightUpCommand
 import com.team4099.robot2022.commands.climber.TelescopingIdleCommand
-import com.team4099.robot2022.commands.drivetrain.DriveBrakeModeCommand
-import com.team4099.robot2022.commands.drivetrain.ResetGyroPitchCommand
-import com.team4099.robot2022.commands.drivetrain.ResetGyroYawCommand
-import com.team4099.robot2022.commands.drivetrain.TeleopDriveCommand
 import com.team4099.robot2022.commands.feeder.FeederCommand
 import com.team4099.robot2022.commands.feeder.FeederSerialize
 import com.team4099.robot2022.commands.feeder.FeederSerializeIdleCommand
@@ -40,9 +35,10 @@ import com.team4099.robot2022.subsystems.climber.PivotClimberIOReal
 import com.team4099.robot2022.subsystems.climber.TelescopingClimber
 import com.team4099.robot2022.subsystems.climber.TelescopingClimberIO
 import com.team4099.robot2022.subsystems.climber.TelescopingClimberIOReal
-import com.team4099.robot2022.subsystems.drivetrain.Drivetrain
-import com.team4099.robot2022.subsystems.drivetrain.DrivetrainIO
-import com.team4099.robot2022.subsystems.drivetrain.DrivetrainIOReal
+import com.team4099.robot2022.subsystems.drivetrain.drive.Drivetrain
+import com.team4099.robot2022.subsystems.drivetrain.drive.DrivetrainIO
+import com.team4099.robot2022.subsystems.drivetrain.drive.DrivetrainIOReal
+import com.team4099.robot2022.subsystems.drivetrain.gyro.GyroIO
 import com.team4099.robot2022.subsystems.feeder.Feeder
 import com.team4099.robot2022.subsystems.feeder.FeederIO
 import com.team4099.robot2022.subsystems.feeder.FeederIOReal
@@ -61,6 +57,11 @@ import com.team4099.robot2022.subsystems.shooter.ShooterIOReal
 import com.team4099.robot2022.subsystems.vision.Vision
 import com.team4099.robot2022.subsystems.vision.VisionIO
 import com.team4099.robot2022.subsystems.vision.VisionIOPhotonReal
+import com.team4099.robot2023.commands.drivetrain.DriveBrakeModeCommand
+import com.team4099.robot2023.commands.drivetrain.ResetGyroPitchCommand
+import com.team4099.robot2023.commands.drivetrain.ResetGyroYawCommand
+import com.team4099.robot2023.commands.drivetrain.TeleopDriveCommand
+import com.team4099.robot2023.subsystems.drivetrain.gyro.GyroIONavx
 
 object RobotContainer {
   private val drivetrain: Drivetrain
@@ -76,7 +77,7 @@ object RobotContainer {
 
   init {
     if (Constants.Tuning.type == Constants.Tuning.RobotType.REAL) {
-      drivetrain = Drivetrain(DrivetrainIOReal)
+      drivetrain = Drivetrain(GyroIONavx, DrivetrainIOReal)
       intake = Intake(IntakeIOReal)
       shooter = Shooter(ShooterIOReal)
       feeder = Feeder(FeederIOReal)
@@ -87,7 +88,7 @@ object RobotContainer {
       vision = Vision(VisionIOPhotonReal)
       //      pdh = PowerDistributionHub(PowerDistributionHubReal)
     } else {
-      drivetrain = Drivetrain(object : DrivetrainIO {})
+      drivetrain = Drivetrain(object : GyroIO {}, object : DrivetrainIO {})
       intake = Intake(object : IntakeIO {})
       shooter = Shooter(object : ShooterIO {})
       feeder = Feeder(object : FeederIO {})
@@ -186,11 +187,6 @@ object RobotContainer {
   }
 
   fun mapTestControls() {}
-
-  fun getAutonomousCommand() =
-    AutonomousSelector.getCommand(
-      drivetrain, intake, feeder, shooter, telescopingClimber, pivotClimber
-    )
 
   fun logOperatorController() = ControlBoard.logOperatorController()
   fun logDriverController() = ControlBoard.logDriverController()
