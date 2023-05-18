@@ -10,6 +10,7 @@ plugins {
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
+
 def TEAM = 4099
 // do not change main class (does not run without it being Main
 def ROBOT_MAIN_CLASS = "com.team4099.robot2022.Main"
@@ -83,7 +84,7 @@ dependencies {
 
 	testImplementation 'junit:junit:4.12'
 
-	implementation 'com.github.team4099:FalconUtils:1.1.10'
+	implementation 'com.github.team4099:FalconUtils:1.1.19'
 
 
 	// We need to add the Kotlin stdlib in order to use most Kotlin language features.

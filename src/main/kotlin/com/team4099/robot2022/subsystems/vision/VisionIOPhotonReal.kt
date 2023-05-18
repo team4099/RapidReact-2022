@@ -23,7 +23,7 @@ object VisionIOPhotonReal : VisionIO {
     /*
     NetworkTableInstance.getDefault()
       .getEntry("/photonvision/" + "gloworm" + "/latencyMillis")
-      .addListener(
+      .addListener(.
         { event: EntryNotification? ->
           val result = camera.latestResult
           val timestamp =
