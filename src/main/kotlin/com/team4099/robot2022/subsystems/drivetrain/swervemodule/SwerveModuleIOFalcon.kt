@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration
 import com.team4099.robot2022.config.constants.DrivetrainConstants
 import edu.wpi.first.wpilibj.AnalogPotentiometer
+import org.littletonrobotics.junction.Logger
 import org.team4099.lib.controller.SimpleMotorFeedforward
 import org.team4099.lib.units.AngularAcceleration
 import org.team4099.lib.units.AngularVelocity
@@ -52,6 +53,15 @@ class SwerveModuleIOFalcon(
       DrivetrainConstants.WHEEL_DIAMETER,
       DrivetrainConstants.DRIVE_COMPENSATION_VOLTAGE
     )
+
+  private val potentiometerOutput: Double
+    get() {
+      return if (label != "Front Left Wheel") {
+        potentiometer.get()
+      } else {
+        2 * Math.PI - potentiometer.get()
+      }
+    }
 
   // motor params
   private val steeringConfiguration: TalonFXConfiguration = TalonFXConfiguration()
@@ -184,13 +194,13 @@ class SwerveModuleIOFalcon(
   override fun zeroSteering() {
     steeringFalcon.selectedSensorPosition =
       steeringSensor.positionToRawUnits(
-        -(potentiometer.get().radians) + zeroOffset.inRadians.radians
+        if (label != "Front Left Wheel") (potentiometerOutput.radians) - zeroOffset
+        else (2 * Math.PI).radians - (potentiometerOutput.radians - zeroOffset)
       )
-    println(
-      "Loading Zero for Module $label (${steeringSensor.positionToRawUnits(
-        -(potentiometer.get().radians) + zeroOffset.inRadians.radians
-      )})"
-    )
+
+    Logger.getInstance()
+      .recordOutput("$label/zeroPositionRadians", steeringSensor.position.inRadians)
+    println("Loading Zero for Module $label (${steeringFalcon.selectedSensorPosition})")
   }
 
   override fun zeroDrive() {

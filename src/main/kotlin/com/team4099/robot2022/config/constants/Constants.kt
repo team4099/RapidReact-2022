@@ -9,7 +9,7 @@ object Constants {
     const val EPSILON = 1E-9
 
     val SLOW_STATUS_FRAME_TIME = 0.255.seconds
-    val CANIVORE_NAME = "kestrel2"
+    val CANIVORE_NAME = "FalconVore"
     val LOG_FOLDER = "/media/sda1/"
 
     val LOOP_PERIOD_TIME = 0.020.seconds

@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.DigitalInput
 
 object FeederIOReal : FeederIO {
   // The motor that takes balls from the intake
-  private val floorMotor = TalonFX(Constants.Feeder.FLOOR_MOTOR_ID, CANIVORE_NAME)
+  private val floorMotor = TalonFX(Constants.Feeder.FLOOR_MOTOR_ID)
 
   // The motor that takes balls to the shooter
   private val verticalMotor = TalonFX(Constants.Feeder.VERTICAL_MOTOR_ID, CANIVORE_NAME)

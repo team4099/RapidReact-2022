@@ -57,6 +57,11 @@ class Intake(val io: IntakeIO) : SubsystemBase() {
     if (intakingBall || outtakingBall) {
       lastIntakeSpikeTime = Clock.fpgaTime
     }
+    if (armState == IntakeConstants.ArmState.OUT) {
+      io.setArmSolenoid(true)
+    } else {
+      io.setArmSolenoid(false)
+    }
 
     keepIntakingLEDState =
       Clock.fpgaTime - lastIntakeSpikeTime <= IntakeConstants.WAIT_FOR_STATE_TO_CHANGE

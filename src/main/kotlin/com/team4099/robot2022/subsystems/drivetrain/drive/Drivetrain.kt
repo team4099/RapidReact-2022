@@ -216,13 +216,14 @@ class Drivetrain(val gyroIO: GyroIO, swerveModuleIOs: DrivetrainIO) : SubsystemB
 
       gyroInputs.gyroYaw = odometryPose.rotation + gyroYawOffset
     } else {
-      odometryPose =
-        Pose2d(
-          swerveDrivePoseEstimator.update(
-            gyroInputs.gyroYaw.inRotation2ds,
-            swerveModules.map { it.modulePosition }.toTypedArray()
-          )
+      odometryPose = Pose2d(Translation2d(0.0.meters, 0.0.meters), 0.degrees)
+      /*
+      Pose2d(
+        swerveDrivePoseEstimator.update(
+          gyroInputs.gyroYaw.inRotation2ds,
+          swerveModules.map { it.modulePosition }.toTypedArray()
         )
+        */
     }
   }
 

@@ -150,9 +150,7 @@ object RobotContainer {
     )
     //    ControlBoard.shooterUnjam.whileActiveOnce(ShooterUnjamCommand(shooter))
 
-    ControlBoard.runIntake.whileActiveContinuous(
-      IntakeBallsCommand(intake).alongWith(FeederSerialize(feeder))
-    )
+    ControlBoard.runIntake.whileTrue(IntakeBallsCommand(intake).alongWith(FeederSerialize(feeder)))
     //    ControlBoard.runFeederIn.whileActiveOnce(FeederSerialize(feeder))
     //    ControlBoard.resetBallCount.whileActiveOnce(ResetBallCountCommand(feeder))
     ControlBoard.outTake.whileActiveContinuous(
